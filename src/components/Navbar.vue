@@ -8,7 +8,7 @@
       </div>
       <div class="layout-navbar-menu-forAdmin">
         <li><a href="#">傾度管設定</a></li>
-        <li><a href="#">帳號設定</a></li>
+        <li><a href="#" @click="toPath('UserList')">帳號設定</a></li>
         <li><a href="#">專案設定</a></li>
         <li><a href="#" @click="toPath('permissonSetup')">權限設定</a></li>
       </div>

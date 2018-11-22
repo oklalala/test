@@ -8,11 +8,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: ''
+    token: '',
+    users: []
   },
   mutations: {
     setToken(state, token) {
       state.token = token
+    },
+    setUsers(state, users) {
+      state.users = users
+    }
+  },
+  getters: {
+    users(state) {
+      return state.users
     }
   },
   actions: {
@@ -23,6 +32,11 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit('setToken', '')
+    },
+    getUsers({ commit }) {
+      return axios.get('http://localhost:3333/v1/users').then(res => {
+        commit('setUsers', res.data.data)
+      })
     }
   }
 })

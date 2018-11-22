@@ -4,6 +4,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Entry from './views/Entry.vue'
 import ProjectList from './views/ProjectList.vue'
+import UserList from './views/UserList.vue'
+
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -20,6 +23,16 @@ export default new Router({
       path: '/project-list',
       name: 'ProjectList',
       component: ProjectList
+    },
+    {
+      path: '/user-list',
+      name: 'UserList',
+      component: UserList,
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getUsers').then(() => {
+          next()
+        })
+      }
     }
   ]
 })
