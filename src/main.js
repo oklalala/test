@@ -16,7 +16,8 @@ import {
   FormItem,
   Input,
   Table,
-  TableColumn
+  TableColumn,
+  Checkbox
 } from 'element-ui'
 
 Vue.use(Row)
@@ -29,6 +30,7 @@ Vue.use(FormItem)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Checkbox)
 
 Vue.config.productionTip = false
 

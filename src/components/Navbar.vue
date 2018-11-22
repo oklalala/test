@@ -18,12 +18,11 @@
 </template>
 
 <script>
+import ToPathMixin from '@/mixins/ToPath'
 export default {
   name: 'Navbar',
+  mixins: [ToPathMixin],
   methods: {
-    toPath(name) {
-      this.$router.push({ name })
-    },
     logout() {
       this.$store.dispatch('logout')
       this.toPath('Entry')

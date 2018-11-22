@@ -37,6 +37,15 @@ export default new Vuex.Store({
       return axios.get('http://localhost:3333/v1/users').then(res => {
         commit('setUsers', res.data.data)
       })
+    },
+    deleteUsers({ dispatch }, userIds) {
+      console.log(userIds)
+      let userIdsStr = userIds.join(',')
+      return axios
+        .delete(`http://localhost:3333/v1/users/${userIdsStr}`)
+        .then(() => {
+          dispatch('getUsers')
+        })
     }
   }
 })
