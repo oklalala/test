@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <h1 class="layout-title">大地監控</h1>
-    </div>
-    <router-view/>
+    <navbar/>
+    <router-view></router-view>
   </div>
 </template>
 
-<style lang="scss">
+<script>
+import Navbar from '@/components/Navbar'
+export default {
+  name: 'app',
+  components: {
+    Navbar
+  }
+}
+</script>
 
+<style>
 </style>
