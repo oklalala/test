@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import Entry from './views/Entry.vue'
 import ProjectList from './views/ProjectList.vue'
 import UserList from './views/UserList.vue'
+import CreateUser from './views/CreateUser.vue'
 
 import store from '@/store'
 
@@ -30,6 +31,20 @@ export default new Router({
       component: UserList,
       beforeEnter: (to, from, next) => {
         store.dispatch('getUsers').then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/create-user',
+      name: 'CreateUser',
+      component: CreateUser,
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getRoles'),
+          store.dispatch('getCompanies'),
+          store.dispatch('getSOItems')
+        ]).then(() => {
           next()
         })
       }

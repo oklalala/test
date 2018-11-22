@@ -9,7 +9,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: '',
-    users: []
+    users: [],
+    roles: [],
+    companies: [],
+    soItems: []
   },
   mutations: {
     setToken(state, token) {
@@ -17,11 +20,29 @@ export default new Vuex.Store({
     },
     setUsers(state, users) {
       state.users = users
+    },
+    setRoles(state, roles) {
+      state.roles = roles
+    },
+    setCompanies(state, companies) {
+      state.companies = companies
+    },
+    setSOItems(state, soItems) {
+      state.soItems = soItems
     }
   },
   getters: {
     users(state) {
       return state.users
+    },
+    roles(state) {
+      return state.roles
+    },
+    companies(state) {
+      return state.companies
+    },
+    soItems(state) {
+      return state.soItems
     }
   },
   actions: {
@@ -39,13 +60,30 @@ export default new Vuex.Store({
       })
     },
     deleteUsers({ dispatch }, userIds) {
-      console.log(userIds)
       let userIdsStr = userIds.join(',')
       return axios
         .delete(`http://localhost:3333/v1/users/${userIdsStr}`)
         .then(() => {
           dispatch('getUsers')
         })
+    },
+    createUser({}, payload) {
+      return axios.post('http://localhost:3333/v1/user', payload)
+    },
+    getRoles({ commit }) {
+      return axios.get('http://localhost:3333/v1/roles').then(res => {
+        commit('setRoles', res.data.data)
+      })
+    },
+    getCompanies({ commit }) {
+      return axios.get('http://localhost:3333/v1/companies').then(res => {
+        commit('setCompanies', res.data.data)
+      })
+    },
+    getSOItems({ commit }) {
+      return axios.get('http://localhost:3333/v1/so-items').then(res => {
+        commit('setSOItems', res.data.data)
+      })
     }
   }
 })

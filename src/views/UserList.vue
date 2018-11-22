@@ -6,7 +6,7 @@
         <el-button type="primary" @click="deleteUsers">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('accountSetup')">
+        <el-button type="primary" @click="toPath('CreateUser')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
@@ -70,4 +70,3 @@ export default {
   }
 }
 </script>
-
