@@ -11,15 +11,18 @@ export default new Vuex.Store({
     token: ''
   },
   mutations: {
-    getToken(state, token) {
+    setToken(state, token) {
       state.token = token
     }
   },
   actions: {
     login({ commit }, payload) {
       return axios.post('http://localhost:3333/v1/login', payload).then(res => {
-        commit('getToken', res.data.token)
+        commit('setToken', res.data.token)
       })
+    },
+    logout({ commit }) {
+      commit('setToken', '')
     }
   }
 })

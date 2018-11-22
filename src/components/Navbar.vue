@@ -3,23 +3,32 @@
     <h1 class="layout-navbar-title">大地監控</h1>
     <ul class="layout-navbar-menu">
       <div class="layout-navbar-menu-forUser">
-        <li><router-link to="">帳號資料</router-link></li>
-        <li><router-link to="">專案列表</router-link></li>
+        <li><a href="#" @click="toPath()">帳號資料</a></li>
+        <li><a href="#">專案列表</a></li>
       </div>
       <div class="layout-navbar-menu-forAdmin">
-        <li><router-link to="">傾度管設定</router-link></li>
-        <li><router-link to="">帳號設定</router-link></li>
-        <li><router-link to="">專案設定</router-link></li>
-        <li><router-link to="">權限設定</router-link></li>
+        <li><a href="#">傾度管設定</a></li>
+        <li><a href="#">帳號設定</a></li>
+        <li><a href="#">專案設定</a></li>
+        <li><a href="#" @click="toPath('permissonSetup')">權限設定</a></li>
       </div>
-      <li><router-link to="">登出</router-link></li>
+      <li><a href="#" @click="logout">登出</a></li>
     </ul>
   </nav>  
 </template>
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    toPath(name) {
+      this.$router.push({ name })
+    },
+    logout() {
+      this.$store.dispatch('logout')
+      this.toPath('Entry')
+    }
+  }
 }
 </script>
 
