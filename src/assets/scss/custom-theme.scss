@@ -1,0 +1,42 @@
+// 提示使用者的訊息
+.feedback {
+  color: red;
+}
+
+// 在列表上方的工具組
+.operationGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+// 自訂佈局
+.layout {
+  &-navbar {
+    display: flex;
+    &-title {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    &-menu {
+      flex: 8;
+      list-style-type: none;
+      display: flex;
+      padding-left: 0;
+      li {
+        margin: 20px;
+        a {
+          text-decoration: none;
+        }
+      }
+      &-forUser {
+        flex: 4;
+        display: flex;
+      }
+      &-forAdmin {
+        flex: 4;
+        display: flex;
+      }
+    }
+  }
+}

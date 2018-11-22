@@ -30,37 +30,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.layout {
-  &-navbar {
-    display: flex;
-    &-title {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-    &-menu {
-      flex: 8;
-      list-style-type: none;
-      display: flex;
-      padding-left: 0;
-      li {
-        margin: 20px;
-        a {
-          text-decoration: none;
-        }
-      }
-      &-forUser {
-        flex: 4;
-        display: flex;
-      }
-      &-forAdmin {
-        flex: 4;
-        display: flex;
-      }
-    }
-  }
-}
-</style>

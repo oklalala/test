@@ -71,9 +71,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.operationGroup {
-  display: flex;
-  justify-content: space-between;
-}
-</style>
