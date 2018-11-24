@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    token(state) {
+      return state.token
+    },
     users(state) {
       return state.users
     },
@@ -47,41 +51,41 @@ export default new Vuex.Store({
   },
   actions: {
     login({ commit }, payload) {
-      return axios.post('http://localhost:3333/v1/login', payload).then(res => {
-        commit('setToken', res.data.token)
-      })
+      return sendAPI('post', '/login', false, payload)
+        .then(res => {
+          commit('setToken', res.data.token)
+        })
     },
     logout({ commit }) {
       commit('setToken', '')
     },
     getUsers({ commit }) {
-      return axios.get('http://localhost:3333/v1/users').then(res => {
+      return sendAPI('get', '/users', true).then(res => {
         commit('setUsers', res.data.data)
       })
     },
     deleteUsers({ dispatch }, userIds) {
       let userIdsStr = userIds.join(',')
-      return axios
-        .delete(`http://localhost:3333/v1/users/${userIdsStr}`)
+      return sendAPI('delete', `/users/${userIdsStr}`, true)
         .then(() => {
           dispatch('getUsers')
         })
     },
     createUser({}, payload) {
-      return axios.post('http://localhost:3333/v1/user', payload)
+      return sendAPI('post', `/user`, true, payload)
     },
     getRoles({ commit }) {
-      return axios.get('http://localhost:3333/v1/roles').then(res => {
+      return sendAPI('get', '/roles', true).then(res => {
         commit('setRoles', res.data.data)
       })
     },
     getCompanies({ commit }) {
-      return axios.get('http://localhost:3333/v1/companies').then(res => {
+      return sendAPI('get', '/companies', true).then(res => {
         commit('setCompanies', res.data.data)
       })
     },
     getSOItems({ commit }) {
-      return axios.get('http://localhost:3333/v1/so-items').then(res => {
+      return sendAPI('get', '/so-items', true).then(res => {
         commit('setSOItems', res.data.data)
       })
     }
