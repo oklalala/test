@@ -47,7 +47,7 @@
             <el-button
               style="width: 100%"
               @click="toPath('CompanyList')">
-              確定送出
+              維護
             </el-button>
           </el-col>
         </el-row>

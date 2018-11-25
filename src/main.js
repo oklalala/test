@@ -20,7 +20,8 @@ import {
   Input,
   Table,
   TableColumn,
-  Checkbox
+  Checkbox,
+  Dialog
 } from 'element-ui'
 
 Vue.use(Row)
@@ -36,6 +37,7 @@ Vue.use(Input)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Checkbox)
+Vue.use(Dialog)
 
 Vue.config.productionTip = false
 

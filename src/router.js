@@ -6,6 +6,7 @@ import Entry from './views/Entry.vue'
 import ProjectList from './views/ProjectList.vue'
 import UserList from './views/UserList.vue'
 import CreateUser from './views/CreateUser.vue'
+import CompanyList from './views/CompanyList.vue'
 
 import store from '@/store'
 
@@ -24,6 +25,16 @@ export default new Router({
       path: '/project-list',
       name: 'ProjectList',
       component: ProjectList
+    },
+    {
+      path: '/company-list',
+      name: 'CompanyList',
+      component: CompanyList,
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getCompanies').then(() => {
+          next()
+        })
+      }
     },
     {
       path: '/user-list',

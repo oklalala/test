@@ -2,7 +2,6 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
@@ -12,6 +11,7 @@ export default new Vuex.Store({
     token: '',
     users: [],
     roles: [],
+    rolePermissions: [],
     companies: [],
     soItems: []
   },
@@ -24,6 +24,9 @@ export default new Vuex.Store({
     },
     setRoles(state, roles) {
       state.roles = roles
+    },
+    setRolePermissions(state, rolePermissions) {
+      state.rolePermissions = rolePermissions
     },
     setCompanies(state, companies) {
       state.companies = companies
@@ -42,6 +45,9 @@ export default new Vuex.Store({
     roles(state) {
       return state.roles
     },
+    rolePermissions(state) {
+      return state.rolePermissions
+    },
     companies(state) {
       return state.companies
     },
@@ -51,10 +57,9 @@ export default new Vuex.Store({
   },
   actions: {
     login({ commit }, payload) {
-      return sendAPI('post', '/login', false, payload)
-        .then(res => {
-          commit('setToken', res.data.token)
-        })
+      return sendAPI('post', '/login', false, payload).then(res => {
+        commit('setToken', res.data.token)
+      })
     },
     logout({ commit }) {
       commit('setToken', '')
@@ -66,12 +71,11 @@ export default new Vuex.Store({
     },
     deleteUsers({ dispatch }, userIds) {
       let userIdsStr = userIds.join(',')
-      return sendAPI('delete', `/users/${userIdsStr}`, true)
-        .then(() => {
-          dispatch('getUsers')
-        })
+      return sendAPI('delete', `/users/${userIdsStr}`, true).then(() => {
+        dispatch('getUsers')
+      })
     },
-    createUser({}, payload) {
+    createUser(context, payload) {
       return sendAPI('post', `/user`, true, payload)
     },
     getRoles({ commit }) {
@@ -79,9 +83,25 @@ export default new Vuex.Store({
         commit('setRoles', res.data.data)
       })
     },
+    getRolePermissions({ commit }) {
+      return sendAPI('get', '/role/permissions', true).then(res => {
+        commit('setRolePermissions', res.data.data)
+      })
+    },
     getCompanies({ commit }) {
       return sendAPI('get', '/companies', true).then(res => {
         commit('setCompanies', res.data.data)
+      })
+    },
+    createCompany({ dispatch }, payload) {
+      return sendAPI('post', `/company`, true, payload).then(() => {
+        dispatch('getCompanies')
+      })
+    },
+    deleteCompanies({ dispatch }, companyIds) {
+      let companyIdsStr = companyIds.join(',')
+      return sendAPI('delete', `/companies/${companyIdsStr}`, true).then(() => {
+        dispatch('getCompanies')
       })
     },
     getSOItems({ commit }) {
