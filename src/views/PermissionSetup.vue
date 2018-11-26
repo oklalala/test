@@ -1,0 +1,77 @@
+<template>
+  <div class="permission-setup">
+    <el-table
+      :data="rolePermissions">
+      <el-table-column
+        prop="role"
+        label="角色"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="permissions"
+        label="權限">
+        <template slot-scope="scope">
+          <div
+            v-for="(item, index) in scope.row.permissions"
+            :key="index">
+            <el-checkbox
+              @change="updateRolePermissions(item.value, scope.row.role ,index)"
+              :value="item.value">
+              {{ item.name }}
+            </el-checkbox>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-button type="primary" @click="submit">
+      確認送出
+    </el-button>
+    <el-button type="primary" @click="toPath('ProjectList')">
+      取消修改
+    </el-button>
+  </div>
+</template>
+
+<script>
+import ToPathMixin from '@/mixins/ToPath'
+export default {
+
+  name: 'PermissionSetup',
+  mixins: [ToPathMixin],
+  data () {
+    return {
+
+    }
+  },
+  computed: {
+    rolePermissions () {
+      return this.$store.getters.rolePermissions
+    }
+  },
+  methods: {
+    updateRolePermissions (value, role, permissionIndex) {
+      value = !value
+      this.$store.commit('updateRolePermissions', {
+        role,
+        permissionIndex,
+        value
+      })
+    },
+    submit () {
+      this.$store.dispatch('updateRolePermissions').then(() => {
+        this.$message({ message: '權限設定成功', type: 'success' })
+        this.toPath('ProjectList')
+      }).catch(e => {
+        this.$message.error('權限設定失敗')
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+</style>
+
+
+
+

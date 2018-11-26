@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Entry from './views/Entry.vue'
+import UserInfo from './views/UserInfo.vue'
 import ProjectList from './views/ProjectList.vue'
 import UserList from './views/UserList.vue'
 import CreateUser from './views/CreateUser.vue'
 import CompanyList from './views/CompanyList.vue'
+import PermissionSetup from './views/PermissionSetup.vue'
 
 import store from '@/store'
 
@@ -20,6 +22,16 @@ export default new Router({
       path: '/',
       name: 'Entry',
       component: Entry
+    },
+    {
+      path: '/user-info',
+      name: 'UserInfo',
+      component: UserInfo,
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getMe').then(() => {
+          next()
+        })
+      }
     },
     {
       path: '/project-list',
@@ -56,6 +68,16 @@ export default new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getSOItems')
         ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/permisson-setup',
+      name: 'PermissionSetup',
+      component: PermissionSetup,
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getRolePermissions').then(() => {
           next()
         })
       }

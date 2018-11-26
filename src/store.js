@@ -9,6 +9,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: '',
+    myId: '',
+    me: null,
     users: [],
     roles: [],
     rolePermissions: [],
@@ -16,8 +18,17 @@ export default new Vuex.Store({
     soItems: []
   },
   mutations: {
+    setMyId(state, myId) {
+      state.myId = myId
+    },
     setToken(state, token) {
       state.token = token
+    },
+    setMe(state, me) {
+      state.me = me
+    },
+    updateMe(state, payload) {
+      state.me = Object.assign(state.me, payload)
     },
     setUsers(state, users) {
       state.users = users
@@ -26,7 +37,47 @@ export default new Vuex.Store({
       state.roles = roles
     },
     setRolePermissions(state, rolePermissions) {
-      state.rolePermissions = rolePermissions
+      state.rolePermissions = [
+        {
+          role: 'ADMIN',
+          permissions: [
+            {
+              name: 'monitor',
+              value: true
+            },
+            {
+              name: 'update',
+              value: true
+            },
+          ]
+        },
+        {
+          role: 'USER',
+          permissions: [
+            {
+              name: 'monitor',
+              value: false
+            },
+            {
+              name: 'update',
+              value: true
+            },
+          ]
+        }
+      ]
+    },
+    updateRolePermissions(state, {
+      value,
+      role,
+      permissionIndex
+    }) {
+      state.rolePermissions = state.rolePermissions.map(item => {
+        if (item.role === role) {
+          item.permissions[permissionIndex].value = value
+          console.log(item)
+        }
+        return item
+      })
     },
     setCompanies(state, companies) {
       state.companies = companies
@@ -36,6 +87,12 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    myId (state) {
+      return state.myId
+    },
+    me (state) {
+      return state.me
+    },
     token(state) {
       return state.token
     },
@@ -59,10 +116,20 @@ export default new Vuex.Store({
     login({ commit }, payload) {
       return sendAPI('post', '/login', false, payload).then(res => {
         commit('setToken', res.data.token)
+        commit('setMyId', res.data.userId)
       })
     },
     logout({ commit }) {
       commit('setToken', '')
+    },
+    getMe({ getters, commit }) {
+      return sendAPI('get', `/user/${getters.myId}`, true).then(res => {
+        commit('setMe', res.data.data)
+      })
+    },
+    updateMe({ state, getters }) {
+      console.log(state.me)
+      return sendAPI('put', `/user/${getters.myId}`, true, state.me)
     },
     getUsers({ commit }) {
       return sendAPI('get', '/users', true).then(res => {
@@ -87,6 +154,9 @@ export default new Vuex.Store({
       return sendAPI('get', '/role/permissions', true).then(res => {
         commit('setRolePermissions', res.data.data)
       })
+    },
+    updateRolePermissions({ state }) {
+      return sendAPI('put', '/role/permissions', true, state.rolePermissions)
     },
     getCompanies({ commit }) {
       return sendAPI('get', '/companies', true).then(res => {
