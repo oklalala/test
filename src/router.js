@@ -28,6 +28,7 @@ export default new Router({
       path: '/user-info',
       name: 'UserInfo',
       component: UserInfo,
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getMe').then(() => {
           next()
@@ -37,12 +38,14 @@ export default new Router({
     {
       path: '/project-list',
       name: 'ProjectList',
-      component: ProjectList
+      component: ProjectList,
+      meta: { requireAuth: true },
     },
     {
       path: '/company-list',
       name: 'CompanyList',
       component: CompanyList,
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getCompanies').then(() => {
           next()
@@ -53,6 +56,7 @@ export default new Router({
       path: '/user-list',
       name: 'UserList',
       component: UserList,
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getUsers').then(() => {
           next()
@@ -63,6 +67,7 @@ export default new Router({
       path: '/create-user',
       name: 'CreateUser',
       component: CreateUser,
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
@@ -77,6 +82,7 @@ export default new Router({
       path: '/edit-user',
       name: 'EditUser',
       component: EditUser,
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
@@ -91,6 +97,7 @@ export default new Router({
       path: '/permisson-setup',
       name: 'PermissionSetup',
       component: PermissionSetup,
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getPermissions'),
