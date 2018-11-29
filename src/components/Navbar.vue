@@ -25,7 +25,9 @@ export default {
   name: 'Navbar',
   mixins: [ToPathMixin, RoleIsMixin],
   computed: {
-    ...mapGetters(['isLogined'])
+    isLogined() {
+      return this.$store.getters.token
+    }
   },
   methods: {
     logout() {

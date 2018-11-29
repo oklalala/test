@@ -2,14 +2,16 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import localStore from 'store'
+
 import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: '',
     myId: '',
+    token: '',
     myRole: '',
     me: {},
     users: [],
@@ -20,14 +22,14 @@ export default new Vuex.Store({
     soItems: []
   },
   mutations: {
+    setToken(state, token) {
+      state.token = token
+    },
     setMyId(state, myId) {
       state.myId = myId
     },
     setMyRole(state, myRole) {
       state.myRole = myRole
-    },
-    setToken(state, token) {
-      state.token = token
     },
     setMe(state, me) {
       state.me = me
@@ -67,6 +69,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    token(state) {
+      return state.token
+    },
     myId(state) {
       return state.myId
     },
@@ -75,12 +80,6 @@ export default new Vuex.Store({
     },
     me(state) {
       return state.me
-    },
-    token(state) {
-      return state.token
-    },
-    isLogined(state) {
-      return state.token
     },
     users(state) {
       return state.users
@@ -107,10 +106,12 @@ export default new Vuex.Store({
         commit('setToken', res.data.token)
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
+        localStore.set('ground_monitor_token', res.data.token)
       })
     },
     logout({ commit }) {
       commit('setToken', '')
+      localStore.remove('ground_monitor_token')
     },
     getMe({ getters, commit }) {
       return sendAPI('get', `/user/${getters.myId}`, true).then(res => {
