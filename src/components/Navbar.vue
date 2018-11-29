@@ -1,7 +1,7 @@
 <template>
   <nav class="layout-navbar">
     <h1 class="layout-navbar-title">大地監控</h1>
-    <ul class="layout-navbar-menu">
+    <ul v-if="isLogined" class="layout-navbar-menu">
       <div class="layout-navbar-menu-forUser">
         <li><a href="#" @click="toPath('UserInfo')">帳號資料</a></li>
         <li><a href="#">專案列表</a></li>
@@ -19,9 +19,15 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Navbar',
   mixins: [ToPathMixin],
+  computed: {
+    ...mapGetters([
+      'isLogined'
+    ])
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout')

@@ -15,16 +15,28 @@
         <el-col :span="12">
           <el-form-item label="角色">
             <el-select
-              v-model="newUser.role_id"
+              v-model="newUser.roleName"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
                 v-for="item in roles"
-                :key="item.id"
+                :key="item.name"
                 :label="item.name"
-                :value="item.id">
+                :value="item.name">
               </el-option>
             </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="帳號">
+            <el-input v-model="newUser.account"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="密碼">
+            <el-input v-model="newUser.password"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -32,7 +44,7 @@
         <el-row>
           <el-col :span="22">
             <el-select
-              v-model="newUser.company_id"
+              v-model="newUser.companyId"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
@@ -54,7 +66,8 @@
       </el-form-item>
       <el-form-item label="傾度管">
         <el-select
-          v-model="newUser.so_id"
+          disabled
+          v-model="newUser.soId"
           placeholder="請選擇"
           style="width: 100%">
           <el-option
@@ -97,9 +110,11 @@ export default {
     return {
       newUser: {
         name: '',
-        role_id: null,
-        company_id: null,
-        so_id: null
+        roleName: null,
+        companyId: null,
+        soId: '',
+        account: '',
+        password: ''
       }
     }
   },
@@ -128,9 +143,11 @@ export default {
     reset() {
       this.newUser = {
         name: '',
-        role_id: null,
-        company_id: null,
-        so_id: null
+        roleName: null,
+        companyId: null,
+        soId: '',
+        account: '',
+        password: ''
       }
     },
     cancel() {

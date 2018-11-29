@@ -28,17 +28,18 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="公司名稱"
-        width="180">
+        label="公司名稱">
       </el-table-column>
     </el-table>
-    <el-button type="primary" @click="toPath('CreateUser')">
-      離開
-    </el-button>
+    <div class="button-container">
+      <el-button type="primary" @click="toPath('CreateUser')">
+        離開
+      </el-button>
+    </div>
+
     <el-dialog
       title="新增公司"
       :visible.sync="createCompanyDialogVisible">
-      <el-input v-model="newCompanyID" placeholder="請輸入公司 ID"></el-input>
       <el-input v-model="newCompanyName" placeholder="請輸入公司名稱"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button
@@ -60,7 +61,6 @@ export default {
     return {
       createCompanyDialogVisible: false,
       deleteList: [],
-      newCompanyID: null,
       newCompanyName: null
     }
   },
@@ -78,7 +78,6 @@ export default {
     },
     createCompany() {
       this.$store.dispatch('createCompany', {
-        id: this.newCompanyID,
         name: this.newCompanyName
       })
       this.createCompanyDialogVisible = false

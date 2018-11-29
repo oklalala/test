@@ -17,9 +17,5 @@ export default function(method, path, isAuth, data) {
     headers
   }
 
-  if (data) {
-    configs.data = data
-  }
-
-  return axios.create(configs)[method](path)
+  return axios.create(configs)[method](path, data)
 }

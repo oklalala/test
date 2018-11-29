@@ -12,6 +12,7 @@ export default new Vuex.Store({
     myId: '',
     me: null,
     users: [],
+    permissions: {},
     roles: [],
     rolePermissions: [],
     companies: [],
@@ -33,38 +34,14 @@ export default new Vuex.Store({
     setUsers(state, users) {
       state.users = users
     },
+    setPermissions(state, permissions) {
+      state.permissions = permissions
+    },
     setRoles(state, roles) {
       state.roles = roles
     },
     setRolePermissions(state, rolePermissions) {
-      state.rolePermissions = [
-        {
-          role: 'ADMIN',
-          permissions: [
-            {
-              name: 'monitor',
-              value: true
-            },
-            {
-              name: 'update',
-              value: true
-            },
-          ]
-        },
-        {
-          role: 'USER',
-          permissions: [
-            {
-              name: 'monitor',
-              value: false
-            },
-            {
-              name: 'update',
-              value: true
-            },
-          ]
-        }
-      ]
+      state.rolePermissions = rolePermissions
     },
     updateRolePermissions(state, {
       value,
@@ -74,7 +51,6 @@ export default new Vuex.Store({
       state.rolePermissions = state.rolePermissions.map(item => {
         if (item.role === role) {
           item.permissions[permissionIndex].value = value
-          console.log(item)
         }
         return item
       })
@@ -87,17 +63,23 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    myId (state) {
+    myId(state) {
       return state.myId
     },
-    me (state) {
+    me(state) {
       return state.me
     },
     token(state) {
       return state.token
     },
+    isLogined(state) {
+      return state.token
+    },
     users(state) {
       return state.users
+    },
+    permissions(state) {
+      return state.permissions
     },
     roles(state) {
       return state.roles
@@ -148,6 +130,11 @@ export default new Vuex.Store({
     getRoles({ commit }) {
       return sendAPI('get', '/roles', true).then(res => {
         commit('setRoles', res.data.data)
+      })
+    },
+    getPermissions({ commit }) {
+      return sendAPI('get', '/permissions', true).then(res => {
+        commit('setPermissions', res.data.data)
       })
     },
     getRolePermissions({ commit }) {

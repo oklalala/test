@@ -9,6 +9,12 @@
   justify-content: space-between;
 }
 
+// 裝按鈕們的容器，通常在頁尾
+.button-container {
+  text-align: center;
+  padding: 20px 0;
+}
+
 // 自訂佈局
 .layout {
   &-navbar {

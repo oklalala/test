@@ -36,8 +36,7 @@
       </el-table-column>
       <el-table-column
         prop="role.name"
-        label="角色"
-        width="180">
+        label="角色">
       </el-table-column>
     </el-table>
   </div>

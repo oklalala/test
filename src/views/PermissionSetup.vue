@@ -12,23 +12,26 @@
         label="權限">
         <template slot-scope="scope">
           <div
+            v-if="permissions"
             v-for="(item, index) in scope.row.permissions"
             :key="index">
             <el-checkbox
               @change="updateRolePermissions(item.value, scope.row.role ,index)"
               :value="item.value">
-              {{ item.name }}
+              {{ permissions[item.name] }}
             </el-checkbox>
           </div>
         </template>
       </el-table-column>
     </el-table>
-    <el-button type="primary" @click="submit">
-      確認送出
-    </el-button>
-    <el-button type="primary" @click="toPath('ProjectList')">
-      取消修改
-    </el-button>
+    <div class="button-container">
+      <el-button type="primary" @click="submit">
+        確認送出
+      </el-button>
+      <el-button type="primary" @click="toPath('ProjectList')">
+        取消修改
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -44,6 +47,9 @@ export default {
     }
   },
   computed: {
+    permissions() {
+      return this.$store.getters.permissions
+    },
     rolePermissions () {
       return this.$store.getters.rolePermissions
     }

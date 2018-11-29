@@ -77,7 +77,10 @@ export default new Router({
       name: 'PermissionSetup',
       component: PermissionSetup,
       beforeEnter: (to, from, next) => {
-        store.dispatch('getRolePermissions').then(() => {
+        Promise.all([
+          store.dispatch('getPermissions'),
+          store.dispatch('getRolePermissions'),
+        ]).then(() => {
           next()
         })
       }

@@ -10,8 +10,7 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="名稱"
-        width="180">
+        label="名稱">
       </el-table-column>
     </el-table>
   </div>

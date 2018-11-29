@@ -5,9 +5,9 @@
       <section>
         <h2>基本資料</h2>
         <p>姓名：{{ me.name }}</p>
-        <p>角色：{{ me.role.name}}</p>
+        <p>角色：{{ me.role.roleName}}</p>
         <p>公司：{{ me.company.name}}</p>
-        <p>傾度管 編號：{{ me.soItem.number}}</p>
+        <p v-if="me.soItem">傾度管 編號：{{ me.soItem.number}}</p>
       </section>
       <section>
         <h2>聯絡方式</h2>
@@ -48,14 +48,15 @@
           </el-table-column>
           <el-table-column
             prop="name"
-            label="名稱"
-            width="180">
+            label="名稱">
           </el-table-column>
         </el-table>
       </section>
-      <el-button type="primary" @click="submit">
-        確認
-      </el-button>
+      <div class="button-container">
+        <el-button type="primary" @click="submit">
+          確認
+        </el-button>
+      </div>
     </el-form>
   </div>
 </template>
