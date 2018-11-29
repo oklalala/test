@@ -61,7 +61,6 @@
       </el-form-item>
       <el-form-item label="傾度管">
         <el-select
-          disabled
           v-model="newUser.soId"
           placeholder="請選擇"
           style="width: 100%">
