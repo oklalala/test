@@ -109,7 +109,7 @@ export default new Vuex.Store({
         localStore.set('ground_monitor_token', {
           token: res.data.token,
           myId: res.data.userId,
-          myrole: res.data.role
+          myRole: res.data.role
         })
       })
     },
