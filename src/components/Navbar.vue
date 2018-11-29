@@ -4,7 +4,7 @@
     <ul v-if="isLogined" class="layout-navbar-menu">
       <div class="layout-navbar-menu-forUser">
         <li><a href="#" @click="toPath('UserInfo')">帳號資料</a></li>
-        <li><a href="#">專案列表</a></li>
+        <li><a href="#" @click="toPath('ProjectList')">專案列表</a></li>
       </div>
       <div class="layout-navbar-menu-forAdmin" v-if="roleIs('ADMIN')">
         <li><a href="#">傾度管設定</a></li>
