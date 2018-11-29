@@ -6,7 +6,7 @@
         <li><a href="#" @click="toPath('UserInfo')">帳號資料</a></li>
         <li><a href="#">專案列表</a></li>
       </div>
-      <div class="layout-navbar-menu-forAdmin">
+      <div class="layout-navbar-menu-forAdmin" v-if="roleIs('ADMIN')">
         <li><a href="#">傾度管設定</a></li>
         <li><a href="#" @click="toPath('UserList')">帳號設定</a></li>
         <li><a href="#">專案設定</a></li>
@@ -19,14 +19,13 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
+import RoleIsMixin from '@/mixins/RoleIs'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Navbar',
-  mixins: [ToPathMixin],
+  mixins: [ToPathMixin, RoleIsMixin],
   computed: {
-    ...mapGetters([
-      'isLogined'
-    ])
+    ...mapGetters(['isLogined'])
   },
   methods: {
     logout() {

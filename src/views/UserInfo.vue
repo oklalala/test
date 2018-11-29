@@ -5,8 +5,8 @@
       <section>
         <h2>基本資料</h2>
         <p>姓名：{{ me.name }}</p>
-        <p>角色：{{ me.role.roleName}}</p>
-        <p>公司：{{ me.company.name}}</p>
+        <p>角色：{{ me.roleName}}</p>
+        <p v-if="me.company">公司：{{ me.company.name}}</p>
         <p v-if="me.soItem">傾度管 編號：{{ me.soItem.number}}</p>
       </section>
       <section>

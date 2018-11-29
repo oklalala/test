@@ -21,12 +21,14 @@
         <p class="feedback">
           {{ feedback }}
         </p>
-        <el-button
-          type="primary"
-          native-type="submit"
-          @click.prevent="submit">
-          登入
-        </el-button>
+        <div class="button-container">
+          <el-button
+            type="primary"
+            native-type="submit"
+            @click.prevent="submit">
+            登入
+          </el-button>
+        </div>
       </el-form-item>
     </el-form>
   </div>

@@ -23,6 +23,12 @@
         prop="id"
         label="編號"
         width="180">
+        <template slot-scope="scope">
+          <span class="clickable"
+            @click="toPath('EditUser', { userId: scope.row.id })">
+            {{ scope.row.id }}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="name"
@@ -35,7 +41,7 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="role.name"
+        prop="roleName"
         label="角色">
       </el-table-column>
     </el-table>

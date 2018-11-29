@@ -78,7 +78,7 @@
           <el-col :span="12">
             <el-button
               style="width: 100%"
-              @click="submit">
+              @click="edit">
               確定送出
             </el-button>
           </el-col>
@@ -98,9 +98,14 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  name: 'CreateUser',
+  name: 'EditUser',
 
   mixins: [ToPathMixin],
+  created() {
+    if (this.$route.params.userId) {
+      this.loadUser(this.$route.params.userId)
+    }
+  },
   data() {
     return {
       newUser: {
@@ -134,11 +139,23 @@ export default {
     updateDeleteList(value) {
       this.deleteList = value.map(user => user.id)
     },
+    loadUser(userId) {
+      this.$store.dispatch('getUser', userId).then(res => {
+        let user = res.data.data
+        this.newUser = {
+          name: user.name,
+          roleName: user.roleName,
+          companyId: user.company.id,
+          account: user.account,
+          soId: ''
+        }
+      })
+    },
     reset() {
       this.newUser = {
         name: '',
-        roleName: null,
-        companyId: null,
+        roleName: '',
+        companyId: '',
         soId: '',
         account: ''
       }
@@ -147,8 +164,11 @@ export default {
       this.reset()
       this.toPath('UserList')
     },
-    submit() {
-      this.$store.dispatch('createUser', this.newUser).then(() => {
+    edit() {
+      this.$store.dispatch('updateUser', {
+        userId: this.$route.params.userId,
+        payload: this.newUser
+      }).then(() => {
         this.reset()
         this.toPath('UserList')
       })

@@ -7,6 +7,7 @@ import UserInfo from './views/UserInfo.vue'
 import ProjectList from './views/ProjectList.vue'
 import UserList from './views/UserList.vue'
 import CreateUser from './views/CreateUser.vue'
+import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 
@@ -67,6 +68,20 @@ export default new Router({
           store.dispatch('getRoles'),
           store.dispatch('getCompanies'),
           store.dispatch('getSOItems')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/edit-user',
+      name: 'EditUser',
+      component: EditUser,
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getRoles'),
+          store.dispatch('getCompanies'),
+          store.dispatch('getSOItems'),
         ]).then(() => {
           next()
         })

@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     token: '',
     myId: '',
-    me: null,
+    myRole: '',
+    me: {},
     users: [],
     permissions: {},
     roles: [],
@@ -21,6 +22,9 @@ export default new Vuex.Store({
   mutations: {
     setMyId(state, myId) {
       state.myId = myId
+    },
+    setMyRole(state, myRole) {
+      state.myRole = myRole
     },
     setToken(state, token) {
       state.token = token
@@ -66,6 +70,9 @@ export default new Vuex.Store({
     myId(state) {
       return state.myId
     },
+    myRole(state) {
+      return state.myRole
+    },
     me(state) {
       return state.me
     },
@@ -99,6 +106,7 @@ export default new Vuex.Store({
       return sendAPI('post', '/login', false, payload).then(res => {
         commit('setToken', res.data.token)
         commit('setMyId', res.data.userId)
+        commit('setMyRole', res.data.role)
       })
     },
     logout({ commit }) {
@@ -110,8 +118,13 @@ export default new Vuex.Store({
       })
     },
     updateMe({ state, getters }) {
-      console.log(state.me)
-      return sendAPI('put', `/user/${getters.myId}`, true, state.me)
+      return sendAPI('put', `/user/self`, true, state.me)
+    },
+    getUser(context, userId) {
+      return sendAPI('get', `/user/${userId}`, true)
+    },
+    updateUser({ state, getters }, { userId, payload }) {
+      return sendAPI('put', `/user/${userId}`, true, payload)
     },
     getUsers({ commit }) {
       return sendAPI('get', '/users', true).then(res => {

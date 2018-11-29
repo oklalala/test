@@ -2,8 +2,8 @@
 
 var mixin = {
   methods: {
-    toPath(name, params) {
-      this.$router.push({ name, params })
+    roleIs(role) {
+      return this.$store.getters.myRole === role
     }
   }
 }
