@@ -1,7 +1,7 @@
 /** @format */
 
 import axios from 'axios'
-import localStore from 'store'
+import store from '@/store'
 
 export default function(method, path, isAuth, data) {
   let headers = {
@@ -9,7 +9,7 @@ export default function(method, path, isAuth, data) {
   }
 
   if (isAuth) {
-    headers['x-access-token'] = localStore.get('ground_monitor_token')
+    headers['x-access-token'] = store.getters.token
   }
 
   let configs = {

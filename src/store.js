@@ -106,7 +106,11 @@ export default new Vuex.Store({
         commit('setToken', res.data.token)
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
-        localStore.set('ground_monitor_token', res.data.token)
+        localStore.set('ground_monitor_token', {
+          token: res.data.token,
+          myId: res.data.userId,
+          myrole: res.data.role
+        })
       })
     },
     logout({ commit }) {
@@ -124,7 +128,7 @@ export default new Vuex.Store({
     getUser(context, userId) {
       return sendAPI('get', `/user/${userId}`, true)
     },
-    updateUser({ state, getters }, { userId, payload }) {
+    updateUser(context, { userId, payload }) {
       return sendAPI('put', `/user/${userId}`, true, payload)
     },
     getUsers({ commit }) {

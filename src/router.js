@@ -2,6 +2,8 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
+import localStore from 'store'
+
 import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
 import ProjectList from './views/ProjectList.vue'
@@ -15,7 +17,7 @@ import store from '@/store'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -109,3 +111,21 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.requireAuth) next()
+
+  if (store.getters.token) {
+    next()
+  } else if (localStore.get('ground_monitor_token')) {
+    let data = localStore.get('ground_monitor_token')
+    store.commit('setToken', data.token)
+    store.commit('setMyId', data.myId)
+    store.commit('setMyRole', data.myRole)
+    next()
+  } else {
+    next({ name: 'Entry' })
+  }
+})
+
+export default router
