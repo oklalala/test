@@ -51,7 +51,7 @@
         <el-button
           type="primary"
           @click="createCompany">
-          确 定
+          確認
         </el-button>
       </span>
     </el-dialog>
