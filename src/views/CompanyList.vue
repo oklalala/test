@@ -25,6 +25,12 @@
         prop="id"
         label="編號"
         width="180">
+        <template slot-scope="scope">
+          <span class="clickable"
+            @click="readAndOpenCompanyDialog(scope.row.name)">
+            {{ scope.row.id }}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="name"
@@ -74,6 +80,11 @@ export default {
   },
   methods: {
     openCompanyDialog() {
+      this.newCompanyName = ''
+      this.createCompanyDialogVisible = true
+    },
+    readAndOpenCompanyDialog(name) {
+      this.newCompanyName = name
       this.createCompanyDialogVisible = true
     },
     createCompany() {
