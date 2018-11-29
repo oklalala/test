@@ -63,9 +63,11 @@
 
 <script>
 // @ is an alias to /src
+import ToPathMixin from '@/mixins/ToPath'
 
 export default {
-  name: 'Entry',
+  name: 'UserInfo',
+  mixins: [ToPathMixin],
   data() {
     return {
     }
@@ -80,7 +82,12 @@ export default {
       this.$store.commit('updateMe', payload)
     },
     submit () {
-      this.$store.dispatch('updateMe')
+      this.$store.dispatch('updateMe').then(() => {
+        this.$message({ message: '資料更新成功', type: 'success' })
+        this.toPath('ProjectList')
+      }).catch(e => {
+        this.$message.error('資料更新失敗')
+      })
     }
   }
 }
