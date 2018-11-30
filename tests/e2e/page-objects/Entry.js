@@ -1,32 +1,38 @@
 /** @format */
+const ACCOUNT = 'arel'
+const PASSWORD = '0000'
+const WRONG_PASSWORD = ''
 
 const EntryCommands = {
   show() {
     this.api
       .url(process.env.VUE_DEV_SERVER_URL)
       .waitForElementVisible('#app', 5000)
+    return this.api
   },
   shouldSeeInputsAndSubmit() {
-    this.expect.element('@accountInput').to.be.visible
-    this.expect.element('@passwordInput').to.be.visible
-    this.expect.element('@submitButton').to.be.visible
+    return this.assert.visible('@accountInput')
+      .assert.visible('@passwordInput')
+      .assert.visible('@submitButton')
   },
   enterAccountAndPassword() {
-    this.api.setValue('form input[name=account]', 'root')
-    this.api.setValue('form input[name=password]', '0000')
+    return this.api
+      .setValue('form input[name=account]', ACCOUNT)
+      .setValue('form input[name=password]', PASSWORD)
   },
   enterWrongAccountAndPassword() {
-    this.api.setValue('form input[name=account]', 'root')
-    // this.api.setValue('form input[name=password]', '0000')
+    return this.api
+      .setValue('form input[name=account]', ACCOUNT)
+      .setValue('form input[name=password]', WRONG_PASSWORD)
   },
   clickLoginButton() {
-    this.api.click('form button[type=submit]')
+    return this.api.click('form button[type=submit]')
   },
   shouldSeeLoginError() {
-    this.expect.element('@feedbackText').text.to.equal('帳號密碼不匹配')
+    return this.assert.containsText('@feedbackText', '帳號密碼不匹配')
   },
   shouldSeeProjectPageIfSuccess() {
-    this.waitForElementVisible('.projectList', 2000)
+    return this.assert.urlContains('/project-list')
   }
 }
 
