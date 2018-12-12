@@ -4,15 +4,15 @@
 // http://nightwatchjs.org/guide#usage
 
 module.exports = {
-  '未登入時，瀏覽專案列表會被導回登入頁': browser => {
-    let Project = browser.page.Project()
-    let Entry = browser.page.Entry()
+  // '未登入時，瀏覽專案列表會被導回登入頁': browser => {
+  //   let Project = browser.page.Project()
+  //   let Entry = browser.page.Entry()
 
-    Project.show()
-    Project.navigate()
-    Entry.shouldSeeInputsAndSubmit()
-    browser.end()
-  },
+  //   Project.show()
+  //   Project.navigate()
+  //   Entry.shouldSeeInputsAndSubmit()
+  //   browser.end()
+  // },
 
   // '登入後，可以看到一般使用者的導覽列選項': browser => {},
 

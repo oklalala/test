@@ -11,28 +11,38 @@ const EntryCommands = {
     return this.api
   },
   shouldSeeInputsAndSubmit() {
-    return this.assert.visible('@accountInput')
+    this
+      .assert.visible('@accountInput')
       .assert.visible('@passwordInput')
       .assert.visible('@submitButton')
+    return this.api
   },
   enterAccountAndPassword() {
-    return this.api
+    this.api
       .setValue('form input[name=account]', ACCOUNT)
       .setValue('form input[name=password]', PASSWORD)
+    return this.api
   },
   enterWrongAccountAndPassword() {
-    return this.api
+    this.api
       .setValue('form input[name=account]', ACCOUNT)
       .setValue('form input[name=password]', WRONG_PASSWORD)
+    return this.api
   },
   clickLoginButton() {
-    return this.api.click('form button[type=submit]')
+    this.api.click('form button[type=submit]')
+    return this.api
   },
   shouldSeeLoginError() {
-    return this.assert.containsText('@feedbackText', '帳號密碼不匹配')
+    this.assert.containsText('@feedbackText', '帳號密碼不匹配')
+    return this.api
   },
   shouldSeeProjectPageIfSuccess() {
-    return this.assert.urlContains('/project-list')
+    this.api
+      .pause(1000)
+      .assert.urlContains('/project-list')
+    return this.api
+
   }
 }
 
