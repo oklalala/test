@@ -6,7 +6,7 @@
           type="text"
           name="account"
           v-model="account"
-          placeholder="請輸入帳號">
+          placeholder="請輸入帳號" @input="removeError">
         </el-input>
       </el-form-item>
       <el-form-item label="密碼">
@@ -14,7 +14,7 @@
           type="password"
           name="password"
           v-model="password"
-          placeholder="請輸入密碼">
+          placeholder="請輸入密碼" @input="removeError">
         </el-input>
       </el-form-item>
       <el-form-item>
@@ -63,7 +63,16 @@ export default {
           console.log(err.message)
           this.feedback = '帳號密碼不匹配'
         })
+    },
+    removeError() {
+      this.feedback = ''
     }
   }
 }
 </script>
+
+<style>
+.feedback {
+  position: absolute;
+}
+</style>
