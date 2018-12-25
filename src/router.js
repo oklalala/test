@@ -12,6 +12,7 @@ import CreateUser from './views/CreateUser.vue'
 import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
+import ProjectSetting from './views/ProjectSetting.vue'
 
 import store from '@/store'
 
@@ -41,7 +42,7 @@ let router = new Router({
       path: '/project-list',
       name: 'ProjectList',
       component: ProjectList,
-      meta: { requireAuth: true },
+      meta: { requireAuth: true }
     },
     {
       path: '/company-list',
@@ -89,7 +90,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('getCompanies'),
-          store.dispatch('getSOItems'),
+          store.dispatch('getSOItems')
         ]).then(() => {
           next()
         })
@@ -103,7 +104,21 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions'),
+          store.dispatch('getRolePermissions')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-setting',
+      name: 'ProjectSetting',
+      component: ProjectSetting,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getPermissions'),
+          store.dispatch('getRolePermissions')
         ]).then(() => {
           next()
         })

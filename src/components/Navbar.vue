@@ -9,7 +9,7 @@
       <div class="layout-navbar-menu-forAdmin" v-if="roleIs('ADMIN')">
         <li><a href="#">傾度管設定</a></li>
         <li><a href="#" @click="toPath('UserList')">帳號設定</a></li>
-        <li><a href="#">專案設定</a></li>
+        <li><a href="#" @click="toPath('ProjectSetting')">專案設定</a></li>
         <li><a href="#" @click="toPath('PermissionSetup')">權限設定</a></li>
       </div>
       <li><a href="#" @click="logout">登出</a></li>
