@@ -27,6 +27,7 @@ import {
   tabs,
   Pagination,
   upload
+  submenu
 } from 'element-ui'
 
 Vue.use(Row)
@@ -47,6 +48,7 @@ Vue.use(tabPane)
 Vue.use(tabs)
 Vue.use(Pagination)
 Vue.use(upload)
+Vue.use(submenu)
 Vue.prototype.$message = Message
 
 Vue.config.productionTip = false
