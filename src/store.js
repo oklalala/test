@@ -187,8 +187,8 @@ export default new Vuex.Store({
         commit('setSOItems', res.data.data)
       })
     },
-    getPorjects({ commit }) {
-      return sendAPI('get', '/porjects', true).then(res => {
+    getProjects({ commit }) {
+      return sendAPI('get', '/projects', true).then(res => {
         commit('setProjects', res.data.data)
       })
     },
