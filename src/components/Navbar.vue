@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="activeIndex"  class="layout-navbar" mode="horizontal" @select="handleSelect">
+  <el-menu :default-active="activeIndex"  class="layout-navbar" mode="horizontal">
     <h1 class="layout-navbar-title">大地監控</h1>
     <template v-if="isLogined" class="layout-navbar-menu">
       <template class="layout-navbar-menu-forUser">
