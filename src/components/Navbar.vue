@@ -12,7 +12,7 @@
         <el-submenu index="5" menu-trigger="click">
           <template slot="title">專案設定</template>
           <el-menu-item index="5-1" @click="toPath('ProjectSetting')">專案列表</el-menu-item>
-          <el-menu-item index="5-2">專案執行階段</el-menu-item>
+          <el-menu-item index="5-2" @click="toPath('ProjectProgress')">專案執行階段</el-menu-item>
         </el-submenu>
         <el-menu-item index="6" @click="toPath('PermissionSetup')">權限設定</el-menu-item>
       </template>

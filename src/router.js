@@ -13,6 +13,7 @@ import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectSetting from './views/ProjectSetting.vue'
+import ProjectProgress from './views/ProjectProgress.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
 import SOItems from './views/SOItems.vue'
@@ -122,6 +123,20 @@ let router = new Router({
       path: '/project-setting',
       name: 'ProjectSetting',
       component: ProjectSetting,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getPermissions'),
+          store.dispatch('getRolePermissions')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-Progress',
+      name: 'ProjectProgress',
+      component: ProjectProgress,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
