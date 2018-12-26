@@ -22,7 +22,8 @@ import {
   TableColumn,
   Checkbox,
   Dialog,
-  Message
+  Message,
+  submenu
 } from 'element-ui'
 
 Vue.use(Row)
@@ -39,7 +40,8 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Checkbox)
 Vue.use(Dialog)
-Vue.prototype.$message = Message;
+Vue.use(submenu)
+Vue.prototype.$message = Message
 
 Vue.config.productionTip = false
 
