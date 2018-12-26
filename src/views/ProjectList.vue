@@ -3,12 +3,12 @@
     <h1>專案列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <!-- <el-button type="primary" @click="deleteProjects">刪除</el-button> -->
+        <el-button type="primary" @click="deleteProjects">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <!-- <el-button type="primary" @click="toPath('CreateProject')">
+        <el-button type="primary" @click="toPath('ProjectCreate')">
           <i class="el-icon-plus"></i>
-        </el-button> -->
+        </el-button>
       </div>
     </div>
     <el-table
@@ -46,23 +46,23 @@ export default {
   name: 'ProjectList',
   mixins: [ToPathMixin],
   data() {
-    // return {
-    //   deleteList: []
-    // }
+    return {
+      deleteList: []
+    }
   },
   computed: {
-  //   userList() {
-  //     return this.$store.getters.projects
-  //   }
-  // },
-  // methods: {
-  //   deleteUsers() {
-  //     if (this.deleteList.length === 0) return
-  //     this.$store.dispatch('deleteProjects', this.deleteList)
-  //   },
-  //   updateDeleteList(value) {
-  //     this.deleteList = value.map(user => user.id)
-  //  }
+    projectList() {
+      return this.$store.getters.projects
+    }
+  },
+  methods: {
+    deleteProjects() {
+      if (this.deleteList.length === 0) return
+      this.$store.dispatch('deleteProjects', this.deleteList)
+    },
+    updateDeleteList(value) {
+      this.deleteList = value.map(project => project.id)
+   }
   }
 }
 </script>
