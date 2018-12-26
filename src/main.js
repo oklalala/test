@@ -26,7 +26,7 @@ import {
   tabPane,
   tabs,
   Pagination,
-  upload
+  upload,
   submenu
 } from 'element-ui'
 
