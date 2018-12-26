@@ -46,7 +46,7 @@
 
       <el-form-item label="地點">
         <el-row :gutter="20">
-          <el-col :span="22">
+          <el-col :span="20">
             <el-select
               v-model="project.address"
               placeholder="大武街 34 號"
@@ -59,7 +59,7 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="4">
             <el-button
               style="width: 100%"
               @click="toPath('CompanyList')">
@@ -87,16 +87,107 @@
       <h2>參與人員</h2>
       <el-tabs type="border-card">
         <el-tab-pane label="OPT">
-          
+          <el-row :gutter="20">
+            <el-col :span="16">
+              <el-select
+                v-model="project.companies"
+                placeholder="雨宮營造"
+                style="width: 100%">
+                <el-option
+                  v-for="item in companies"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" :offset="2">
+              <el-button
+                @click="toPath('CompanyList')">
+                加入專案
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-table
+            :data="projectList"
+            class="projectList-table"
+            @selection-change="updateDeleteList">
+            <el-table-column
+              label="負責人"
+              type="selection"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="id"
+              label="OPT"
+              width="320">
+              <template slot-scope="scope">
+                <span class="clickable"
+                  @click="toPath('EditProject', { projectId: scope.row.id })">
+                  {{ scope.row.id }}
+                </span>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
-        <el-tab-pane label="USER">配置管理
 
-
+        <el-tab-pane label="USER">
+          <el-row :gutter="20">
+            <el-col :span="16">
+              <el-select
+                v-model="project.companies"
+                placeholder="雨宮營造"
+                style="width: 100%">
+                <el-option
+                  v-for="item in companies"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" :offset="2">
+              <el-button
+                @click="toPath('CompanyList')">
+                加入專案
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-table
+            :data="projectList"
+            class="projectList-table"
+            @selection-change="updateDeleteList">
+            <el-table-column
+              label="負責人"
+              type="selection"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="id"
+              label="OPT"
+              width="320">
+              <template slot-scope="scope">
+                <span class="clickable"
+                  @click="toPath('EditProject', { projectId: scope.row.id })">
+                  {{ scope.row.id }}
+                </span>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
       </el-tabs>
 
 
       <h1>配置圖</h1>
+      <el-upload
+        class="upload-demo"
+        drag
+        action="https://jsonplaceholder.typicode.com/posts/"
+        multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">將文件拖到此處，或<em>點擊上傳</em></div>
+        <div class="el-upload__tip" slot="tip">只能上傳jpg/png文件，且不超過500kb</div>
+      </el-upload>
 
 
       <h2>監控設定</h2>
@@ -121,13 +212,11 @@
           <div class="demo-input-suffix">
             支撐階數：
             <el-input
-              placeholder="3"
-              v-model="input2">
+              placeholder="3">
             </el-input>
             每層數量：
             <el-input
-              placeholder="5"
-              v-model="input21">
+              placeholder="5">
             </el-input>
           </div>
           <br>
@@ -145,18 +234,15 @@
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                placeholder="3"
-                v-model="input2">
+                placeholder="3">
               </el-input>
               警戒值
               <el-input
-                placeholder="5"
-                v-model="input21">
+                placeholder="5">
               </el-input>
               行動值
               <el-input
-                placeholder="8"
-                v-model="input21">
+                placeholder="8">
               </el-input>
             </el-col>
             <el-col :span="13" :offset="2">
@@ -166,7 +252,6 @@
                 維護鋼材資料
               </el-button>
               <el-table
-                :data="vgList"
                 class="vg-table"
                 @selection-change="updateDeleteList">
                 <el-table-column
@@ -207,13 +292,11 @@
           <div class="demo-input-suffix">
             支撐階數：
             <el-input
-              placeholder="3"
-              v-model="input2">
+              placeholder="3">
             </el-input>
             每層數量：
             <el-input
-              placeholder="5"
-              v-model="input21">
+              placeholder="5">
             </el-input>
           </div>
           <br>
@@ -227,58 +310,36 @@
           </div>
 
           <el-row :gutter="20">
-            <el-col :span="9">
+            <el-col :span="8">
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                placeholder="3"
-                v-model="input2">
+                placeholder="3">
               </el-input>
               警戒值
               <el-input
-                placeholder="5"
-                v-model="input21">
+                placeholder="5">
               </el-input>
               行動值
               <el-input
-                placeholder="8"
-                v-model="input21">
+                placeholder="8">
               </el-input>
             </el-col>
-            <el-col :span="13" :offset="2">
+            <el-col :span="14" :offset="2">
               <h2>位置編號<span>( VG 層數/流水數 )</span></h2>
-              <el-button
-                @click="toPath('CompanyList')">
-                維護鋼材資料
-              </el-button>
+              <h5>相同位置編碼 量測深度間隔 1 m</h5>
               <el-table
-                :data="vgList"
                 class="vg-table"
                 @selection-change="updateDeleteList">
                 <el-table-column
-                  label="VG ID"
-                  width="100">
-                </el-table-column>
-                <el-table-column
-                  prop="id"
-                  label="Port"
-                  width="100">
-                  <template slot-scope="scope">
-                    <span class="clickable"
-                      @click="toPath('EditProject', { projectId: scope.row.id })">
-                      {{ scope.row.id }}
-                    </span>
-                  </template>
-                </el-table-column>
-                <el-table-column
                   prop="name"
                   label="編碼"
-                  width="100">
+                  width="200">
                 </el-table-column>
                 <el-table-column
                   prop="name"
-                  label="鋼材"
-                  width="100">
+                  label="深度"
+                  width="200">
                 </el-table-column>
               </el-table>
             </el-col>
