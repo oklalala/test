@@ -15,6 +15,7 @@ import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectSetting from './views/ProjectSetting.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import SOItems from './views/SOItems.vue'
 
 import store from '@/store'
 
@@ -155,6 +156,17 @@ let router = new Router({
           store.dispatch('getProjectStatus'),
           store.dispatch('getCompanies')
         ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/so-items',
+      name: 'SOItems',
+      component: SOItems,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getSOItems').then(() => {
           next()
         })
       }

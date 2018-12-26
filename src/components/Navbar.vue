@@ -7,7 +7,7 @@
         <li><a href="#" @click="toPath('ProjectList')">專案列表</a></li>
       </div>
       <div class="layout-navbar-menu-forAdmin" v-if="roleIs('ADMIN')">
-        <li><a href="#">傾度管設定</a></li>
+        <li><a href="#" @click="toPath('SOItems')">傾度管設定</a></li>
         <li><a href="#" @click="toPath('UserList')">帳號設定</a></li>
         <li><a href="#" @click="toPath('ProjectSetting')">專案設定</a></li>
         <li><a href="#" @click="toPath('PermissionSetup')">權限設定</a></li>
