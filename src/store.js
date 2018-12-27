@@ -15,6 +15,7 @@ export default new Vuex.Store({
     myRole: '',
     me: {},
     users: [],
+    projects: [],
     permissions: {},
     roles: [],
     rolePermissions: [],
@@ -49,11 +50,7 @@ export default new Vuex.Store({
     setRolePermissions(state, rolePermissions) {
       state.rolePermissions = rolePermissions
     },
-    updateRolePermissions(state, {
-      value,
-      role,
-      permissionIndex
-    }) {
+    updateRolePermissions(state, { value, role, permissionIndex }) {
       state.rolePermissions = state.rolePermissions.map(item => {
         if (item.role === role) {
           item.permissions[permissionIndex].value = value
@@ -66,6 +63,9 @@ export default new Vuex.Store({
     },
     setSOItems(state, soItems) {
       state.soItems = soItems
+    },
+    setProjects(state, projects) {
+      state.projects = projects
     }
   },
   getters: {
@@ -98,6 +98,9 @@ export default new Vuex.Store({
     },
     soItems(state) {
       return state.soItems
+    },
+    projects(state) {
+      return state.projects
     }
   },
   actions: {
@@ -122,7 +125,7 @@ export default new Vuex.Store({
         commit('setMe', res.data.data)
       })
     },
-    updateMe({ state, getters }) {
+    updateMe({ state }) {
       return sendAPI('put', `/user/self`, true, state.me)
     },
     getUser(context, userId) {
@@ -183,6 +186,20 @@ export default new Vuex.Store({
       return sendAPI('get', '/so-items', true).then(res => {
         commit('setSOItems', res.data.data)
       })
+    },
+    getProjects({ commit }) {
+      return sendAPI('get', '/projects', true).then(res => {
+        commit('setProjects', res.data.data)
+      })
+    },
+    deleteProjects({ dispatch }, projectIds) {
+      let projectIdsStr = projectIds.join(',')
+      return sendAPI('delete', `/projects/${projectIdsStr}`, true).then(() => {
+        dispatch('getProjects')
+      })
+    },
+    createProject(context, payload) {
+      return sendAPI('post', `/project`, true, payload)
     }
   }
 })

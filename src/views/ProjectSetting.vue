@@ -1,6 +1,25 @@
 <template>
-  <div class="projectList">
-    <h1>專案列表</h1>
+  <div class="projectSetting">
+    <el-row :gutter="20" type="flex" justify="space-between">
+        <el-col :span="6">
+        <h1>專案列表</h1>
+        </el-col>
+        <el-col :span="6">
+          <span>專案狀態</span>
+          <el-select placeholder="请选择">
+            <el-option>end</el-option>
+            <el-option>in-progress</el-option>
+          </el-select>
+          <!-- <el-form-item label="專案狀態">
+            <el-select
+              placeholder="1,4"
+              style="width: 100%">
+              <el-option>end</el-option>
+              <el-option>in-progress</el-option>
+            </el-select>
+          </el-form-item> -->
+        </el-col>
+      </el-row>
     <div class="operationGroup">
       <div class="operationGroup-left">
         <el-button type="primary" @click="deleteProjects">刪除</el-button>
@@ -23,12 +42,12 @@
         prop="id"
         label="案號"
         width="320">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('EditProject', { projectId: scope.row.id })">
             {{ scope.row.id }}
           </span>
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column
         prop="name"
@@ -43,7 +62,7 @@
 import ToPathMixin from '@/mixins/ToPath'
 
 export default {
-  name: 'ProjectList',
+  name: 'ProjectSetting',
   mixins: [ToPathMixin],
   data() {
     return {

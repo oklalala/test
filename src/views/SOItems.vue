@@ -1,19 +1,19 @@
 <template>
-  <div class="projectList">
-    <h1>專案列表</h1>
+  <div class="soList">
+    <h1>傾度管列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteProjects">刪除</el-button>
+        <el-button type="primary" @click="deleteSOItems">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('ProjectCreate')">
+        <el-button type="primary" @click="toPath('SOItemsCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
     </div>
     <el-table
-      :data="projectList"
-      class="projectList-table"
+      :data="soItems"
+      class="soItems-table"
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
@@ -21,19 +21,24 @@
       </el-table-column>
       <el-table-column
         prop="id"
-        label="案號"
-        width="320">
+        label="編號"
+        width="180">
         <template slot-scope="scope">
           <span class="clickable"
-            @click="toPath('EditProject', { projectId: scope.row.id })">
+            @click="toPath('SOItemsEdit', { soId: scope.row.id })">
             {{ scope.row.id }}
           </span>
         </template>
       </el-table-column>
       <el-table-column
         prop="name"
-        label="名稱"
-        width="460">
+        label="廠牌 型號"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="company.name"
+        label="OPT"
+        width="180">
       </el-table-column>
     </el-table>
   </div>
@@ -41,9 +46,9 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-
 export default {
-  name: 'ProjectList',
+  name: 'soItems',
+
   mixins: [ToPathMixin],
   data() {
     return {
@@ -51,19 +56,18 @@ export default {
     }
   },
   computed: {
-    projectList() {
-      return this.$store.getters.projects
+    soItems() {
+      return this.$store.getters.soItems
     }
   },
   methods: {
-    deleteProjects() {
+    deleteSOItems() {
       if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteProjects', this.deleteList)
+      this.$store.dispatch('deleteSOItems', this.deleteList)
     },
     updateDeleteList(value) {
-      this.deleteList = value.map(project => project.id)
-   }
+      this.deleteList = value.map(soItem => soItem.id)
+    }
   }
 }
 </script>
-

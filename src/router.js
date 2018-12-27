@@ -12,6 +12,11 @@ import CreateUser from './views/CreateUser.vue'
 import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
+import ProjectSetting from './views/ProjectSetting.vue'
+import ProjectProgress from './views/ProjectProgress.vue'
+import ProjectCreate from './views/ProjectCreate.vue'
+import ProjectEdit from './views/ProjectEdit.vue'
+import SOItems from './views/SOItems.vue'
 
 import store from '@/store'
 
@@ -42,6 +47,11 @@ let router = new Router({
       name: 'ProjectList',
       component: ProjectList,
       meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getProjects').then(() => {
+          next()
+        })
+      }
     },
     {
       path: '/company-list',
@@ -89,7 +99,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('getCompanies'),
-          store.dispatch('getSOItems'),
+          store.dispatch('getSOItems')
         ]).then(() => {
           next()
         })
@@ -103,8 +113,75 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions'),
+          store.dispatch('getRolePermissions')
         ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-setting',
+      name: 'ProjectSetting',
+      component: ProjectSetting,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getPermissions'),
+          store.dispatch('getRolePermissions')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-Progress',
+      name: 'ProjectProgress',
+      component: ProjectProgress,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getPermissions'),
+          store.dispatch('getRolePermissions')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-create',
+      name: 'ProjectCreate',
+      component: ProjectCreate,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getPermissions'),
+          store.dispatch('getRolePermissions')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/edit-project/:projectId',
+      name: 'ProjectEdit',
+      component: ProjectEdit,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getProjectStatus'),
+          store.dispatch('getCompanies')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/so-items',
+      name: 'SOItems',
+      component: SOItems,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getSOItems').then(() => {
           next()
         })
       }
