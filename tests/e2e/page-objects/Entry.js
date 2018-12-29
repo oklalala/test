@@ -11,8 +11,8 @@ const EntryCommands = {
     return this.api
   },
   shouldSeeInputsAndSubmit() {
-    this
-      .assert.visible('@accountInput')
+    this.assert
+      .visible('@accountInput')
       .assert.visible('@passwordInput')
       .assert.visible('@submitButton')
     return this.api
@@ -38,11 +38,8 @@ const EntryCommands = {
     return this.api
   },
   shouldSeeProjectPageIfSuccess() {
-    this.api
-      .pause(1000)
-      .assert.urlContains('/project-list')
+    this.api.pause(1000).assert.urlContains('/project-list')
     return this.api
-
   }
 }
 

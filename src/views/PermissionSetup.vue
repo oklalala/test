@@ -11,7 +11,7 @@
         prop="permissions"
         label="權限">
         <template slot-scope="scope">
-          <div
+          <div 
             v-if="permissions"
             v-for="(item, index) in scope.row.permissions"
             :key="index">
@@ -38,24 +38,21 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-
   name: 'PermissionSetup',
   mixins: [ToPathMixin],
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   },
   computed: {
     permissions() {
       return this.$store.getters.permissions
     },
-    rolePermissions () {
+    rolePermissions() {
       return this.$store.getters.rolePermissions
     }
   },
   methods: {
-    updateRolePermissions (value, role, permissionIndex) {
+    updateRolePermissions(value, role, permissionIndex) {
       value = !value
       this.$store.commit('updateRolePermissions', {
         role,
@@ -63,13 +60,16 @@ export default {
         value
       })
     },
-    submit () {
-      this.$store.dispatch('updateRolePermissions').then(() => {
-        this.$message({ message: '權限設定成功', type: 'success' })
-        this.toPath('ProjectList')
-      }).catch(e => {
-        this.$message.error('權限設定失敗')
-      })
+    submit() {
+      this.$store
+        .dispatch('updateRolePermissions')
+        .then(() => {
+          this.$message({ message: '權限設定成功', type: 'success' })
+          this.toPath('ProjectList')
+        })
+        .catch(e => {
+          this.$message.error(e, '權限設定失敗')
+        })
     }
   }
 }
@@ -77,7 +77,3 @@ export default {
 
 <style lang="scss">
 </style>
-
-
-
-

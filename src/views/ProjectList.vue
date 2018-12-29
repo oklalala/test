@@ -62,8 +62,7 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)
-   }
+    }
   }
 }
 </script>
-

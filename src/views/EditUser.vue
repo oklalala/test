@@ -164,13 +164,15 @@ export default {
       this.toPath('UserList')
     },
     edit() {
-      this.$store.dispatch('updateUser', {
-        userId: this.$route.params.userId,
-        payload: this.newUser
-      }).then(() => {
-        this.reset()
-        this.toPath('UserList')
-      })
+      this.$store
+        .dispatch('updateUser', {
+          userId: this.$route.params.userId,
+          payload: this.newUser
+        })
+        .then(() => {
+          this.reset()
+          this.toPath('UserList')
+        })
     }
   }
 }

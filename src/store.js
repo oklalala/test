@@ -76,7 +76,7 @@ const companies = {
 
 const users = {
   state: {
-    users: [],
+    users: []
   },
   mutations: {
     setUsers(state, users) {

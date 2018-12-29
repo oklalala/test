@@ -69,11 +69,10 @@ export default {
   name: 'UserInfo',
   mixins: [ToPathMixin],
   data() {
-    return {
-    }
+    return {}
   },
   computed: {
-    me () {
+    me() {
       return this.$store.getters.me
     }
   },
@@ -81,13 +80,16 @@ export default {
     updateMe(payload) {
       this.$store.commit('updateMe', payload)
     },
-    submit () {
-      this.$store.dispatch('updateMe').then(() => {
-        this.$message({ message: '資料更新成功', type: 'success' })
-        this.toPath('ProjectList')
-      }).catch(e => {
-        this.$message.error('資料更新失敗')
-      })
+    submit() {
+      this.$store
+        .dispatch('updateMe')
+        .then(() => {
+          this.$message({ message: '資料更新成功', type: 'success' })
+          this.toPath('ProjectList')
+        })
+        .catch(e => {
+          this.$message.error(e, '資料更新失敗')
+        })
     }
   }
 }
