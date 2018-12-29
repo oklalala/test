@@ -1,5 +1,3 @@
-/** @format */
-
 import axios from 'axios'
 
 let wiseConfig = {
@@ -28,7 +26,7 @@ export default function(wiseIP, formData) {
       console.log(res.data)
       return requestMeasuresSo('Patch', '/do_value/slot_0', {DOVal:[{"Ch":0,"Val":0}]})
     })
-    .then(()=>requestMeasuresSo('Patch', '/do_value/slot_0', {DOVal:[{"Ch":0,"Val":1}]}))
+    .then(() => requestMeasuresSo('Patch', '/do_value/slot_0', {DOVal:[{"Ch":0,"Val":1}]}))
     .then(() => requestMeasuresSo('Get', '/ai_value/slot_0/ch_0', ''))
     .then(res=>{
       console.log(res.data)
