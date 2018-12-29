@@ -5,14 +5,14 @@
     <el-form
       label-position="top"
       label-width="80px"
-      :model="project">
+      :model="newProject">
       
       <h2>基本資料</h2>
       
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="專案案號">
-            <el-input v-model="project.numbering"
+            <el-input v-model="newProject.number"
               placeholder="CNT - 16Q4"
             ></el-input>
           </el-form-item>
@@ -20,14 +20,14 @@
         <el-col :span="12">
           <el-form-item label="專案狀態">
             <el-select
-              v-model="project.status"
+              v-model="newProject.status"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
-                v-for="item in roles"
+                v-for="item in statusList"
                 :key="item.name"
-                :label="item.name"
-                :value="item.name">
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -37,7 +37,7 @@
       <el-row :gutter="20">
         <el-col>
           <el-form-item label="專案名稱">
-            <el-input v-model="project.name"
+            <el-input v-model="newProject.name"
               placeholder="阡福町商業大樓"
             ></el-input>
           </el-form-item>
@@ -48,14 +48,14 @@
         <el-row :gutter="20">
           <el-col :span="20">
             <el-select
-              v-model="project.address"
+              v-model="newProject.address"
               placeholder="大武街 34 號"
               style="width: 100%">
               <el-option
                 v-for="item in companies"
-                :key="item.id"
+                :key="item.address"
                 :label="item.name"
-                :value="item.id">
+                :value="item.address">
               </el-option>
             </el-select>
           </el-col>
@@ -71,7 +71,7 @@
 
       <el-form-item label="客戶公司名稱">
         <el-select
-          v-model="project.companies"
+          v-model="newProject.companyId"
           placeholder="雨宮營造"
           style="width: 100%">
           <el-option
@@ -90,7 +90,6 @@
           <el-row :gutter="20">
             <el-col :span="16">
               <el-select
-                v-model="project.companies"
                 placeholder="雨宮營造"
                 style="width: 100%">
                 <el-option
@@ -135,7 +134,6 @@
           <el-row :gutter="20">
             <el-col :span="16">
               <el-select
-                v-model="project.companies"
                 placeholder="雨宮營造"
                 style="width: 100%">
                 <el-option
@@ -180,6 +178,7 @@
 
       <h1>配置圖</h1>
       <el-upload
+        v-model="newProject.sitePlan"
         class="upload-demo"
         drag
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -195,23 +194,20 @@
 
         <el-tab-pane label="軸力計 ( VG )"> 
           <el-form-item label="使用軸力計編號">
-            <el-select
-              v-model="project.companies"
-              placeholder="1,4"
-              style="width: 100%">
+            <!-- <el-select v-model="vgSelectedItems" multiple placeholder="可複選">
               <el-option
-                v-for="item in companies"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
+                v-for="item in vgUsableItems"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
           <br>
 
           <div class="demo-input-suffix">
             支撐階數：
-            <el-input
+            <el-input v-model="newProject.floor"
               placeholder="3">
             </el-input>
             每層數量：
@@ -234,19 +230,22 @@
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                placeholder="3">
+                v-model="newProject.notice"
+                placeholder="68.3">
               </el-input>
               警戒值
               <el-input
-                placeholder="5">
+                v-model="newProject.warning"
+                placeholder="79.6">
               </el-input>
               行動值
               <el-input
-                placeholder="8">
+                v-model="newProject.action"
+                placeholder="104.2">
               </el-input>
             </el-col>
             <el-col :span="13" :offset="2">
-              <h2>位置編號<span>( VG 層數/流水數 )</span></h2>
+              <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
               <el-button
                 @click="toPath('CompanyList')">
                 維護鋼材資料
@@ -290,43 +289,35 @@
           <br>
 
           <div class="demo-input-suffix">
-            支撐階數：
-            <el-input
-              placeholder="3">
-            </el-input>
-            每層數量：
+            數量：
             <el-input
               placeholder="5">
+            </el-input>
+            每孔深度 ( m )：
+            <el-input
+              placeholder="20.5">
             </el-input>
           </div>
           <br>
 
-          <div class="block" v-show="go" >
-            <span class="demonstration">請選擇支撐階數</span>
-            <el-pagination
-              layout="prev, pager, next"
-              :total="30">
-            </el-pagination>
-          </div>
-
           <el-row :gutter="20">
             <el-col :span="8">
-              <h2>管理值<span>單位：噸</span></h2>
+              <h2>管理值<span>單位：cm</span></h2>
               注意值
               <el-input
-                placeholder="3">
+                placeholder="4.24">
               </el-input>
               警戒值
               <el-input
-                placeholder="5">
+                placeholder="9.88">
               </el-input>
               行動值
               <el-input
-                placeholder="8">
+                placeholder="15.06">
               </el-input>
             </el-col>
             <el-col :span="14" :offset="2">
-              <h2>位置編號<span>( VG 層數/流水數 )</span></h2>
+              <h2>位置編號<span>( SO - 流水號 )</span></h2>
               <h5>相同位置編碼 量測深度間隔 1 m</h5>
               <el-table
                 class="vg-table"
@@ -379,12 +370,49 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      project: {
-        numbering: '',
-        name: '',
-        status: null,
-        companies: '',
-        address: ''
+      statusList: [
+        {
+          value: 'end',
+          label: 'end'
+        },
+        {
+          value: 'in-progress',
+          label: 'in-progress'
+        }
+      ],
+      newProject: {
+        number: '', // CNT-16Q3
+        status: '', // end or in-progress
+        name: '', // 測試專案
+        address: '', // 三路
+        companyId: '',
+        sitePlan: '', // 上傳的圖片
+        OPT: [], // {id:..} 公司或客戶的 operator
+        USER: [], // {id:..} 客戶的使用者
+        floor: 3, //. vg階數
+        vgManagement: {
+          notice: 0,
+          warning: 0,
+          action: 0
+        },
+        soManagement: {
+          notice: 0,
+          warning: 0,
+          action: 0
+        },
+        vgIds: [],
+        vgLocation: [
+          {
+            number: '',
+            steelId: ''
+          }
+        ],
+        soLocation: [
+          {
+            number: '',
+            depth: 0
+          }
+        ]
       }
     }
   },
@@ -411,12 +439,39 @@ export default {
       this.deleteList = value.map(project => project.id)
     },
     reset() {
-      this.project = {
-        name: '',
-        roleName: null,
-        companyId: null,
-        soId: '',
-        account: ''
+      this.newProject = {
+        number: '', // CNT-16Q3
+        status: '', // end or in-progress
+        name: '', // 測試專案
+        address: '', // 三路
+        companyId: '',
+        sitePlan: '', // 上傳的圖片
+        OPT: [], // {id:..} 公司或客戶的 operator
+        USER: [], // {id:..} 客戶的使用者
+        floor: 3, //. vg階數
+        vgManagement: {
+          notice: 0,
+          warning: 0,
+          action: 0
+        },
+        soManagement: {
+          notice: 0,
+          warning: 0,
+          action: 0
+        },
+        vgIds: [],
+        vgLocation: [
+          {
+            number: '',
+            steelId: ''
+          }
+        ],
+        soLocation: [
+          {
+            number: '',
+            depth: 0
+          }
+        ]
       }
     },
     cancel() {
@@ -424,7 +479,7 @@ export default {
       this.toPath('ProjectList')
     },
     submit() {
-      this.$store.dispatch('createProject', this.project).then(() => {
+      this.$store.dispatch('createProject', this.newProject).then(() => {
         this.reset()
         this.toPath('ProjectList')
       })
@@ -434,7 +489,7 @@ export default {
 </script>
 
 <style>
-h2 span{
+h2 span {
   font-size: 14px;
   padding-left: 30px;
 }
