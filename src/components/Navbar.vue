@@ -11,7 +11,7 @@
         <el-menu-item index="4" @click="toPath('UserList')">帳號設定</el-menu-item>
         <el-submenu index="5" menu-trigger="click">
           <template slot="title">專案設定</template>
-          <el-menu-item index="5-1" @click="toPath('ProjectSetting')">專案列表</el-menu-item>
+          <el-menu-item index="5-1" @click="toPath('ProjectSetting')">所有專案</el-menu-item>
           <el-menu-item index="5-2" @click="toPath('ProjectProgress')">專案執行階段</el-menu-item>
         </el-submenu>
         <el-menu-item index="6" @click="toPath('PermissionSetup')">權限設定</el-menu-item>
@@ -24,13 +24,12 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import RoleIsMixin from '@/mixins/RoleIs'
-import { mapGetters } from 'vuex'
 export default {
   name: 'Navbar',
   mixins: [ToPathMixin, RoleIsMixin],
   data() {
     return {
-      activeIndex: '1',
+      activeIndex: '1'
     }
   },
   computed: {
