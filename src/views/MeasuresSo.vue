@@ -97,8 +97,8 @@ import startMeasures from '@/utils/measuresSo'
 export default {
   data() {
     return {
-      wiseIP: "192.168.58.200",
-      measuresSoDatas: [],
+      wiseIP: '192.168.58.200',
+      measuresSoDatas: []
     }
   },
   methods: {
@@ -109,7 +109,7 @@ export default {
       this.measuresSoDatas = []
     },
     uploadMeasuresDatas: function() {
-      console.log("fuck")
+      console.log('fuck')
     }
   }
 }

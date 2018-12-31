@@ -93,7 +93,7 @@
                 placeholder="雨宮營造"
                 style="width: 100%">
                 <el-option
-                  v-for="item in companies"
+                  v-for="item in OPTS"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id">

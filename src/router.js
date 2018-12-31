@@ -19,7 +19,6 @@ import ProjectEdit from './views/ProjectEdit.vue'
 import SOItems from './views/SOItems.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
-
 import store from '@/store'
 
 Vue.use(Router)
@@ -27,7 +26,8 @@ Vue.use(Router)
 let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [{
+  routes: [
+    {
       path: '/',
       name: 'Entry',
       component: Entry
@@ -103,9 +103,7 @@ let router = new Router({
       path: '/edit-user/:userId',
       name: 'EditUser',
       component: EditUser,
-      meta: {
-        requireAuth: true
-      },
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
