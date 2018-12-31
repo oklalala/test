@@ -45,28 +45,11 @@
       </el-row>
 
       <el-form-item label="地點">
-        <el-row :gutter="20">
-          <el-col :span="20">
-            <el-select
-              v-model="newProject.address"
-              placeholder="大武街 34 號"
-              style="width: 100%">
-              <el-option
-                v-for="item in companies"
-                :key="item.address"
-                :label="item.name"
-                :value="item.address">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="4">
-            <el-button
-              style="width: 100%"
-              @click="toPath('CompanyList')">
-              維護
-            </el-button>
-          </el-col>
-        </el-row>
+        <el-input
+          v-model="newProject.address"
+          placeholder="大武街 34 號"
+          style="width: 100%">
+        </el-input>
       </el-form-item>
 
       <el-form-item label="客戶公司名稱">
@@ -207,7 +190,8 @@
 
           <div class="demo-input-suffix">
             支撐階數：
-            <el-input v-model="newProject.floor"
+            <el-input 
+              v-model="newProject.floor"
               placeholder="3">
             </el-input>
             每層數量：
@@ -230,24 +214,24 @@
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                v-model="newProject.notice"
+                v-model="newProject.vgManagement.notice"
                 placeholder="68.3">
               </el-input>
               警戒值
               <el-input
-                v-model="newProject.warning"
+                v-model="newProject.vgManagement.warning"
                 placeholder="79.6">
               </el-input>
               行動值
               <el-input
-                v-model="newProject.action"
+                v-model="newProject.vgManagement.action"
                 placeholder="104.2">
               </el-input>
             </el-col>
             <el-col :span="13" :offset="2">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
               <el-button
-                @click="toPath('CompanyList')">
+                @click="toPath('SteelList')">
                 維護鋼材資料
               </el-button>
               <el-table
@@ -287,14 +271,15 @@
           <el-form-item label="使用傾度管編號:32">
           </el-form-item>
           <br>
-
           <div class="demo-input-suffix">
             數量：
             <el-input
+              v-model="newProject.soLocation.number"
               placeholder="5">
             </el-input>
             每孔深度 ( m )：
             <el-input
+              v-model="newProject.soLocation.depth"
               placeholder="20.5">
             </el-input>
           </div>
@@ -305,14 +290,17 @@
               <h2>管理值<span>單位：cm</span></h2>
               注意值
               <el-input
+                v-model="newProject.soManagement.notice"
                 placeholder="4.24">
               </el-input>
               警戒值
               <el-input
+                v-model="newProject.soManagement.warning"
                 placeholder="9.88">
               </el-input>
               行動值
               <el-input
+                v-model="newProject.soManagement.action"
                 placeholder="15.06">
               </el-input>
             </el-col>
@@ -380,6 +368,7 @@ export default {
           label: 'in-progress'
         }
       ],
+      VGItems: [],
       newProject: {
         number: '', // CNT-16Q3
         status: '', // end or in-progress
@@ -418,7 +407,7 @@ export default {
   },
   computed: {
     projectList() {
-      return this.$store.getters.users
+      return this.$store.getters.projects
     },
     roles() {
       return this.$store.getters.roles
@@ -428,6 +417,9 @@ export default {
     },
     soItems() {
       return this.$store.getters.soItems
+    },
+    vgItems() {
+      return this.$store.getters.vgItems
     }
   },
   methods: {
