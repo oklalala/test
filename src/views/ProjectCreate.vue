@@ -1,5 +1,5 @@
 <template>
-  <div class="createUser">
+  <div class="createProject">
     
     <h1>專案設定</h1>
     <el-form
@@ -105,7 +105,7 @@
               width="320">
               <template slot-scope="scope">
                 <span class="clickable"
-                  @click="toPath('EditProject', { projectId: scope.row.id })">
+                  @click="toPath('ProjectEdit', { projectId: scope.row.id })">
                   {{ scope.row.id }}
                 </span>
               </template>
@@ -149,7 +149,7 @@
               width="320">
               <template slot-scope="scope">
                 <span class="clickable"
-                  @click="toPath('EditProject', { projectId: scope.row.id })">
+                  @click="toPath('ProjectEdit', { projectId: scope.row.id })">
                   {{ scope.row.id }}
                 </span>
               </template>
@@ -191,7 +191,7 @@
           <div class="demo-input-suffix">
             支撐階數：
             <el-input 
-              v-model="newProject.floor"
+              v-model.number="newProject.floor"
               placeholder="3">
             </el-input>
             每層數量：
@@ -214,17 +214,17 @@
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                v-model="newProject.vgManagement.notice"
+                v-model.number="newProject.vgManagement.notice"
                 placeholder="68.3">
               </el-input>
               警戒值
               <el-input
-                v-model="newProject.vgManagement.warning"
+                v-model.number="newProject.vgManagement.warning"
                 placeholder="79.6">
               </el-input>
               行動值
               <el-input
-                v-model="newProject.vgManagement.action"
+                v-model.number="newProject.vgManagement.action"
                 placeholder="104.2">
               </el-input>
             </el-col>
@@ -247,7 +247,7 @@
                   width="100">
                   <template slot-scope="scope">
                     <span class="clickable"
-                      @click="toPath('EditProject', { projectId: scope.row.id })">
+                      @click="toPath('ProjectEdit', { projectId: scope.row.id })">
                       {{ scope.row.id }}
                     </span>
                   </template>
@@ -274,12 +274,12 @@
           <div class="demo-input-suffix">
             數量：
             <el-input
-              v-model="newProject.soLocation.number"
+              v-model.number="newProject.soLocation.number"
               placeholder="5">
             </el-input>
             每孔深度 ( m )：
             <el-input
-              v-model="newProject.soLocation.depth"
+              v-model.number="newProject.soLocation.depth"
               placeholder="20.5">
             </el-input>
           </div>
@@ -290,17 +290,17 @@
               <h2>管理值<span>單位：cm</span></h2>
               注意值
               <el-input
-                v-model="newProject.soManagement.notice"
+                v-model.number="newProject.soManagement.notice"
                 placeholder="4.24">
               </el-input>
               警戒值
               <el-input
-                v-model="newProject.soManagement.warning"
+                v-model.number="newProject.soManagement.warning"
                 placeholder="9.88">
               </el-input>
               行動值
               <el-input
-                v-model="newProject.soManagement.action"
+                v-model.number="newProject.soManagement.action"
                 placeholder="15.06">
               </el-input>
             </el-col>
@@ -417,9 +417,9 @@ export default {
     },
     soItems() {
       return this.$store.getters.soItems
-    },
-    vgItems() {
-      return this.$store.getters.vgItems
+    // },
+    // vgItems() {
+    //   return this.$store.getters.vgItems
     }
   },
   methods: {

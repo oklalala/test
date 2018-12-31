@@ -23,6 +23,12 @@ const project = {
     }
   },
   actions: {
+    getProject(context, projectId) {
+      return sendAPI('get', `/project/${projectId}`, true)
+    },
+    updateProject(context, { projectId, payload }) {
+      return sendAPI('put', `/project/${projectId}`, true, payload)
+    },
     getProjects({ commit }) {
       return sendAPI('get', '/projects', true).then(res => {
         commit('setProjects', res.data.data)

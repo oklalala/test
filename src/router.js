@@ -6,7 +6,6 @@ import localStore from 'store'
 
 import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
-import ProjectList from './views/ProjectList.vue'
 import UserList from './views/UserList.vue'
 import CreateUser from './views/CreateUser.vue'
 import EditUser from './views/EditUser.vue'
@@ -14,8 +13,12 @@ import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectSetting from './views/ProjectSetting.vue'
 import ProjectProgress from './views/ProjectProgress.vue'
+import ProjectList from './views/ProjectList.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import VGList from './views/VGList.vue'
+import VGCreate from './views/VGCreate.vue'
+import VGEdit from './views/VGEdit.vue'
 import SOItems from './views/SOItems.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
@@ -173,7 +176,7 @@ let router = new Router({
       }
     },
     {
-      path: '/edit-project/:projectId',
+      path: '/project-edit/:projectId',
       name: 'ProjectEdit',
       component: ProjectEdit,
       meta: { requireAuth: true },

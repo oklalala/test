@@ -25,7 +25,7 @@
         width="320">
         <template slot-scope="scope">
           <span class="clickable"
-            @click="toPath('EditProject', { projectId: scope.row.id })">
+            @click="toPath('ProjectEdit', { projectId: scope.row.id })">
             {{ scope.row.id }}
           </span>
         </template>
