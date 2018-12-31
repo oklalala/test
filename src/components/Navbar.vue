@@ -1,24 +1,24 @@
 <template>
-  <el-menu :default-active="activeIndex"  class="layout-navbar" mode="horizontal">
-    <h1 class="layout-navbar-title">大地監控</h1>
-    <template v-if="isLogined" class="layout-navbar-menu">
+<el-menu :default-active="activeIndex" class="layout-navbar" mode="horizontal">
+  <h1 class="layout-navbar-title">大地監控</h1>
+  <template v-if="isLogined" class="layout-navbar-menu">
       <template class="layout-navbar-menu-forUser">
         <el-menu-item index="1" @click="toPath('UserInfo')">帳號資料</el-menu-item>
         <el-menu-item index="2" @click="toPath('ProjectList')">專案列表</el-menu-item>
       </template>
-      <template class="layout-navbar-menu-forAdmin" v-if="roleIs('ADMIN')">
+  <template class="layout-navbar-menu-forAdmin" v-if="roleIs('ADMIN')">
         <el-menu-item index="3" @click="toPath('SOItems')">傾度管設定</el-menu-item>
         <el-menu-item index="4" @click="toPath('UserList')">帳號設定</el-menu-item>
         <el-submenu index="5" menu-trigger="click">
           <template slot="title">專案設定</template>
-          <el-menu-item index="5-1" @click="toPath('ProjectSetting')">所有專案</el-menu-item>
-          <el-menu-item index="5-2" @click="toPath('ProjectProgress')">專案執行階段</el-menu-item>
-        </el-submenu>
-        <el-menu-item index="6" @click="toPath('PermissionSetup')">權限設定</el-menu-item>
-      </template>
-      <el-menu-item index="7" @click="logout">登出</el-menu-item>
-    </template>
-  </el-menu>
+  <el-menu-item index="5-1" @click="toPath('ProjectSetting')">所有專案</el-menu-item>
+  <el-menu-item index="5-2" @click="toPath('ProjectProgress')">專案執行階段</el-menu-item>
+  </el-submenu>
+  <el-menu-item index="6" @click="toPath('PermissionSetup')">權限設定</el-menu-item>
+  </template>
+  <el-menu-item index="7" @click="logout">登出</el-menu-item>
+  </template>
+</el-menu>
 </template>
 
 <script>

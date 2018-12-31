@@ -17,6 +17,8 @@ import ProjectProgress from './views/ProjectProgress.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
 import SOItems from './views/SOItems.vue'
+import MeasuresSo from './views/MeasuresSo.vue'
+
 
 import store from '@/store'
 
@@ -25,8 +27,7 @@ Vue.use(Router)
 let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Entry',
       component: Entry
@@ -35,7 +36,9 @@ let router = new Router({
       path: '/user-info',
       name: 'UserInfo',
       component: UserInfo,
-      meta: { requireAuth: true },
+      meta: {
+        requireAuth: true
+      },
       beforeEnter: (to, from, next) => {
         store.dispatch('getMe').then(() => {
           next()
@@ -57,7 +60,9 @@ let router = new Router({
       path: '/company-list',
       name: 'CompanyList',
       component: CompanyList,
-      meta: { requireAuth: true },
+      meta: {
+        requireAuth: true
+      },
       beforeEnter: (to, from, next) => {
         store.dispatch('getCompanies').then(() => {
           next()
@@ -68,7 +73,9 @@ let router = new Router({
       path: '/user-list',
       name: 'UserList',
       component: UserList,
-      meta: { requireAuth: true },
+      meta: {
+        requireAuth: true
+      },
       beforeEnter: (to, from, next) => {
         store.dispatch('getUsers').then(() => {
           next()
@@ -79,7 +86,9 @@ let router = new Router({
       path: '/create-user',
       name: 'CreateUser',
       component: CreateUser,
-      meta: { requireAuth: true },
+      meta: {
+        requireAuth: true
+      },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
@@ -94,7 +103,9 @@ let router = new Router({
       path: '/edit-user/:userId',
       name: 'EditUser',
       component: EditUser,
-      meta: { requireAuth: true },
+      meta: {
+        requireAuth: true
+      },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
@@ -109,7 +120,9 @@ let router = new Router({
       path: '/permisson-setup',
       name: 'PermissionSetup',
       component: PermissionSetup,
-      meta: { requireAuth: true },
+      meta: {
+        requireAuth: true
+      },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getPermissions'),
@@ -185,6 +198,14 @@ let router = new Router({
           next()
         })
       }
+    },
+    {
+      path: '/measures/so',
+      name: 'MeasuresSo',
+      component: MeasuresSo,
+      meta: {
+        requireAuth: true
+      }
     }
   ]
 })
@@ -201,7 +222,9 @@ router.beforeEach((to, from, next) => {
     store.commit('setMyRole', data.myRole)
     next()
   } else {
-    next({ name: 'Entry' })
+    next({
+      name: 'Entry'
+    })
   }
 })
 
