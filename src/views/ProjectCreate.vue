@@ -361,11 +361,11 @@ export default {
       statusList: [
         {
           value: 'end',
-          label: 'end'
+          label: '結案'
         },
         {
           value: 'in-progress',
-          label: 'in-progress'
+          label: '執行'
         }
       ],
       VGItems: [],
