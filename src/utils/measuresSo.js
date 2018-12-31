@@ -20,42 +20,40 @@ let wiseConfig = {
 
 export default function(wiseIP, formData) {
   wiseConfig.wiseIP = 'http://' + wiseIP
-  requestMeasuresSo('Patch', '/do_value/slot_0', {
-    DOVal: [{ Ch: 0, Val: 0 }, { Ch: 1, Val: 0 }]
-  })
-    .then(() =>
-      requestMeasuresSo('Patch', '/do_value/slot_0', {
-        DOVal: [{ Ch: 1, Val: 1 }]
-      })
-    )
-    .then(() =>
-      requestMeasuresSo('Patch', '/do_value/slot_0', {
-        DOVal: [{ Ch: 0, Val: 1 }]
-      })
-    )
-    .then(() => requestMeasuresSo('Get', '/ai_value/slot_0/ch_0', ''))
+  initializationSO()
+    .then(() =>switchSO(1,1))
+    .then(() =>switchSO(0,1))
+    .then(() =>getSORawData())
     .then(res => {
-      console.log(res.data)
-      return requestMeasuresSo('Patch', '/do_value/slot_0', {
-        DOVal: [{ Ch: 0, Val: 0 }]
-      })
+      console.log(res.data);
+      switchSO(0,0)
     })
-    .then(() =>
-      requestMeasuresSo('Patch', '/do_value/slot_0', {
-        DOVal: [{ Ch: 0, Val: 1 }]
-      })
-    )
-    .then(() => requestMeasuresSo('Get', '/ai_value/slot_0/ch_0', ''))
+    .then(() =>switchSO(0,1))
+    .then(() => getSORawData())
     .then(res => {
-      console.log(res.data)
-      return requestMeasuresSo('Patch', '/do_value/slot_0', {
-        DOVal: [{ Ch: 1, Val: 0 }]
-      })
+      console.log(res.data);
+      switchSO(1,0)
     })
   formData.push('fuck')
 }
 
-function requestMeasuresSo(method, path, data) {
+function initializationSO(){
+  return requestMeasuresSO('Patch', '/do_value/slot_0', {
+    DOVal: [{ Ch: 0, Val: 0 }, { Ch: 1, Val: 0 }]
+  })
+}
+
+function switchSO(channel,value){
+  return requestMeasuresSO('Patch', '/do_value/slot_0', {
+    DOVal: [{ Ch: channel, Val: value }]
+  })
+}
+
+function getSORawData(){
+  return requestMeasuresSO('Get', '/ai_value/slot_0/ch_0', '')
+}
+
+function requestMeasuresSO(method, path, data) {
   return axios({
     method: method,
     url: wiseConfig.wiseIP + path,
