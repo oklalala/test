@@ -1,9 +1,8 @@
 /** @format */
-
-;(function() {
-  var floor = 3
-  var numOfFloor = 5
-  var usableGauge = [1, 4]
+function getVGItems(floor, numOfFloor, usableGauge) {
+  // var floor = floor
+  // var numOfFloor = 5
+  // var usableGauge = [1, 4]
   var VGItems = []
   var numOfHostsPorts = (function getHostsPort() {
     var neededGauge = floor * numOfFloor
@@ -78,16 +77,17 @@
     var floor = 0
     for (var i = 0; i < hostsArr.length; i++) {
       if (i % 5 == 0) floor += 1
-      VGItems.push({
+      VGItems[i] = {
         floor: floor,
         host: hostsArr[i],
         port: portsArr[i],
         serial: `vg-${floor}-0${(i % 5) + 1}`
         // TODO: fn serial(num){return (num < 10 ? '0' : '') + num}
-      })
+      }
     }
+    return VGItems
   }
-  setToObj()
+  return setToObj
   // var VGItems = [
   //   { floor: 1, host: 1, port: 1, serial: "vg-1-01" },
   //   { floor: 1, host: 1, port: 4, serial: "vg-1-02" },
@@ -107,4 +107,7 @@
   //   { floor: 3, host: 4, port: 4, serial: "vg-3-04" },
   //   { floor: 3, host: 4, port: 7, serial: "vg-3-05" }
   // ]
-})()
+}
+var g = getVGItems(3, 5, [1, 4])
+console.log(g())
+// return VGItems
