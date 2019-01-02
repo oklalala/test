@@ -190,6 +190,48 @@ let router = new Router({
       }
     },
     {
+      path: '/vg-list',
+      name: 'VGList',
+      component: VGList
+      // meta: { requireAuth: true },
+      // beforeEnter: (to, from, next) => {
+      //   Promise.all([
+      //     store.dispatch('getPermissions'),
+      //     store.dispatch('getRolePermissions')
+      //   ]).then(() => {
+      //     next()
+      //   })
+      // }
+    },
+    {
+      path: '/vg-create',
+      name: 'VGCreate',
+      component: VGCreate
+      // meta: { requireAuth: true },
+      // beforeEnter: (to, from, next) => {
+      //   Promise.all([
+      //     store.dispatch('getPermissions'),
+      //     store.dispatch('getRolePermissions')
+      //   ]).then(() => {
+      //     next()
+      //   })
+      // }
+    },
+    {
+      path: '/vg-edit',
+      name: 'VGEdit',
+      component: VGEdit
+      // meta: { requireAuth: true },
+      // beforeEnter: (to, from, next) => {
+      //   Promise.all([
+      //     store.dispatch('getPermissions'),
+      //     store.dispatch('getRolePermissions')
+      //   ]).then(() => {
+      //     next()
+      //   })
+      // }
+    },
+    {
       path: '/so-items',
       name: 'SOItems',
       component: SOItems,
