@@ -8,9 +8,39 @@ import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
-const project = {
+const vgs = {
   state: {
-    projects: []
+    vgs: [
+      {
+        id: 'id',
+        number: '機器碼1號',
+        projectName: '專案1號'
+      }
+    ]
+  },
+  mutation: {
+    setVGs(state, vgs) {
+      state.vgs = vgs
+    }
+  },
+  getters: {
+    vgs(state) {
+      return state.vgs
+    }
+  },
+  action: {
+    getVGs({ commit }) {
+      return sendAPI('get', '/vgs', true).then(res => {
+        commit('setVGs', res.data.data)
+      })
+    }
+  }
+}
+
+const projects = {
+  state: {
+    projects: [],
+    projectStatus: ['end', 'in-progress']
   },
   mutations: {
     setProjects(state, projects) {
@@ -121,8 +151,9 @@ const users = {
 export default new Vuex.Store({
   modules: {
     users: users,
-    project: project,
-    companies: companies
+    projects: projects,
+    companies: companies,
+    vgs: vgs
   },
   state: {
     myId: '',

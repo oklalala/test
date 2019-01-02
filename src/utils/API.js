@@ -16,6 +16,5 @@ export default function(method, path, isAuth, data) {
     baseURL: process.env.VUE_APP_API_URL,
     headers
   }
-
   return axios.create(configs)[method](path, data)
 }
