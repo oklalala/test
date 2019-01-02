@@ -72,7 +72,7 @@
         <el-tab-pane label="OPT">
           <el-row :gutter="20">
             <el-col :span="16">
-              <el-select
+              <!-- <el-select
                 placeholder="雨宮營造"
                 style="width: 100%">
                 <el-option
@@ -81,7 +81,7 @@
                   :label="item.name"
                   :value="item.id">
                 </el-option>
-              </el-select>
+              </el-select> -->
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button
@@ -116,7 +116,7 @@
         <el-tab-pane label="USER">
           <el-row :gutter="20">
             <el-col :span="16">
-              <el-select
+              <!-- <el-select
                 placeholder="雨宮營造"
                 style="width: 100%">
                 <el-option
@@ -125,7 +125,7 @@
                   :label="item.name"
                   :value="item.id">
                 </el-option>
-              </el-select>
+              </el-select> -->
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button

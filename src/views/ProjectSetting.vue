@@ -5,11 +5,11 @@
       <h1>專案設定</h1>
       </el-col>
       <el-col :span="6">
-        <span>專案狀態</span>
-        <el-select placeholder="请选择">
+        <span>專案狀態</span>dropdown
+        <!-- <el-select placeholder="请选择">
           <el-option>end</el-option>
           <el-option>in-progress</el-option>
-        </el-select>
+        </el-select> -->
         <!-- <el-form-item label="專案狀態">
           <el-select
             placeholder="1,4"

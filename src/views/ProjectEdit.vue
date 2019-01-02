@@ -67,7 +67,7 @@
         <el-tab-pane label="OPT">
           <el-row :gutter="20">
             <el-col :span="16">
-              <el-select
+              <!-- <el-select
                 style="width: 100%">
                 <el-option
                   v-for="item in OPTS"
@@ -75,7 +75,7 @@
                   :label="item.name"
                   :value="item.id">
                 </el-option>
-              </el-select>
+              </el-select> -->
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button
@@ -110,7 +110,7 @@
         <el-tab-pane label="USER">
           <el-row :gutter="20">
             <el-col :span="16">
-              <el-select
+              <!-- <el-select
                 style="width: 100%">
                 <el-option
                   v-for="item in companies"
@@ -118,7 +118,7 @@
                   :label="item.name"
                   :value="item.id">
                 </el-option>
-              </el-select>
+              </el-select> -->
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button
