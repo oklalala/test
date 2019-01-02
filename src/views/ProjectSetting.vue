@@ -42,12 +42,12 @@
         prop="id"
         label="案號"
         width="320">
-        <!-- <template slot-scope="scope">
+        <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('ProjectEdit', { projectId: scope.row.id })">
             {{ scope.row.id }}
           </span>
-        </template> -->
+        </template>
       </el-table-column>
       <el-table-column
         prop="name"

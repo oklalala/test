@@ -49,17 +49,6 @@ let router = new Router({
       }
     },
     {
-      path: '/project-list',
-      name: 'ProjectList',
-      component: ProjectList,
-      meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('getProjects').then(() => {
-          next()
-        })
-      }
-    },
-    {
       path: '/company-list',
       name: 'CompanyList',
       component: CompanyList,
@@ -134,15 +123,23 @@ let router = new Router({
       }
     },
     {
+      path: '/project-list',
+      name: 'ProjectList',
+      component: ProjectList,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getProjects').then(() => {
+          next()
+        })
+      }
+    },
+    {
       path: '/project-setting',
       name: 'ProjectSetting',
       component: ProjectSetting,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions')
-        ]).then(() => {
+        store.dispatch('getProjects').then(() => {
           next()
         })
       }
