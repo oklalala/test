@@ -10,7 +10,7 @@ Vue.use(Vuex)
 
 const vgs = {
   state: {
-    vgs: [
+    data: [
       {
         id: 'id',
         number: '機器碼1號',
@@ -20,12 +20,12 @@ const vgs = {
   },
   mutation: {
     setVGs(state, vgs) {
-      state.vgs = vgs
+      state.data = vgs
     }
   },
   getters: {
     vgs(state) {
-      return state.vgs
+      return state.data
     }
   },
   action: {
@@ -39,17 +39,17 @@ const vgs = {
 
 const projects = {
   state: {
-    projects: [],
-    projectStatus: ['end', 'in-progress']
+    data: []
+    // projectStatus: ['end', 'in-progress']
   },
   mutations: {
     setProjects(state, projects) {
-      state.projects = projects
+      state.data = projects
     }
   },
   getters: {
     projects(state) {
-      return state.projects
+      return state.data
     }
   },
   actions: {
@@ -78,16 +78,16 @@ const projects = {
 
 const companies = {
   state: {
-    companies: []
+    data: []
   },
   mutations: {
     setCompanies(state, companies) {
-      state.companies = companies
+      state.data = companies
     }
   },
   getters: {
     companies(state) {
-      return state.companies
+      return state.data
     }
   },
   actions: {
@@ -112,16 +112,16 @@ const companies = {
 
 const users = {
   state: {
-    users: []
+    data: []
   },
   mutations: {
     setUsers(state, users) {
-      state.users = users
+      state.data = users
     }
   },
   getters: {
     users(state) {
-      return state.users
+      return state.data
     }
   },
   actions: {
@@ -150,10 +150,10 @@ const users = {
 
 export default new Vuex.Store({
   modules: {
-    users: users,
-    projects: projects,
-    companies: companies,
-    vgs: vgs
+    users,
+    projects,
+    companies,
+    vgs
   },
   state: {
     myId: '',
