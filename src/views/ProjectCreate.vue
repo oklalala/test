@@ -379,11 +379,11 @@ export default {
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
         floor: 3, //. vg階數
-        vgManagement: {
+        vgManagement: [{
           notice: 0,
           warning: 0,
           action: 0
-        },
+        }],
         soManagement: {
           notice: 0,
           warning: 0,
@@ -441,11 +441,11 @@ export default {
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
         floor: 3, //. vg階數
-        vgManagement: {
+        vgManagement: [{
           notice: 0,
           warning: 0,
           action: 0
-        },
+        }],
         soManagement: {
           notice: 0,
           warning: 0,
@@ -468,12 +468,12 @@ export default {
     },
     cancel() {
       this.reset()
-      this.toPath('ProjectList')
+      this.toPath('ProjectSetting')
     },
     submit() {
       this.$store.dispatch('createProject', this.newProject).then(() => {
         this.reset()
-        this.toPath('ProjectList')
+        this.toPath('ProjectSetting')
       })
     }
   }
