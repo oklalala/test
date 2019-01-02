@@ -1,25 +1,25 @@
 <template>
   <div class="projectSetting">
     <el-row :gutter="20" type="flex" justify="space-between">
-        <el-col :span="6">
-        <h1>專案列表</h1>
-        </el-col>
-        <el-col :span="6">
-          <span>專案狀態</span>
-          <el-select placeholder="请选择">
+      <el-col :span="6">
+      <h1>專案設定</h1>
+      </el-col>
+      <el-col :span="6">
+        <span>專案狀態</span>
+        <el-select placeholder="请选择">
+          <el-option>end</el-option>
+          <el-option>in-progress</el-option>
+        </el-select>
+        <!-- <el-form-item label="專案狀態">
+          <el-select
+            placeholder="1,4"
+            style="width: 100%">
             <el-option>end</el-option>
             <el-option>in-progress</el-option>
           </el-select>
-          <!-- <el-form-item label="專案狀態">
-            <el-select
-              placeholder="1,4"
-              style="width: 100%">
-              <el-option>end</el-option>
-              <el-option>in-progress</el-option>
-            </el-select>
-          </el-form-item> -->
-        </el-col>
-      </el-row>
+        </el-form-item> -->
+      </el-col>
+    </el-row>
     <div class="operationGroup">
       <div class="operationGroup-left">
         <el-button type="primary" @click="deleteProjects">刪除</el-button>
