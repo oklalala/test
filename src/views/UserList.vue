@@ -17,7 +17,7 @@
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
-        width="180">
+        width="55">
       </el-table-column>
       <el-table-column
         prop="id"
