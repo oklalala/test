@@ -17,6 +17,7 @@
     @selection-change="updateDeleteList">
     <el-table-column
       type="selection"
+      :selectable="checkable"
       width="55">
     </el-table-column>
     <el-table-column
@@ -56,6 +57,9 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(vg => vg.id)
+    },
+    checkable(row, index) {
+      return !row.projectName
     }
   }
 }
