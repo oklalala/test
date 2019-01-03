@@ -12,10 +12,12 @@ import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectSetting from './views/ProjectSetting.vue'
-import ProjectProgress from './views/ProjectProgress.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import ProjectPhaseList from './views/ProjectPhaseList.vue'
+// import ProjectPhaseCreate from './views/ProjectPhaseCreate.vue'
+// import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
 import VGList from './views/VGList.vue'
 import VGCreate from './views/VGCreate.vue'
 import VGEdit from './views/VGEdit.vue'
@@ -145,20 +147,6 @@ let router = new Router({
       }
     },
     {
-      path: '/project-Progress',
-      name: 'ProjectProgress',
-      component: ProjectProgress,
-      meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions')
-        ]).then(() => {
-          next()
-        })
-      }
-    },
-    {
       path: '/project-create',
       name: 'ProjectCreate',
       component: ProjectCreate,
@@ -179,8 +167,22 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getProjectStatus'),
+          // store.dispatch('getProjectStatus'),
           store.dispatch('getCompanies')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-phase-list',
+      name: 'ProjectPhaseList',
+      component: ProjectPhaseList,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getProjectPhases')
+          // store.dispatch('getRolePermissions')
         ]).then(() => {
           next()
         })

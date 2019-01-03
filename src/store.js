@@ -76,6 +76,49 @@ const projects = {
   }
 }
 
+const projectPhases = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setProjectPhases(state, projectPhases) {
+      state.data = projectPhases
+    }
+  },
+  getters: {
+    projectPhases(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getProjectPhases({ commit }) {
+      return sendAPI('get', '/project-phases', true).then(res => {
+        console.log(res.data)
+        commit('setProjectPhases', res.data.data)
+      })
+    },
+    getProjectPhase(context, projectPhaseId) {
+      return sendAPI('get', `/project-phase/${projectPhaseId}`, true)
+    },
+    updateProjectPhase(context, { projectPhaseId, payload }) {
+      return sendAPI('put', `/project-phase/${projectPhaseId}`, true, payload)
+    },
+    deleteProjectPhases({ dispatch }, projectPhaseIds) {
+      let projectPhaseIdsStr = projectPhaseIds.join(',')
+      return sendAPI(
+        'delete',
+        `/project-phases/${projectPhaseIdsStr}`,
+        true
+      ).then(() => {
+        dispatch('getProjectPhases')
+      })
+    },
+    createProject(context, payload) {
+      return sendAPI('post', `/project-phase`, true, payload)
+    }
+  }
+}
+
 const companies = {
   state: {
     data: []
@@ -152,6 +195,7 @@ export default new Vuex.Store({
   modules: {
     users,
     projects,
+    projectPhases,
     companies,
     vgs
   },
