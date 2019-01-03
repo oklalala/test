@@ -12,8 +12,8 @@
         <el-menu-item index="5" @click="toPath('UserList')">帳號設定</el-menu-item>
         <el-submenu index="6" menu-trigger="click">
           <template slot="title">專案設定</template>
-  <el-menu-item index="6-1" @click="toPath('ProjectSetting')">所有專案</el-menu-item>
-  <el-menu-item index="6-2" @click="toPath('ProjectPhaseList')">專案執行階段</el-menu-item>
+  <el-menu-item index="6-1" @click="toPath('ProjectSetting')">設定專案資料</el-menu-item>
+  <el-menu-item index="6-2" @click="toPath('ProjectPhaseList')">設定執行階段</el-menu-item>
   </el-submenu>
   <el-menu-item index="7" @click="toPath('PermissionSetup')">權限設定</el-menu-item>
   </template>
