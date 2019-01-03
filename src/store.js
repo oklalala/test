@@ -10,15 +10,9 @@ Vue.use(Vuex)
 
 const vgs = {
   state: {
-    data: [
-      {
-        id: 'id',
-        number: '機器碼1號',
-        projectName: '專案1號'
-      }
-    ]
+    data: []
   },
-  mutation: {
+  mutations: {
     setVGs(state, vgs) {
       state.data = vgs
     }
@@ -28,10 +22,16 @@ const vgs = {
       return state.data
     }
   },
-  action: {
+  actions: {
     getVGs({ commit }) {
       return sendAPI('get', '/vgs', true).then(res => {
         commit('setVGs', res.data.data)
+      })
+    },
+    deleteVGs({ dispatch }, deleteVGs) {
+      var vgIdStr = deleteVGs.join(',')
+      return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
+        dispatch('getVGs')
       })
     }
   }

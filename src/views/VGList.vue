@@ -3,7 +3,7 @@
     <h1>軸力計</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary">刪除</el-button>
+        <el-button type="primary" @click="deleteVGs">刪除</el-button>
       </div>
       <div class="operationGroup-right">
         <el-button type="primary">
@@ -12,33 +12,27 @@
       </div>
     </div>
     <el-table
-    ref="multipleTable"
     :data="vgList"
-    tooltip-effect="dark"
-    style="width: 100%"
-    @selection-change="handleSelectionChange">
+    class="vgList-table"
+    @selection-change="updateDeleteList">
     <el-table-column
       type="selection"
       width="55">
     </el-table-column>
     <el-table-column
-      label="日期"
-      width="120">
-      <template slot-scope="scope">{{ scope.row.date }}</template>
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="姓名"
+      prop="number"
+      label="編號"
       width="120">
     </el-table-column>
     <el-table-column
-      prop="address"
-      label="地址"
-      show-overflow-tooltip>
+      prop="projectName"
+      label="所在專案"
+      width="180">
     </el-table-column>
   </el-table>
   </div>
 </template>
+
 <script>
 import ToPathMixin from '@/mixins/ToPath';
 export default {
@@ -58,9 +52,11 @@ export default {
   methods: {
     deleteVGs() {
       if ( this.deleteList.length === 0 ) return
-      this.$store.dis
+      this.$store.dispatch('deleteVGs', this.deleteList)
+    },
+    updateDeleteList(value) {
+      this.deleteList = value.map(vg => vg.id)
     }
-
   }
 }
 </script>
