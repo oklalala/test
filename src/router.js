@@ -19,6 +19,7 @@ import ProjectPhaseList from './views/ProjectPhaseList.vue'
 // import ProjectPhaseCreate from './views/ProjectPhaseCreate.vue'
 // import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
 import VGList from './views/VGList.vue'
+import SteelList from './views/SteelList.vue'
 import SOItems from './views/SOItems.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
@@ -193,6 +194,17 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([store.dispatch('getVGs')]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/steel-list',
+      name: 'SteelList',
+      component: SteelList,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([store.dispatch('getSteels')]).then(() => {
           next()
         })
       }

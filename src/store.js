@@ -99,7 +99,6 @@ const projectPhases = {
   actions: {
     getProjectPhases({ commit }) {
       return sendAPI('get', '/project-phases', true).then(res => {
-        console.log(res.data)
         commit('setProjectPhases', res.data.data)
       })
     },
@@ -196,6 +195,40 @@ const users = {
     }
   }
 }
+const steels = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setSteels(state, steels) {
+      state.data = steels
+    }
+  },
+  getters: {
+    steels(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getSteels({ commit }) {
+      return sendAPI('get', '/steels', true).then(res => {
+        commit('setSteels', res.data.data)
+      })
+    },
+    createSteel(context, payload) {
+      return sendAPI('post', `/steel`, true, payload)
+    },
+    deleteSteels({ dispatch }, steelIds) {
+      let steelIdsStr = steelIds.join(',')
+      return sendAPI('delete', `/steels/${steelIdsStr}`, true).then(() => {
+        dispatch('getSteels')
+      })
+    },
+    updateSteel(context, { steelId, payload }) {
+      return sendAPI('put', `/steel/${steelId}`, true, payload)
+    }
+  }
+}
 
 export default new Vuex.Store({
   modules: {
@@ -203,7 +236,8 @@ export default new Vuex.Store({
     projects,
     projectPhases,
     companies,
-    vgs
+    vgs,
+    steels
   },
   state: {
     myId: '',
