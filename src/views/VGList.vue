@@ -6,7 +6,8 @@
         <el-button type="primary" @click="deleteVGs">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary">
+        <el-input v-model="newVG.number"></el-input>
+        <el-button type="primary" @click="createVG">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
@@ -23,12 +24,18 @@
     <el-table-column
       prop="number"
       label="編號"
-      width="120">
+      width="200">
+      <template slot-scope="scope">
+        <el-input 
+        @keyup.native="editVG(scope.row.id,scope.row.number)"
+        v-model="scope.row.number">
+        </el-input>
+      </template>
     </el-table-column>
     <el-table-column
       prop="projectName"
       label="所在專案"
-      width="180">
+      width="240">
     </el-table-column>
   </el-table>
   </div>
@@ -37,12 +44,15 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath';
 export default {
-  name: 'VGList',
+  number: 'VGList',
 
   mixins: [ToPathMixin],
   data() {
     return {
-      deleteList: []
+      deleteList: [],
+      newVG: {
+        number: ''
+      },
     }
   },
   computed: {
@@ -51,6 +61,18 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.newVG = {
+        number: ""
+      }
+    },
+    createVG() {
+      if ( !this.newVG.number ) alert("Enter the vg's name PLZ")
+        this.$store.dispatch('createVG', this.newVG).then(() => {
+        this.reset()
+        this.toPath('VGList')
+      })
+    },
     deleteVGs() {
       if ( this.deleteList.length === 0 ) return
       this.$store.dispatch('deleteVGs', this.deleteList)
@@ -60,6 +82,16 @@ export default {
     },
     checkable(row, index) {
       return !row.projectName
+    },
+    editVG(id,newNumber) {
+      this.$store
+        .dispatch('updateVG', {
+          vgId: id,
+          payload: {number: newNumber}
+        })
+        .then(() => {
+          this.reset()
+        })
     }
   }
 }

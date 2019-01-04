@@ -33,6 +33,12 @@ const vgs = {
       return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
         dispatch('getVGs')
       })
+    },
+    createVG(context, payload) {
+      return sendAPI('post', `/vg`, true, payload)
+    },
+    updateVG(context, { vgId, payload }) {
+      return sendAPI('put', `/vg/${vgId}`, true, payload)
     }
   }
 }
