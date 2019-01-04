@@ -19,8 +19,6 @@ import ProjectPhaseList from './views/ProjectPhaseList.vue'
 // import ProjectPhaseCreate from './views/ProjectPhaseCreate.vue'
 // import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
 import VGList from './views/VGList.vue'
-import VGCreate from './views/VGCreate.vue'
-import VGEdit from './views/VGEdit.vue'
 import SOItems from './views/SOItems.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
@@ -198,34 +196,6 @@ let router = new Router({
           next()
         })
       }
-    },
-    {
-      path: '/vg-create',
-      name: 'VGCreate',
-      component: VGCreate
-      // meta: { requireAuth: true },
-      // beforeEnter: (to, from, next) => {
-      //   Promise.all([
-      //     store.dispatch('getPermissions'),
-      //     store.dispatch('getRolePermissions')
-      //   ]).then(() => {
-      //     next()
-      //   })
-      // }
-    },
-    {
-      path: '/vg-edit',
-      name: 'VGEdit',
-      component: VGEdit
-      // meta: { requireAuth: true },
-      // beforeEnter: (to, from, next) => {
-      //   Promise.all([
-      //     store.dispatch('getPermissions'),
-      //     store.dispatch('getRolePermissions')
-      //   ]).then(() => {
-      //     next()
-      //   })
-      // }
     },
     {
       path: '/so-items',
