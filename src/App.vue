@@ -1,7 +1,13 @@
 <template>
   <div id="app">
-    <navbar/>
-    <router-view></router-view>
+    <el-row :gutter="20">
+      <el-col :span="4" >
+        <navbar/>
+      </el-col>
+      <el-col :span="20">
+        <router-view></router-view>
+      </el-col>
+    </el-row>
   </div>
 </template>
 

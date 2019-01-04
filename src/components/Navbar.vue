@@ -1,6 +1,8 @@
 <template>
-<el-menu :default-active="activeIndex" class="layout-navbar" mode="horizontal">
-  <h1 class="layout-navbar-title">大地監控</h1>
+<el-menu :default-active="activeIndex" class="lel-menu-vertical-demo" background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+  <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
   <template v-if="isLogined" class="layout-navbar-menu">
       <template class="layout-navbar-menu-forUser">
         <el-menu-item index="1" @click="toPath('UserInfo')">帳號資料</el-menu-item>
