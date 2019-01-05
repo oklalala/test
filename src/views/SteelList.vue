@@ -72,12 +72,12 @@
       <el-table-column
         prop="sectionArea"
         label="截面積 (cm^2)"
-        width="100">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="es"
         label="ES (kg/cm^2)"
-        width="100">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="tcm"
