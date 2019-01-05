@@ -62,15 +62,16 @@ export default {
   },
   methods: {
     reset() {
-      this.newVG = {
-        number: ""
-      }
+      this.$store.dispatch('getVGs').then(()=>{
+        this.newVG = {
+          number: ""
+        }
+      })
     },
     createVG() {
       if ( !this.newVG.number ) alert("Enter the vg's name PLZ")
         this.$store.dispatch('createVG', this.newVG).then(() => {
         this.reset()
-        this.toPath('VGList')
       })
     },
     deleteVGs() {
