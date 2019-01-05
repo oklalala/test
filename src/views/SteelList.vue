@@ -31,26 +31,27 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-button type="primary" @click="createSteel">
-        <i class="el-icon-plus"></i>
+      <el-button type="primary" @click="createSteel" v-if="!editable">
+        新增鋼材
+      </el-button>
+      <el-button type="primary" @click="editSteel" v-if="editable">
+        編輯鋼材
       </el-button>
     </el-form>
 
     <h3>鋼材列表</h3>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteSteels">刪除</el-button>
+        <el-button @click="resetTable">新增</el-button>
       </div>
-      <!-- <div class="operationGroup-right">
-        <el-input v-model="newSteel.number"></el-input>
-        <el-button type="primary" @click="createSteel">
-          <i class="el-icon-plus"></i>
-        </el-button>
-      </div> -->
+      <div class="operationGroup-right">
+        <el-button type="primary" @click="deleteSteels" v-show="deletable">刪除</el-button>
+      </div>
     </div>
     <el-table
       :data="steelList"
       class="steelList-table"
+      :highlight-current-row="highLight"
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
@@ -60,7 +61,7 @@
       <el-table-column
         prop="name"
         label="鋼材名稱"
-        width="100">
+        width="200">
         <template slot-scope="scope">
           <span class="clickable"
             @click="loadSteel(scope.row)">
@@ -71,22 +72,22 @@
       <el-table-column
         prop="sectionArea"
         label="截面積 (cm^2)"
-        width="140">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="es"
         label="ES (kg/cm^2)"
-        width="140">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="tcm"
         label="TCM"
-        width="140">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="tcg"
         label="TCG"
-        width="240">
+        width="100">
       </el-table-column>
     </el-table>
   </div>
@@ -101,6 +102,7 @@ export default {
   data() {
     return {
       deleteList: [],
+      choosedId: '',
       newSteel: {
         name: '',
         sectionArea: 0,
@@ -108,15 +110,21 @@ export default {
         tcm: 0,
         tcg: 0
       },
+      editable: false,
+      highLight: true
     }
   },
   computed: {
     steelList() {
       return this.$store.getters.steels
+    },
+    deletable() {
+      return (this.deleteList.length != 0)
     }
   },
   methods: {
     reset() {
+      this.choosedId = ''
       this.newSteel = {
         name: '',
         sectionArea: 0,
@@ -126,10 +134,9 @@ export default {
       }
     },
     createSteel() {
-      if ( !this.newSteel.number ) alert("Enter the steel's name PLZ")
-        this.$store.dispatch('createSteel', this.newSteel).then(() => {
-        this.reset()
-        this.toPath('SteelList')
+      if ( !this.newSteel.name ) alert("Enter the steel's name PLZ")
+      this.$store.dispatch('createSteel', this.newSteel).then(() => {
+        this.resetTable()
       })
     },
     deleteSteels() {
@@ -137,22 +144,26 @@ export default {
       this.$store.dispatch('deleteSteels', this.deleteList)
     },
     updateDeleteList(value) {
+      this.highLight = true
+      this.editable = true
       this.deleteList = value.map(steel => steel.id)
     },
     checkable(row, index) {
       return !row.projectName
     },
-    editSteel(id,newNumber) {
+    editSteel() {
       this.$store
         .dispatch('updateSteel', {
-          steelId: id,
-          payload: {number: newNumber}
+          steelId: this.choosedId,
+          payload: this.newSteel
         })
         .then(() => {
-          this.reset()
+          this.resetTable()
         })
     },
     loadSteel(steelObj) {
+      this.editable = true
+      this.choosedId = steelObj.id
       this.newSteel = {
         name: steelObj.name,
         sectionArea: steelObj.sectionArea,
@@ -160,6 +171,13 @@ export default {
         tcm: steelObj.tcm,
         tcg: steelObj.tcg
       }
+    },
+    resetTable() {
+      this.$store.dispatch('getSteels').then(() => {
+        this.highLight = false
+        this.editable = false
+        this.reset()  
+      })
     }
   }
 }
