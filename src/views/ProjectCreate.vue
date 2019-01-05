@@ -1,6 +1,5 @@
 <template>
   <div class="createProject">
-
     <h1>專案設定</h1>
     <el-form
       label-position="top"
@@ -54,7 +53,7 @@
 
       <el-form-item label="客戶公司名稱">
         <el-select
-          v-model="newProject.companyId"
+          v-model="customerCompanyId"
           placeholder="雨宮營造"
           style="width: 100%">
           <el-option
@@ -73,14 +72,15 @@
           <el-row :gutter="20">
             <el-col :span="16">
               <el-select
+                v-model="test"
                 placeholder="雨宮營造"
                 style="width: 100%">
-                <!-- <el-option
-                  v-for="opt in companiesList"
+                <el-option
+                  v-for="opt in OPTs"
                   :key="opt.id"
                   :label="opt.name"
-                  :value="opt.id">
-                </el-option> -->
+                  :value="opt">
+                </el-option>
               </el-select>
             </el-col>
             <el-col :span="6" :offset="2">
@@ -116,16 +116,16 @@
         <el-tab-pane label="USER">
           <el-row :gutter="20">
             <el-col :span="16">
-              <el-select
+              <!-- <el-select
                 placeholder="雨宮營造"
                 style="width: 100%">
-                <!-- <el-option
+                <el-option
                   v-for="company in companiesList"
                   :key="company.id"
                   :label="company.name"
                   :value="company.id">
-                </el-option> -->
-              </el-select>
+                </el-option>
+              </el-select> -->
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button
@@ -358,6 +358,8 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
+      test: '',
+      customerCompanyId: '',
       statusList: [
         {
           value: 'end',
@@ -413,14 +415,29 @@ export default {
       return this.$store.getters.roles
     },
     companiesList() {
-      return this.$store.getters.companies
+      var allCompany = this.$store.getters.companies
+      return allCompany.filter(company => company.id != this.myCompany.id)
     },
     soItems() {
       return this.$store.getters.soItems
     // },
     // vgItems() {
     //   return this.$store.getters.vgItems
+    },
+
+    OPTs() {
+      var allOPT = this.$store.getters.OPTs
+      var customersOPT = allOPT.filter(user => user.company.id == this.customerCompanyId)
+      var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
+      return selfOPT.concat(customersOPT)
+    },
+    USERs() {
+      return this.$store.getters.USERs
+    },
+    myCompany() {
+      return this.$store.getters.me.company
     }
+
   },
   methods: {
     deleteProjects() {
@@ -471,6 +488,7 @@ export default {
       this.toPath('ProjectSetting')
     },
     submit() {
+      this.newProject.companyId = customerCompanyId
       this.$store.dispatch('createProject', this.newProject).then(() => {
         this.reset()
         this.toPath('ProjectSetting')

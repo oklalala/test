@@ -170,6 +170,12 @@ const users = {
   getters: {
     users(state) {
       return state.data
+    },
+    OPTs(state) {
+      return state.data.filter(user => user.roleName == 'OPT')
+    },
+    USERs(state) {
+      return state.data.filter(user => user.roleName == 'USER')
     }
   },
   actions: {
