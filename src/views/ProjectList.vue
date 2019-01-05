@@ -4,7 +4,7 @@
       <el-col :span="6">
       <h1>專案列表</h1>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" v-if="isAdminOrMGT()">
         <span>專案狀態</span>
         <!-- <el-select placeholder="请选择">
           <el-option>end</el-option>
@@ -47,7 +47,7 @@
         label="傾度管量測"
         width="180">
         <template slot-scope="scope">
-          <el-button @click="toPath('MeasuresSo')">傾度管資料</el-button>
+          <el-button @click="toPath('MeasuresSo')" v-if="isOPT()">傾度管資料</el-button>
           <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
         </template>
       </el-table-column>
@@ -78,6 +78,14 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)
+    },
+    isAdminOrMGT() {
+      let role = this.$store.getters.myRole
+      return (role === "MGT" || role === "ADMIN")
+    },
+    isOPT() {
+      let role = this.$store.getters.myRole
+      return (role === "OPT")
     }
   }
 }
