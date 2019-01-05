@@ -15,6 +15,7 @@ import ProjectSetting from './views/ProjectSetting.vue'
 import ProjectList from './views/ProjectList.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import ProjectMonitor from './views/ProjectMonitor.vue'
 import ProjectPhaseList from './views/ProjectPhaseList.vue'
 // import ProjectPhaseCreate from './views/ProjectPhaseCreate.vue'
 // import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
@@ -172,6 +173,20 @@ let router = new Router({
           next()
         })
       }
+    },
+    {
+      path: '/project-monitor/:projectId',
+      name: 'ProjectMonitor',
+      component: ProjectMonitor
+      // meta: { requireAuth: true },
+      // beforeEnter: (to, from, next) => {
+      //   Promise.all([
+      //     // store.dispatch('getProjectStatus'),
+      //     // store.dispatch('getCompanies')
+      //   ]).then(() => {
+      //     next()
+      //   })
+      // }
     },
     {
       path: '/project-phase-list',
