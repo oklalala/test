@@ -1,6 +1,6 @@
 <template>
   <div class="createProject">
-    
+
     <h1>專案設定</h1>
     <el-form
       label-position="top"
@@ -58,10 +58,10 @@
           placeholder="雨宮營造"
           style="width: 100%">
           <el-option
-            v-for="item in companies"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
+            v-for="company in companiesList"
+            :key="company.id"
+            :label="company.name"
+            :value="company.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -72,16 +72,16 @@
         <el-tab-pane label="OPT">
           <el-row :gutter="20">
             <el-col :span="16">
-              <!-- <el-select
+              <el-select
                 placeholder="雨宮營造"
                 style="width: 100%">
-                <el-option
-                  v-for="item in OPTS"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select> -->
+                <!-- <el-option
+                  v-for="opt in companiesList"
+                  :key="opt.id"
+                  :label="opt.name"
+                  :value="opt.id">
+                </el-option> -->
+              </el-select>
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button
@@ -116,16 +116,16 @@
         <el-tab-pane label="USER">
           <el-row :gutter="20">
             <el-col :span="16">
-              <!-- <el-select
+              <el-select
                 placeholder="雨宮營造"
                 style="width: 100%">
-                <el-option
-                  v-for="item in companies"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select> -->
+                <!-- <el-option
+                  v-for="company in companiesList"
+                  :key="company.id"
+                  :label="company.name"
+                  :value="company.id">
+                </el-option> -->
+              </el-select>
             </el-col>
             <el-col :span="6" :offset="2">
               <el-button
@@ -412,7 +412,7 @@ export default {
     roles() {
       return this.$store.getters.roles
     },
-    companies() {
+    companiesList() {
       return this.$store.getters.companies
     },
     soItems() {

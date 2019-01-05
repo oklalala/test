@@ -153,8 +153,10 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions')
+          // store.dispatch('getPermissions'),
+          // store.dispatch('getRolePermissions')
+          store.dispatch('getCompanies'),
+          store.dispatch('getMe')
         ]).then(() => {
           next()
         })
