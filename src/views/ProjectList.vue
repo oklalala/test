@@ -40,13 +40,15 @@
         width="180">
         <template slot-scope="scope">
           <el-button @click="toPath('ProjectMonitor')">監控資料</el-button>
+          <!-- <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button> -->
         </template>
       </el-table-column>
       <el-table-column
         label="傾度管量測"
         width="180">
         <template slot-scope="scope">
-          <el-button @click="toPath('SOItem', { projectId: scope.row.id })">傾度管資料</el-button>
+          <el-button @click="toPath('MeasuresSo')">傾度管資料</el-button>
+          <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
         </template>
       </el-table-column>
     </el-table>
