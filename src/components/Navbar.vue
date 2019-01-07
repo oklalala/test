@@ -1,5 +1,7 @@
 <template>
-<el-menu :default-active="activeIndex" class="lel-menu-vertical-demo" background-color="#545c64"
+<el-menu :default-active="activeIndex" 
+      class="lel-menu-vertical-demo" 
+      background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
   <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
