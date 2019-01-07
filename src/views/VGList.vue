@@ -6,7 +6,7 @@
         <el-button type="primary" @click="deleteVGs">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-input v-model="newVG.number"></el-input>
+        <el-input v-model="newVG.number" placeholder="新增軸力計"></el-input>
         <el-button type="primary" @click="createVG">
           <i class="el-icon-plus"></i>
         </el-button>
