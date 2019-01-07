@@ -69,90 +69,65 @@
       <h2>參與人員</h2>
       <el-tabs type="border-card">
         <el-tab-pane label="OPT">
-          <el-row :gutter="20">
-            <el-col :span="16">
-              <el-select
-                v-model="test"
-                placeholder="雨宮營造"
-                style="width: 100%">
-                <el-option
-                  v-for="opt in OPTs"
-                  :key="opt.id"
-                  :label="opt.name"
-                  :value="opt">
-                </el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="6" :offset="2">
-              <el-button
-                @click="toPath('CompanyList')">
-                加入專案
-              </el-button>
-            </el-col>
-          </el-row>
+          <el-select
+            v-model="newProject.OPT"
+            placeholder="金貝貝"
+            multiple
+            collapse-tags
+            @change="updateSelectedOPTs"
+            style="width: 100%">
+            <el-option
+              v-for="opt in OPTs"
+              :key="opt.id"
+              :label="opt.name"
+              :value="opt.id">
+            </el-option>
+          </el-select>
+            
           <el-table
-            :data="projectList"
-            class="projectList-table"
-            @selection-change="updateDeleteList">
+            :data="OPTList"
+            class="projectList-table">
             <el-table-column
               label="負責人"
               type="selection"
               width="180">
             </el-table-column>
             <el-table-column
-              prop="id"
+              prop="name"
               label="OPT"
               width="320">
-              <template slot-scope="scope">
-                <span class="clickable"
-                  @click="toPath('ProjectEdit', { projectId: scope.row.id })">
-                  {{ scope.row.id }}
-                </span>
-              </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
 
         <el-tab-pane label="USER">
-          <el-row :gutter="20">
-            <el-col :span="16">
-              <!-- <el-select
-                placeholder="雨宮營造"
-                style="width: 100%">
-                <el-option
-                  v-for="company in companiesList"
-                  :key="company.id"
-                  :label="company.name"
-                  :value="company.id">
-                </el-option>
-              </el-select> -->
-            </el-col>
-            <el-col :span="6" :offset="2">
-              <el-button
-                @click="toPath('CompanyList')">
-                加入專案
-              </el-button>
-            </el-col>
-          </el-row>
+          <el-select
+            v-model="newProject.USER"
+            placeholder="阿土伯"
+            multiple
+            collapse-tags
+            @change="updateSelectedUSERs"
+            style="width: 100%">
+            <el-option
+              v-for="user in USERs"
+              :key="user.id"
+              :label="user.name"
+              :value="user.id">
+            </el-option>
+          </el-select>
+            
           <el-table
-            :data="projectList"
-            class="projectList-table"
-            @selection-change="updateDeleteList">
+            :data="USERList"
+            class="projectList-table">
             <el-table-column
               label="負責人"
               type="selection"
               width="180">
             </el-table-column>
             <el-table-column
-              prop="id"
-              label="OPT"
+              prop="name"
+              label="USER"
               width="320">
-              <template slot-scope="scope">
-                <span class="clickable"
-                  @click="toPath('ProjectEdit', { projectId: scope.row.id })">
-                  {{ scope.row.id }}
-                </span>
-              </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
@@ -234,9 +209,7 @@
                 @click="toPath('SteelList')">
                 維護鋼材資料
               </el-button>
-              <el-table
-                class="vg-table"
-                @selection-change="updateDeleteList">
+              <el-table class="vg-table">
                 <el-table-column
                   label="VG ID"
                   width="100">
@@ -307,9 +280,7 @@
             <el-col :span="14" :offset="2">
               <h2>位置編號<span>( SO - 流水號 )</span></h2>
               <h5>相同位置編碼 量測深度間隔 1 m</h5>
-              <el-table
-                class="vg-table"
-                @selection-change="updateDeleteList">
+              <el-table class="vg-table">
                 <el-table-column
                   prop="name"
                   label="編碼"
@@ -358,8 +329,9 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      test: '',
       customerCompanyId: '',
+      OPTList: [],
+      USERList: [],
       statusList: [
         {
           value: 'end',
@@ -420,9 +392,6 @@ export default {
     },
     soItems() {
       return this.$store.getters.soItems
-    // },
-    // vgItems() {
-    //   return this.$store.getters.vgItems
     },
 
     OPTs() {
@@ -432,21 +401,18 @@ export default {
       return selfOPT.concat(customersOPT)
     },
     USERs() {
-      return this.$store.getters.USERs
+      var allUSER = this.$store.getters.USERs
+      var customeersUSER = allUSER.filter(user => user.company.id == this.customerCompanyId)
+      return customeersUSER
     },
     myCompany() {
       return this.$store.getters.me.company
+    // },
+    // getUser(id) {
+    //   return this.$store.getters.
     }
-
   },
   methods: {
-    deleteProjects() {
-      if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteProjects', this.deleteList)
-    },
-    updateDeleteList(value) {
-      this.deleteList = value.map(project => project.id)
-    },
     reset() {
       this.newProject = {
         number: '', // CNT-16Q3
@@ -493,6 +459,23 @@ export default {
         this.reset()
         this.toPath('ProjectSetting')
       })
+    },
+
+    updateSelectedOPTs(value) {
+      var OPTList = []
+      value.forEach(id => {
+        var selectedOPT = this.OPTs.filter(opt => opt.id == id)
+        OPTList = OPTList.concat(selectedOPT)
+      });
+      this.OPTList = OPTList
+    },
+    updateSelectedUSERs(value) {
+      var USERList = []
+      value.forEach(id => {
+        var selectedUSER = this.USERs.filter(user => user.id == id)
+        USERList = USERList.concat(selectedUSER)
+      });
+      this.USERList = USERList
     }
   }
 }
