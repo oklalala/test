@@ -25,36 +25,33 @@ let close = 1
 
 export default function(wiseIP, formData) {
   wiseConfig.wiseIP = 'http://' + wiseIP
-  // delay()
+  let xData,yData,temp
   initializationSO()
   .then(()=>switchSO(powerChannel,open))
   .then(()=>switchSO(switchChannel,open))
   .then(() =>getSORawData())
   .then(res=>{
-    console.log(res.data)
+    xData = res.data
   })
   .then(()=>switchSO(switchChannel,close))
   .then(()=>switchSO(switchChannel,open))
   .then(() =>getSORawData())
   .then(res=>{
-    console.log(res.data)
+    temp = res.data
   })
   .then(() =>switchSO(switchChannel,close))
   .then(() =>switchSO(switchChannel,open))
   .then(() =>getSORawData())
   .then(res => {
-    console.log(res.data);
+    yData = res.data
   })
-  // .then(() =>switchSO(0,1))
-  // .then(() => getSORawData())
-  // .then(res => {
-  //   console.log(res.data);
-  //   // switchSO(1,0)
-  // })
+  .then(()=>{
+    console.log("fuck",xData,temp,yData)
+
+  })
   formData.push('fuck')
 }
 
-// 加個 delay function 不讓他太快切換
 
 function initializationSO() {
   return requestMeasuresSO('Patch', '/do_value/slot_0', {
@@ -79,6 +76,7 @@ function switchSO(channel, value) {
 }
 
 function getSORawData() {
+  delay()
   return requestMeasuresSO('Get', '/ai_value/slot_0/ch_0', '')
 }
 
@@ -101,8 +99,9 @@ function makeBasicAuth(user, password) {
 }
 
 function delay() {
-  for (let i = 0; i < 1000; i++) {
+  console.groupCollapsed('delay', true)
+  for (let i = 0; i < 5000; i++) {
     console.log(i)
-    // console.clear()
   }
+  console.groupEnd()
 }
