@@ -23,31 +23,32 @@ let wiseConfig = {
 
 let powerChannel = 0
 let switchChannel = 1
-let open = 0
-let close = 1
+let ON = 0
+let OFF = 1
 
 export default function(wiseIP, formData) {
   wiseConfig.wiseIP = 'http://' + wiseIP
   let xData,yData,temp
-  initializationSO()
-  .then(()=>switchSO(powerChannel,open))
-  .then(()=>switchSO(switchChannel,open))
+  initializationSO(powerChannel,OFF,switchChannel,OFF)
+  .then(()=>switchSO(powerChannel,ON))
+  .then(()=>switchSO(switchChannel,ON))
   .then(() =>getSORawData())
   .then(res=>{
     xData = res.data
   })
-  .then(()=>switchSO(switchChannel,close))
-  .then(()=>switchSO(switchChannel,open))
+  .then(()=>switchSO(switchChannel,OFF))
+  .then(()=>switchSO(switchChannel,ON))
   .then(() =>getSORawData())
   .then(res=>{
     temp = res.data
   })
-  .then(() =>switchSO(switchChannel,close))
-  .then(() =>switchSO(switchChannel,open))
+  .then(() =>switchSO(switchChannel,OFF))
+  .then(() =>switchSO(switchChannel,ON))
   .then(() =>getSORawData())
   .then(res => {
     yData = res.data
   })
+  .then(()=>{initializationSO(powerChannel,OFF,switchChannel,OFF)})
   .then(()=>{
     console.log("fuck",xData,temp,yData)
   })
@@ -55,14 +56,14 @@ export default function(wiseIP, formData) {
 }
 
 
-function initializationSO() {
+function initializationSO(powerChannel,powerStatus,switchChannel,switchStatus) {
   return requestMeasuresSO('Patch', '/do_value/slot_0', {
     DOVal: [{
       Ch: powerChannel,
-      Val: close
+      Val: powerStatus
     }, {
       Ch: switchChannel,
-      Val: close
+      Val: switchStatus
     }]
   })
 }
