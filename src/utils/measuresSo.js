@@ -9,14 +9,17 @@ let wiseConfig = {
 }
 
 // methods  url_path               data
-// patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":0},{"Ch":1,"Val":0}]}
-// patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":1}]}
-// patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":1}]}:
-// get      /ai_value/slot_0/ch_0  ""
-// patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":0}]}:
-// patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":1}]}:
-// get      /ai_value/slot_0/ch_0  ""
+// patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":1},{"Ch":1,"Val":1}]}
+// patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":0}]}
 // patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":0}]}:
+// get      /ai_value/slot_0/ch_0  ""
+// patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":1}]}:
+// patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":0}]}:
+// get      /ai_value/slot_0/ch_0  ""
+// patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":1}]}:
+// patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":0}]}:
+// get      /ai_value/slot_0/ch_0  ""
+
 
 let powerChannel = 0
 let switchChannel = 1
@@ -47,7 +50,6 @@ export default function(wiseIP, formData) {
   })
   .then(()=>{
     console.log("fuck",xData,temp,yData)
-
   })
   formData.push('fuck')
 }
