@@ -139,9 +139,7 @@
         class="upload-demo" 
         drag
         action="https://jsonplaceholder.typicode.com/posts/" 
-        :on-preview="handlePreview" 
-        :on-remove="handleRemove"
-        :on-change="handleChange"
+        :on-change="uploadChange"
         list-type="picture"
         :auto-upload="false">
         <img :src="this.image.url" alt="" v-if="imageSelected">
@@ -483,7 +481,7 @@ export default {
       });
       this.USERList = USERList
     },
-    handleChange(file, fileList) {
+    uploadChange(file, fileList) {
       this.imageSelected = true
       this.image = file
     }
