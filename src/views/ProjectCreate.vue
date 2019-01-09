@@ -188,7 +188,7 @@
           <br>
           <br>
 
-          <div class="block">
+          <div class="block" v-if="vgImported">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
@@ -197,22 +197,22 @@
             </el-pagination>
           </div>
 
-          <el-row :gutter="20">
+          <el-row :gutter="20" v-if="vgImported">
             <el-col :span="9">
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                v-model.number="newProject.vgManagement.notice"
+                v-model="newProject.vgManagement[floorIndex].notice"
                 placeholder="68.3">
               </el-input>
               警戒值
               <el-input
-                v-model.number="newProject.vgManagement.warning"
+                v-model="newProject.vgManagement[floorIndex].warning"
                 placeholder="79.6">
               </el-input>
               行動值
               <el-input
-                v-model.number="newProject.vgManagement.action"
+                v-model="newProject.vgManagement[floorIndex].action"
                 placeholder="104.2">
               </el-input>
             </el-col>
@@ -345,6 +345,7 @@ export default {
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
+      vgImported: false,
       needMoreGauge: '',
       floorIndex: 0,
       numOfFloor: 0,
@@ -377,11 +378,7 @@ export default {
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
         floor: 3, //. vg階數
-        vgManagement: [{
-          notice: 0,
-          warning: 0,
-          action: 0
-        }],
+        vgManagement: [],
         soManagement: {
           notice: 0,
           warning: 0,
@@ -528,6 +525,8 @@ export default {
       var floor = this.newProject.floor
       var vgList = this.newProject.vgIds
       this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, vgList)
+      this.vgImported = true
+      this.initVGManagement()
       this.getVGTable()
     },
     currentFloor(selectedFloor) {
@@ -546,6 +545,13 @@ export default {
       var start = this.floorIndex * this.numOfFloor
       var end =  (this.floorIndex + 1) * this.numOfFloor
       this.vgTable = this.fullVGsInfo.slice(start, end)
+    },
+    initVGManagement() {
+      var arr = []
+      for (var i = 0; i < this.newProject.floor; i++) {
+        arr.push({notice: 1, warning:2, action: 3})
+      }
+      this.newProject.vgManagement = arr
     }
   }
 }
