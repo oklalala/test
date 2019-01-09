@@ -142,6 +142,7 @@ export default {
     deleteSteels() {
       if ( this.deleteList.length === 0 ) return
       this.$store.dispatch('deleteSteels', this.deleteList)
+      this.resetTable()
     },
     updateDeleteList(value) {
       this.highLight = true
