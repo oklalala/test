@@ -154,17 +154,23 @@
 
         <el-tab-pane label="軸力計 ( VG )"> 
           <el-form-item label="使用軸力計編號">
-            <!-- <el-select v-model="vgSelectedItems" multiple placeholder="可複選">
+            {{needMoreGauge}}
+            <el-select 
+              v-model="newProject.vgIds" 
+              placeholder="可複選"
+              multiple 
+              collapse-tags
+              @change="updateSelectedVGs"
+              style="width: 100%">
               <el-option
-                v-for="item in vgUsableItems"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="vg in VGs"
+                :disabled="!!vg.projectName"
+                :key="vg.id"
+                :label="vg.number"
+                :value="vg.id">
               </el-option>
-            </el-select> -->
+            </el-select>
           </el-form-item>
-          <br>
-
           <div class="demo-input-suffix">
             支撐階數：
             <el-input 
@@ -173,16 +179,21 @@
             </el-input>
             每層數量：
             <el-input
+              v-model.number="numOfFloor"
               placeholder="5">
             </el-input>
           </div>
+          <br>
+          <el-button @click.native="getVGItems(newProject.floor,numOfFloor,newProject.vgIds)" :disabled="!preparedShowVG">import vgitems</el-button>
+          <br>
           <br>
 
           <div class="block">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
-              :total="30">
+              @current-change="currentFloor"
+              :total="getPagination">
             </el-pagination>
           </div>
 
@@ -333,9 +344,13 @@ export default {
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
-      vgItems:[],
+      needMoreGauge: '',
+      floorIndex: 0,
+      numOfFloor: 0,
+      VGList: [],
+      fullVGsInfo: [],
       imageSelected: false,
-      image:[{url: "haha"}],
+      image: [{url: "haha"}],
       customerCompanyId: '',
       OPTList: [],
       USERList: [],
@@ -414,9 +429,28 @@ export default {
     },
     myCompany() {
       return this.$store.getters.me.company
-    // },
-    // getUser(id) {
-    //   return this.$store.getters.
+    },
+    VGs() {
+      return this.$store.getters.vgs
+    },
+    preparedShowVG() {
+      if (!this.isEnoughtVG) {
+        this.needMoreGauge = "Add more gauge please"
+        return false
+      }
+      this.needMoreGauge = ''
+      var hasFloor = !!this.newProject.floor
+      var hasNumOfFloor = !!this.numOfFloor
+      var hasSelectedVG = (this.newProject.vgIds.length !== 0)
+      return (hasFloor && hasNumOfFloor && hasSelectedVG)
+    },
+    isEnoughtVG() {
+      var neededGauge = this.newProject.floor * this.numOfFloor
+      var usableGauge = this.VGList.length * 14  // a host have 14 port
+      return (usableGauge >= neededGauge)
+    },
+    getPagination() {
+      return this.newProject.floor * 10
     }
   },
   methods: {
@@ -487,7 +521,21 @@ export default {
     uploadChange(file, fileList) {
       this.imageSelected = true
       this.image = file
-    }
+    },
+    getVGItems(floor, numOfFloor, usableGauge) {
+      this.fullVGsInfo = this.importVGItems(floor, numOfFloor, usableGauge)
+    },
+    currentFloor(selectedFloor) {
+      this.floorIndex = selectedFloor - 1
+    },
+    updateSelectedVGs(value) {
+      var VGList = []
+      value.forEach(id => {
+        var selectedVG = this.VGs.filter(vg => vg.id == id)
+        VGList = VGList.concat(selectedVG)
+      });
+      this.VGList = VGList
+    },
   }
 }
 </script>

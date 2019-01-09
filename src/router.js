@@ -157,7 +157,8 @@ let router = new Router({
           // store.dispatch('getRolePermissions')
           store.dispatch('getCompanies'),
           store.dispatch('getMe'),
-          store.dispatch('getUsers')
+          store.dispatch('getUsers'),
+          store.dispatch('getVGs')
         ]).then(() => {
           next()
         })
