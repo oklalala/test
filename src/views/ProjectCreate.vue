@@ -184,7 +184,7 @@
             </el-input>
           </div>
           <br>
-          <el-button @click.native="getVGItems(newProject.floor,numOfFloor,newProject.vgIds)" :disabled="!preparedShowVG">import vgitems</el-button>
+          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">import VGs</el-button>
           <br>
           <br>
 
@@ -549,7 +549,7 @@ export default {
     initVGManagement() {
       var arr = []
       for (var i = 0; i < this.newProject.floor; i++) {
-        arr.push({notice: 1, warning:2, action: 3})
+        arr.push({notice: 0, warning: 0, action: 0})
       }
       this.newProject.vgManagement = arr
     }
