@@ -50,3 +50,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.lel-menu-vertical-demo {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+}
+</style>
