@@ -135,16 +135,20 @@
 
 
       <h1>配置圖</h1>
-      <el-upload
-        v-model="newProject.sitePlan"
-        class="upload-demo"
+      <el-upload 
+        class="upload-demo" 
         drag
-        action="https://jsonplaceholder.typicode.com/posts/"
-        multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">將文件拖到此處，或<em>點擊上傳</em></div>
-        <div class="el-upload__tip" slot="tip">只能上傳jpg/png文件，且不超過500kb</div>
-      </el-upload>
+        action="https://jsonplaceholder.typicode.com/posts/" 
+        :on-preview="handlePreview" 
+        :on-remove="handleRemove"
+        :on-change="handleChange"
+        list-type="picture"
+        :auto-upload="false">
+        <img :src="this.image.url" alt="" v-if="imageSelected">
+        <i class="el-icon-upload" v-if="!imageSelected"></i>
+        <div class="el-upload__text" v-if="!imageSelected">將文件拖到此處，或<em>點擊上傳</em></div>
+        <el-button class="reselect" size="small" type="primary" v-if="imageSelected">另選圖片</el-button>
+      </el-upload>  
 
 
       <h2>監控設定</h2>
@@ -329,6 +333,8 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
+      imageSelected: false,
+      image:[{url: "haha"}],
       customerCompanyId: '',
       OPTList: [],
       USERList: [],
@@ -476,6 +482,10 @@ export default {
         USERList = USERList.concat(selectedUSER)
       });
       this.USERList = USERList
+    },
+    handleChange(file, fileList) {
+      this.imageSelected = true
+      this.image = file
     }
   }
 }
@@ -485,5 +495,24 @@ export default {
 h2 span {
   font-size: 14px;
   padding-left: 30px;
+}
+
+img {
+  width: 100%;
+}
+
+.el-upload-list--picture {
+  display: none;
+}
+
+.el-upload-dragger, .el-upload--picture{
+  width: 60vw;
+  height: auto; 
+}
+
+.reselect {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
 }
 </style>
