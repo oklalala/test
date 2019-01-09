@@ -222,14 +222,25 @@
                 @click="toPath('SteelList')">
                 維護鋼材資料
               </el-button>
-              <el-table class="vg-table">
+              <el-table class="vg-table" :data="vgTable">
                 <el-table-column
+                  prop="host"
                   label="VG ID"
                   width="100">
                 </el-table-column>
                 <el-table-column
-                  prop="id"
+                  prop="port"
                   label="Port"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="serial"
+                  label="編碼"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="steel"
+                  label="鋼材"
                   width="100">
                   <template slot-scope="scope">
                     <span class="clickable"
@@ -237,16 +248,6 @@
                       {{ scope.row.id }}
                     </span>
                   </template>
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="編碼"
-                  width="100">
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="鋼材"
-                  width="100">
                 </el-table-column>
               </el-table>
             </el-col>
@@ -348,6 +349,7 @@ export default {
       floorIndex: 0,
       numOfFloor: 0,
       VGList: [],
+      vgTable: [],
       fullVGsInfo: [],
       imageSelected: false,
       image: [{url: "haha"}],
@@ -522,11 +524,15 @@ export default {
       this.imageSelected = true
       this.image = file
     },
-    getVGItems(floor, numOfFloor, usableGauge) {
-      this.fullVGsInfo = this.importVGItems(floor, numOfFloor, usableGauge)
+    getVGItems() {
+      var floor = this.newProject.floor
+      var vgList = this.newProject.vgIds
+      this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, vgList)
+      this.getVGTable()
     },
     currentFloor(selectedFloor) {
       this.floorIndex = selectedFloor - 1
+      this.getVGTable()
     },
     updateSelectedVGs(value) {
       var VGList = []
@@ -536,6 +542,11 @@ export default {
       });
       this.VGList = VGList
     },
+    getVGTable() {
+      var start = this.floorIndex * this.numOfFloor
+      var end =  (this.floorIndex + 1) * this.numOfFloor
+      this.vgTable = this.fullVGsInfo.slice(start, end)
+    }
   }
 }
 </script>
