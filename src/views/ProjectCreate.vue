@@ -325,12 +325,15 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
+import CalculateVGMixin from '@/mixins/CalculateVG'
+
 export default {
   name: 'CreateUser',
 
-  mixins: [ToPathMixin],
+  mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
+      vgItems:[],
       imageSelected: false,
       image:[{url: "haha"}],
       customerCompanyId: '',
