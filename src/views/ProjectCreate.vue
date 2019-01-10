@@ -236,16 +236,15 @@
                   width="100">
                 </el-table-column>
                 <el-table-column
-                  prop="steel"
+                  prop="steelId"
                   label="鋼材"
                   width="100">
                   <template slot-scope="scope">
-                    {{steels}}
                     <el-select
-                      v-model="newProject.vgLocation[selectedFloor].steelId"
+                      v-model="scope.row.steelId"
                       placeholder="请选择">
                       <el-option
-                        v-for="steel in steels"
+                        v-for="steel in Steels"
                         :key="steel.id"
                         :label="steel.name"
                         :value="steel.id">
@@ -349,7 +348,6 @@ export default {
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
-      test:'',
       vgImported: false,
       needMoreGauge: '', // alert text
       floorIndex: 0, // used in array
@@ -455,7 +453,7 @@ export default {
     getPagination() {
       return this.newProject.floor * 10
     },
-    steels() {
+    Steels() {
       return this.$store.getters.steels
     }
   },

@@ -84,7 +84,8 @@ var mixin = {
             floor: floor,
             host: hostsArr[i],
             port: portsArr[i],
-            serial: `vg-${floor}-0${(i % 5) + 1}`
+            serial: `vg-${floor}-0${(i % 5) + 1}`,
+            steelId: 0
             // TODO: fn serial(num){return (num < 10 ? '0' : '') + num}
           }
         }
@@ -93,23 +94,23 @@ var mixin = {
       console.log(VGItems)
       return VGItems
       // var VGItems = [
-      //   { floor: 1, host: 1, port: 1, serial: "vg-1-01" },
-      //   { floor: 1, host: 1, port: 4, serial: "vg-1-02" },
-      //   { floor: 1, host: 1, port: 7, serial: "vg-1-03" },
-      //   { floor: 1, host: 4, port: 2, serial: "vg-1-04" },
-      //   { floor: 1, host: 4, port: 5, serial: "vg-1-05" },
+      //   { floor: 1, host: 1, port: 1, serial: "vg-1-01", steelId: 0 },
+      //   { floor: 1, host: 1, port: 4, serial: "vg-1-02", steelId: 0  },
+      //   { floor: 1, host: 1, port: 7, serial: "vg-1-03", steelId: 0  },
+      //   { floor: 1, host: 4, port: 2, serial: "vg-1-04", steelId: 0  },
+      //   { floor: 1, host: 4, port: 5, serial: "vg-1-05", steelId: 0  },
 
-      //   { floor: 2, host: 1, port: 2, serial: "vg-2-01" },
-      //   { floor: 2, host: 1, port: 5, serial: "vg-2-02" },
-      //   { floor: 2, host: 1, port: 8, serial: "vg-2-03" },
-      //   { floor: 2, host: 4, port: 3, serial: "vg-2-04" },
-      //   { floor: 2, host: 4, port: 6, serial: "vg-2-05" },
+      //   { floor: 2, host: 1, port: 2, serial: "vg-2-01", steelId: 0  },
+      //   { floor: 2, host: 1, port: 5, serial: "vg-2-02", steelId: 0  },
+      //   { floor: 2, host: 1, port: 8, serial: "vg-2-03", steelId: 0  },
+      //   { floor: 2, host: 4, port: 3, serial: "vg-2-04", steelId: 0  },
+      //   { floor: 2, host: 4, port: 6, serial: "vg-2-05", steelId: 0  },
 
-      //   { floor: 3, host: 1, port: 3, serial: "vg-3-01" },
-      //   { floor: 3, host: 1, port: 6, serial: "vg-3-02" },
-      //   { floor: 3, host: 4, port: 1, serial: "vg-3-03" },
-      //   { floor: 3, host: 4, port: 4, serial: "vg-3-04" },
-      //   { floor: 3, host: 4, port: 7, serial: "vg-3-05" }
+      //   { floor: 3, host: 1, port: 3, serial: "vg-3-01", steelId: 0  },
+      //   { floor: 3, host: 1, port: 6, serial: "vg-3-02", steelId: 0  },
+      //   { floor: 3, host: 4, port: 1, serial: "vg-3-03", steelId: 0  },
+      //   { floor: 3, host: 4, port: 4, serial: "vg-3-04", steelId: 0  },
+      //   { floor: 3, host: 4, port: 7, serial: "vg-3-05", steelId: 0  }
       // ]
     }
   }
