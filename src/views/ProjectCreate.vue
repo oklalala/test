@@ -243,10 +243,17 @@
                   label="鋼材"
                   width="100">
                   <template slot-scope="scope">
-                    <span class="clickable"
-                      @click="toPath('ProjectEdit', { projectId: scope.row.id })">
-                      {{ scope.row.id }}
-                    </span>
+                    {{steels}}
+                    <el-select
+                      v-model="newProject.vgLocation[selectedFloor].steelId"
+                      placeholder="请选择">
+                      <el-option
+                        v-for="steel in steels"
+                        :key="steel.id"
+                        :label="steel.name"
+                        :value="steel.id">
+                      </el-option>
+                    </el-select>
                   </template>
                 </el-table-column>
               </el-table>
@@ -345,18 +352,19 @@ export default {
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
+      test:'',
       vgImported: false,
-      needMoreGauge: '',
-      floorIndex: 0,
-      numOfFloor: 0,
-      VGList: [],
-      vgTable: [],
-      fullVGsInfo: [],
-      imageSelected: false,
-      image: [{url: "haha"}],
+      needMoreGauge: '', // alert text
+      floorIndex: 0, // used in array
+      numOfFloor: 0, // 
+      VGList: [], // get usable VGs
+      vgTable: [], // every floor VGs
+      fullVGsInfo: [], // from calculateVG.js
+      imageSelected: false, // optimize UX
+      image: [{url: "haha"}], // preview url in blob
       customerCompanyId: '',
-      OPTList: [],
-      USERList: [],
+      OPTList: [], // custom and self OPTs
+      USERList: [], // custom USERs
       statusList: [
         {
           value: 'end',
@@ -367,7 +375,6 @@ export default {
           label: '執行'
         }
       ],
-      VGItems: [],
       newProject: {
         number: '', // CNT-16Q3
         status: '', // end or in-progress
@@ -450,6 +457,9 @@ export default {
     },
     getPagination() {
       return this.newProject.floor * 10
+    },
+    steels() {
+      return this.$store.getters.steels
     }
   },
   methods: {
@@ -464,11 +474,7 @@ export default {
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
         floor: 3, //. vg階數
-        vgManagement: [{
-          notice: 0,
-          warning: 0,
-          action: 0
-        }],
+        vgManagement: [],
         soManagement: {
           notice: 0,
           warning: 0,

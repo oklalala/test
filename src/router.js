@@ -158,7 +158,8 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getMe'),
           store.dispatch('getUsers'),
-          store.dispatch('getVGs')
+          store.dispatch('getVGs'),
+          store.dispatch('getSteels')
         ]).then(() => {
           next()
         })
