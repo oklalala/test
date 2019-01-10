@@ -85,7 +85,7 @@ var mixin = {
             host: hostsArr[i],
             port: portsArr[i],
             serial: `vg-${floor}-0${(i % numOfFloor) + 1}`,
-            steelId: 0
+            steelId: ''
             // TODO: fn serial(num){return (num < 10 ? '0' : '') + num}
           }
         }

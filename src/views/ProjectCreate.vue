@@ -53,7 +53,7 @@
 
       <el-form-item label="客戶公司名稱">
         <el-select
-          v-model="customerCompanyId"
+          v-model="newProject.companyId"
           @change="resetMember"
           placeholder="雨宮營造"
           style="width: 100%">
@@ -199,17 +199,17 @@
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
-                v-model="newProject.vgManagement[floorIndex].notice"
+                v-model.number="newProject.vgManagement[floorIndex].notice"
                 placeholder="68.3">
               </el-input>
               警戒值
               <el-input
-                v-model="newProject.vgManagement[floorIndex].warning"
+                v-model.number="newProject.vgManagement[floorIndex].warning"
                 placeholder="79.6">
               </el-input>
               行動值
               <el-input
-                v-model="newProject.vgManagement[floorIndex].action"
+                v-model.number="newProject.vgManagement[floorIndex].action"
                 placeholder="104.2">
               </el-input>
             </el-col>
@@ -308,7 +308,7 @@
                   width="200">
                   <template slot-scope="scope">
                     <el-input 
-                    v-model="scope.row.depth">
+                    v-model.number="scope.row.depth">
                     </el-input>
                   </template>
                 </el-table-column>
@@ -338,6 +338,8 @@
         </el-row>
       </el-form-item>
     </el-form>
+    <el-button @click="mergeVGLocation(newProject.vgLocation, fullVGsInfo)">merge</el-button>
+    <el-button @click="initVGLocation()">init</el-button>
     
   </div>
 </template>
@@ -364,7 +366,6 @@ export default {
       fullVGsInfo: [], // from calculateVG.js
       imageSelected: false, // optimize UX
       image: [{url: "haha"}], // preview url in blob
-      customerCompanyId: '',
       OPTList: [], // custom and self OPTs
       USERList: [], // custom USERs
       statusList: [
@@ -426,13 +427,13 @@ export default {
 
     OPTs() {
       var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(user => user.company.id == this.customerCompanyId)
+      var customersOPT = allOPT.filter(user => user.company.id == this.newProject.companyId)
       var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
       return selfOPT.concat(customersOPT)
     },
     USERs() {
       var allUSER = this.$store.getters.USERs
-      var customeersUSER = allUSER.filter(user => user.company.id == this.customerCompanyId)
+      var customeersUSER = allUSER.filter(user => user.company.id == this.newProject.companyId)
       return customeersUSER
     },
     myCompany() {
@@ -505,7 +506,6 @@ export default {
       this.toPath('ProjectSetting')
     },
     submit() {
-      this.newProject.companyId = customerCompanyId
       this.$store.dispatch('createProject', this.newProject).then(() => {
         this.reset()
         this.toPath('ProjectSetting')
@@ -578,7 +578,7 @@ export default {
       var arr = []
       for (var i = 1; i <= number; i++ ) {
         arr.push({
-          number: `SO - 0${i}`, // todo: if i > 10
+          number: `SO-0${i}`, // todo: if i > 10
           depth: depth
         })
       }
