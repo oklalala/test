@@ -54,6 +54,7 @@
       <el-form-item label="客戶公司名稱">
         <el-select
           v-model="customerCompanyId"
+          @change="resetMember"
           placeholder="雨宮營造"
           style="width: 100%">
           <el-option
@@ -64,7 +65,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      
 
       <h2>參與人員</h2>
       <el-tabs type="border-card">
@@ -73,7 +73,6 @@
             v-model="newProject.OPT"
             placeholder="金貝貝"
             multiple
-            collapse-tags
             @change="updateSelectedOPTs"
             style="width: 100%">
             <el-option
@@ -105,7 +104,6 @@
             v-model="newProject.USER"
             placeholder="阿土伯"
             multiple
-            collapse-tags
             @change="updateSelectedUSERs"
             style="width: 100%">
             <el-option
@@ -159,7 +157,6 @@
               v-model="newProject.vgIds" 
               placeholder="可複選"
               multiple 
-              collapse-tags
               @change="updateSelectedVGs"
               style="width: 100%">
               <el-option
@@ -198,7 +195,7 @@
           </div>
 
           <el-row :gutter="20" v-if="vgImported">
-            <el-col :span="9">
+            <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
@@ -216,7 +213,7 @@
                 placeholder="104.2">
               </el-input>
             </el-col>
-            <el-col :span="13" :offset="2">
+            <el-col :span="19">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
               <el-button
                 @click="toPath('SteelList')">
@@ -226,12 +223,12 @@
                 <el-table-column
                   prop="host"
                   label="VG ID"
-                  width="100">
+                  width="320">
                 </el-table-column>
                 <el-table-column
                   prop="port"
                   label="Port"
-                  width="100">
+                  width="80">
                 </el-table-column>
                 <el-table-column
                   prop="serial"
