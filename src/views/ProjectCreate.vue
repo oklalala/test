@@ -502,6 +502,12 @@ export default {
       })
     },
 
+    resetMember(){
+      this.USERList = []
+      this.OPTList = []
+      this.newProject.OPT = []
+      this.newProject.USER = []
+    },
     updateSelectedOPTs(value) {
       var OPTList = []
       value.forEach(id => {
