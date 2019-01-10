@@ -258,24 +258,23 @@
         </el-tab-pane>
 
         <el-tab-pane label="傾度管 ( SO )">
-          <el-form-item label="使用傾度管編號:32">
-          </el-form-item>
-          <br>
           <div class="demo-input-suffix">
             數量：
             <el-input
-              v-model.number="newProject.soLocation.number"
+              v-model.number="soQt"
               placeholder="5">
             </el-input>
             每孔深度 ( m )：
             <el-input
-              v-model.number="newProject.soLocation.depth"
+              v-model.number="soDepth"
               placeholder="20.5">
             </el-input>
           </div>
           <br>
+          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">import SOs</el-button>
+          <br>
 
-          <el-row :gutter="20">
+          <el-row :gutter="20" v-if="soImported">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
               注意值
@@ -294,19 +293,24 @@
                 placeholder="15.06">
               </el-input>
             </el-col>
-            <el-col :span="14" :offset="2">
+            <el-col :span="14">
               <h2>位置編號<span>( SO - 流水號 )</span></h2>
               <h5>相同位置編碼 量測深度間隔 1 m</h5>
-              <el-table class="vg-table">
+              <el-table class="so-table" :data="newProject.soLocation">
                 <el-table-column
-                  prop="name"
+                  prop="number"
                   label="編碼"
                   width="200">
                 </el-table-column>
                 <el-table-column
-                  prop="name"
+                  prop="depth"
                   label="深度"
                   width="200">
+                  <template slot-scope="scope">
+                    <el-input 
+                    v-model="scope.row.depth">
+                    </el-input>
+                  </template>
                 </el-table-column>
               </el-table>
             </el-col>
@@ -348,6 +352,9 @@ export default {
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
+      soImported: false,
+      soQt: 0,
+      soDepth: 0,
       vgImported: false,
       needMoreGauge: '', // alert text
       floorIndex: 0, // used in array
@@ -455,6 +462,9 @@ export default {
     },
     Steels() {
       return this.$store.getters.steels
+    },
+    preparedShowSO() {
+      return (!!this.soQt && !!this.soDepth)
     }
   },
   methods: {
@@ -559,6 +569,20 @@ export default {
         arr.push({notice: 0, warning: 0, action: 0})
       }
       this.newProject.vgManagement = arr
+    },
+    getSOItems() {
+      this.newProject.soLocation = this.initSOList(this.soQt, this.soDepth)
+      this.soImported = true
+    },
+    initSOList(number, depth) {
+      var arr = []
+      for (var i = 1; i <= number; i++ ) {
+        arr.push({
+          number: `SO - 0${i}`, // todo: if i > 10
+          depth: depth
+        })
+      }
+      return arr
     }
   }
 }
