@@ -338,8 +338,6 @@
         </el-row>
       </el-form-item>
     </el-form>
-    <el-button @click="mergeVGLocation(newProject.vgLocation, fullVGsInfo)">merge</el-button>
-    <el-button @click="initVGLocation()">init</el-button>
     
   </div>
 </template>
@@ -506,6 +504,8 @@ export default {
       this.toPath('ProjectSetting')
     },
     submit() {
+      this.initVGLocation()
+      this.mergeVGLocation(this.newProject.vgLocation, this.fullVGsInfo)
       this.$store.dispatch('createProject', this.newProject).then(() => {
         this.reset()
         this.toPath('ProjectSetting')
@@ -583,6 +583,21 @@ export default {
         })
       }
       return arr
+    },
+    mergeVGLocation(vgLocation, fullVGsInfo) {
+      fullVGsInfo.forEach((vg, index) => {
+        vgLocation[index].number = vg.serial
+        vgLocation[index].steelId = vg.steelId
+        console.log(vgLocation)
+      })
+    },
+    initVGLocation() {
+      var length = this.newProject.floor * this.numOfFloor
+      var vgLocation = []
+      for (var i = 0; i < length; i++) {
+        vgLocation.push({number: '', steelId: ''})
+      }
+      this.newProject.vgLocation = vgLocation
     }
   }
 }
