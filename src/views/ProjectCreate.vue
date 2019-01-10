@@ -534,11 +534,11 @@ export default {
       this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, vgList)
       this.vgImported = true
       this.initVGManagement()
-      this.getVGTable()
+      this.getVGTable(0)
     },
     currentFloor(selectedFloor) {
       this.floorIndex = selectedFloor - 1
-      this.getVGTable()
+      this.getVGTable(this.floorIndex)
     },
     updateSelectedVGs(value) {
       var VGList = []
@@ -548,9 +548,9 @@ export default {
       });
       this.VGList = VGList
     },
-    getVGTable() {
-      var start = this.floorIndex * this.numOfFloor
-      var end =  (this.floorIndex + 1) * this.numOfFloor
+    getVGTable(floorIndex) {
+      var start = floorIndex * this.numOfFloor
+      var end =  (floorIndex + 1) * this.numOfFloor
       this.vgTable = this.fullVGsInfo.slice(start, end)
     },
     initVGManagement() {
