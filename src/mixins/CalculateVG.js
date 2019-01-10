@@ -79,12 +79,12 @@ var mixin = {
         var portsArr = allPortsArr.flat()
         var floor = 0
         for (var i = 0; i < hostsArr.length; i++) {
-          if (i % 5 == 0) floor += 1
+          if (i % numOfFloor == 0) floor += 1
           VGItems[i] = {
             floor: floor,
             host: hostsArr[i],
             port: portsArr[i],
-            serial: `vg-${floor}-0${(i % 5) + 1}`,
+            serial: `vg-${floor}-0${(i % numOfFloor) + 1}`,
             steelId: 0
             // TODO: fn serial(num){return (num < 10 ? '0' : '') + num}
           }
