@@ -185,7 +185,7 @@
           <br>
           <br>
 
-          <div class="block" v-if="vgImported">
+          <div class="block" v-if="!!fullVGsInfo.length">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
@@ -194,7 +194,7 @@
             </el-pagination>
           </div>
 
-          <el-row :gutter="20" v-if="vgImported">
+          <el-row :gutter="20" v-if="!!fullVGsInfo.length">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
               注意值
@@ -274,7 +274,7 @@
           <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">import SOs</el-button>
           <br>
 
-          <el-row :gutter="20" v-if="soImported">
+          <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
               注意值
@@ -352,10 +352,8 @@ export default {
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
-      soImported: false,
       soQt: 0,
       soDepth: 0,
-      vgImported: false,
       needMoreGauge: '', // alert text
       floorIndex: 0, // used in array
       numOfFloor: 0, // 
@@ -393,18 +391,8 @@ export default {
           action: 0
         },
         vgIds: [],
-        vgLocation: [
-          {
-            number: '',
-            steelId: ''
-          }
-        ],
-        soLocation: [
-          {
-            number: '',
-            depth: 0
-          }
-        ]
+        vgLocation: [],
+        soLocation: []
       }
     }
   },
@@ -542,7 +530,6 @@ export default {
       var floor = this.newProject.floor
       var vgList = this.newProject.vgIds
       this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, vgList)
-      this.vgImported = true
       this.initVGManagement()
       this.getVGTable(0)
     },
@@ -571,10 +558,9 @@ export default {
       this.newProject.vgManagement = arr
     },
     getSOItems() {
-      this.newProject.soLocation = this.initSOList(this.soQt, this.soDepth)
-      this.soImported = true
+      this.newProject.soLocation = this.initSOLocation(this.soQt, this.soDepth)
     },
-    initSOList(number, depth) {
+    initSOLocation(number, depth) {
       var arr = []
       for (var i = 1; i <= number; i++ ) {
         arr.push({
