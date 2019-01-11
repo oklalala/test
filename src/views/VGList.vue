@@ -81,7 +81,7 @@ export default {
     updateDeleteList(value) {
       this.deleteList = value.map(vg => vg.id)
     },
-    checkable(row, index) {
+    checkable(row) {
       return !row.projectName
     },
     editVG(id, newNumber) {

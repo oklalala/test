@@ -432,17 +432,6 @@ export default {
     VGs() {
       return this.$store.getters.vgs
     },
-    preparedShowVG() {
-      if (!this.isEnoughtVG) {
-        this.needMoreGauge = 'Add more gauge please'
-        return false
-      }
-      this.needMoreGauge = ''
-      var hasFloor = !!this.newProject.floor
-      var hasNumOfFloor = !!this.numOfFloor
-      var hasSelectedVG = this.newProject.vgIds.length !== 0
-      return hasFloor && hasNumOfFloor && hasSelectedVG
-    },
     isEnoughtVG() {
       var neededGauge = this.newProject.floor * this.numOfFloor
       var usableGauge = this.VGList.length * 14 // a host have 14 port
@@ -516,7 +505,7 @@ export default {
       })
       this.USERList = USERList
     },
-    uploadChange(file, fileList) {
+    uploadChange(file) {
       this.imageSelected = true
       this.image = file
     },
@@ -543,6 +532,17 @@ export default {
       var start = floorIndex * this.numOfFloor
       var end = (floorIndex + 1) * this.numOfFloor
       this.vgTable = this.fullVGsInfo.slice(start, end)
+    },
+    preparedShowVG() {
+      if (!this.isEnoughtVG) {
+        this.needMoreGauge = 'Add more gauge please'
+        return false
+      }
+      this.needMoreGauge = ''
+      var hasFloor = !!this.newProject.floor
+      var hasNumOfFloor = !!this.numOfFloor
+      var hasSelectedVG = this.newProject.vgIds.length !== 0
+      return hasFloor && hasNumOfFloor && hasSelectedVG
     },
     initVGManagement() {
       var arr = []
