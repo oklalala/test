@@ -347,7 +347,7 @@ import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
 
 export default {
-  name: 'CreateUser',
+  name: 'ProjectCreate',
 
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
@@ -473,18 +473,8 @@ export default {
           action: 0
         },
         vgIds: [],
-        vgLocation: [
-          {
-            number: '',
-            steelId: ''
-          }
-        ],
-        soLocation: [
-          {
-            number: '',
-            depth: 0
-          }
-        ]
+        vgLocation: [], // [{ number: '', steelId:''}]
+        soLocation: []  // [{ number: '', depth: 0 }]
       }
     },
     cancel() {
