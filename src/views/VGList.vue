@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import ToPathMixin from '@/mixins/ToPath';
+import ToPathMixin from '@/mixins/ToPath'
 export default {
   number: 'VGList',
 
@@ -52,7 +52,7 @@ export default {
       deleteList: [],
       newVG: {
         number: ''
-      },
+      }
     }
   },
   computed: {
@@ -62,20 +62,20 @@ export default {
   },
   methods: {
     reset() {
-      this.$store.dispatch('getVGs').then(()=>{
+      this.$store.dispatch('getVGs').then(() => {
         this.newVG = {
-          number: ""
+          number: ''
         }
       })
     },
     createVG() {
-      if ( !this.newVG.number ) alert("Enter the vg's name PLZ")
-        this.$store.dispatch('createVG', this.newVG).then(() => {
+      if (!this.newVG.number) alert("Enter the vg's name PLZ")
+      this.$store.dispatch('createVG', this.newVG).then(() => {
         this.reset()
       })
     },
     deleteVGs() {
-      if ( this.deleteList.length === 0 ) return
+      if (this.deleteList.length === 0) return
       this.$store.dispatch('deleteVGs', this.deleteList)
     },
     updateDeleteList(value) {
@@ -84,11 +84,11 @@ export default {
     checkable(row, index) {
       return !row.projectName
     },
-    editVG(id,newNumber) {
+    editVG(id, newNumber) {
       this.$store
         .dispatch('updateVG', {
           vgId: id,
-          payload: {number: newNumber}
+          payload: { number: newNumber }
         })
         .then(() => {
           this.reset()
@@ -97,4 +97,3 @@ export default {
   }
 }
 </script>
-

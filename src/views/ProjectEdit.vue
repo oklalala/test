@@ -362,12 +362,12 @@ export default {
       soDepth: 0,
       needMoreGauge: '', // alert text
       floorIndex: 0, // used in array
-      numOfFloor: 0, // 
+      numOfFloor: 0, //
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
       fullVGsInfo: [], // from calculateVG.js
       imageSelected: false, // optimize UX
-      image: [{url: "haha"}], // preview url in blob
+      image: [{ url: 'haha' }], // preview url in blob
       OPTList: [], // custom and self OPTs
       USERList: [], // custom USERs
       statusList: [
@@ -420,13 +420,17 @@ export default {
 
     OPTs() {
       var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(user => user.company.id == this.newProject.companyId)
+      var customersOPT = allOPT.filter(
+        user => user.company.id == this.newProject.companyId
+      )
       var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
       return selfOPT.concat(customersOPT)
     },
     USERs() {
       var allUSER = this.$store.getters.USERs
-      var customeersUSER = allUSER.filter(user => user.company.id == this.newProject.companyId)
+      var customeersUSER = allUSER.filter(
+        user => user.company.id == this.newProject.companyId
+      )
       return customeersUSER
     },
     myCompany() {
@@ -435,21 +439,10 @@ export default {
     VGs() {
       return this.$store.getters.vgs
     },
-    preparedShowVG() {
-      if (!this.isEnoughtVG) {
-        this.needMoreGauge = "Add more gauge please"
-        return false
-      }
-      this.needMoreGauge = ''
-      var hasFloor = !!this.newProject.floor
-      var hasNumOfFloor = !!this.numOfFloor
-      var hasSelectedVG = (this.newProject.vgIds.length !== 0)
-      return (hasFloor && hasNumOfFloor && hasSelectedVG)
-    },
     isEnoughtVG() {
       var neededGauge = this.newProject.floor * this.numOfFloor
-      var usableGauge = this.VGList.length * 14  // a host have 14 port
-      return (usableGauge >= neededGauge)
+      var usableGauge = this.VGList.length * 14 // a host have 14 port
+      return usableGauge >= neededGauge
     },
     getPagination() {
       return this.newProject.floor * 10
@@ -458,7 +451,7 @@ export default {
       return this.$store.getters.steels
     },
     preparedShowSO() {
-      return (!!this.soQt && !!this.soDepth)
+      return !!this.soQt && !!this.soDepth
     }
   },
   methods: {
@@ -509,7 +502,7 @@ export default {
         },
         vgIds: [],
         vgLocation: [],
-        soLocation: [] 
+        soLocation: []
       }
     },
     cancel() {
@@ -528,7 +521,7 @@ export default {
         })
     },
 
-    resetMember(){
+    resetMember() {
       this.USERList = []
       this.OPTList = []
       this.newProject.OPT = []
@@ -539,7 +532,7 @@ export default {
       value.forEach(id => {
         var selectedOPT = this.OPTs.filter(opt => opt.id == id)
         OPTList = OPTList.concat(selectedOPT)
-      });
+      })
       this.OPTList = OPTList
     },
     updateSelectedUSERs(value) {
@@ -547,10 +540,10 @@ export default {
       value.forEach(id => {
         var selectedUSER = this.USERs.filter(user => user.id == id)
         USERList = USERList.concat(selectedUSER)
-      });
+      })
       this.USERList = USERList
     },
-    uploadChange(file, fileList) {
+    uploadChange(file) {
       this.imageSelected = true
       this.image = file
     },
@@ -570,18 +563,29 @@ export default {
       value.forEach(id => {
         var selectedVG = this.VGs.filter(vg => vg.id == id)
         VGList = VGList.concat(selectedVG)
-      });
+      })
       this.VGList = VGList
     },
     getVGTable(floorIndex) {
       var start = floorIndex * this.numOfFloor
-      var end =  (floorIndex + 1) * this.numOfFloor
+      var end = (floorIndex + 1) * this.numOfFloor
       this.vgTable = this.fullVGsInfo.slice(start, end)
+    },
+    preparedShowVG() {
+      if (!this.isEnoughtVG) {
+        this.needMoreGauge = 'Add more gauge please'
+        return false
+      }
+      this.needMoreGauge = ''
+      var hasFloor = !!this.newProject.floor
+      var hasNumOfFloor = !!this.numOfFloor
+      var hasSelectedVG = this.newProject.vgIds.length !== 0
+      return hasFloor && hasNumOfFloor && hasSelectedVG
     },
     initVGManagement() {
       var arr = []
       for (var i = 0; i < this.newProject.floor; i++) {
-        arr.push({notice: 0, warning: 0, action: 0})
+        arr.push({ notice: 0, warning: 0, action: 0 })
       }
       this.newProject.vgManagement = arr
     },
@@ -590,7 +594,7 @@ export default {
     },
     initSOLocation(number, depth) {
       var arr = []
-      for (var i = 1; i <= number; i++ ) {
+      for (var i = 1; i <= number; i++) {
         arr.push({
           number: `SO-0${i}`, // todo: if i > 10
           depth: depth
@@ -609,7 +613,7 @@ export default {
       var length = this.newProject.floor * this.numOfFloor
       var vgLocation = []
       for (var i = 0; i < length; i++) {
-        vgLocation.push({number: '', steelId: ''})
+        vgLocation.push({ number: '', steelId: '' })
       }
       this.newProject.vgLocation = vgLocation
     }
@@ -631,9 +635,10 @@ img {
   display: none;
 }
 
-.el-upload-dragger, .el-upload--picture{
+.el-upload-dragger,
+.el-upload--picture {
   width: 60vw;
-  height: auto; 
+  height: auto;
 }
 
 .reselect {

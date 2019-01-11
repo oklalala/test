@@ -47,7 +47,7 @@
         label="傾度管量測"
         width="180">
         <template slot-scope="scope">
-          <el-button @click="toPath('MeasuresSo')" v-if="isOPT()">傾度管資料</el-button>
+          <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })" v-if="isOPT()">傾度管資料</el-button>
           <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
         </template>
       </el-table-column>
@@ -81,11 +81,11 @@ export default {
     },
     isAdminOrMGT() {
       let role = this.$store.getters.myRole
-      return (role === "MGT" || role === "ADMIN")
+      return role === 'MGT' || role === 'ADMIN'
     },
     isOPT() {
       let role = this.$store.getters.myRole
-      return (role === "OPT")
+      return role === 'OPT'
     }
   }
 }

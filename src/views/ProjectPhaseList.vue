@@ -70,9 +70,11 @@ export default {
   },
   methods: {
     createProjectPhase() {
-      this.$store.dispatch('createProjectPhase', this.newProjectPhase).then(() => {
-        this.reset()
-      })
+      this.$store
+        .dispatch('createProjectPhase', this.newProjectPhase)
+        .then(() => {
+          this.reset()
+        })
     },
     reset() {
       this.newProjectPhase = {

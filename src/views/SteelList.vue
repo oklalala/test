@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import ToPathMixin from '@/mixins/ToPath';
+import ToPathMixin from '@/mixins/ToPath'
 export default {
   number: 'SteelList',
 
@@ -119,7 +119,7 @@ export default {
       return this.$store.getters.steels
     },
     deletable() {
-      return (this.deleteList.length != 0)
+      return this.deleteList.length != 0
     }
   },
   methods: {
@@ -134,13 +134,13 @@ export default {
       }
     },
     createSteel() {
-      if ( !this.newSteel.name ) alert("Enter the steel's name PLZ")
+      if (!this.newSteel.name) alert("Enter the steel's name PLZ")
       this.$store.dispatch('createSteel', this.newSteel).then(() => {
         this.resetTable()
       })
     },
     deleteSteels() {
-      if ( this.deleteList.length === 0 ) return
+      if (this.deleteList.length === 0) return
       this.$store.dispatch('deleteSteels', this.deleteList)
       this.resetTable()
     },
@@ -149,7 +149,7 @@ export default {
       this.editable = true
       this.deleteList = value.map(steel => steel.id)
     },
-    checkable(row, index) {
+    checkable(row) {
       return !row.projectName
     },
     editSteel() {
@@ -177,7 +177,7 @@ export default {
       this.$store.dispatch('getSteels').then(() => {
         this.highLight = false
         this.editable = false
-        this.reset()  
+        this.reset()
       })
     }
   }

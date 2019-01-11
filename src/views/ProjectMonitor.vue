@@ -89,8 +89,8 @@ export default {
   data() {
     return {
       // deleteList: [],
-      test1: "haha",
-      test2: "hehe"
+      test1: 'haha',
+      test2: 'hehe'
     }
   },
   computed: {
