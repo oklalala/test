@@ -20,7 +20,6 @@ let wiseConfig = {
 // patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":0}]}:
 // get      /ai_value/slot_0/ch_0  ""
 
-
 let powerChannel = 0
 let switchChannel = 1
 let ON = 0
@@ -28,53 +27,68 @@ let OFF = 1
 
 export default function(wiseIP, formData) {
   wiseConfig.wiseIP = 'http://' + wiseIP
-  let xData,yData,temp
-  initializationSO(powerChannel,OFF,switchChannel,OFF)
-  .then(()=>switchSO(powerChannel,ON))
-  .then(()=>switchSO(switchChannel,ON))
-  .then(() =>getSORawData())
-  .then(res=>{
-    xData = res.data
-  })
-  .then(()=>switchSO(switchChannel,OFF))
-  .then(()=>switchSO(switchChannel,ON))
-  .then(() =>getSORawData())
-  .then(res=>{
-    temp = res.data
-  })
-  .then(() =>switchSO(switchChannel,OFF))
-  .then(() =>switchSO(switchChannel,ON))
-  .then(() =>getSORawData())
-  .then(res => {
-    yData = res.data
-  })
-  .then(()=>{initializationSO(powerChannel,OFF,switchChannel,OFF)})
-  .then(()=>{
-    console.log("fuck",xData,temp,yData)
-  })
+  let digitX, digitTemp, digitY
+  let slopeX, temp, slopeY
+  initializationSO(powerChannel, OFF, switchChannel, OFF)
+    .then(() => switchSO(powerChannel, ON))
+    .then(() => switchSO(switchChannel, ON))
+    .then(() => getSORawData())
+    .then(res => {
+      digitX = res.data
+    })
+    .then(() => switchSO(switchChannel, OFF))
+    .then(() => switchSO(switchChannel, ON))
+    .then(() => getSORawData())
+    .then(res => {
+      digitTemp = res.data
+    })
+    .then(() => switchSO(switchChannel, OFF))
+    .then(() => switchSO(switchChannel, ON))
+    .then(() => getSORawData())
+    .then(res => {
+      digitY = res.data
+    })
+    .then(() => {
+      initializationSO(powerChannel, OFF, switchChannel, OFF)
+    })
+    .then(() => {
+      temp = calculatingTemperature(digitTemp.Eg / 1000000)
+      slopeX = calculatingSlope(digitX.Eg/1000000, temp)
+      slopeY = calculatingSlope(digitY.Eg/1000000, temp)
+      console.log(slopeX, temp, slopeY)
+    })
   formData.push('fuck')
 }
 
-
-function initializationSO(powerChannel,powerStatus,switchChannel,switchStatus) {
+function initializationSO(
+  powerChannel,
+  powerStatus,
+  switchChannel,
+  switchStatus
+) {
   return requestMeasuresSO('Patch', '/do_value/slot_0', {
-    DOVal: [{
-      Ch: powerChannel,
-      Val: powerStatus
-    }, {
-      Ch: switchChannel,
-      Val: switchStatus
-    }]
+    DOVal: [
+      {
+        Ch: powerChannel,
+        Val: powerStatus
+      },
+      {
+        Ch: switchChannel,
+        Val: switchStatus
+      }
+    ]
   })
 }
 
 function switchSO(channel, value) {
   delay()
   return requestMeasuresSO('Patch', '/do_value/slot_0', {
-    DOVal: [{
-      Ch: channel,
-      Val: value
-    }]
+    DOVal: [
+      {
+        Ch: channel,
+        Val: value
+      }
+    ]
   })
 }
 
@@ -107,4 +121,25 @@ function delay() {
     console.log(i)
   }
   console.groupEnd()
+}
+
+function calculatingTemperature(Eg) {
+  return (
+    9.3219 * Math.pow(Eg, 5) -
+    54.3038 * Math.pow(Eg, 4) +
+    131.165 * Math.pow(Eg, 3) -
+    161.2568 * Math.pow(Eg, 2) +
+    137.7711 * Eg -
+    37.7705
+  )
+}
+function calculatingSlope(volts, tempC) {
+  // C5 x Volts2 + C4 x Volts + C3 + C2 x TdegC + C1 x TdegC2 +C0 x Volts x TdegC
+  let SO_C = [1.8162e-2, 4.026e-3, -1.4713e-1, 6.6525, 7.9756e1, 3.5082e-2]
+  let rawData = [tempC * volts, tempC * tempC, tempC, 1, volts, volts * volts]
+  let slope = 0
+  SO_C.forEach((item,index)=>{
+    slope += item*rawData[index]
+  })
+  return slope
 }
