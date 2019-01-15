@@ -32,6 +32,7 @@
         <el-col>
           <el-form-item label="帳號">
             <el-input v-model="newUser.account"></el-input>
+            <el-h6 type="info">預設密碼: 000</el-h6>
           </el-form-item>
         </el-col>
       </el-row>
