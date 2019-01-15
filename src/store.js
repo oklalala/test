@@ -118,7 +118,7 @@ const projectPhases = {
         dispatch('getProjectPhases')
       })
     },
-    createProject(context, payload) {
+    createProjectPhase(context, payload) {
       return sendAPI('post', `/project-phase`, true, payload)
     }
   }
