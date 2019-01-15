@@ -1,47 +1,28 @@
 <template>
   <div class="projectSetting">
+    <h1>專案設定</h1>
     <el-row :gutter="20" type="flex" justify="space-between">
       <el-col :span="6">
-      <h1>專案設定</h1>
+        <el-button type="primary" @click="deleteProjects" v-show="!!deleteList.length">刪除</el-button>
       </el-col>
-      <el-col :span="6">
-        <span>專案狀態</span>dropdown
-        <!-- <el-select placeholder="请选择">
-          <el-option>end</el-option>
-          <el-option>in-progress</el-option>
-        </el-select> -->
-        <!-- <el-form-item label="專案狀態">
-          <el-select
-            placeholder="1,4"
-            style="width: 100%">
-            <el-option>end</el-option>
-            <el-option>in-progress</el-option>
-          </el-select>
-        </el-form-item> -->
-      </el-col>
-    </el-row>
-    <div class="operationGroup">
-      <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteProjects">刪除</el-button>
-      </div>
-      <div class="operationGroup-right">
+      <el-col :offset="10">
         <el-button type="primary" @click="toPath('ProjectCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
-      </div>
-    </div>
+      </el-col>
+    </el-row>
     <el-table
       :data="projectList"
       class="projectList-table"
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
-        width="180">
+        width="30">
       </el-table-column>
       <el-table-column
         prop="id"
         label="案號"
-        width="320">
+        width="200">
         <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('ProjectEdit', { projectId: scope.row.id })">
@@ -52,7 +33,17 @@
       <el-table-column
         prop="name"
         label="名稱"
-        width="460">
+        width="200">
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="專案狀態"
+        width="100"
+        :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
+        :filter-method="statusFilter">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -81,6 +72,9 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)
+    },
+    statusFilter(value, row) {
+      return row.status === value;
     }
   }
 }
