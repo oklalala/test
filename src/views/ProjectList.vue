@@ -1,25 +1,6 @@
 <template>
   <div class="projectList">
-    <el-row :gutter="20" type="flex" justify="space-between">
-      <el-col :span="6">
-      <h1>專案列表</h1>
-      </el-col>
-      <el-col :span="6" v-if="isAdminOrMGT()">
-        <span>專案狀態</span>
-        <!-- <el-select placeholder="请选择">
-          <el-option>end</el-option>
-          <el-option>in-progress</el-option>
-        </el-select> -->
-        <!-- <el-form-item label="專案狀態">
-          <el-select
-            placeholder="1,4"
-            style="width: 100%">
-            <el-option>end</el-option>
-            <el-option>in-progress</el-option>
-          </el-select>
-        </el-form-item> -->
-      </el-col>
-    </el-row>
+    <h1>專案列表</h1>
     
     <el-table
       :data="projectList"
@@ -28,16 +9,16 @@
         fixed
         prop="id"
         label="案號"
-        width="320">
+        width="180">
       </el-table-column>
       <el-table-column
         prop="name"
         label="名稱"
-        width="320">
+        width="160">
       </el-table-column>
       <el-table-column
         label="監控資料"
-        width="180">
+        width="120">
         <template slot-scope="scope">
           <el-button @click="toPath('ProjectMonitor')">監控資料</el-button>
           <!-- <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button> -->
@@ -45,10 +26,22 @@
       </el-table-column>
       <el-table-column
         label="傾度管量測"
-        width="180">
+        width="130"
+        v-if="isOPT()">
         <template slot-scope="scope">
-          <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })" v-if="isOPT()">傾度管資料</el-button>
+          <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })">傾度管資料</el-button>
           <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="專案狀態"
+        width="100"
+        :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
+        :filter-method="statusFilter"
+        v-if="isAdminOrMGT()">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -86,6 +79,9 @@ export default {
     isOPT() {
       let role = this.$store.getters.myRole
       return role === 'OPT'
+    },
+    statusFilter(value, row) {
+      return row.status === value;
     }
   }
 }
