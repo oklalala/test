@@ -86,3 +86,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.el-table::before{
+  height: 0;
+}
+</style>
+
