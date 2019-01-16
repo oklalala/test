@@ -81,15 +81,14 @@ export default {
       return role === 'OPT'
     },
     statusFilter(value, row) {
-      return row.status === value;
+      return row.status === value
     }
   }
 }
 </script>
 
 <style>
-.el-table::before{
+.el-table::before {
   height: 0;
 }
 </style>
-

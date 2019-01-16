@@ -74,7 +74,7 @@ export default {
       this.deleteList = value.map(project => project.id)
     },
     statusFilter(value, row) {
-      return row.status === value;
+      return row.status === value
     }
   }
 }
