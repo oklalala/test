@@ -70,7 +70,7 @@
       <el-tabs type="border-card">
         <el-tab-pane label="OPT">
           <el-select
-            v-model="newProject.OPT"
+            v-model="selectedOPT"
             placeholder="金貝貝"
             multiple
             @change="updateSelectedOPTs"
@@ -82,9 +82,9 @@
               :value="opt.id">
             </el-option>
           </el-select>
-            
+          
           <el-table
-            :data="OPTList"
+            :data="newProject.OPT"
             class="projectList-table">
             <el-table-column
               label="負責人"
@@ -98,10 +98,9 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-
         <el-tab-pane label="USER">
           <el-select
-            v-model="newProject.USER"
+            v-model="selectedUSER"
             placeholder="阿土伯"
             multiple
             @change="updateSelectedUSERs"
@@ -115,7 +114,7 @@
           </el-select>
             
           <el-table
-            :data="USERList"
+            :data="newProject.USER"
             class="projectList-table">
             <el-table-column
               label="負責人"
@@ -149,7 +148,6 @@
 
       <h2>監控設定</h2>
       <el-tabs type="border-card">
-
         <el-tab-pane label="軸力計 ( VG )"> 
           <el-form-item label="使用軸力計編號">
             {{needMoreGauge}}
@@ -181,11 +179,11 @@
             </el-input>
           </div>
           <br>
-          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">import VGs</el-button>
+          <!-- <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">import VGs</el-button> -->
           <br>
           <br>
 
-          <div class="block" v-if="!!fullVGsInfo.length">
+          <div class="block" v-if="!!newProject.vgLocation.length">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
@@ -194,7 +192,7 @@
             </el-pagination>
           </div>
 
-          <el-row :gutter="20" v-if="!!fullVGsInfo.length">
+          <el-row :gutter="20" v-if="!!newProject.vgLocation.length">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
               注意值
@@ -271,7 +269,7 @@
             </el-input>
           </div>
           <br>
-          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">import SOs</el-button>
+          <!-- <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">import SOs</el-button> -->
           <br>
 
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
@@ -324,7 +322,7 @@
           <el-col :span="12">
             <el-button
               style="width: 100%"
-              @click="submit">
+              @click="edit">
               確定送出
             </el-button>
           </el-col>
@@ -368,8 +366,8 @@ export default {
       fullVGsInfo: [], // from calculateVG.js
       imageSelected: false, // optimize UX
       image: [{ url: 'haha' }], // preview url in blob
-      OPTList: [], // custom and self OPTs
-      USERList: [], // custom USERs
+      selectedOPT: [], // custom and self OPTs
+      selectedUSER: [], // custom USERs
       statusList: [
         {
           value: 'end',
@@ -465,6 +463,14 @@ export default {
     loadProject(projectId) {
       this.$store.dispatch('getProject', projectId).then(res => {
         let project = res.data.data
+
+        project.OPT.forEach(opt => {
+         this.selectedOPT.push( opt.id )
+        })
+        project.USER.forEach(user => {
+          this.selectedUSER.push( user.id )
+        })
+        
         this.newProject = {
           number: project.number, // CNT-16Q3
           status: project.status, // end or in-progress
@@ -520,10 +526,9 @@ export default {
           this.toPath('ProjectList')
         })
     },
-
     resetMember() {
-      this.USERList = []
-      this.OPTList = []
+      this.selectedUSER = []
+      this.selectedOPT = []
       this.newProject.OPT = []
       this.newProject.USER = []
     },
@@ -533,7 +538,7 @@ export default {
         var selectedOPT = this.OPTs.filter(opt => opt.id == id)
         OPTList = OPTList.concat(selectedOPT)
       })
-      this.OPTList = OPTList
+      this.newProject.OPT = OPTList
     },
     updateSelectedUSERs(value) {
       var USERList = []
@@ -541,7 +546,7 @@ export default {
         var selectedUSER = this.USERs.filter(user => user.id == id)
         USERList = USERList.concat(selectedUSER)
       })
-      this.USERList = USERList
+      this.newProject.USER = USERList
     },
     uploadChange(file) {
       this.imageSelected = true
@@ -606,7 +611,7 @@ export default {
       fullVGsInfo.forEach((vg, index) => {
         vgLocation[index].number = vg.serial
         vgLocation[index].steelId = vg.steelId
-        console.log(vgLocation)
+        // console.log(vgLocation)
       })
     },
     initVGLocation() {
