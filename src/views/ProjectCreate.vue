@@ -144,8 +144,7 @@
         <i class="el-icon-upload" v-if="!imageSelected"></i>
         <div class="el-upload__text" v-if="!imageSelected">將文件拖到此處，或<em>點擊上傳</em></div>
         <el-button class="reselect" size="small" type="primary" v-if="imageSelected">另選圖片</el-button>
-      </el-upload>  
-
+      </el-upload>
 
       <h2>監控設定</h2>
       <el-tabs type="border-card">
@@ -345,6 +344,7 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
+import sendImageAPI from '../utils/ImageAPI'
 
 export default {
   name: 'ProjectCreate',
@@ -508,6 +508,9 @@ export default {
     uploadChange(file) {
       this.imageSelected = true
       this.image = file
+      sendImageAPI(file.raw).then(res => {
+        this.newProject.sitePlan = res.data.url
+      })
     },
     getVGItems() {
       var floor = this.newProject.floor
