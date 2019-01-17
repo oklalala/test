@@ -317,7 +317,7 @@
         </el-tab-pane>
       </el-tabs>
       <br>
-
+      {{newProject.OPT}}
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">

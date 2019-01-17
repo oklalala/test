@@ -82,7 +82,7 @@
               :value="opt.id">
             </el-option>
           </el-select>
-          
+
           <el-table
             :data="newProject.OPT"
             class="projectList-table">
@@ -139,10 +139,10 @@
         :on-change="uploadChange"
         list-type="picture"
         :auto-upload="false">
-        <img :src="this.image.url" alt="" v-if="imageSelected">
-        <i class="el-icon-upload" v-if="!imageSelected"></i>
-        <div class="el-upload__text" v-if="!imageSelected">將文件拖到此處，或<em>點擊上傳</em></div>
-        <el-button class="reselect" size="small" type="primary" v-if="imageSelected">另選圖片</el-button>
+        <img :src="showImage" v-if="!!newProject.sitePlan">
+        <i class="el-icon-upload" v-if="!newProject.sitePlan"></i>
+        <div class="el-upload__text" v-if="!newProject.sitePlan">將文件拖到此處，或<em>點擊上傳</em></div>
+        <el-button class="reselect" size="small" type="primary" v-if="!!newProject.sitePlan">另選圖片</el-button>
       </el-upload>  
 
 
@@ -150,10 +150,8 @@
       <el-tabs type="border-card">
         <el-tab-pane label="軸力計 ( VG )"> 
           <el-form-item label="使用軸力計編號">
-            {{needMoreGauge}}
             <el-select 
               v-model="newProject.vgIds" 
-              placeholder="可複選"
               multiple 
               @change="updateSelectedVGs"
               style="width: 100%">
@@ -166,22 +164,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <div class="demo-input-suffix">
-            支撐階數：
-            <el-input 
-              v-model.number="newProject.floor"
-              placeholder="3">
-            </el-input>
-            每層數量：
-            <el-input
-              v-model.number="numOfFloor"
-              placeholder="5">
-            </el-input>
-          </div>
-          <br>
-          <!-- <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">import VGs</el-button> -->
-          <br>
-          <br>
 
           <div class="block" v-if="!!newProject.vgLocation.length">
             <span class="demonstration">請選擇支撐階數</span>
@@ -219,17 +201,17 @@
               </el-button>
               <el-table class="vg-table" :data="vgTable">
                 <el-table-column
-                  prop="host"
+                  prop="vgId"
                   label="VG ID"
                   width="320">
                 </el-table-column>
                 <el-table-column
-                  prop="port"
+                  prop="vgNumber"
                   label="Port"
                   width="80">
                 </el-table-column>
                 <el-table-column
-                  prop="serial"
+                  prop="number"
                   label="編碼"
                   width="100">
                 </el-table-column>
@@ -256,22 +238,6 @@
         </el-tab-pane>
 
         <el-tab-pane label="傾度管 ( SO )">
-          <div class="demo-input-suffix">
-            數量：
-            <el-input
-              v-model.number="soQt"
-              placeholder="5">
-            </el-input>
-            每孔深度 ( m )：
-            <el-input
-              v-model.number="soDepth"
-              placeholder="20.5">
-            </el-input>
-          </div>
-          <br>
-          <!-- <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">import SOs</el-button> -->
-          <br>
-
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
@@ -304,11 +270,6 @@
                   prop="depth"
                   label="深度"
                   width="200">
-                  <template slot-scope="scope">
-                    <el-input 
-                    v-model.number="scope.row.depth">
-                    </el-input>
-                  </template>
                 </el-table-column>
               </el-table>
             </el-col>
@@ -344,6 +305,7 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
+import sendImageAPI from '../utils/ImageAPI'
 
 export default {
   name: 'ProjectEdit',
@@ -364,7 +326,6 @@ export default {
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
       fullVGsInfo: [], // from calculateVG.js
-      imageSelected: false, // optimize UX
       image: [{ url: 'haha' }], // preview url in blob
       selectedOPT: [], // custom and self OPTs
       selectedUSER: [], // custom USERs
@@ -437,19 +398,14 @@ export default {
     VGs() {
       return this.$store.getters.vgs
     },
-    isEnoughtVG() {
-      var neededGauge = this.newProject.floor * this.numOfFloor
-      var usableGauge = this.VGList.length * 14 // a host have 14 port
-      return usableGauge >= neededGauge
-    },
     getPagination() {
       return this.newProject.floor * 10
     },
     Steels() {
       return this.$store.getters.steels
     },
-    preparedShowSO() {
-      return !!this.soQt && !!this.soDepth
+    showImage() {
+      return `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
     }
   },
   methods: {
@@ -463,23 +419,22 @@ export default {
     loadProject(projectId) {
       this.$store.dispatch('getProject', projectId).then(res => {
         let project = res.data.data
-
         project.OPT.forEach(opt => {
-         this.selectedOPT.push( opt.id )
+          this.selectedOPT.push(opt.id)
         })
         project.USER.forEach(user => {
-          this.selectedUSER.push( user.id )
+          this.selectedUSER.push(user.id)
         })
-        
+
         this.newProject = {
           number: project.number, // CNT-16Q3
           status: project.status, // end or in-progress
           name: project.name, // 測試專案
           address: project.address, // 三路
           companyId: project.companyId,
-          sitePlan: project.sitPlan, // 上傳的圖片
-          OPT: project.OPT, // {id:..} 公司或客戶的 operator
-          USER: project.USER, // {id:..} 客戶的使用者
+          sitePlan: project.sitePlan, // 上傳的圖片
+          OPT: project.OPT,
+          USER: project.USER,
           floor: project.floor, //. vg階數
           vgManagement: project.vgManagement,
           soManagement: project.soManagement,
@@ -487,43 +442,30 @@ export default {
           vgLocation: project.vgLocation,
           soLocation: project.soLocation
         }
+        this.numOfFloor = project.vgLocation.length / project.floor
+        this.fullVGsInfo = project.vgLocation
+        this.getVGTable(0)
       })
     },
-    reset() {
-      this.newProject = {
-        number: '', // CNT-16Q3
-        status: '', // end or in-progress
-        name: '', // 測試專案
-        address: '', // 三路
-        companyId: '',
-        sitePlan: '', // 上傳的圖片
-        OPT: [], // {id:..} 公司或客戶的 operator
-        USER: [], // {id:..} 客戶的使用者
-        floor: 3, //. vg階數
-        vgManagement: [],
-        soManagement: {
-          notice: 0,
-          warning: 0,
-          action: 0
-        },
-        vgIds: [],
-        vgLocation: [],
-        soLocation: []
-      }
-    },
     cancel() {
-      this.reset()
-      this.toPath('ProjectList')
+      this.toPath('ProjectSetting')
     },
     edit() {
+      delete this.newProject.floor
+      this.newProject.vgLocation.map(vg => {
+        delete vg.vgId
+        delete vg.vgNumber
+        delete vg.steelName
+      })
+      this.newProject.OPT = this.selectedOPT
+      this.newProject.USER = this.selectedUSER
       this.$store
         .dispatch('updateProject', {
           projectId: this.$route.params.projectId,
           payload: this.newProject
         })
         .then(() => {
-          this.reset()
-          this.toPath('ProjectList')
+          this.toPath('ProjectSetting')
         })
     },
     resetMember() {
@@ -549,15 +491,10 @@ export default {
       this.newProject.USER = USERList
     },
     uploadChange(file) {
-      this.imageSelected = true
       this.image = file
-    },
-    getVGItems() {
-      var floor = this.newProject.floor
-      var vgList = this.newProject.vgIds
-      this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, vgList)
-      this.initVGManagement()
-      this.getVGTable(0)
+      sendImageAPI(file.raw).then(res => {
+        this.newProject.sitePlan = res.data.url
+      })
     },
     currentFloor(selectedFloor) {
       this.floorIndex = selectedFloor - 1
@@ -575,52 +512,6 @@ export default {
       var start = floorIndex * this.numOfFloor
       var end = (floorIndex + 1) * this.numOfFloor
       this.vgTable = this.fullVGsInfo.slice(start, end)
-    },
-    preparedShowVG() {
-      if (!this.isEnoughtVG) {
-        this.needMoreGauge = 'Add more gauge please'
-        return false
-      }
-      this.needMoreGauge = ''
-      var hasFloor = !!this.newProject.floor
-      var hasNumOfFloor = !!this.numOfFloor
-      var hasSelectedVG = this.newProject.vgIds.length !== 0
-      return hasFloor && hasNumOfFloor && hasSelectedVG
-    },
-    initVGManagement() {
-      var arr = []
-      for (var i = 0; i < this.newProject.floor; i++) {
-        arr.push({ notice: 0, warning: 0, action: 0 })
-      }
-      this.newProject.vgManagement = arr
-    },
-    getSOItems() {
-      this.newProject.soLocation = this.initSOLocation(this.soQt, this.soDepth)
-    },
-    initSOLocation(number, depth) {
-      var arr = []
-      for (var i = 1; i <= number; i++) {
-        arr.push({
-          number: `SO-0${i}`, // todo: if i > 10
-          depth: depth
-        })
-      }
-      return arr
-    },
-    mergeVGLocation(vgLocation, fullVGsInfo) {
-      fullVGsInfo.forEach((vg, index) => {
-        vgLocation[index].number = vg.serial
-        vgLocation[index].steelId = vg.steelId
-        // console.log(vgLocation)
-      })
-    },
-    initVGLocation() {
-      var length = this.newProject.floor * this.numOfFloor
-      var vgLocation = []
-      for (var i = 0; i < length; i++) {
-        vgLocation.push({ number: '', steelId: '' })
-      }
-      this.newProject.vgLocation = vgLocation
     }
   }
 }
