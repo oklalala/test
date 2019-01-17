@@ -11,8 +11,9 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="專案案號">
-            <el-input v-model="newProject.number"
-              placeholder="CNT - 16Q4"
+            <el-input 
+              v-model="newProject.number"
+              disabled
             ></el-input>
           </el-form-item>
         </el-col>
@@ -20,7 +21,6 @@
           <el-form-item label="專案狀態">
             <el-select
               v-model="newProject.status"
-              placeholder="請選擇"
               style="width: 100%">
               <el-option
                 v-for="item in statusList"
@@ -35,10 +35,8 @@
 
       <el-row :gutter="20">
         <el-col>
-          <el-form-item label="專案名稱">
-            <el-input v-model="newProject.name"
-              placeholder="阡福町商業大樓"
-            ></el-input>
+          <el-form-item label="專案名稱" required>
+            <el-input v-model="newProject.name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
