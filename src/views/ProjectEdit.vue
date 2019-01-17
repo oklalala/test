@@ -152,7 +152,8 @@
           <el-form-item label="使用軸力計編號">
             <el-select 
               v-model="newProject.vgIds" 
-              multiple 
+              multiple
+              disabled
               @change="updateSelectedVGs"
               style="width: 100%">
               <el-option
@@ -164,6 +165,31 @@
               </el-option>
             </el-select>
           </el-form-item>
+        <el-form-item label="換軸力計">
+          <el-select 
+            v-model="removedVG" 
+            style="width: 100%">
+            <el-option
+              v-for="vg in selectedVGs"
+              :key="vg.id"
+              :label="vg.number"
+              :value="vg.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="換成">
+          <el-select 
+            v-model="addedVG" 
+            style="width: 100%">
+            <el-option
+              v-for="vg in unSelectedVGs"
+              :key="vg.id"
+              :label="vg.number"
+              :value="vg.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable">Change</el-button>
 
           <div class="block" v-if="!!newProject.vgLocation.length">
             <span class="demonstration">請選擇支撐階數</span>
@@ -318,9 +344,8 @@ export default {
   },
   data() {
     return {
-      soQt: 0,
-      soDepth: 0,
-      needMoreGauge: '', // alert text
+      removedVG: '',
+      addedVG: '',
       floorIndex: 0, // used in array
       numOfFloor: 0, //
       VGList: [], // get usable VGs
@@ -397,6 +422,20 @@ export default {
     },
     VGs() {
       return this.$store.getters.vgs
+    },
+    selectedVGs() {
+      var list = []
+      this.newProject.vgIds.forEach(id => {
+        var selected = this.VGs.filter(vg => vg.id === id)
+        list = list.concat(selected)
+      })
+      return list
+    },
+    unSelectedVGs() {
+      return this.VGs.filter( vg => !this.selectedVGs.includes(vg))
+    },
+    vgVariable() {
+      return !!this.removedVG && !!this.addedVG
     },
     getPagination() {
       return this.newProject.floor * 10
@@ -495,6 +534,12 @@ export default {
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
       })
+    },
+    switchVG(removedVG, addedVG) {
+      var index = this.newProject.vgIds.indexOf(removedVG)
+      this.newProject.vgIds.splice(index,1, addedVG)
+      this.removedVG = ''
+      this.addedVG = ''
     },
     currentFloor(selectedFloor) {
       this.floorIndex = selectedFloor - 1
