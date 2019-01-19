@@ -55,8 +55,15 @@ export default function(wiseIP, formData) {
       temp = calculatingTemperature(digitTemp.Eg / 1000000)
       slopeX = calculatingTiltForMM(digitX.Eg / 1000000, temp)
       slopeY = calculatingTiltForMM(digitY.Eg / 1000000, temp)
-      console.log(slopeX, temp, slopeY)
-      console.log(calculatingTiltForDegress(slopeX),calculatingTiltForDegress(slopeY))
+      console.log(`
+      X軸斜率(mm/m)： ${slopeX}
+      溫度： ${temp}
+      Y軸斜率(mm/m)：${slopeY}
+      `)
+      console.log(`
+      X軸斜率(度C)： ${calculatingTiltForDegress(slopeX)}
+      Y軸斜率(度C)： ${calculatingTiltForDegress(slopeY)}
+      `)
     })
   formData.push('fuck')
 }
@@ -125,6 +132,7 @@ function delay() {
 }
 
 function calculatingTemperature(Eg) {
+  // 計算溫度
   return (
     9.3219 * Math.pow(Eg, 5) -
     54.3038 * Math.pow(Eg, 4) +
@@ -135,7 +143,8 @@ function calculatingTemperature(Eg) {
   )
 }
 function calculatingTiltForMM(volts, tempC) {
-  //傾度管公式： C5 x Volts2 + C4 x Volts + C3 + C2 x TdegC + C1 x TdegC2 +C0 x Volts x TdegC
+  // 計算傾斜 mm/m
+  // 傾度管公式： C5 x Volts2 + C4 x Volts + C3 + C2 x TdegC + C1 x TdegC2 +C0 x Volts x TdegC
   let SO_C = [1.8162e-2, 4.026e-3, -1.4713e-1, 6.6525, 7.9756e1, 3.5082e-2]
   let rawData = [tempC * volts, tempC * tempC, tempC, 1, volts, volts * volts]
   let slope = 0
@@ -145,5 +154,6 @@ function calculatingTiltForMM(volts, tempC) {
   return slope
 }
 function calculatingTiltForDegress(tilt){
+  // 計算傾斜度數
   return tilt/1000/3.14*180
 }
