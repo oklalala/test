@@ -8,21 +8,63 @@ import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
-const project = {
+const vgs = {
   state: {
-    projects: []
+    data: []
+  },
+  mutations: {
+    setVGs(state, vgs) {
+      state.data = vgs
+    }
+  },
+  getters: {
+    vgs(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getVGs({ commit }) {
+      return sendAPI('get', '/vgs', true).then(res => {
+        commit('setVGs', res.data.data)
+      })
+    },
+    deleteVGs({ dispatch }, deleteVGs) {
+      var vgIdStr = deleteVGs.join(',')
+      return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
+        dispatch('getVGs')
+      })
+    },
+    createVG(context, payload) {
+      return sendAPI('post', `/vg`, true, payload)
+    },
+    updateVG(context, { vgId, payload }) {
+      return sendAPI('put', `/vg/${vgId}`, true, payload)
+    }
+  }
+}
+
+const projects = {
+  state: {
+    data: []
+    // projectStatus: ['end', 'in-progress']
   },
   mutations: {
     setProjects(state, projects) {
-      state.projects = projects
+      state.data = projects
     }
   },
   getters: {
     projects(state) {
-      return state.projects
+      return state.data
     }
   },
   actions: {
+    getProject(context, projectId) {
+      return sendAPI('get', `/project/${projectId}`, true)
+    },
+    updateProject(context, { projectId, payload }) {
+      return sendAPI('put', `/project/${projectId}`, true, payload)
+    },
     getProjects({ commit }) {
       return sendAPI('get', '/projects', true).then(res => {
         commit('setProjects', res.data.data)
@@ -40,18 +82,60 @@ const project = {
   }
 }
 
+const projectPhases = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setProjectPhases(state, projectPhases) {
+      state.data = projectPhases
+    }
+  },
+  getters: {
+    projectPhases(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getProjectPhases({ commit }) {
+      return sendAPI('get', '/project-phases', true).then(res => {
+        commit('setProjectPhases', res.data.data)
+      })
+    },
+    getProjectPhase(context, projectPhaseId) {
+      return sendAPI('get', `/project-phase/${projectPhaseId}`, true)
+    },
+    updateProjectPhase(context, { projectPhaseId, payload }) {
+      return sendAPI('put', `/project-phase/${projectPhaseId}`, true, payload)
+    },
+    deleteProjectPhases({ dispatch }, projectPhaseIds) {
+      let projectPhaseIdsStr = projectPhaseIds.join(',')
+      return sendAPI(
+        'delete',
+        `/project-phases/${projectPhaseIdsStr}`,
+        true
+      ).then(() => {
+        dispatch('getProjectPhases')
+      })
+    },
+    createProjectPhase(context, payload) {
+      return sendAPI('post', `/project-phase`, true, payload)
+    }
+  }
+}
+
 const companies = {
   state: {
-    companies: []
+    data: []
   },
   mutations: {
     setCompanies(state, companies) {
-      state.companies = companies
+      state.data = companies
     }
   },
   getters: {
     companies(state) {
-      return state.companies
+      return state.data
     }
   },
   actions: {
@@ -76,16 +160,22 @@ const companies = {
 
 const users = {
   state: {
-    users: []
+    data: []
   },
   mutations: {
     setUsers(state, users) {
-      state.users = users
+      state.data = users
     }
   },
   getters: {
     users(state) {
-      return state.users
+      return state.data
+    },
+    OPTs(state) {
+      return state.data.filter(user => user.roleName == 'OPT')
+    },
+    USERs(state) {
+      return state.data.filter(user => user.roleName == 'USER')
     }
   },
   actions: {
@@ -111,12 +201,49 @@ const users = {
     }
   }
 }
+const steels = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setSteels(state, steels) {
+      state.data = steels
+    }
+  },
+  getters: {
+    steels(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getSteels({ commit }) {
+      return sendAPI('get', '/steels', true).then(res => {
+        commit('setSteels', res.data.data)
+      })
+    },
+    createSteel(context, payload) {
+      return sendAPI('post', `/steel`, true, payload)
+    },
+    deleteSteels({ dispatch }, steelIds) {
+      let steelIdsStr = steelIds.join(',')
+      return sendAPI('delete', `/steels/${steelIdsStr}`, true).then(() => {
+        dispatch('getSteels')
+      })
+    },
+    updateSteel(context, { steelId, payload }) {
+      return sendAPI('put', `/steel/${steelId}`, true, payload)
+    }
+  }
+}
 
 export default new Vuex.Store({
   modules: {
-    users: users,
-    project: project,
-    companies: companies
+    users,
+    projects,
+    projectPhases,
+    companies,
+    vgs,
+    steels
   },
   state: {
     myId: '',

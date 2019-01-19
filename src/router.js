@@ -6,16 +6,21 @@ import localStore from 'store'
 
 import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
-import ProjectList from './views/ProjectList.vue'
 import UserList from './views/UserList.vue'
 import CreateUser from './views/CreateUser.vue'
 import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectSetting from './views/ProjectSetting.vue'
-import ProjectProgress from './views/ProjectProgress.vue'
+import ProjectList from './views/ProjectList.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
+import ProjectMonitor from './views/ProjectMonitor.vue'
+import ProjectPhaseList from './views/ProjectPhaseList.vue'
+// import ProjectPhaseCreate from './views/ProjectPhaseCreate.vue'
+// import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
+import VGList from './views/VGList.vue'
+import SteelList from './views/SteelList.vue'
 import SOItems from './views/SOItems.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
@@ -41,17 +46,6 @@ let router = new Router({
       },
       beforeEnter: (to, from, next) => {
         store.dispatch('getMe').then(() => {
-          next()
-        })
-      }
-    },
-    {
-      path: '/project-list',
-      name: 'ProjectList',
-      component: ProjectList,
-      meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('getProjects').then(() => {
           next()
         })
       }
@@ -103,9 +97,7 @@ let router = new Router({
       path: '/edit-user/:userId',
       name: 'EditUser',
       component: EditUser,
-      meta: {
-        requireAuth: true
-      },
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
@@ -133,29 +125,23 @@ let router = new Router({
       }
     },
     {
-      path: '/project-setting',
-      name: 'ProjectSetting',
-      component: ProjectSetting,
+      path: '/project-list',
+      name: 'ProjectList',
+      component: ProjectList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions')
-        ]).then(() => {
+        store.dispatch('getProjects').then(() => {
           next()
         })
       }
     },
     {
-      path: '/project-Progress',
-      name: 'ProjectProgress',
-      component: ProjectProgress,
+      path: '/project-setting',
+      name: 'ProjectSetting',
+      component: ProjectSetting,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions')
-        ]).then(() => {
+        store.dispatch('getProjects').then(() => {
           next()
         })
       }
@@ -167,23 +153,79 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolePermissions')
+          store.dispatch('getCompanies'),
+          store.dispatch('getMe'),
+          store.dispatch('getUsers'),
+          store.dispatch('getVGs'),
+          store.dispatch('getSteels')
         ]).then(() => {
           next()
         })
       }
     },
     {
-      path: '/edit-project/:projectId',
+      path: '/project-edit/:projectId',
       name: 'ProjectEdit',
       component: ProjectEdit,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getProjectStatus'),
-          store.dispatch('getCompanies')
+          store.dispatch('getCompanies'),
+          store.dispatch('getMe'),
+          store.dispatch('getUsers'),
+          store.dispatch('getVGs'),
+          store.dispatch('getSteels')
         ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/project-monitor/:projectId',
+      name: 'ProjectMonitor',
+      component: ProjectMonitor
+      // meta: { requireAuth: true },
+      // beforeEnter: (to, from, next) => {
+      //   Promise.all([
+      //     // store.dispatch('getProjectStatus'),
+      //     // store.dispatch('getCompanies')
+      //   ]).then(() => {
+      //     next()
+      //   })
+      // }
+    },
+    {
+      path: '/project-phase-list',
+      name: 'ProjectPhaseList',
+      component: ProjectPhaseList,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getProjectPhases')
+          // store.dispatch('getRolePermissions')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/vg-list',
+      name: 'VGList',
+      component: VGList,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([store.dispatch('getVGs')]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/steel-list',
+      name: 'SteelList',
+      component: SteelList,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([store.dispatch('getSteels')]).then(() => {
           next()
         })
       }
