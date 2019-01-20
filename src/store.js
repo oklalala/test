@@ -243,16 +243,10 @@ const soItems = {
   mutations: {
     setSOs(state, soItems) {
       state.data = soItems
-    },
-    setSOModels(state, soModels) {
-      state.data = soModels
     }
   },
   getters: {
     soItems(state) {
-      return state.data
-    },
-    soModels(state) {
       return state.data
     }
   },
@@ -276,7 +270,24 @@ const soItems = {
     },
     createSO(context, payload) {
       return sendAPI('post', `/so-item`, true, payload)
-    },
+    }
+  }
+}
+const soModels = {
+  state: {
+    data: []
+  },
+  mutation: {
+    setSOModels(state, soModels) {
+      state.data = soModels
+    }
+  },
+  getters: {
+    getSOModels(state) {
+      return state.data
+    }
+  },
+  actions: {
     getSOModels({ commit }) {
       return sendAPI('get', 'so-models', true).then(res => {
         commit('setSOModels', res.data.data)
@@ -293,7 +304,8 @@ export default new Vuex.Store({
     companies,
     vgs,
     steels,
-    soItems
+    soItems,
+    soModels
   },
   state: {
     myId: '',
