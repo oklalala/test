@@ -366,12 +366,12 @@ export default new Vuex.Store({
         commit('setRolePermissions', res.data.data)
       })
     },
-    getMyPermissions({ commit, state }) {
+    getMyPermissions({ commit, state }, payload = state.myRole) {
       return sendAPI('get', '/role/permissions', true).then(res => {
         var allPermissions = res.data.data
-        var role = state.myRole
+        // var role = state.myRole
         var permissions = allPermissions
-          .filter(permissions => permissions.role == role)[0]
+          .filter(permissions => permissions.role == payload)[0]
           .permissions.filter(permission => permission.value)
           .map(permission => permission.name)
         commit('setMyPermissions', permissions)
