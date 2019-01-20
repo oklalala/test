@@ -48,7 +48,6 @@ export default {
       this.toPath('Entry')
     },
     isShow(feature) {
-      console.log(this.$store.getters.myPermissions, 'navbar isShow')
       return this.$store.getters.myPermissions.includes(feature)  
     }
   }
