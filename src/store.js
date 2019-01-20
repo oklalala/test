@@ -241,7 +241,7 @@ const soItems = {
     data: []
   },
   mutations: {
-    setSOs(state, soItems) {
+    setSOItems(state, soItems) {
       state.data = soItems
     }
   },
@@ -251,25 +251,25 @@ const soItems = {
     }
   },
   actions: {
-    deleteSOs({ dispatch }, deleteSOs) {
-      var soIdStr = deleteSOs.join(',')
+    deleteSOItems({ dispatch }, deleteSOItems) {
+      var soIdStr = deleteSOItems.join(',')
       return sendAPI('delete', `/so-items/${soIdStr}`, true).then(() => {
-        dispatch('getSOs')
+        dispatch('getSOItems')
       })
     },
-    getSO(context, soId) {
+    getSOItem(context, soId) {
       return sendAPI('get', `/so-item/${soId}`, true)
     },
-    updateSO(context, { soId, payload }) {
+    updateSOItem(context, { soId, payload }) {
       return sendAPI('put', `/so-item/${soId}`, true, payload)
     },
-    getSOs({ commit }) {
+    getSOItems({ commit }) {
       return sendAPI('get', '/so-items', true).then(res => {
-        commit('setSOs', res.data.data)
+        commit('setSOItems', res.data.data)
       })
     },
-    createSO(context, payload) {
-      return sendAPI('post', `/so-item`, true, payload)
+    createSOItem(context, payload) {
+      return sendAPI('post', '/so-item', true, payload)
     }
   }
 }
@@ -354,9 +354,6 @@ export default new Vuex.Store({
         }
         return item
       })
-    },
-    setSOItems(state, soItems) {
-      state.soItems = soItems
     }
   },
   getters: {
@@ -383,9 +380,6 @@ export default new Vuex.Store({
     },
     rolePermissions(state) {
       return state.rolePermissions
-    },
-    soItems(state) {
-      return state.soItems
     }
   },
   actions: {
@@ -441,11 +435,6 @@ export default new Vuex.Store({
     },
     updateRolePermissions({ state }) {
       return sendAPI('put', '/role/permissions', true, state.rolePermissions)
-    },
-    getSOItems({ commit }) {
-      return sendAPI('get', '/so-items', true).then(res => {
-        commit('setSOItems', res.data.data)
-      })
     }
   }
 })
