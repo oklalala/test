@@ -85,13 +85,7 @@ export default {
       return row.status === value
     },
     isShow(feature) {
-      var allPermissions = this.$store.getters.rolePermissions
-      var role = this.$store.getters.myRole
-      var permissionsObj = allPermissions
-        .filter(permissions => permissions.role == role)[0].permissions
-        .filter(permission => permission.value)
-      var permission = permissionsObj.map(permission => permission.name)
-      return permission.includes(feature)
+      return this.$store.getters.myPermissions.includes(feature)
     }
   }
 }

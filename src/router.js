@@ -132,7 +132,7 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getProjects'),
-          store.dispatch('getRolePermissions')
+          store.dispatch('getMyPermissions')
         ]).then(() => {
           next()
         })

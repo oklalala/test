@@ -249,6 +249,7 @@ export default new Vuex.Store({
     myId: '',
     token: '',
     myRole: '',
+    myPermissions: [],
     me: {},
     permissions: {},
     roles: [],
@@ -265,6 +266,9 @@ export default new Vuex.Store({
     },
     setMyRole(state, myRole) {
       state.myRole = myRole
+    },
+    setMyPermissions(state, myPermissions) {
+      state.myPermissions = myPermissions
     },
     setMe(state, me) {
       state.me = me
@@ -302,6 +306,9 @@ export default new Vuex.Store({
     },
     myRole(state) {
       return state.myRole
+    },
+    myPermissions(state) {
+      return state.myPermissions
     },
     me(state) {
       return state.me
@@ -357,6 +364,17 @@ export default new Vuex.Store({
     getRolePermissions({ commit }) {
       return sendAPI('get', '/role/permissions', true).then(res => {
         commit('setRolePermissions', res.data.data)
+      })
+    },
+    getMyPermissions({ commit, state }) {
+      return sendAPI('get', '/role/permissions', true).then(res => {
+        var allPermissions = res.data.data
+        var role = state.myRole
+        var permissions = allPermissions
+          .filter(permissions => permissions.role == role)[0]
+          .permissions.filter(permission => permission.value)
+          .map(permission => permission.name)
+        commit('setMyPermissions', permissions)
       })
     },
     updateRolePermissions({ state }) {
