@@ -73,14 +73,6 @@ export default {
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)
     },
-    isAdminOrMGT() {
-      let role = this.$store.getters.myRole
-      return role === 'MGT' || role === 'ADMIN'
-    },
-    isOPT() {
-      let role = this.$store.getters.myRole
-      return role === 'OPT'
-    },
     statusFilter(value, row) {
       return row.status === value
     },
