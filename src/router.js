@@ -130,7 +130,10 @@ let router = new Router({
       component: ProjectList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getProjects').then(() => {
+        Promise.all([
+          store.dispatch('getProjects'),
+          store.dispatch('getRolePermissions')
+        ]).then(() => {
           next()
         })
       }
