@@ -8,41 +8,6 @@ import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
-const vgs = {
-  state: {
-    data: []
-  },
-  mutations: {
-    setVGs(state, vgs) {
-      state.data = vgs
-    }
-  },
-  getters: {
-    vgs(state) {
-      return state.data
-    }
-  },
-  actions: {
-    getVGs({ commit }) {
-      return sendAPI('get', '/vgs', true).then(res => {
-        commit('setVGs', res.data.data)
-      })
-    },
-    deleteVGs({ dispatch }, deleteVGs) {
-      var vgIdStr = deleteVGs.join(',')
-      return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
-        dispatch('getVGs')
-      })
-    },
-    createVG(context, payload) {
-      return sendAPI('post', `/vg`, true, payload)
-    },
-    updateVG(context, { vgId, payload }) {
-      return sendAPI('put', `/vg/${vgId}`, true, payload)
-    }
-  }
-}
-
 const projects = {
   state: {
     data: []
@@ -236,6 +201,90 @@ const steels = {
   }
 }
 
+const vgs = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setVGs(state, vgs) {
+      state.data = vgs
+    }
+  },
+  getters: {
+    vgs(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getVGs({ commit }) {
+      return sendAPI('get', '/vgs', true).then(res => {
+        commit('setVGs', res.data.data)
+      })
+    },
+    deleteVGs({ dispatch }, deleteVGs) {
+      var vgIdStr = deleteVGs.join(',')
+      return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
+        dispatch('getVGs')
+      })
+    },
+    createVG(context, payload) {
+      return sendAPI('post', `/vg`, true, payload)
+    },
+    updateVG(context, { vgId, payload }) {
+      return sendAPI('put', `/vg/${vgId}`, true, payload)
+    }
+  }
+}
+
+const soItems = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setSOs(state, soItems) {
+      state.data = soItems
+    },
+    setSOModels(state, soModels) {
+      state.data = soModels
+    }
+  },
+  getters: {
+    soItems(state) {
+      return state.data
+    },
+    soModels(state) {
+      return state.data
+    }
+  },
+  actions: {
+    deleteSOs({ dispatch }, deleteSOs) {
+      var soIdStr = deleteSOs.join(',')
+      return sendAPI('delete', `/so-items/${soIdStr}`, true).then(() => {
+        dispatch('getSOs')
+      })
+    },
+    getSO(context, soId) {
+      return sendAPI('get', `/so-item/${soId}`, true)
+    },
+    updateSO(context, { soId, payload }) {
+      return sendAPI('put', `/so-item/${soId}`, true, payload)
+    },
+    getSOs({ commit }) {
+      return sendAPI('get', '/so-items', true).then(res => {
+        commit('setSOs', res.data.data)
+      })
+    },
+    createSO(context, payload) {
+      return sendAPI('post', `/so-item`, true, payload)
+    },
+    getSOModels({ commit }) {
+      return sendAPI('get', 'so-models', true).then(res => {
+        commit('setSOModels', res.data.data)
+      })
+    }
+  }
+}
+
 export default new Vuex.Store({
   modules: {
     users,
@@ -243,7 +292,8 @@ export default new Vuex.Store({
     projectPhases,
     companies,
     vgs,
-    steels
+    steels,
+    soItems
   },
   state: {
     myId: '',
