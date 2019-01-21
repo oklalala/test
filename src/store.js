@@ -277,13 +277,13 @@ const soModels = {
   state: {
     data: []
   },
-  mutation: {
+  mutations: {
     setSOModels(state, soModels) {
       state.data = soModels
     }
   },
   getters: {
-    getSOModels(state) {
+    soModels(state) {
       return state.data
     }
   },
