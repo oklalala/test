@@ -388,10 +388,12 @@ export default new Vuex.Store({
         commit('setToken', res.data.token)
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
+        commit('setMyPermissions', res.data.permissions)
         localStore.set('ground_monitor_token', {
           token: res.data.token,
           myId: res.data.userId,
-          myRole: res.data.role
+          myRole: res.data.role,
+          myPermissions: res.data.permissions
         })
       })
     },

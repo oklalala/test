@@ -131,10 +131,7 @@ let router = new Router({
       component: ProjectList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          store.dispatch('getProjects'),
-          store.dispatch('getMyPermissions')
-        ]).then(() => {
+        store.dispatch('getProjects').then(() => {
           next()
         })
       }
@@ -191,8 +188,8 @@ let router = new Router({
       // meta: { requireAuth: true },
       // beforeEnter: (to, from, next) => {
       //   Promise.all([
-      //     // store.dispatch('getProjectStatus'),
-      //     // store.dispatch('getCompanies')
+      //     store.dispatch('getProjectStatus'),
+      //     store.dispatch('getCompanies')
       //   ]).then(() => {
       //     next()
       //   })
@@ -280,6 +277,7 @@ router.beforeEach((to, from, next) => {
     store.commit('setToken', data.token)
     store.commit('setMyId', data.myId)
     store.commit('setMyRole', data.myRole)
+    store.commit('setMyPermissions', data.myPermissions)
     next()
   } else {
     next({
