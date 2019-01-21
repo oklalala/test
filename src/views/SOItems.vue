@@ -6,7 +6,7 @@
         <el-button type="primary" @click="deleteSOItems">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('SOItemsCreate')">
+        <el-button type="primary" @click="toPath('SOCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
@@ -17,28 +17,27 @@
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
-        width="180">
+        width="40">
       </el-table-column>
       <el-table-column
-        prop="id"
         label="編號"
         width="180">
         <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('SOItemsEdit', { soId: scope.row.id })">
-            {{ scope.row.id }}
+            {{ scope.row.number }}
           </span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="soModelName"
         label="廠牌 型號"
-        width="180">
+        width="120">
       </el-table-column>
       <el-table-column
-        prop="company.name"
+        prop="OPT"
         label="OPT"
-        width="180">
+        width="120">
       </el-table-column>
     </el-table>
   </div>
