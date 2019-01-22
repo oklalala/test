@@ -25,7 +25,6 @@
             </el-select>
           </el-form-item>
       </section>
-      {{newSO}}
       <template v-if="!!newSO.soModelId">
         <h1>傾度管 參數</h1>
         <section>
@@ -142,10 +141,10 @@ export default {
       return this.$store.getters.soModels
     },
     soModel() {
-      return this.soModels.filter(item => item.id == this.newSO.soModelId)[0] || {}
+      return this.soModels.filter(item => item.id == this.newSO.soModelId)[0]
     },
     soModelMeasurable() {
-      var measurableArr = this.soModel.measurable || []
+      var measurableArr = this.soModel.measurable
       var soModelMeasurable = []
       measurableArr.forEach(item => {
         soModelMeasurable.push({name: item})
