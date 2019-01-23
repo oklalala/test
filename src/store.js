@@ -238,15 +238,24 @@ const steels = {
 
 const measureSO = {
   state:{
-    test:"fasdf"
+    SO_C: [1.8162e-2, 4.026e-3, -1.4713e-1, 6.6525, 7.9756e1, 3.5082e-2],
+    tempFormulaParameter :[37.7705, 137.7711, 161.2568, 131.165, 54.3038, 9.3219]
   },
   getters:{
-    getTest:(state)=>{
-      return state.test
+    getSO_C:(state)=>{
+      return state.SO_C
+    },
+    getTempFormulaParameter:(state)=>{
+      return state.tempFormulaParameter
     }
   },
   mutations:{
-
+    setSO_C:(state,SO_C)=>{
+      state.SO_C = SO_C
+    },
+    setTempFormulaParameter:(state,tempFormulaParameter)=>{
+      state.tempFormulaParameter = tempFormulaParameter
+    }
   },
   actions:{
 
