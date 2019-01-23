@@ -91,8 +91,7 @@ export default {
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
-      this.loadProject(this.$route.params.projectId)
-      .then(() => {
+      this.loadProject(this.$route.params.projectId).then(() => {
         this.setVGTable(0)
       })
     }

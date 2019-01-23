@@ -493,7 +493,6 @@ export default {
         this.toPath('ProjectSetting')
       })
     },
-
     resetMember() {
       this.USERList = []
       this.OPTList = []
