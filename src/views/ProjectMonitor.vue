@@ -46,6 +46,7 @@
             </el-col>
           </el-row>
         </el-form>
+        <Chart/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -76,6 +77,7 @@
             </el-col>
           </el-row>
         </el-form>
+        <Chart/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
@@ -84,9 +86,11 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-export default {
-  name: 'UserList',
+import Chart from "../components/Chart"
 
+export default {
+  name: 'ProjectMonitor',
+  components: { Chart },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
