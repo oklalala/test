@@ -64,7 +64,7 @@ export default {
       this.$store
         .dispatch('updateRolePermissions')
         .then(() => {
-          this.$message({ message: '權限設定成功', type: 'success' })
+          this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
           this.toPath('ProjectList')
         })
         .catch(e => {

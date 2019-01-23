@@ -110,11 +110,9 @@ export default {
     uploadMeasuresDatas: function() {
       console.log('fuck')
     },
-    getParams:function(){
-
-    }
+    getParams: function() {}
   },
-  mounted(){
+  mounted() {
     this.getParams()
   }
 }

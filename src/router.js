@@ -21,7 +21,9 @@ import ProjectPhaseList from './views/ProjectPhaseList.vue'
 // import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
 import VGList from './views/VGList.vue'
 import SteelList from './views/SteelList.vue'
-import SOItems from './views/SOItems.vue'
+import SOItemList from './views/SOItemList.vue'
+import SOItemCreate from './views/SOItemCreate.vue'
+import SOItemEdit from './views/SOItemEdit.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
 import store from '@/store'
@@ -187,8 +189,8 @@ let router = new Router({
       // meta: { requireAuth: true },
       // beforeEnter: (to, from, next) => {
       //   Promise.all([
-      //     // store.dispatch('getProjectStatus'),
-      //     // store.dispatch('getCompanies')
+      //     store.dispatch('getProjectStatus'),
+      //     store.dispatch('getCompanies')
       //   ]).then(() => {
       //     next()
       //   })
@@ -231,12 +233,40 @@ let router = new Router({
       }
     },
     {
-      path: '/so-items',
-      name: 'SOItems',
-      component: SOItems,
+      path: '/soItem-list',
+      name: 'SOItemList',
+      component: SOItemList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getSOItems').then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/soItem-create',
+      name: 'SOItemCreate',
+      component: SOItemCreate,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          store.dispatch('getSOItems'),
+          store.dispatch('getSOModels')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/soItem-edit/:soId',
+      name: 'SOItemEdit',
+      component: SOItemEdit,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          // store.dispatch('getSOItem'),
+          store.dispatch('getSOModels')
+        ]).then(() => {
           next()
         })
       }
@@ -262,6 +292,7 @@ router.beforeEach((to, from, next) => {
     store.commit('setToken', data.token)
     store.commit('setMyId', data.myId)
     store.commit('setMyRole', data.myRole)
+    store.commit('setMyPermissions', data.myPermissions)
     next()
   } else {
     next({

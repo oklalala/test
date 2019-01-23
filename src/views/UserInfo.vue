@@ -15,6 +15,7 @@
             <el-input
               :value="me.phone"
               @change="value => this.updateMe({ phone: value })"
+              :disabled="!isShow()"
               placeholder="請輸入電話">
             </el-input>
           </el-form-item>
@@ -22,6 +23,7 @@
             <el-input
               :value="me.email"
               @change="value => this.updateMe({ email: value })"
+              :disabled="!isShow()"
               placeholder="請輸入 email">
             </el-input>
           </el-form-item>
@@ -32,6 +34,7 @@
           <el-input
             :value="me.password"
             @change="value => this.updateMe({ password: value })"
+            :disabled="!isShow()"
             placeholder="請輸入密碼">
           </el-input>
         </el-form-item>
@@ -90,6 +93,9 @@ export default {
         .catch(e => {
           this.$message.error(e, '資料更新失敗')
         })
+    },
+    isShow() {
+      return this.$store.getters.myPermissions.includes('account:updateSelf')
     }
   }
 }

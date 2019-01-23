@@ -8,41 +8,6 @@ import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
-const vgs = {
-  state: {
-    data: []
-  },
-  mutations: {
-    setVGs(state, vgs) {
-      state.data = vgs
-    }
-  },
-  getters: {
-    vgs(state) {
-      return state.data
-    }
-  },
-  actions: {
-    getVGs({ commit }) {
-      return sendAPI('get', '/vgs', true).then(res => {
-        commit('setVGs', res.data.data)
-      })
-    },
-    deleteVGs({ dispatch }, deleteVGs) {
-      var vgIdStr = deleteVGs.join(',')
-      return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
-        dispatch('getVGs')
-      })
-    },
-    createVG(context, payload) {
-      return sendAPI('post', `/vg`, true, payload)
-    },
-    updateVG(context, { vgId, payload }) {
-      return sendAPI('put', `/vg/${vgId}`, true, payload)
-    }
-  }
-}
-
 const projects = {
   state: {
     data: []
@@ -237,28 +202,128 @@ const steels = {
 }
 
 const measureSO = {
-  state:{
+  state: {
     SO_C: [1.8162e-2, 4.026e-3, -1.4713e-1, 6.6525, 7.9756e1, 3.5082e-2],
-    tempFormulaParameter :[37.7705, 137.7711, 161.2568, 131.165, 54.3038, 9.3219]
+    tempFormulaParameter: [
+      37.7705,
+      137.7711,
+      161.2568,
+      131.165,
+      54.3038,
+      9.3219
+    ]
   },
-  getters:{
-    getSO_C:(state)=>{
+  getters: {
+    getSO_C: state => {
       return state.SO_C
     },
-    getTempFormulaParameter:(state)=>{
+    getTempFormulaParameter: state => {
       return state.tempFormulaParameter
     }
   },
-  mutations:{
-    setSO_C:(state,SO_C)=>{
+  mutations: {
+    setSO_C: (state, SO_C) => {
       state.SO_C = SO_C
     },
-    setTempFormulaParameter:(state,tempFormulaParameter)=>{
+    setTempFormulaParameter: (state, tempFormulaParameter) => {
       state.tempFormulaParameter = tempFormulaParameter
     }
   },
-  actions:{
+  actions: {}
+}
 
+const vgs = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setVGs(state, vgs) {
+      state.data = vgs
+    }
+  },
+  getters: {
+    vgs(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getVGs({ commit }) {
+      return sendAPI('get', '/vgs', true).then(res => {
+        commit('setVGs', res.data.data)
+      })
+    },
+    deleteVGs({ dispatch }, deleteVGs) {
+      var vgIdStr = deleteVGs.join(',')
+      return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
+        dispatch('getVGs')
+      })
+    },
+    createVG(context, payload) {
+      return sendAPI('post', `/vg`, true, payload)
+    },
+    updateVG(context, { vgId, payload }) {
+      return sendAPI('put', `/vg/${vgId}`, true, payload)
+    }
+  }
+}
+
+const soItems = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setSOItems(state, soItems) {
+      state.data = soItems
+    }
+  },
+  getters: {
+    soItems(state) {
+      return state.data
+    }
+  },
+  actions: {
+    deleteSOItems({ dispatch }, deleteSOItems) {
+      var soIdStr = deleteSOItems.join(',')
+      return sendAPI('delete', `/so-items/${soIdStr}`, true).then(() => {
+        dispatch('getSOItems')
+      })
+    },
+    getSOItem(context, soId) {
+      return sendAPI('get', `/so-item/${soId}`, true)
+    },
+    updateSOItem(context, { soId, payload }) {
+      return sendAPI('put', `/so-item/${soId}`, true, payload)
+    },
+    getSOItems({ commit }) {
+      return sendAPI('get', '/so-items', true).then(res => {
+        commit('setSOItems', res.data.data)
+      })
+    },
+    createSOItem(context, payload) {
+      return sendAPI('post', '/so-item', true, payload)
+    }
+  }
+}
+const soModels = {
+  state: {
+    data: []
+  },
+  mutations: {
+    setSOModels(state, soModels) {
+      state.data = soModels
+    }
+  },
+  getters: {
+    soModels(state) {
+      return state.data
+    }
+  },
+  actions: {
+    getSOModels({ commit }) {
+      return sendAPI('get', 'so-models', true).then(res => {
+        commit('setSOModels', res.data.data)
+      })
+    }
   }
 }
 
@@ -270,12 +335,15 @@ export default new Vuex.Store({
     companies,
     vgs,
     steels,
-    measureSO
+    measureSO,
+    soItems,
+    soModels
   },
   state: {
     myId: '',
     token: '',
     myRole: '',
+    myPermissions: [],
     me: {},
     permissions: {},
     roles: [],
@@ -292,6 +360,9 @@ export default new Vuex.Store({
     },
     setMyRole(state, myRole) {
       state.myRole = myRole
+    },
+    setMyPermissions(state, myPermissions) {
+      state.myPermissions = myPermissions
     },
     setMe(state, me) {
       state.me = me
@@ -315,9 +386,6 @@ export default new Vuex.Store({
         }
         return item
       })
-    },
-    setSOItems(state, soItems) {
-      state.soItems = soItems
     }
   },
   getters: {
@@ -330,6 +398,9 @@ export default new Vuex.Store({
     myRole(state) {
       return state.myRole
     },
+    myPermissions(state) {
+      return state.myPermissions
+    },
     me(state) {
       return state.me
     },
@@ -341,9 +412,6 @@ export default new Vuex.Store({
     },
     rolePermissions(state) {
       return state.rolePermissions
-    },
-    soItems(state) {
-      return state.soItems
     }
   },
   actions: {
@@ -352,10 +420,12 @@ export default new Vuex.Store({
         commit('setToken', res.data.token)
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
+        commit('setMyPermissions', res.data.permissions)
         localStore.set('ground_monitor_token', {
           token: res.data.token,
           myId: res.data.userId,
-          myRole: res.data.role
+          myRole: res.data.role,
+          myPermissions: res.data.permissions
         })
       })
     },
@@ -386,13 +456,19 @@ export default new Vuex.Store({
         commit('setRolePermissions', res.data.data)
       })
     },
+    getMyPermissions({ commit, state }, payload = state.myRole) {
+      return sendAPI('get', '/role/permissions', true).then(res => {
+        var allPermissions = res.data.data
+        // var role = state.myRole
+        var permissions = allPermissions
+          .filter(permissions => permissions.role == payload)[0]
+          .permissions.filter(permission => permission.value)
+          .map(permission => permission.name)
+        commit('setMyPermissions', permissions)
+      })
+    },
     updateRolePermissions({ state }) {
       return sendAPI('put', '/role/permissions', true, state.rolePermissions)
-    },
-    getSOItems({ commit }) {
-      return sendAPI('get', '/so-items', true).then(res => {
-        commit('setSOItems', res.data.data)
-      })
     }
   }
 })
