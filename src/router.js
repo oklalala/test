@@ -23,6 +23,7 @@ import VGList from './views/VGList.vue'
 import SteelList from './views/SteelList.vue'
 import SOItems from './views/SOItems.vue'
 import SOCreate from './views/SOCreate.vue'
+import SOItemEdit from './views/SOItemEdit.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
 import store from '@/store'
@@ -250,6 +251,20 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getSOItems'),
+          store.dispatch('getSOModels')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/soItem-edit/:soId',
+      name: 'SOItemEdit',
+      component: SOItemEdit,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          // store.dispatch('getSOItem'),
           store.dispatch('getSOModels')
         ]).then(() => {
           next()

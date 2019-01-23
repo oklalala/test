@@ -24,8 +24,8 @@
         width="180">
         <template slot-scope="scope">
           <span class="clickable"
-            @click="toPath('SOItemsEdit', { soId: scope.row.id })">
-            {{ scope.row.number }}
+            @click="toPath('SOItemEdit', { soId: scope.row.id })">
+            {{ scope.row.id }}
           </span>
         </template>
       </el-table-column>
