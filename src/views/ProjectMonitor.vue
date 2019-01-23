@@ -46,6 +46,7 @@
             </el-col>
           </el-row>
         </el-form>
+        <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
       <el-tab-pane label="傾度管 ( SO )">
@@ -75,6 +76,7 @@
             </el-col>
           </el-row>
         </el-form>
+        <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -142,6 +144,9 @@ export default {
       var start = floorIndex * numOfFloor
       var end = (floorIndex + 1) * numOfFloor
       this.subVGLocation = this.project.vgLocation.slice(start, end)
+    },
+    isShow(feature) {
+      return this.$store.getters.myPermissions.includes(feature)
     }
   }
 }
