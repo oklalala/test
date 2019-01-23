@@ -21,8 +21,8 @@ import ProjectPhaseList from './views/ProjectPhaseList.vue'
 // import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
 import VGList from './views/VGList.vue'
 import SteelList from './views/SteelList.vue'
-import SOItems from './views/SOItems.vue'
-import SOCreate from './views/SOCreate.vue'
+import SOItemList from './views/SOItemList.vue'
+import SOItemCreate from './views/SOItemCreate.vue'
 import SOItemEdit from './views/SOItemEdit.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 
@@ -233,9 +233,9 @@ let router = new Router({
       }
     },
     {
-      path: '/so-items',
-      name: 'SOItems',
-      component: SOItems,
+      path: '/soItem-list',
+      name: 'SOItemList',
+      component: SOItemList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getSOItems').then(() => {
@@ -244,9 +244,9 @@ let router = new Router({
       }
     },
     {
-      path: '/so-create',
-      name: 'SOCreate',
-      component: SOCreate,
+      path: '/soItem-create',
+      name: 'SOItemCreate',
+      component: SOItemCreate,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([

@@ -79,7 +79,7 @@
 import ToPathMixin from '@/mixins/ToPath'
 
 export default {
-  name: 'SOCreate',
+  name: 'SOItemCreate',
   mixins: [ToPathMixin],
   data() {
     return {
@@ -209,11 +209,11 @@ export default {
       this.newSO.parameters[key] = value
     },
     cancel() {
-      this.toPath('SOItems')
+      this.toPath('SOItemList')
     },
     submit() {
       this.$store.dispatch('createSOItem', this.newSO).then(() => {
-        this.toPath('SOItems')
+        this.toPath('SOItemList')
       })
     }
   }

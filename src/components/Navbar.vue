@@ -12,7 +12,7 @@
       </template>
       <template class="layout-navbar-menu-forAdmin">
         <el-menu-item index="3" @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</el-menu-item>
-        <el-menu-item index="4" @click="toPath('SOItems')" v-if="isShow('soItem:CRUD')">傾度管設定</el-menu-item>
+        <el-menu-item index="4" @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</el-menu-item>
         <el-menu-item index="5" @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</el-menu-item>
         <el-submenu index="6" menu-trigger="click" v-if="isShow('project:CRUD')">
           <template slot="title">專案設定</template>

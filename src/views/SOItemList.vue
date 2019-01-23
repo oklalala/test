@@ -6,7 +6,7 @@
         <el-button type="primary" @click="deleteSOItems" v-if="!!deleteList.length">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('SOCreate')">
+        <el-button type="primary" @click="toPath('SOItemCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
