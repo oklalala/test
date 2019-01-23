@@ -3,7 +3,7 @@
     <h1>傾度管列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteSOItems">刪除</el-button>
+        <el-button type="primary" @click="deleteSOItems" v-if="!!deleteList.length">刪除</el-button>
       </div>
       <div class="operationGroup-right">
         <el-button type="primary" @click="toPath('SOCreate')">
