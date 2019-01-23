@@ -12,7 +12,7 @@
           </el-form-item>
           <el-form-item label="廠牌型號" required>
             <el-select
-              v-model="newSOItem.soModel"
+              v-model="newSOItem.soModelId"
               @change="initSOModelParameters"
               placeholder="請選擇"
               style="width: 100%">
@@ -25,7 +25,7 @@
             </el-select>
           </el-form-item>
       </section>
-      <template v-if="!!newSOItem.soModel.id">
+      <template v-if="!!newSOItem.soModelId">
         <h1>傾度管 參數</h1>
         <section>
           <el-table
@@ -92,7 +92,7 @@ export default {
     return {
       newSOItem: {
         number: '',
-        soModel: '',
+        soModelId: '',
         parameters: {},
       },
       soModelParameters: [
@@ -132,9 +132,9 @@ export default {
     }
   },
   watch: {
-    'newSOItem.soModel': function(val) {
-      if (!val) return
-      this.soModel = this.soModels.filter(item => item.id === val.id)[0]
+    'newSOItem.soModelId': function(soModelId) {
+      if (!soModelId) return
+      this.soModel = this.soModels.filter(item => item.id === soModelId)[0]
     }
   },
   computed: {
@@ -181,25 +181,33 @@ export default {
     },
     loadSOItem(soItemId) {
       return this.$store.dispatch('getSOItem', soItemId).then(res => {
-        this.newSOItem = res.data.data
+        let soItem = res.data.data
+        this.newSOItem = {
+          number: soItem.number,
+          parameters: soItem.parameters,
+          soModelId: soItem.soModel.id
+        }
       })
     },
     initSOModelParameters() {
-      // console.log(this.soModel, 'hahaha')
-      var parametersObj = this.soModel.parameters
+      var parametersObj = this.newSOItem.parameters
       this.newSOItem.parameters = parametersObj
       for (var key in parametersObj) {
         this.soModelParameters.push({ key: key, value: parametersObj[key] })
       }
     },
     editSO(key, value) {
+      console.log(key, value, this.newSOItem.parameters)
       this.newSOItem.parameters[key] = value
     },
     cancel() {
       this.toPath('SOItems')
     },
     submit() {
-      this.$store.dispatch('updateSOItem', this.newSOItem).then(() => {
+      this.$store.dispatch('updateSOItem', {
+          soId: this.$route.params.soId,
+          payload: this.newSOItem
+        }).then(() => {
         this.toPath('SOItems')
       })
     }
