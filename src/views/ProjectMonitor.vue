@@ -23,14 +23,12 @@
           <el-row :gutter="20">
             <el-col :span="13">
               <el-form-item label="日期">
-                <el-select v-model="date1" placeholder="请选择">
-                  <!-- <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option> -->
-                </el-select>
+                <el-date-picker
+                  v-model="vgDate"
+                  format='yyyy-MM-dd'
+                  type="date"
+                  placeholder="選擇日期時間">
+                </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="9" :offset="2">
@@ -54,14 +52,12 @@
           <el-row :gutter="20">
             <el-col :span="13">
               <el-form-item label="日期">
-                <el-select v-model="date2" placeholder="请选择">
-                  <!-- <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option> -->
-                </el-select>
+                <el-date-picker
+                  v-model="soDate"
+                  format='yyyy-MM-dd'
+                  type="date"
+                  placeholder="選擇日期時間">
+                </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="9" :offset="2">
@@ -98,7 +94,6 @@ export default {
   },
   data() {
     return {
-      // deleteList: [],
       project: {
         // OPT: [],
         // USER: [],
@@ -115,8 +110,8 @@ export default {
         // vgLocation: [],
         // vgManagement: [],
       },
-      date1: 'haha',
-      date2: 'hehe',
+      vgDate: '',
+      soDate: '',
       selectedVG: '',
       selectedSO: '',
       subVGLocation: [],
@@ -124,9 +119,7 @@ export default {
     }
   },
   computed: {
-    // userList() {
-    //   return this.$store.getters.users
-    // }
+
   },
   methods: {
     loadProject(projectId) {
@@ -144,13 +137,6 @@ export default {
       var end = (floorIndex + 1) * numOfFloor
       this.subVGLocation = this.project.vgLocation.slice(start, end)
     }
-    // deleteUsers() {
-    //   if (this.deleteList.length === 0) return
-    //   this.$store.dispatch('deleteUsers', this.deleteList)
-    // },
-    // updateDeleteList(value) {
-    //   this.deleteList = value.map(user => user.id)
-    // }
   }
 }
 </script>
