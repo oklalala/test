@@ -44,43 +44,42 @@
         style="width: 100%">
         <el-table-column
           fixed
-          prop="date"
-          label="#"
+          type="index"
           width="50">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="time"
           label="時間"
           width="200">
         </el-table-column>
         <el-table-column
-          prop="province"
-          label="位移量(mm)"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="city"
-          label="總位移量(mm)"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="深度(m)"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="zip"
-          label="傾斜度(mm/m)"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="zip"
+          prop="temp"
           label="溫度(c)"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="zip"
-          label="V0(Vo)"
+          prop="VoltageX"
+          label="原始電壓"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="degreeX"
+          label="傾斜角度(度C)"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="displacement"
+          label="位移量(cm)"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="totalDisplacement"
+          label="總位移量(cm)"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="depth"
+          label="深度(m)"
           width="120">
         </el-table-column>
       </el-table>
@@ -110,7 +109,13 @@ export default {
     },
     uploadMeasuresDatas: function() {
       console.log('fuck')
+    },
+    getParams:function(){
+
     }
+  },
+  mounted(){
+    this.getParams()
   }
 }
 </script>

@@ -236,6 +236,23 @@ const steels = {
   }
 }
 
+const measureSO = {
+  state:{
+    test:"fasdf"
+  },
+  getters:{
+    getTest:(state)=>{
+      return state.test
+    }
+  },
+  mutations:{
+
+  },
+  actions:{
+
+  }
+}
+
 export default new Vuex.Store({
   modules: {
     users,
@@ -243,7 +260,8 @@ export default new Vuex.Store({
     projectPhases,
     companies,
     vgs,
-    steels
+    steels,
+    measureSO
   },
   state: {
     myId: '',

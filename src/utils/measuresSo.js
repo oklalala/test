@@ -1,13 +1,11 @@
-/** @format */
-
 import axios from 'axios'
+import store from '../store'
 
 let wiseConfig = {
   user: 'root',
   password: '0000',
   wiseIP: ''
 }
-
 // methods  url_path               data
 // patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":1},{"Ch":1,"Val":1}]}
 // patch    /do_value/slot_0       {"DOVal":[{"Ch":0,"Val":0}]}
@@ -24,11 +22,13 @@ let powerChannel = 0
 let switchChannel = 1
 let ON = 0
 let OFF = 1
+let PI = 3.1415926
 
 export default function(wiseIP, formData) {
+  console.log(store.getters.getTest)
   wiseConfig.wiseIP = 'http://' + wiseIP
   let digitX, digitTemp, digitY
-  let slopeX, temp, slopeY
+  let tableData
   initializationSO(powerChannel, OFF, switchChannel, OFF)
     .then(() => switchSO(powerChannel, ON))
     .then(() => switchSO(switchChannel, ON))
@@ -52,20 +52,9 @@ export default function(wiseIP, formData) {
       initializationSO(powerChannel, OFF, switchChannel, OFF)
     })
     .then(() => {
-      temp = calculatingTemperature(digitTemp.Eg / 1000000)
-      slopeX = calculatingTiltForMM(digitX.Eg / 1000000, temp)
-      slopeY = calculatingTiltForMM(digitY.Eg / 1000000, temp)
-      console.log(`
-      X軸斜率(mm/m)： ${slopeX}
-      溫度： ${temp}
-      Y軸斜率(mm/m)：${slopeY}
-      `)
-      console.log(`
-      X軸斜率(度C)： ${calculatingTiltForDegress(slopeX)}
-      Y軸斜率(度C)： ${calculatingTiltForDegress(slopeY)}
-      `)
+      tableData = getMeasurementData(digitTemp.Eg,digitX.Eg,digitY.Eg,formData)
+      formData.push(tableData)
     })
-  formData.push('fuck')
 }
 
 function initializationSO(
@@ -131,6 +120,49 @@ function delay() {
   console.groupEnd()
 }
 
+function getMeasurementData(rowTemp,rowX,rowY,formData){
+  let VoltageTemp,VoltageX,VoltageY
+  let slopeX, temp, slopeY
+  let degreeX, degreeY
+  let displacementX,displacementY
+  let totalDisplacement,depth
+  let length = formData.length || 0
+  VoltageTemp = rowTemp / 1000000
+  VoltageX = rowX / 1000000
+  VoltageY = rowY / 1000000
+  // 溫度： ${temp}
+  // X軸斜率(mm/m)： ${slopeX}
+  // Y軸斜率(mm/m)：${slopeY}
+  temp = calculatingTemperature(VoltageTemp)
+  slopeX = calculatingTiltForMM(VoltageX, temp)
+  slopeY = calculatingTiltForMM(VoltageY / 1000000, temp)
+  // X軸斜率(度C)： ${degreeX}
+  // Y軸斜率(度C)： ${degreeY}
+  degreeX = calculatingTiltForDegress(slopeX)
+  degreeY = calculatingTiltForDegress(slopeY)
+  // X軸水平位移量(cm)： ${displacementX}
+  // X軸水平位移量(cm)： ${displacementY}
+  displacementX = getHorizontalDisplacement(degreeX,100)
+  displacementY = getHorizontalDisplacement(degreeY,100)
+  console.log(formData)
+
+  totalDisplacement = formData.length ? formData[formData.length-1].totalDisplacement + displacementX : displacementX
+  depth = formData.length + 1 || 1
+
+  let tableData = {
+    date: Date(),
+    time: Date(),
+    temp: temp,
+    VoltageX: VoltageX,
+    degreeX: degreeX,
+    displacement: displacementX,
+    totalDisplacement: totalDisplacement,
+    depth: depth,
+  }
+
+  return tableData
+}
+
 function calculatingTemperature(Eg) {
   // 計算溫度
   return (
@@ -155,5 +187,12 @@ function calculatingTiltForMM(volts, tempC) {
 }
 function calculatingTiltForDegress(tilt){
   // 計算傾斜度數
-  return tilt/1000/3.14*180
+  return tilt/1000/PI*180
+}
+
+function getHorizontalDisplacement(degree,length){
+  //       Math.sin(弧度)
+  //       Math.sin(角度*3.1415926/180)*100
+  //       求 Z 軸水平偏移量： (X 軸水平偏移平方 + y 軸水平偏移平方) 開根號
+  return Math.sin(degree*PI/180)*length
 }
