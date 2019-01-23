@@ -25,7 +25,7 @@
         <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('SOItemEdit', { soId: scope.row.id })">
-            {{ scope.row.id }}
+            {{ scope.row.number }}
           </span>
         </template>
       </el-table-column>
