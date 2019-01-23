@@ -4,7 +4,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import VeLine from 'v-charts/lib/line.common'
 import './plugins/element.js'
 import '@/assets/scss/custom-theme.scss'
 
@@ -55,8 +54,6 @@ Vue.use(tag)
 Vue.prototype.$message = Message
 
 Vue.config.productionTip = false
-
-Vue.component(VeLine.name, VeLine)
 
 new Vue({
   router,
