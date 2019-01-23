@@ -48,7 +48,7 @@ export default {
       this.toPath('Entry')
     },
     isShow(feature) {
-      return this.$store.getters.myPermissions.includes(feature)  
+      return this.$store.getters.myPermissions.includes(feature)
     }
   }
 }
@@ -59,5 +59,8 @@ export default {
   height: 100vh;
   position: fixed;
   left: 0;
+}
+h1 {
+  padding: 20px;
 }
 </style>
