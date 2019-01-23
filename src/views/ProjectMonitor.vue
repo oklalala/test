@@ -46,7 +46,7 @@
             </el-col>
           </el-row>
         </el-form>
-        <Chart/>
+        <Chart v-if="isVGSelected"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -77,7 +77,7 @@
             </el-col>
           </el-row>
         </el-form>
-        <Chart/>
+        <Chart v-if="isSOSelected"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
@@ -131,6 +131,12 @@ export default {
       if (!!this.project.sitePlan) {
         return `${process.env.VUE_APP_API_URL}/${this.project.sitePlan}`
       }
+    },
+    isVGSelected() {
+      return !!this.selectedVG && !!this.vgDate
+    },
+    isSOSelected() {
+      return !!this.selectedSO && !!this.soDate
     }
   },
   methods: {
