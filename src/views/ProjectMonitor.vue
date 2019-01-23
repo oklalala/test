@@ -7,7 +7,8 @@
     <br>
     名稱：{{project.name}}
     <h3>配置圖</h3>
-    <!-- <toggle>顯示/隱藏</toggle> -->
+    <h4 @click='show = !show'>顯示/隱藏</h4>
+    <img :src="showImage" v-if="show">
     <h3>監控值</h3>
     <el-tabs type="border-card">
       <el-tab-pane label="軸力計 ( VG )"> 
@@ -115,11 +116,16 @@ export default {
       selectedVG: '',
       selectedSO: '',
       subVGLocation: [],
-      floorIndex: 1
+      floorIndex: 1,
+      show: true
     }
   },
   computed: {
-
+    showImage() {
+      if (!!this.project.sitePlan) {
+        return `${process.env.VUE_APP_API_URL}/${this.project.sitePlan}`
+      }
+    }
   },
   methods: {
     loadProject(projectId) {
