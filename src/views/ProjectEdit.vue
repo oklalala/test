@@ -430,7 +430,7 @@ export default {
       return list
     },
     unSelectedVGs() {
-      return this.VGs.filter( vg => !this.selectedVGs.includes(vg))
+      return this.VGs.filter(vg => !this.selectedVGs.includes(vg))
     },
     vgVariable() {
       return !!this.removedVG && !!this.addedVG
@@ -535,7 +535,7 @@ export default {
     },
     switchVG(removedVG, addedVG) {
       var index = this.newProject.vgIds.indexOf(removedVG)
-      this.newProject.vgIds.splice(index,1, addedVG)
+      this.newProject.vgIds.splice(index, 1, addedVG)
       this.removedVG = ''
       this.addedVG = ''
     },

@@ -93,7 +93,7 @@ export default {
       newSOItem: {
         number: '',
         soModelId: '',
-        parameters: {},
+        parameters: {}
       },
       soModelParameters: [
         //   {key: 'C9', value: 0},
@@ -109,25 +109,25 @@ export default {
         //   {key: 'length ( m )', value: 0},
       ],
       soModel: {
-      //   "id": "",
-      //   "name": "",
-      //   "parameters": {
-      //     // "c0": 0.000134,
-      //     // "c1": 0.000135,
-      //     // "c2": 0.000136,
-      //     // "c3": 0.000137,
-      //     // "c4": 0.000138,
-      //     // "c5": 0.000139,
-      //     // "c6": 0.00013,
-      //     // "c7": 0.000131,
-      //     // "c8": 0.000132,
-      //     // "c9": 0.000133
-      //   },
-      //   "measurable": [
-      //     // "日期",
-      //     // "溫度",
-      //     // "偏移量"
-      //   ]
+        //   "id": "",
+        //   "name": "",
+        //   "parameters": {
+        //     // "c0": 0.000134,
+        //     // "c1": 0.000135,
+        //     // "c2": 0.000136,
+        //     // "c3": 0.000137,
+        //     // "c4": 0.000138,
+        //     // "c5": 0.000139,
+        //     // "c6": 0.00013,
+        //     // "c7": 0.000131,
+        //     // "c8": 0.000132,
+        //     // "c9": 0.000133
+        //   },
+        //   "measurable": [
+        //     // "日期",
+        //     // "溫度",
+        //     // "偏移量"
+        //   ]
       }
     }
   },
@@ -204,12 +204,14 @@ export default {
       this.toPath('SOItems')
     },
     submit() {
-      this.$store.dispatch('updateSOItem', {
+      this.$store
+        .dispatch('updateSOItem', {
           soId: this.$route.params.soId,
           payload: this.newSOItem
-        }).then(() => {
-        this.toPath('SOItems')
-      })
+        })
+        .then(() => {
+          this.toPath('SOItems')
+        })
     }
   }
 }

@@ -84,8 +84,8 @@ export default {
   data() {
     return {
       newSO: {
-        number: "",
-        soModelId: "",
+        number: '',
+        soModelId: '',
         parameters: {
           c9: 0,
           c8: 0,
@@ -101,17 +101,17 @@ export default {
         }
       },
       soModelParameters: [
-      //   {key: 'C9', value: 0},
-      //   {key: 'C8', value: 0},
-      //   {key: 'C7', value: 0},
-      //   {key: 'C6', value: 0},
-      //   {key: 'C5', value: 0},
-      //   {key: 'C4', value: 0},
-      //   {key: 'C3', value: 0},
-      //   {key: 'C2', value: 0},
-      //   {key: 'C1', value: 0},
-      //   {key: 'C0', value: 0},
-      //   {key: 'length ( m )', value: 0},
+        //   {key: 'C9', value: 0},
+        //   {key: 'C8', value: 0},
+        //   {key: 'C7', value: 0},
+        //   {key: 'C6', value: 0},
+        //   {key: 'C5', value: 0},
+        //   {key: 'C4', value: 0},
+        //   {key: 'C3', value: 0},
+        //   {key: 'C2', value: 0},
+        //   {key: 'C1', value: 0},
+        //   {key: 'C0', value: 0},
+        //   {key: 'length ( m )', value: 0},
       ]
       // soModel: {
       //   "id": "",
@@ -147,7 +147,7 @@ export default {
       var measurableArr = this.soModel.measurable
       var soModelMeasurable = []
       measurableArr.forEach(item => {
-        soModelMeasurable.push({name: item})
+        soModelMeasurable.push({ name: item })
       })
       return soModelMeasurable
     }
@@ -172,37 +172,37 @@ export default {
     },
     resetSOModels() {
       this.soModelParameters = [
-        {key: 'C9', value: 0},
-        {key: 'C8', value: 0},
-        {key: 'C7', value: 0},
-        {key: 'C6', value: 0},
-        {key: 'C5', value: 0},
-        {key: 'C4', value: 0},
-        {key: 'C3', value: 0},
-        {key: 'C2', value: 0},
-        {key: 'C1', value: 0},
-        {key: 'C0', value: 0},
-        {key: 'length ( m )', value: 0},
-        ]
+        { key: 'C9', value: 0 },
+        { key: 'C8', value: 0 },
+        { key: 'C7', value: 0 },
+        { key: 'C6', value: 0 },
+        { key: 'C5', value: 0 },
+        { key: 'C4', value: 0 },
+        { key: 'C3', value: 0 },
+        { key: 'C2', value: 0 },
+        { key: 'C1', value: 0 },
+        { key: 'C0', value: 0 },
+        { key: 'length ( m )', value: 0 }
+      ]
       this.newSO.parameters = {
-          C9: 0,
-          C8: 0,
-          C7: 0,
-          C6: 0,
-          C5: 0,
-          C4: 0,
-          C3: 0,
-          C2: 0,
-          C1: 0,
-          C0: 0,
-          length: 0
-        }
+        C9: 0,
+        C8: 0,
+        C7: 0,
+        C6: 0,
+        C5: 0,
+        C4: 0,
+        C3: 0,
+        C2: 0,
+        C1: 0,
+        C0: 0,
+        length: 0
+      }
     },
     initSOModelParameters() {
       var parametersObj = this.soModel.parameters || {}
       this.newSO.parameters = parametersObj
-      for (var key in parametersObj){
-        this.soModelParameters.push({key: key, value: parametersObj[key]})
+      for (var key in parametersObj) {
+        this.soModelParameters.push({ key: key, value: parametersObj[key] })
       }
     },
     editSO(key, value) {
