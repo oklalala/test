@@ -4,8 +4,8 @@
   <el-form label-width="100px" label-position="left">
     <section>
       <h2>基本資料</h2>
-      <p>案號：</p>
-      <p>名稱：</p>
+      <p>案號： {{projectId}}</p>
+      <p>名稱： {{projectName}}</p>
     </section>
     <section>
       <h2>量測作業</h2>
@@ -97,7 +97,8 @@ export default {
   data() {
     return {
       wiseIP: '192.168.58.200',
-      measuresSoDatas: []
+      measuresSoDatas: [],
+      projectId:'',
     }
   },
   methods: {
@@ -110,10 +111,27 @@ export default {
     uploadMeasuresDatas: function() {
       console.log('fuck')
     },
-    getParams: function() {}
+    getProjectId: function() {
+      this.projectId = this.$route.params.projectId
+    },
+    getProjects:function(){
+      this.$store.dispatch('getProjects')
+    }
+  },
+  computed:{
+    projects:function(){
+      return this.$store.getters.projects
+    },
+    projectName:function(){
+      let project = this.projects.filter(item=>{
+        return item.id === this.projectId
+      })
+      return project[0].name
+    }
   },
   mounted() {
-    this.getParams()
+    this.getProjectId(),
+    this.getProjects()
   }
 }
 </script>

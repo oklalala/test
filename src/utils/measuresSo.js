@@ -60,7 +60,7 @@ export default function(wiseIP, formData) {
         digitY.Eg,
         formData
       )
-      formData.push(tableData)
+      formData.unshift(tableData)
     })
 }
 
@@ -154,7 +154,7 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
   totalDisplacement = formData.length
     ? formData[formData.length - 1].totalDisplacement + displacementX
     : displacementX
-  depth = formData.length + 1 || 1
+  depth = 10 - formData.length
 
   let tableData = {
     date: Date(),

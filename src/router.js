@@ -272,7 +272,7 @@ let router = new Router({
       }
     },
     {
-      path: '/measures/so',
+      path: '/measures/so/:projectId',
       name: 'MeasuresSo',
       component: MeasuresSo,
       meta: {
