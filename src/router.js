@@ -277,7 +277,7 @@ let router = new Router({
       component: MeasuresSo,
       meta: {
         requireAuth: true
-      },
+      }
     }
   ]
 })
