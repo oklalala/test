@@ -151,8 +151,9 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
   displacementX = calculatingHorizontalDisplacement(degreeX, 100)
   displacementY = calculatingHorizontalDisplacement(degreeY, 100)
 
+  console.log(formData)
   totalDisplacement = formData.length
-    ? formData[formData.length - 1].totalDisplacement + displacementX
+    ? formData[0].totalDisplacement + displacementX
     : displacementX
   depth = 10 - formData.length
 

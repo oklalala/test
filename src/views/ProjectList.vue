@@ -18,11 +18,9 @@
       </el-table-column>
       <el-table-column
         label="監控資料"
-        width="120"
-        v-if="isShow('project:export')">
+        width="120">
         <template slot-scope="scope">
-          <el-button @click="toPath('ProjectMonitor')">監控資料</el-button>
-          <!-- <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button> -->
+          <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button>
         </template>
       </el-table-column>
       <el-table-column

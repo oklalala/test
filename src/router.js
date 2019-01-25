@@ -185,16 +185,25 @@ let router = new Router({
     {
       path: '/project-monitor/:projectId',
       name: 'ProjectMonitor',
-      component: ProjectMonitor
-      // meta: { requireAuth: true },
-      // beforeEnter: (to, from, next) => {
-      //   Promise.all([
-      //     store.dispatch('getProjectStatus'),
-      //     store.dispatch('getCompanies')
-      //   ]).then(() => {
-      //     next()
-      //   })
-      // }
+      component: ProjectMonitor,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        Promise.all([
+          // store.dispatch('getProjectStatus'),
+          // store.dispatch('getProject'),
+          // store.dispatch('getCompanies')
+        ]).then(() => {
+          next()
+        })
+      }
+    },
+    {
+      path: '/measures/so/:projectId',
+      name: 'MeasuresSo',
+      component: MeasuresSo,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/project-phase-list',
@@ -269,14 +278,6 @@ let router = new Router({
         ]).then(() => {
           next()
         })
-      }
-    },
-    {
-      path: '/measures/so/:projectId',
-      name: 'MeasuresSo',
-      component: MeasuresSo,
-      meta: {
-        requireAuth: true
       }
     }
   ]

@@ -28,7 +28,9 @@ import {
   Pagination,
   upload,
   submenu,
-  tag
+  tag,
+  datePicker,
+  loading
 } from 'element-ui'
 
 Vue.use(Row)
@@ -51,6 +53,8 @@ Vue.use(Pagination)
 Vue.use(upload)
 Vue.use(submenu)
 Vue.use(tag)
+Vue.use(datePicker)
+Vue.use(loading)
 Vue.prototype.$message = Message
 
 Vue.config.productionTip = false
