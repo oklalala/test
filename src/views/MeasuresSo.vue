@@ -35,7 +35,7 @@
       </el-form-item>
       <el-form-item label="請由下往上量，間隔 1m 量測一次" label-width="300px">
       </el-form-item>
-    <el-button @click="measures">量測</el-button>
+    <el-button @click="measures" :disabled="measuresSoDatas.length === 10">量測</el-button>
     </section>
     <section v-if="measuresSoDatas.length">
       <p>應量測10筆，已量測{{measuresSoDatas.length}}筆</p>
@@ -98,10 +98,10 @@ export default {
     return {
       wiseIP: '192.168.58.200',
       measuresSoDatas: [],
-      projectId: '',
-      project: {},
-      projectPhaseValue: '',
-      locationValue: ''
+      projectId:'',
+      project:{},
+      projectPhaseValue:'',
+      locationValue:''
     }
   },
   methods: {
@@ -117,31 +117,34 @@ export default {
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
     },
-    getProject: function() {
-      this.$store.dispatch('getProject', this.projectId).then(res => {
+    getProject:function(){
+      this.$store.dispatch('getProject',this.projectId)
+      .then((res)=>{
         this.project = res.data.data
       })
     },
-    getProjectPhases: function() {
+    getProjectPhases:function(){
       this.$store.dispatch('getProjectPhases')
     }
   },
-  computed: {
-    projects: function() {
+  computed:{
+    projects:function(){
       return this.$store.getters.projects
     },
-    projectNumber: function() {
+    projectNumber:function(){
       return this.project.number
     },
-    projectName: function() {
+    projectName:function(){
       return this.project.name
     },
-    projectPhases: function() {
+    projectPhases:function(){
       return this.$store.getters.projectPhases
     }
   },
   mounted() {
-    this.getProjectId(), this.getProjectPhases(), this.getProject()
+    this.getProjectId(),
+    this.getProjectPhases(),
+    this.getProject()
   }
 }
 </script>
