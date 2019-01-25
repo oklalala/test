@@ -4,28 +4,28 @@
   <el-form label-width="100px" label-position="left">
     <section>
       <h2>基本資料</h2>
-      <p>案號： {{projectId}}</p>
+      <p>案號： {{projectNumber}}</p>
       <p>名稱： {{projectName}}</p>
     </section>
     <section>
       <h2>量測作業</h2>
       <el-form-item label="專案階段">
-        <el-select v-model="value" placeholder="第一次開挖">
+        <el-select v-model="projectPhaseValue" placeholder="第一次開挖">
          <el-option
-           v-for="item in options"
-           :key="item.value"
-           :label="item.label"
-           :value="item.value">
+           v-for="projectPhase in projectPhases"
+           :key="projectPhase.id"
+           :label="projectPhase.name"
+           :value="projectPhase.id">
          </el-option>
        </el-select>
      </el-form-item>
-      <el-form-item label="請度管編號">
-        <el-select v-model="value" placeholder="SO-01">
+      <el-form-item label="量測點編號">
+        <el-select v-model="locationValue" placeholder="SO-01">
          <el-option
-           v-for="item in options"
-           :key="item.value"
-           :label="item.label"
-           :value="item.value">
+           v-for="location in project.soLocation"
+           :key="location.number"
+           :label="location.number"
+           :value="location.number">
          </el-option>
        </el-select>
      </el-form-item>
@@ -33,7 +33,7 @@
         <el-input :value="wiseIP" >
         </el-input>
       </el-form-item>
-      <el-form-item label="請由上往下量，間隔 1m 量測一次" label-width="300px">
+      <el-form-item label="請由下往上量，間隔 1m 量測一次" label-width="300px">
       </el-form-item>
     <el-button @click="measures">量測</el-button>
     </section>
@@ -99,6 +99,9 @@ export default {
       wiseIP: '192.168.58.200',
       measuresSoDatas: [],
       projectId:'',
+      project:{},
+      projectPhaseValue:'',
+      locationValue:''
     }
   },
   methods: {
@@ -114,24 +117,34 @@ export default {
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
     },
-    getProjects:function(){
-      this.$store.dispatch('getProjects')
+    getProject:function(){
+      this.$store.dispatch('getProject',this.projectId)
+      .then((res)=>{
+        this.project = res.data.data
+      })
+    },
+    getProjectPhases:function(){
+      this.$store.dispatch('getProjectPhases')
     }
   },
   computed:{
     projects:function(){
       return this.$store.getters.projects
     },
+    projectNumber:function(){
+      return this.project.number
+    },
     projectName:function(){
-      let project = this.projects.filter(item=>{
-        return item.id === this.projectId
-      })
-      return project[0].name
+      return this.project.name
+    },
+    projectPhases:function(){
+      return this.$store.getters.projectPhases
     }
   },
   mounted() {
     this.getProjectId(),
-    this.getProjects()
+    this.getProjectPhases(),
+    this.getProject()
   }
 }
 </script>
