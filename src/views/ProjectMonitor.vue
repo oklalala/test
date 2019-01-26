@@ -46,7 +46,8 @@
             </el-col>
           </el-row>
         </el-form>
-        <Chart v-if="isVGSelected"/>
+        <div class="chart" v-if="isVGSelected"><ve-line :data="vgChartData"></ve-line></div>
+        <!-- <Chart v-if="isVGSelected"/> -->
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -77,20 +78,25 @@
             </el-col>
           </el-row>
         </el-form>
-        <Chart v-if="isSOSelected"/>
+        <div class="chart" v-if="isSOSelected"><ve-line :data="soChartData"></ve-line></div>
+        <!-- <SOChart v-if="isSOSelected" :soChartData="soChartData"/> -->
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
+    <Chart />
   </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-import Chart from "../components/Chart"
+// import Chart from '../components/Chart';
+// import SOChart from "../components/SOChart"
+// import VGChart from "../components/VGChart"
+import VeLine from "v-charts/lib/line.common"
 
 export default {
   name: 'ProjectMonitor',
-  components: { Chart },
+  components: { VeLine },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
@@ -100,6 +106,12 @@ export default {
     }
   },
   data() {
+    this.chartSetting = {
+      labelMap: {
+        topAction: '访问用户',
+        endActopn: '下单用户'
+      }
+    }
     return {
       project: {
         // OPT: [],
@@ -123,7 +135,31 @@ export default {
       selectedSO: '',
       subVGLocation: [],
       floorIndex: 1,
-      show: true
+      show: true,
+      vgChartData: {
+        columns: ['date', 'PV']
+      },
+      // initSOData: [
+      //   {
+      //     "c0": 10,
+      //     "c1": 40,
+      //     "c2": 45,
+      //     "c3": 60,
+      //     "c4": 70,
+      //     "c5": 77,
+      //   }
+      // ],
+      soChartData: {
+        columns: ["date", "PV", 'topAction', 'endAction'],
+        rows: [
+          { date: '0', PV: -2.5, topAction: 10, endAction: -10},
+          { date: '4', PV: -2, topAction: 10, endAction: -10 },
+          { date: '6', PV: -1.5 },
+          { date: '-4', PV: -1 },
+          { date: '-3', PV: -0.5 },
+          { date: '4', PV: 0 , topAction: 10}
+        ]
+      }
     }
   },
   computed: {
