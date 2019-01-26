@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     isLogined() {
-      return this.$store.getters.token
+      return !!this.$store.getters.token
     }
   },
   methods: {
