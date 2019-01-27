@@ -159,7 +159,7 @@ export default {
         }
       ]
     }
-    ;(this.vgChart = {
+    this.vgChart = {
       // xAxisType: 'time'
       xAxis: [
         {
@@ -173,8 +173,8 @@ export default {
           // }
         }
       ]
-    }),
-    (this.soMark = {
+    }
+    this.soMark = {
       data: [
         {
           name: '管理值',
@@ -211,10 +211,10 @@ export default {
           label: { normal: { formatter: '行動值' } }
         }
       ]
-    }),
-    (this.soChart = {
+    }
+    this.soChart = {
       xAxisType: 'value'
-    })
+    }
     return {
       project: {
         // OPT: [],
