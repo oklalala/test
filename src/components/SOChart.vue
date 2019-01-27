@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import VeLine from "v-charts/lib/line.common"
+import VeLine from 'v-charts/lib/line.common'
 
 export default {
-  name: "SOChart",
+  name: 'SOChart',
   components: { VeLine },
   props: {
     soChartData: Object
@@ -25,7 +25,7 @@ export default {
     // },
     this.chartSettings = {
       xAxisType: 'value',
-      scale: [true, true],
+      scale: [true, true]
     }
   },
   data() {
@@ -33,5 +33,5 @@ export default {
       // soChartData: {}
     }
   }
-};
+}
 </script>

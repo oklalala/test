@@ -105,7 +105,7 @@ import ToPathMixin from '@/mixins/ToPath'
 // import Chart from '../components/Chart';
 // import SOChart from "../components/SOChart"
 // import VGChart from "../components/VGChart"
-import VeLine from "v-charts/lib/line.common"
+import VeLine from 'v-charts/lib/line.common'
 import 'echarts/lib/component/markLine'
 // import 'echarts/lib/component/markPoint'
 
@@ -123,54 +123,98 @@ export default {
   data() {
     this.vgMark = {
       data: [
-        { name: '管理值', yAxis: 70, 
-          label: { normal: { formatter: '管理值' } }  },
-        { name: '管理值', yAxis: -70, 
-          label: { normal: { formatter: '管理值' } }  },
-        { lineStyle: { color: 'blue' }, name: '警戒值', yAxis: 80, 
-          label: { normal: { formatter: '警戒值' } }  },
-        { lineStyle: { color: 'blue' }, name: '警戒值', yAxis: -80, 
-          label: { normal: { formatter: '警戒值' } }  },
-        { lineStyle: { color: 'red' }, name: '行動值', yAxis: 110, 
-          label: { normal: { formatter: '行動值' } }  },
-        { lineStyle: { color: 'red' }, name: '行動值', yAxis: -110, 
-          label: { normal: { formatter: '行動值' } }  }
-      ]
-    }
-    this.vgChart = {
-      // xAxisType: 'time'
-      xAxis : [
         {
-            type : 'time'
-            // scale:true,
-            // axisLabel : {
-            //     formatter: '{value} cm'
-            // },
-            // splitLine: {
-            //     show: false
-            // }
+          name: '管理值',
+          yAxis: 70,
+          label: { normal: { formatter: '管理值' } }
+        },
+        {
+          name: '管理值',
+          yAxis: -70,
+          label: { normal: { formatter: '管理值' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          yAxis: 80,
+          label: { normal: { formatter: '警戒值' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          yAxis: -80,
+          label: { normal: { formatter: '警戒值' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          yAxis: 110,
+          label: { normal: { formatter: '行動值' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          yAxis: -110,
+          label: { normal: { formatter: '行動值' } }
         }
-      ],
-    },
-    this.soMark = {
-      data: [
-        { name: '管理值', xAxis: 5, 
-          label: { normal: { formatter: '管理值' } } },
-        { name: '管理值', xAxis: -5, 
-          label: { normal: { formatter: '管理值' } }  },
-        { lineStyle: { color: 'blue' }, name: '警戒值', xAxis: 10, 
-          label: { normal: { formatter: '警戒值' } }  },
-        { lineStyle: { color: 'blue' }, name: '警戒值', xAxis: -10, 
-          label: { normal: { formatter: '警戒值' } }  },
-        { lineStyle: { color: 'red' }, name: '行動值', xAxis: 15, 
-          label: { normal: { formatter: '行動值' } }  },
-        { lineStyle: { color: 'red' }, name: '行動值', xAxis: -15, 
-          label: { normal: { formatter: '行動值' } }  }
       ]
-    },
-    this.soChart = {
-      xAxisType: 'value'
     }
+    ;(this.vgChart = {
+      // xAxisType: 'time'
+      xAxis: [
+        {
+          type: 'time'
+          // scale:true,
+          // axisLabel : {
+          //     formatter: '{value} cm'
+          // },
+          // splitLine: {
+          //     show: false
+          // }
+        }
+      ]
+    }),
+    (this.soMark = {
+      data: [
+        {
+          name: '管理值',
+          xAxis: 5,
+          label: { normal: { formatter: '管理值' } }
+        },
+        {
+          name: '管理值',
+          xAxis: -5,
+          label: { normal: { formatter: '管理值' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          xAxis: 10,
+          label: { normal: { formatter: '警戒值' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          xAxis: -10,
+          label: { normal: { formatter: '警戒值' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          xAxis: 15,
+          label: { normal: { formatter: '行動值' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          xAxis: -15,
+          label: { normal: { formatter: '行動值' } }
+        }
+      ]
+    }),
+    (this.soChart = {
+      xAxisType: 'value'
+    })
     return {
       project: {
         // OPT: [],
@@ -198,13 +242,13 @@ export default {
       vgChartData: {
         columns: ['date', 'PV'],
         rows: [
-          { date: '2018-12-1', PV: 95},
-          { date: '2018-12-3', PV: -50},
-          { date: '2018-12-5', PV: -33},
-          { date: '2018-12-6', PV: -30},
-          { date: '2018-12-11', PV: -102},
-          { date: '2018-12-12', PV: 40},
-          { date: '2018-12-19', PV: 60}
+          { date: '2018-12-1', PV: 95 },
+          { date: '2018-12-3', PV: -50 },
+          { date: '2018-12-5', PV: -33 },
+          { date: '2018-12-6', PV: -30 },
+          { date: '2018-12-11', PV: -102 },
+          { date: '2018-12-12', PV: 40 },
+          { date: '2018-12-19', PV: 60 }
         ]
       },
       // initSOData: [
@@ -218,21 +262,21 @@ export default {
       //   }
       // ],
       soChartData: {
-        columns: ["date", "PV"],
+        columns: ['date', 'PV'],
         rows: [
-          { date: '0', PV: -2.5},
+          { date: '0', PV: -2.5 },
           { date: '11', PV: -2 },
           { date: '6', PV: -1.5 },
           { date: '-4', PV: -1 },
           { date: '-13', PV: -0.5 },
-          { date: '4', PV: 0}
+          { date: '4', PV: 0 }
         ]
       }
     }
   },
   computed: {
     showImage() {
-      if (!!this.project.sitePlan) {
+      if (this.project.sitePlan) {
         return `${process.env.VUE_APP_API_URL}/${this.project.sitePlan}`
       }
     },
