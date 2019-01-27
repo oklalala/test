@@ -166,6 +166,7 @@
                 :value="vg.id">
               </el-option>
             </el-select>
+            <!-- <h3 v-if="isEnoughtVG" >Add more gauge please</h3> -->
           </el-form-item>
           <div class="demo-input-suffix">
             支撐階數：
@@ -492,7 +493,6 @@ export default {
         this.toPath('ProjectSetting')
       })
     },
-
     resetMember() {
       this.USERList = []
       this.OPTList = []

@@ -20,14 +20,13 @@
         label="監控資料"
         width="120">
         <template slot-scope="scope">
-          <el-button @click="toPath('ProjectMonitor')">監控資料</el-button>
-          <!-- <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button> -->
+          <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button>
         </template>
       </el-table-column>
       <el-table-column
         label="傾度管量測"
         width="130"
-        v-if="isOPT()">
+        v-if="isShow('project:soItemMeasure')">
         <template slot-scope="scope">
           <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })">傾度管資料</el-button>
           <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
@@ -39,7 +38,7 @@
         width="100"
         :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
         :filter-method="statusFilter"
-        v-if="isAdminOrMGT()">
+        v-if="isShow('project:filter')">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
         </template>
@@ -72,16 +71,11 @@ export default {
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)
     },
-    isAdminOrMGT() {
-      let role = this.$store.getters.myRole
-      return role === 'MGT' || role === 'ADMIN'
-    },
-    isOPT() {
-      let role = this.$store.getters.myRole
-      return role === 'OPT'
-    },
     statusFilter(value, row) {
       return row.status === value
+    },
+    isShow(feature) {
+      return this.$store.getters.myPermissions.includes(feature)
     }
   }
 }
