@@ -48,6 +48,7 @@
         </el-form>
         <div class="chart" v-if="isVGSelected">
           <ve-line
+            width='90%'
             :data="vgChartData" 
             :settings="vgChart" 
             :mark-line="vgMark"
@@ -86,6 +87,7 @@
         </el-form>
         <div class="chart" v-if="isSOSelected">
           <ve-line 
+            width='90%'
             :data="soChartData" 
             :settings="soChart" 
             :mark-line="soMark"
@@ -96,7 +98,7 @@
       </el-tab-pane>
     </el-tabs>
     <!-- <Chart /> -->
-    
+    <br>
   </div>
 </template>
 
@@ -126,36 +128,36 @@ export default {
         {
           name: '管理值',
           yAxis: 70,
-          label: { normal: { formatter: '管理值' } }
+          label: { normal: { formatter: '管理值', position: 'start' } }
         },
         {
           name: '管理值',
           yAxis: -70,
-          label: { normal: { formatter: '管理值' } }
+          label: { normal: { formatter: '管理值', position: 'start' } }
         },
         {
           lineStyle: { color: 'blue' },
           name: '警戒值',
           yAxis: 80,
-          label: { normal: { formatter: '警戒值' } }
+          label: { normal: { formatter: '警戒值', position: 'start' } }
         },
         {
           lineStyle: { color: 'blue' },
           name: '警戒值',
           yAxis: -80,
-          label: { normal: { formatter: '警戒值' } }
+          label: { normal: { formatter: '警戒值', position: 'start' } }
         },
         {
           lineStyle: { color: 'red' },
           name: '行動值',
           yAxis: 110,
-          label: { normal: { formatter: '行動值' } }
+          label: { normal: { formatter: '行動值', position: 'start' } }
         },
         {
           lineStyle: { color: 'red' },
           name: '行動值',
           yAxis: -110,
-          label: { normal: { formatter: '行動值' } }
+          label: { normal: { formatter: '行動值', position: 'start' } }
         }
       ]
     }
