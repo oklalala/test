@@ -52,6 +52,7 @@
             :data="vgChartData" 
             :settings="vgChart" 
             :mark-line="vgMark"
+            :extend="vgExtend"
             :legend-visible="false"></ve-line>
         </div>
         <!-- <Chart v-if="isVGSelected"/> -->
@@ -161,20 +162,14 @@ export default {
         }
       ]
     }
-    this.vgChart = {
-      // xAxisType: 'time'
-      xAxis: [
-        {
-          type: 'time'
-          // scale:true,
-          // axisLabel : {
-          //     formatter: '{value} cm'
-          // },
-          // splitLine: {
-          //     show: false
-          // }
+    this.vgExtend = {
+      xAxis: {
+        type: 'time',
+        axisLabel: {
+          rotate: 45,
+          
         }
-      ]
+      }
     }
     this.soMark = {
       data: [
