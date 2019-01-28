@@ -125,44 +125,44 @@ export default {
   },
   data() {
     this.vgMark = {
-      data: [
-        {
-          name: '管理值',
-          yAxis: 70,
-          label: { normal: { formatter: '管理值', position: 'start' } }
-        },
-        {
-          name: '管理值',
-          yAxis: -70,
-          label: { normal: { formatter: '管理值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          yAxis: 80,
-          label: { normal: { formatter: '警戒值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          yAxis: -80,
-          label: { normal: { formatter: '警戒值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          yAxis: 110,
-          label: { normal: { formatter: '行動值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          yAxis: -110,
-          label: { normal: { formatter: '行動值', position: 'start' } }
-        }
-      ]
-    }
-    this.vgExtend = {
+        data: [
+          {
+            name: '管理值',
+            yAxis: 70,
+            label: { normal: { formatter: '管理值', position: 'start' } }
+          },
+          {
+            name: '管理值',
+            yAxis: -70,
+            label: { normal: { formatter: '管理值', position: 'start' } }
+          },
+          {
+            lineStyle: { color: 'blue' },
+            name: '警戒值',
+            yAxis: 80,
+            label: { normal: { formatter: '警戒值', position: 'start' } }
+          },
+          {
+            lineStyle: { color: 'blue' },
+            name: '警戒值',
+            yAxis: -80,
+            label: { normal: { formatter: '警戒值', position: 'start' } }
+          },
+          {
+            lineStyle: { color: 'red' },
+            name: '行動值',
+            yAxis: 110,
+            label: { normal: { formatter: '行動值', position: 'start' } }
+          },
+          {
+            lineStyle: { color: 'red' },
+            name: '行動值',
+            yAxis: -110,
+            label: { normal: { formatter: '行動值', position: 'start' } }
+          }
+        ]
+      }
+      this.vgExtend = {
       xAxis: {
         type: 'time',
         axisLabel: {
@@ -235,7 +235,7 @@ export default {
       selectedVG: '',
       selectedSO: '',
       subVGLocation: [],
-      floorIndex: 1,
+      floorIndex: 0,
       show: true,
       vgChartData: {
         columns: ['date', 'PV'],
@@ -279,10 +279,21 @@ export default {
       }
     },
     isVGSelected() {
+      this.setVGMarkLine
       return !!this.selectedVG && !!this.vgDate
     },
     isSOSelected() {
       return !!this.selectedSO && !!this.soDate
+    },
+    setVGMarkLine() {
+      var vg = this.project.vgManagement[this.floorIndex]
+      this.vgMark.data[0].yAxis = vg.notice
+      this.vgMark.data[1].yAxis = -vg.notice
+      this.vgMark.data[2].yAxis = vg.warning
+      this.vgMark.data[3].yAxis = -vg.warning
+      this.vgMark.data[4].yAxis = vg.action
+      this.vgMark.data[5].yAxis = -vg.action
+      // return this.project.vgManagement[this.floorIndex].notice
     }
   },
   methods: {
@@ -292,6 +303,7 @@ export default {
       })
     },
     currentFloor(selectedFloor) {
+      this.selectedVG = ''
       this.floorIndex = selectedFloor - 1
       this.setVGTable(this.floorIndex)
     },
