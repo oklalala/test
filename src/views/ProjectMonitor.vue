@@ -50,7 +50,6 @@
           <ve-line
             width='90%'
             :data="vgChartData" 
-            :settings="vgChart" 
             :mark-line="vgMark"
             :extend="vgExtend"
             :legend-visible="false"></ve-line>
@@ -111,6 +110,7 @@ import ToPathMixin from '@/mixins/ToPath'
 import VeLine from 'v-charts/lib/line.common'
 import 'echarts/lib/component/markLine'
 // import 'echarts/lib/component/markPoint'
+import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
@@ -166,8 +166,9 @@ export default {
       xAxis: {
         type: 'time',
         axisLabel: {
-          rotate: 45,
-          
+          formatter(value) {
+            return moment(value).format('HH:mm')
+          }
         }
       }
     }
@@ -239,13 +240,13 @@ export default {
       vgChartData: {
         columns: ['date', 'PV'],
         rows: [
-          { date: '2018-12-1', PV: 95 },
-          { date: '2018-12-3', PV: -50 },
-          { date: '2018-12-5', PV: -33 },
-          { date: '2018-12-6', PV: -30 },
-          { date: '2018-12-11', PV: -102 },
-          { date: '2018-12-12', PV: 40 },
-          { date: '2018-12-19', PV: 60 }
+          { date: '2018/12/08 01:00', PV: 95 },
+          { date: '2018/12/08 03:00', PV: -50 },
+          { date: '2018/12/08 08:00', PV: -33 },
+          { date: '2018/12/08 12:00', PV: -30 },
+          { date: '2018/12/08 15:01', PV: -102 },
+          { date: '2018/12/08 19:02', PV: 40 },
+          { date: '2018/12/08 22:29', PV: 60 }
         ]
       },
       // initSOData: [
