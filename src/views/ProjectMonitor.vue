@@ -46,7 +46,10 @@
             </el-col>
           </el-row>
         </el-form>
-        <VGChart :vgChartData="vgChartData" :project='project'/>
+        <VGChart 
+          v-if="isSOSelected" 
+          :vgChartData="vgChartData" 
+          :project='project'/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -77,38 +80,25 @@
             </el-col>
           </el-row>
         </el-form>
-        <div class="chart" v-if="isSOSelected">
-          <ve-line 
-            width='90%'
-            grid='vgGrid'
-            :data="soChartData" 
-            :settings="soChart" 
-            :mark-line="soMark"
-            :legend-visible="false"></ve-line>
-          </div>
-        <!-- <SOChart v-if="isSOSelected" :soChartData="soChartData"/> -->
+        <SOChart 
+          v-if="isSOSelected" 
+          :soChartData="soChartData"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
-    <!-- <Chart /> -->
-    <VGChart :vgChartData="vgChartData" :project='project'/>
     <br>
   </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-// import Chart from '../components/Chart';
-// import SOChart from "../components/SOChart"
+import SOChart from "../components/SOChart"
 import VGChart from "../components/VGChart"
 import VeLine from 'v-charts/lib/line.common'
-import 'echarts/lib/component/markLine'
-// import 'echarts/lib/component/markPoint'
-import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VeLine, VGChart },
+  components: { VeLine, VGChart, SOChart },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
@@ -118,47 +108,6 @@ export default {
     }
   },
   data() {
-    this.soMark = {
-      data: [
-        {
-          name: '管理值',
-          xAxis: 5,
-          label: { normal: { formatter: '管理值' } }
-        },
-        {
-          name: '管理值',
-          xAxis: -5,
-          label: { normal: { formatter: '管理值' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          xAxis: 10,
-          label: { normal: { formatter: '警戒值' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          xAxis: -10,
-          label: { normal: { formatter: '警戒值' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          xAxis: 15,
-          label: { normal: { formatter: '行動值' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          xAxis: -15,
-          label: { normal: { formatter: '行動值' } }
-        }
-      ]
-    }
-    this.soChart = {
-      xAxisType: 'value'
-    }
     return {
       project: {
         // OPT: [],
@@ -230,7 +179,7 @@ export default {
     },
     isSOSelected() {
       return !!this.selectedSO && !!this.soDate
-      },
+    },
     setVGMarkLine() {
       var vg = this.project.vgManagement[this.floorIndex]
       this.vgMark.data[0].yAxis = vg.notice
