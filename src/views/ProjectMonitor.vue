@@ -46,15 +46,7 @@
             </el-col>
           </el-row>
         </el-form>
-        <div class="chart" v-if="isVGSelected">
-          <ve-line
-            width='90%'
-            :data="vgChartData" 
-            :mark-line="vgMark"
-            :extend="vgExtend"
-            :legend-visible="false"></ve-line>
-        </div>
-        <!-- <Chart v-if="isVGSelected"/> -->
+        <VGChart :vgChartData="vgChartData" :project='project'/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -88,6 +80,7 @@
         <div class="chart" v-if="isSOSelected">
           <ve-line 
             width='90%'
+            grid='vgGrid'
             :data="soChartData" 
             :settings="soChart" 
             :mark-line="soMark"
@@ -98,6 +91,7 @@
       </el-tab-pane>
     </el-tabs>
     <!-- <Chart /> -->
+    <VGChart :vgChartData="vgChartData" :project='project'/>
     <br>
   </div>
 </template>
@@ -106,7 +100,7 @@
 import ToPathMixin from '@/mixins/ToPath'
 // import Chart from '../components/Chart';
 // import SOChart from "../components/SOChart"
-// import VGChart from "../components/VGChart"
+import VGChart from "../components/VGChart"
 import VeLine from 'v-charts/lib/line.common'
 import 'echarts/lib/component/markLine'
 // import 'echarts/lib/component/markPoint'
@@ -114,7 +108,7 @@ import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VeLine },
+  components: { VeLine, VGChart },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
@@ -124,54 +118,6 @@ export default {
     }
   },
   data() {
-    this.vgMark = {
-        data: [
-          {
-            name: '管理值',
-            yAxis: 70,
-            label: { normal: { formatter: '管理值', position: 'start' } }
-          },
-          {
-            name: '管理值',
-            yAxis: -70,
-            label: { normal: { formatter: '管理值', position: 'start' } }
-          },
-          {
-            lineStyle: { color: 'blue' },
-            name: '警戒值',
-            yAxis: 80,
-            label: { normal: { formatter: '警戒值', position: 'start' } }
-          },
-          {
-            lineStyle: { color: 'blue' },
-            name: '警戒值',
-            yAxis: -80,
-            label: { normal: { formatter: '警戒值', position: 'start' } }
-          },
-          {
-            lineStyle: { color: 'red' },
-            name: '行動值',
-            yAxis: 110,
-            label: { normal: { formatter: '行動值', position: 'start' } }
-          },
-          {
-            lineStyle: { color: 'red' },
-            name: '行動值',
-            yAxis: -110,
-            label: { normal: { formatter: '行動值', position: 'start' } }
-          }
-        ]
-      }
-      this.vgExtend = {
-      xAxis: {
-        type: 'time',
-        axisLabel: {
-          formatter(value) {
-            return moment(value).format('HH:mm')
-          }
-        }
-      }
-    }
     this.soMark = {
       data: [
         {
@@ -284,7 +230,7 @@ export default {
     },
     isSOSelected() {
       return !!this.selectedSO && !!this.soDate
-    },
+      },
     setVGMarkLine() {
       var vg = this.project.vgManagement[this.floorIndex]
       this.vgMark.data[0].yAxis = vg.notice
