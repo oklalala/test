@@ -79,7 +79,9 @@ export default {
           axisLabel: {
             formatter(value) {
               // 輸入的時間 與 v-charts 軸上的時間有落差
-              return moment(value).subtract(8,'h').format('HH:mm')
+              return moment(value)
+                .subtract(8, 'h')
+                .format('HH:mm')
             }
           }
         }

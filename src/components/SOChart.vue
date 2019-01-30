@@ -62,17 +62,17 @@ export default {
       },
       soChart: {
         xAxisType: 'value'
-      // },
-      // soChartData: {
-      //   columns: ['date', 'PV'],
-      //   rows: [
-      //     { date: '0', PV: -2.5 },
-      //     { date: '11', PV: -2 },
-      //     { date: '6', PV: -1.5 },
-      //     { date: '-4', PV: -1 },
-      //     { date: '-13', PV: -0.5 },
-      //     { date: '4', PV: 0 }
-      //   ]
+        // },
+        // soChartData: {
+        //   columns: ['date', 'PV'],
+        //   rows: [
+        //     { date: '0', PV: -2.5 },
+        //     { date: '11', PV: -2 },
+        //     { date: '6', PV: -1.5 },
+        //     { date: '-4', PV: -1 },
+        //     { date: '-13', PV: -0.5 },
+        //     { date: '4', PV: 0 }
+        //   ]
       }
     }
   }
