@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import '@/assets/scss/custom-theme.scss'
+import moment from 'moment'
 
 import {
   Row,
@@ -55,7 +56,9 @@ Vue.use(submenu)
 Vue.use(tag)
 Vue.use(datePicker)
 Vue.use(loading)
+
 Vue.prototype.$message = Message
+Vue.prototype.moment = moment
 
 Vue.config.productionTip = false
 

@@ -46,6 +46,15 @@
             </el-col>
           </el-row>
         </el-form>
+        <div class="chart" v-if="isVGSelected">
+          <ve-line
+            width='90%'
+            :data="vgChartData" 
+            :mark-line="vgMark"
+            :extend="vgExtend"
+            :legend-visible="false"></ve-line>
+        </div>
+        <!-- <Chart v-if="isVGSelected"/> -->
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -76,17 +85,36 @@
             </el-col>
           </el-row>
         </el-form>
+        <div class="chart" v-if="isSOSelected">
+          <ve-line 
+            width='90%'
+            :data="soChartData" 
+            :settings="soChart" 
+            :mark-line="soMark"
+            :legend-visible="false"></ve-line>
+          </div>
+        <!-- <SOChart v-if="isSOSelected" :soChartData="soChartData"/> -->
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
+    <!-- <Chart /> -->
+    <br>
   </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-export default {
-  name: 'UserList',
+// import Chart from '../components/Chart';
+// import SOChart from "../components/SOChart"
+// import VGChart from "../components/VGChart"
+import VeLine from 'v-charts/lib/line.common'
+import 'echarts/lib/component/markLine'
+// import 'echarts/lib/component/markPoint'
+import moment from 'moment'
 
+export default {
+  name: 'ProjectMonitor',
+  components: { VeLine },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
@@ -96,6 +124,95 @@ export default {
     }
   },
   data() {
+    this.vgMark = {
+      data: [
+        {
+          name: '管理值',
+          yAxis: 70,
+          label: { normal: { formatter: '管理值', position: 'start' } }
+        },
+        {
+          name: '管理值',
+          yAxis: -70,
+          label: { normal: { formatter: '管理值', position: 'start' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          yAxis: 80,
+          label: { normal: { formatter: '警戒值', position: 'start' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          yAxis: -80,
+          label: { normal: { formatter: '警戒值', position: 'start' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          yAxis: 110,
+          label: { normal: { formatter: '行動值', position: 'start' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          yAxis: -110,
+          label: { normal: { formatter: '行動值', position: 'start' } }
+        }
+      ]
+    }
+    this.vgExtend = {
+      xAxis: {
+        type: 'time',
+        axisLabel: {
+          formatter(value) {
+            return moment(value).format('HH:mm')
+          }
+        }
+      }
+    }
+    this.soMark = {
+      data: [
+        {
+          name: '管理值',
+          xAxis: 5,
+          label: { normal: { formatter: '管理值' } }
+        },
+        {
+          name: '管理值',
+          xAxis: -5,
+          label: { normal: { formatter: '管理值' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          xAxis: 10,
+          label: { normal: { formatter: '警戒值' } }
+        },
+        {
+          lineStyle: { color: 'blue' },
+          name: '警戒值',
+          xAxis: -10,
+          label: { normal: { formatter: '警戒值' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          xAxis: 15,
+          label: { normal: { formatter: '行動值' } }
+        },
+        {
+          lineStyle: { color: 'red' },
+          name: '行動值',
+          xAxis: -15,
+          label: { normal: { formatter: '行動值' } }
+        }
+      ]
+    }
+    this.soChart = {
+      xAxisType: 'value'
+    }
     return {
       project: {
         // OPT: [],
@@ -119,14 +236,53 @@ export default {
       selectedSO: '',
       subVGLocation: [],
       floorIndex: 1,
-      show: true
+      show: true,
+      vgChartData: {
+        columns: ['date', 'PV'],
+        rows: [
+          { date: '2018/12/08 01:00', PV: 95 },
+          { date: '2018/12/08 03:00', PV: -50 },
+          { date: '2018/12/08 08:00', PV: -33 },
+          { date: '2018/12/08 12:00', PV: -30 },
+          { date: '2018/12/08 15:01', PV: -102 },
+          { date: '2018/12/08 19:02', PV: 40 },
+          { date: '2018/12/08 22:29', PV: 60 }
+        ]
+      },
+      // initSOData: [
+      //   {
+      //     "c0": 10,
+      //     "c1": 40,
+      //     "c2": 45,
+      //     "c3": 60,
+      //     "c4": 70,
+      //     "c5": 77,
+      //   }
+      // ],
+      soChartData: {
+        columns: ['date', 'PV'],
+        rows: [
+          { date: '0', PV: -2.5 },
+          { date: '11', PV: -2 },
+          { date: '6', PV: -1.5 },
+          { date: '-4', PV: -1 },
+          { date: '-13', PV: -0.5 },
+          { date: '4', PV: 0 }
+        ]
+      }
     }
   },
   computed: {
     showImage() {
-      if (!!this.project.sitePlan) {
+      if (this.project.sitePlan) {
         return `${process.env.VUE_APP_API_URL}/${this.project.sitePlan}`
       }
+    },
+    isVGSelected() {
+      return !!this.selectedVG && !!this.vgDate
+    },
+    isSOSelected() {
+      return !!this.selectedSO && !!this.soDate
     }
   },
   methods: {
