@@ -93,9 +93,10 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-import SOChart from "../components/SOChart"
-import VGChart from "../components/VGChart"
+import SOChart from '../components/SOChart'
+import VGChart from '../components/VGChart'
 import VeLine from 'v-charts/lib/line.common'
+import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
@@ -134,15 +135,16 @@ export default {
       floorIndex: 0,
       show: true,
       vgChartData: {
-        columns: ['date', 'PV'],
+        columns: ['createdAt', 'strutAxialForce'],
         rows: [
-          { date: '2019-01-27T13:45:41.000Z', PV: 95 },
-          { date: '2019-01-27T13:55:41.000Z', PV: -50 },
-          { date: '2019-01-27T14:55:41.000Z', PV: -33 },
-          { date: '2019-01-27T15:55:41.000Z', PV: -30 },
-          { date: '2019-01-27T16:55:41.000Z', PV: -102 },
-          { date: '2019-01-27T17:55:41.000Z', PV: 40 },
-          { date: '2019-01-27T18:55:41.000Z', PV: 60 }
+          { createdAt: '2019-01-30T00:00:00.000Z', strutAxialForce: 90 },
+          { createdAt: '2019-01-30T03:00:00.000Z', strutAxialForce: -80 },
+          { createdAt: '2019-01-30T06:00:00.000Z', strutAxialForce: 110 },
+          { createdAt: '2019-01-30T09:00:00.000Z', strutAxialForce: 130 },
+          { createdAt: '2019-01-30T12:00:00.000Z', strutAxialForce: -80 },
+          { createdAt: '2019-01-30T15:00:00.000Z', strutAxialForce: 90 },
+          { createdAt: '2019-01-30T18:00:00.000Z', strutAxialForce: 30 },
+          { createdAt: '2019-01-30T21:00:00.000Z', strutAxialForce: 40  }
         ]
       },
       // initSOData: [
@@ -175,6 +177,7 @@ export default {
       }
     },
     isVGSelected() {
+      this.getVGData(this.vgDate, this.selectedVG)
       return !!this.selectedVG && !!this.vgDate
     },
     isSOSelected() {
@@ -200,6 +203,17 @@ export default {
     },
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
+    },
+    getVGData(dateTime, vgNumber) {
+      if (!dateTime || !vgNumber) return
+      var payload = {
+        projectId: this.$route.params.projectId,
+        date: moment(dateTime).format('YYYY/MM/DD'),
+        vgNumber: vgNumber
+      }
+      return this.$store.dispatch('getMeasuredVG', payload).then(res => {
+        this.vgChartData.rows = res.data.data
+      })
     }
   }
 }

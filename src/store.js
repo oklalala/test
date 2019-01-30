@@ -469,6 +469,16 @@ export default new Vuex.Store({
     },
     updateRolePermissions({ state }) {
       return sendAPI('put', '/role/permissions', true, state.rolePermissions)
+    },
+    getMeasuredVG(context, payload) {
+      var projectId = payload.projectId
+      var date = payload.date
+      var vgLocationNumber = payload.vgNumber
+      return sendAPI(
+        'get',
+        `/measures/vg?projectId=${projectId}&date=${date}&vgLocationNumber=${vgLocationNumber}`,
+        true
+      )
     }
   }
 })
