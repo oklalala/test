@@ -229,7 +229,11 @@ const measureSO = {
       state.tempFormulaParameter = tempFormulaParameter
     }
   },
-  actions: {}
+  actions: {
+    uploadMeasuresDatas:(state,measuresData)=>{
+      return sendAPI('post', `/measures/so`, true, measuresData)
+    }
+  }
 }
 
 const vgs = {

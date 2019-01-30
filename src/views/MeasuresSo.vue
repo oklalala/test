@@ -10,7 +10,7 @@
     <section>
       <h2>量測作業</h2>
       <el-form-item label="專案階段">
-        <el-select v-model="projectPhaseValue" placeholder="第一次開挖">
+        <el-select v-model="projectPhaseId" placeholder="第一次開挖">
          <el-option
            v-for="projectPhase in projectPhases"
            :key="projectPhase.id"
@@ -20,7 +20,7 @@
        </el-select>
      </el-form-item>
       <el-form-item label="量測點編號">
-        <el-select v-model="locationValue" placeholder="SO-01">
+        <el-select v-model="soLocationNumber" placeholder="SO-01">
          <el-option
            v-for="location in project.soLocation"
            :key="location.number"
@@ -46,6 +46,11 @@
           fixed
           type="index"
           width="50">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="日期"
+          width="200">
         </el-table-column>
         <el-table-column
           prop="time"
@@ -84,7 +89,7 @@
         </el-table-column>
       </el-table>
       <el-button @click="clearMeasuresDatas">清除資料</el-button>
-      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length<10">確認無誤並上傳</el-button>
+      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length>0" >確認無誤並上傳</el-button>
     </section>
   </el-form>
   <p>要加入故障排除方式</p>
@@ -100,8 +105,8 @@ export default {
       measuresSoDatas: [],
       projectId:'',
       project:{},
-      projectPhaseValue:'',
-      locationValue:''
+      projectPhaseId:'',
+      soLocationNumber:''
     }
   },
   methods: {
@@ -112,7 +117,12 @@ export default {
       this.measuresSoDatas = []
     },
     uploadMeasuresDatas: function() {
-      console.log('fuck')
+      let data = {}
+      data.projectId = this.projectId
+      data.projectPhaseId = this.projectPhaseId
+      data.soLocationNumber = this.soLocationNumber
+      data.measureResult = this.measuresSoDatas
+      this.$store.dispatch('uploadMeasuresDatas',data)
     },
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
@@ -125,7 +135,7 @@ export default {
     },
     getProjectPhases:function(){
       this.$store.dispatch('getProjectPhases')
-    }
+    },
   },
   computed:{
     projects:function(){

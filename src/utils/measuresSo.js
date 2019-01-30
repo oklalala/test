@@ -158,8 +158,8 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
   depth = 10 - formData.length
 
   let tableData = {
-    date: Date(),
-    time: Date(),
+    date: getDate(),
+    time: getTime(),
     temp: temp,
     VoltageX: VoltageX,
     degreeX: degreeX,
@@ -182,7 +182,7 @@ function calculatingTemperature(Eg) {
   }, 0)
 
   return temp
-  // 計算溫度
+  // 計算溫度的公式
   // return (
   // 9.3219 * Math.pow(Eg, 5) -
   // 54.3038 * Math.pow(Eg, 4) +
@@ -213,4 +213,18 @@ function calculatingHorizontalDisplacement(degree, length) {
   //       Math.sin(角度*3.1415926/180)*100
   //       求 Z 軸水平偏移量： (X 軸水平偏移平方 + y 軸水平偏移平方) 開根號
   return Math.sin((degree * PI) / 180) * length
+}
+function getDate(){
+  let date = new date
+  let year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let day = date.getDate()
+  return `${year}/${month}/${day}`
+}
+function getTime(){
+  let date = new Date
+  let hour = date.getHours()
+  let minute = date.getMinutes()
+  let second = date.getSeconds()
+  return `${hour}:${minute}/${second}`
 }
