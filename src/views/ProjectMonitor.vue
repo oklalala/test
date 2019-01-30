@@ -47,9 +47,10 @@
           </el-row>
         </el-form>
         <VGChart 
-          v-if="isSOSelected" 
+          v-if='isVGSelected'
           :vgChartData="vgChartData" 
-          :project='project'/>
+          :project='project'
+          :floorIndex='floorIndex'/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -135,13 +136,13 @@ export default {
       vgChartData: {
         columns: ['date', 'PV'],
         rows: [
-          { date: '2018/12/08 01:00', PV: 95 },
-          { date: '2018/12/08 03:00', PV: -50 },
-          { date: '2018/12/08 08:00', PV: -33 },
-          { date: '2018/12/08 12:00', PV: -30 },
-          { date: '2018/12/08 15:01', PV: -102 },
-          { date: '2018/12/08 19:02', PV: 40 },
-          { date: '2018/12/08 22:29', PV: 60 }
+          { date: '2019-01-27T13:45:41.000Z', PV: 95 },
+          { date: '2019-01-27T13:55:41.000Z', PV: -50 },
+          { date: '2019-01-27T14:55:41.000Z', PV: -33 },
+          { date: '2019-01-27T15:55:41.000Z', PV: -30 },
+          { date: '2019-01-27T16:55:41.000Z', PV: -102 },
+          { date: '2019-01-27T17:55:41.000Z', PV: 40 },
+          { date: '2019-01-27T18:55:41.000Z', PV: 60 }
         ]
       },
       // initSOData: [
@@ -174,21 +175,10 @@ export default {
       }
     },
     isVGSelected() {
-      this.setVGMarkLine
       return !!this.selectedVG && !!this.vgDate
     },
     isSOSelected() {
       return !!this.selectedSO && !!this.soDate
-    },
-    setVGMarkLine() {
-      var vg = this.project.vgManagement[this.floorIndex]
-      this.vgMark.data[0].yAxis = vg.notice
-      this.vgMark.data[1].yAxis = -vg.notice
-      this.vgMark.data[2].yAxis = vg.warning
-      this.vgMark.data[3].yAxis = -vg.warning
-      this.vgMark.data[4].yAxis = vg.action
-      this.vgMark.data[5].yAxis = -vg.action
-      // return this.project.vgManagement[this.floorIndex].notice
     }
   },
   methods: {

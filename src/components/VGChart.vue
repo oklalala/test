@@ -20,7 +20,11 @@ export default {
   components: { VeLine },
   props: {
     vgChartData: Object,
-    project: Object
+    project: Object,
+    floorIndex: Number
+  },
+  mounted() {
+    this.setVGMarkLine()
   },
   data() {
     return {
@@ -93,6 +97,17 @@ export default {
       //     { date: '01-09', PV: 7123 }
       //   ]
       // }
+    }
+  },
+  methods: {
+    setVGMarkLine() {
+      var vg = this.project.vgManagement[this.floorIndex]
+      this.vgMark.data[0].yAxis = vg.notice
+      this.vgMark.data[1].yAxis = -vg.notice
+      this.vgMark.data[2].yAxis = vg.warning
+      this.vgMark.data[3].yAxis = -vg.warning
+      this.vgMark.data[4].yAxis = vg.action
+      this.vgMark.data[5].yAxis = -vg.action
     }
   }
 }
