@@ -144,7 +144,7 @@ export default {
           { createdAt: '2019-01-30T12:00:00.000Z', strutAxialForce: -80 },
           { createdAt: '2019-01-30T15:00:00.000Z', strutAxialForce: 90 },
           { createdAt: '2019-01-30T18:00:00.000Z', strutAxialForce: 30 },
-          { createdAt: '2019-01-30T21:00:00.000Z', strutAxialForce: 40  }
+          { createdAt: '2019-01-30T21:00:00.000Z', strutAxialForce: 40 }
         ]
       },
       // initSOData: [
@@ -181,6 +181,7 @@ export default {
       return !!this.selectedVG && !!this.vgDate
     },
     isSOSelected() {
+      this.getSOData(this.soDate, this.selectedSO)
       return !!this.selectedSO && !!this.soDate
     }
   },
@@ -213,6 +214,17 @@ export default {
       }
       return this.$store.dispatch('getMeasuredVG', payload).then(res => {
         this.vgChartData.rows = res.data.data
+      })
+    },
+    getSOData(dateTime, soNumber) {
+      if (!dateTime || !soNumber) return
+      var payload = {
+        projectId: this.$route.params.projectId,
+        date: moment(dateTime).format('YYYY/MM/DD'),
+        soNumber: soNumber
+      }
+      return this.$store.dispatch('getMeasuredSO', payload).then(res => {
+        this.soChartData.rows = res.data.data
       })
     }
   }
