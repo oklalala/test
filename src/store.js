@@ -230,7 +230,7 @@ const measureSO = {
     }
   },
   actions: {
-    uploadMeasuresDatas:(state,measuresData)=>{
+    uploadMeasuresDatas: (state, measuresData) => {
       return sendAPI('post', `/measures/so`, true, measuresData)
     }
   }

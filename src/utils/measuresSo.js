@@ -214,15 +214,15 @@ function calculatingHorizontalDisplacement(degree, length) {
   //       求 Z 軸水平偏移量： (X 軸水平偏移平方 + y 軸水平偏移平方) 開根號
   return Math.sin((degree * PI) / 180) * length
 }
-function getDate(){
-  let date = new date
+function getDate() {
+  let date = new date()
   let year = date.getFullYear()
   let month = date.getMonth() + 1
   let day = date.getDate()
   return `${year}/${month}/${day}`
 }
-function getTime(){
-  let date = new Date
+function getTime() {
+  let date = new Date()
   let hour = date.getHours()
   let minute = date.getMinutes()
   let second = date.getSeconds()

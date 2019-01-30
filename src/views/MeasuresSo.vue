@@ -103,10 +103,10 @@ export default {
     return {
       wiseIP: '192.168.58.200',
       measuresSoDatas: [],
-      projectId:'',
-      project:{},
-      projectPhaseId:'',
-      soLocationNumber:''
+      projectId: '',
+      project: {},
+      projectPhaseId: '',
+      soLocationNumber: ''
     }
   },
   methods: {
@@ -122,39 +122,36 @@ export default {
       data.projectPhaseId = this.projectPhaseId
       data.soLocationNumber = this.soLocationNumber
       data.measureResult = this.measuresSoDatas
-      this.$store.dispatch('uploadMeasuresDatas',data)
+      this.$store.dispatch('uploadMeasuresDatas', data)
     },
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
     },
-    getProject:function(){
-      this.$store.dispatch('getProject',this.projectId)
-      .then((res)=>{
+    getProject: function() {
+      this.$store.dispatch('getProject', this.projectId).then(res => {
         this.project = res.data.data
       })
     },
-    getProjectPhases:function(){
+    getProjectPhases: function() {
       this.$store.dispatch('getProjectPhases')
-    },
+    }
   },
-  computed:{
-    projects:function(){
+  computed: {
+    projects: function() {
       return this.$store.getters.projects
     },
-    projectNumber:function(){
+    projectNumber: function() {
       return this.project.number
     },
-    projectName:function(){
+    projectName: function() {
       return this.project.name
     },
-    projectPhases:function(){
+    projectPhases: function() {
       return this.$store.getters.projectPhases
     }
   },
   mounted() {
-    this.getProjectId(),
-    this.getProjectPhases(),
-    this.getProject()
+    this.getProjectId(), this.getProjectPhases(), this.getProject()
   }
 }
 </script>
