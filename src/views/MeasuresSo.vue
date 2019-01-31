@@ -89,7 +89,7 @@
         </el-table-column>
       </el-table>
       <el-button @click="clearMeasuresDatas">清除資料</el-button>
-      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length>0" >確認無誤並上傳</el-button>
+      <el-button @click="uploadMeasuresDatas" :disabled="!measuresSoDatas.length" >確認無誤並上傳</el-button>
     </section>
   </el-form>
   <p>要加入故障排除方式</p>
@@ -117,6 +117,7 @@ export default {
       this.measuresSoDatas = []
     },
     uploadMeasuresDatas: function() {
+      let data = {}
       let measuresData = {}
       measuresData.projectId = this.projectId
       measuresData.projectPhaseId = this.projectPhaseId
