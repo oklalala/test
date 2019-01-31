@@ -215,7 +215,7 @@ function calculatingHorizontalDisplacement(degree, length) {
   return Math.sin((degree * PI) / 180) * length
 }
 function getDate() {
-  let date = new date()
+  let date = new Date()
   let year = date.getFullYear()
   let month = date.getMonth() + 1
   let day = date.getDate()
