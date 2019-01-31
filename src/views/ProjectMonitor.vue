@@ -46,15 +46,11 @@
             </el-col>
           </el-row>
         </el-form>
-        <div class="chart" v-if="isVGSelected">
-          <ve-line
-            width='90%'
-            :data="vgChartData" 
-            :mark-line="vgMark"
-            :extend="vgExtend"
-            :legend-visible="false"></ve-line>
-        </div>
-        <!-- <Chart v-if="isVGSelected"/> -->
+        <VGChart 
+          v-if='isVGSelected'
+          :vgChartData="vgChartData" 
+          :project='project'
+          :floorIndex='floorIndex'/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -85,36 +81,26 @@
             </el-col>
           </el-row>
         </el-form>
-        <div class="chart" v-if="isSOSelected">
-          <ve-line 
-            width='90%'
-            :data="soChartData" 
-            :settings="soChart" 
-            :mark-line="soMark"
-            :legend-visible="false"></ve-line>
-          </div>
-        <!-- <SOChart v-if="isSOSelected" :soChartData="soChartData"/> -->
+        <SOChart 
+          v-if="isSOSelected" 
+          :soChartData="soChartData"
+          :project="project"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
-    <!-- <Chart /> -->
     <br>
   </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-// import Chart from '../components/Chart';
-// import SOChart from "../components/SOChart"
-// import VGChart from "../components/VGChart"
-import VeLine from 'v-charts/lib/line.common'
-import 'echarts/lib/component/markLine'
-// import 'echarts/lib/component/markPoint'
+import SOChart from '../components/SOChart'
+import VGChart from '../components/VGChart'
 import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VeLine },
+  components: { VGChart, SOChart },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
@@ -124,95 +110,6 @@ export default {
     }
   },
   data() {
-    this.vgMark = {
-      data: [
-        {
-          name: '管理值',
-          yAxis: 70,
-          label: { normal: { formatter: '管理值', position: 'start' } }
-        },
-        {
-          name: '管理值',
-          yAxis: -70,
-          label: { normal: { formatter: '管理值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          yAxis: 80,
-          label: { normal: { formatter: '警戒值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          yAxis: -80,
-          label: { normal: { formatter: '警戒值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          yAxis: 110,
-          label: { normal: { formatter: '行動值', position: 'start' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          yAxis: -110,
-          label: { normal: { formatter: '行動值', position: 'start' } }
-        }
-      ]
-    }
-    this.vgExtend = {
-      xAxis: {
-        type: 'time',
-        axisLabel: {
-          formatter(value) {
-            return moment(value).format('HH:mm')
-          }
-        }
-      }
-    }
-    this.soMark = {
-      data: [
-        {
-          name: '管理值',
-          xAxis: 5,
-          label: { normal: { formatter: '管理值' } }
-        },
-        {
-          name: '管理值',
-          xAxis: -5,
-          label: { normal: { formatter: '管理值' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          xAxis: 10,
-          label: { normal: { formatter: '警戒值' } }
-        },
-        {
-          lineStyle: { color: 'blue' },
-          name: '警戒值',
-          xAxis: -10,
-          label: { normal: { formatter: '警戒值' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          xAxis: 15,
-          label: { normal: { formatter: '行動值' } }
-        },
-        {
-          lineStyle: { color: 'red' },
-          name: '行動值',
-          xAxis: -15,
-          label: { normal: { formatter: '行動值' } }
-        }
-      ]
-    }
-    this.soChart = {
-      xAxisType: 'value'
-    }
     return {
       project: {
         // OPT: [],
@@ -235,18 +132,19 @@ export default {
       selectedVG: '',
       selectedSO: '',
       subVGLocation: [],
-      floorIndex: 1,
+      floorIndex: 0,
       show: true,
       vgChartData: {
-        columns: ['date', 'PV'],
+        columns: ['createdAt', 'strutAxialForce'],
         rows: [
-          { date: '2018/12/08 01:00', PV: 95 },
-          { date: '2018/12/08 03:00', PV: -50 },
-          { date: '2018/12/08 08:00', PV: -33 },
-          { date: '2018/12/08 12:00', PV: -30 },
-          { date: '2018/12/08 15:01', PV: -102 },
-          { date: '2018/12/08 19:02', PV: 40 },
-          { date: '2018/12/08 22:29', PV: 60 }
+          { createdAt: '2019-01-30T00:00:00.000Z', strutAxialForce: 90 },
+          { createdAt: '2019-01-30T03:00:00.000Z', strutAxialForce: -80 },
+          { createdAt: '2019-01-30T06:00:00.000Z', strutAxialForce: 110 },
+          { createdAt: '2019-01-30T09:00:00.000Z', strutAxialForce: 130 },
+          { createdAt: '2019-01-30T12:00:00.000Z', strutAxialForce: -80 },
+          { createdAt: '2019-01-30T15:00:00.000Z', strutAxialForce: 90 },
+          { createdAt: '2019-01-30T18:00:00.000Z', strutAxialForce: 30 },
+          { createdAt: '2019-01-30T21:00:00.000Z', strutAxialForce: 40 }
         ]
       },
       // initSOData: [
@@ -260,7 +158,7 @@ export default {
       //   }
       // ],
       soChartData: {
-        columns: ['date', 'PV'],
+        columns: ['totalDisplacement','depth'],
         rows: [
           { date: '0', PV: -2.5 },
           { date: '11', PV: -2 },
@@ -279,9 +177,11 @@ export default {
       }
     },
     isVGSelected() {
+      this.getVGData(this.vgDate, this.selectedVG)
       return !!this.selectedVG && !!this.vgDate
     },
     isSOSelected() {
+      this.getSOData(this.soDate, this.selectedSO)
       return !!this.selectedSO && !!this.soDate
     }
   },
@@ -292,6 +192,7 @@ export default {
       })
     },
     currentFloor(selectedFloor) {
+      this.selectedVG = ''
       this.floorIndex = selectedFloor - 1
       this.setVGTable(this.floorIndex)
     },
@@ -303,6 +204,30 @@ export default {
     },
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
+    },
+    getVGData(dateTime, vgNumber) {
+      if (!dateTime || !vgNumber) return
+      var payload = {
+        projectId: this.$route.params.projectId,
+        date: moment(dateTime).format('YYYY/MM/DD'),
+        vgNumber: vgNumber
+      }
+      return this.$store.dispatch('getMeasuredVG', payload).then(res => {
+        this.vgChartData.rows = res.data.data
+      })
+    },
+    getSOData(dateTime, soNumber) {
+      if (!dateTime || !soNumber) return
+      var payload = {
+        projectId: this.$route.params.projectId,
+        date: moment(dateTime).format('YYYY/MM/DD'),
+        soNumber: soNumber
+      }
+      return this.$store.dispatch('getMeasuredSO', payload).then(res => {
+        var soData = res.data.data
+        this.soChartData.rows = soData
+        this.soChartData.rows.map(soDatium => soDatium.depth = -soDatium.depth)
+      })
     }
   }
 }
