@@ -158,7 +158,7 @@ export default {
       //   }
       // ],
       soChartData: {
-        columns: ['totalDisplacement','depth'],
+        columns: ['totalDisplacement', 'depth'],
         rows: [
           { date: '0', PV: -2.5 },
           { date: '11', PV: -2 },
@@ -226,7 +226,9 @@ export default {
       return this.$store.dispatch('getMeasuredSO', payload).then(res => {
         var soData = res.data.data
         this.soChartData.rows = soData
-        this.soChartData.rows.map(soDatium => soDatium.depth = -soDatium.depth)
+        this.soChartData.rows.map(
+          soDatium => (soDatium.depth = -soDatium.depth)
+        )
       })
     }
   }

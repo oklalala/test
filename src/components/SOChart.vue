@@ -30,7 +30,7 @@ export default {
       soExtend: {
         xAxis: {
           type: 'value',
-          name: '總位移量（ cm ）',
+          name: '總位移量（ cm ）'
         },
         yAxis: {
           type: 'value',
