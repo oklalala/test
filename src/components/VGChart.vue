@@ -47,23 +47,23 @@ export default {
           max: 100,
           min: -100,
           nameTextStyle: {
-              color: '#888',
-              fontSize: 12
+            color: '#888',
+            fontSize: 12
           },
           axisLine: {
-              lineStyle: {
-                  color: '#ccc',
-                  fontSize: 10
-              }
+            lineStyle: {
+              color: '#ccc',
+              fontSize: 10
+            }
           },
           axisLabel: {
-              formatter: '{value} 噸'
+            formatter: '{value} 噸'
           }
-        },
+        }
       },
       vgGrid: {
         top: 50,
-        left: 10,
+        left: 10
       },
       vgMark: {
         data: [

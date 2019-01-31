@@ -95,12 +95,11 @@
 import ToPathMixin from '@/mixins/ToPath'
 import SOChart from '../components/SOChart'
 import VGChart from '../components/VGChart'
-import VeLine from 'v-charts/lib/line.common'
 import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VeLine, VGChart, SOChart },
+  components: { VGChart, SOChart },
   mixins: [ToPathMixin],
   created() {
     if (this.$route.params.projectId) {
@@ -158,7 +157,7 @@ export default {
       //   }
       // ],
       soChartData: {
-        columns: ['date', 'PV'],
+        columns: ['totalDisplacement','depth'],
         rows: [
           { date: '0', PV: -2.5 },
           { date: '11', PV: -2 },
@@ -224,7 +223,9 @@ export default {
         soNumber: soNumber
       }
       return this.$store.dispatch('getMeasuredSO', payload).then(res => {
-        this.soChartData.rows = res.data.data
+        var soData = res.data.data
+        this.soChartData.rows = soData
+        this.soChartData.rows.map(soDatium => soDatium.depth = -soDatium.depth)
       })
     }
   }

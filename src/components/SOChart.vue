@@ -12,7 +12,6 @@
 <script>
 import VeLine from 'v-charts/lib/line.common'
 import 'echarts/lib/component/markLine'
-import moment from 'moment'
 
 export default {
   name: 'SOChart',
