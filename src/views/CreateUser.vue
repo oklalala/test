@@ -32,7 +32,7 @@
         <el-col>
           <el-form-item label="帳號">
             <el-input v-model="newUser.account"></el-input>
-            <el-h6 type="info">預設密碼: 000</el-h6>
+            <h6 type="info">預設密碼: 000</h6>
           </el-form-item>
         </el-col>
       </el-row>
@@ -60,7 +60,7 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item label="傾度管">
+      <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
           v-model="newUser.soId"
           placeholder="請選擇"
@@ -68,7 +68,7 @@
           <el-option
             v-for="item in soItems"
             :key="item.id"
-            :label="item.name"
+            :label="item.number"
             :value="item.id">
           </el-option>
         </el-select>
@@ -105,7 +105,7 @@ export default {
     return {
       newUser: {
         name: '',
-        roleName: null,
+        roleName: 'USER',
         companyId: null,
         soId: '',
         account: ''
@@ -152,6 +152,14 @@ export default {
         this.reset()
         this.toPath('UserList')
       })
+    },
+    isShow (feature) {
+      return this.$store.getters.rolePermissions
+        .filter(permissions => permissions.role === this.newUser.roleName)
+        .shift().permissions
+        .filter(permission => permission.value)
+        .map(permission => permission.name)
+        .includes(feature)
     }
   }
 }
