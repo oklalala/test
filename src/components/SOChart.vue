@@ -5,6 +5,7 @@
       :data="soChartData" 
       :settings="soChart" 
       :mark-line="soMark"
+      :extend="soExtend"
       :legend-visible="false"></ve-line>
   </div>
 </template>
@@ -17,10 +18,36 @@ export default {
   name: 'SOChart',
   components: { VeLine },
   props: {
-    soChartData: Object
+    soChartData: Object,
+    project: Object
+  },
+  mounted() {
+    this.setSOMarkLine()
+    this.setSOChartScope()
   },
   data() {
     return {
+      soExtend: {
+        xAxis: {
+          type: 'value',
+          name: '總位移量（ cm ）',
+        },
+        yAxis: {
+          type: 'value',
+          name: '深度（ m ）',
+          max: 0,
+          nameTextStyle: {
+            color: '#888',
+            fontSize: 12
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ccc',
+              fontSize: 10
+            }
+          }
+        }
+      },
       soMark: {
         data: [
           {
@@ -61,18 +88,23 @@ export default {
       },
       soChart: {
         xAxisType: 'value'
-        // },
-        // soChartData: {
-        //   columns: ['date', 'PV'],
-        //   rows: [
-        //     { date: '0', PV: -2.5 },
-        //     { date: '11', PV: -2 },
-        //     { date: '6', PV: -1.5 },
-        //     { date: '-4', PV: -1 },
-        //     { date: '-13', PV: -0.5 },
-        //     { date: '4', PV: 0 }
-        //   ]
       }
+    }
+  },
+  methods: {
+    setSOMarkLine() {
+      var so = this.project.soManagement
+      this.soMark.data[0].xAxis = so.notice
+      this.soMark.data[1].xAxis = -so.notice
+      this.soMark.data[2].xAxis = so.warning
+      this.soMark.data[3].xAxis = -so.warning
+      this.soMark.data[4].xAxis = so.action
+      this.soMark.data[5].xAxis = -so.action
+    },
+    setSOChartScope() {
+      var so = this.project.soManagement
+      this.soExtend.xAxis.max = so.action + 5
+      this.soExtend.xAxis.min = -so.action - 5
     }
   }
 }

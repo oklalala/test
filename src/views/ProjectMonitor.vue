@@ -83,7 +83,8 @@
         </el-form>
         <SOChart 
           v-if="isSOSelected" 
-          :soChartData="soChartData"/>
+          :soChartData="soChartData"
+          :project="project"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
