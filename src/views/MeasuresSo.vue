@@ -117,7 +117,6 @@ export default {
       this.measuresSoDatas = []
     },
     uploadMeasuresDatas: function() {
-      let data = {}
       let measuresData = {}
       measuresData.projectId = this.projectId
       measuresData.projectPhaseId = this.projectPhaseId
