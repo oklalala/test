@@ -226,5 +226,5 @@ function getTime() {
   let hour = date.getHours()
   let minute = date.getMinutes()
   let second = date.getSeconds()
-  return `${hour}:${minute}/${second}`
+  return `${hour}:${minute}:${second}`
 }
