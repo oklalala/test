@@ -117,12 +117,12 @@ export default {
       this.measuresSoDatas = []
     },
     uploadMeasuresDatas: function() {
-      let data = {}
-      data.projectId = this.projectId
-      data.projectPhaseId = this.projectPhaseId
-      data.soLocationNumber = this.soLocationNumber
-      data.measureResult = this.measuresSoDatas
-      this.$store.dispatch('uploadMeasuresDatas', data)
+      let measuresData = {}
+      measuresData.projectId = this.projectId
+      measuresData.projectPhaseId = this.projectPhaseId
+      measuresData.soLocationNumber = this.soLocationNumber
+      measuresData.measureResult = this.measuresSoDatas
+      this.$store.dispatch('uploadMeasuresDatas', JSON.stringify(measuresData))
     },
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
