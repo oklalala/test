@@ -33,11 +33,13 @@
         <el-form-item label="密碼">
           <el-input
             :value="me.password"
+            :type='password'
             @change="value => this.updateMe({ password: value })"
             :disabled="!isShow()"
             placeholder="請輸入密碼">
           </el-input>
         </el-form-item>
+        <el-checkbox @change='showPassword()'>顯示密碼</el-checkbox>
       </section>
       <section>
         <h2>參與專案</h2>
@@ -72,7 +74,9 @@ export default {
   name: 'UserInfo',
   mixins: [ToPathMixin],
   data() {
-    return {}
+    return {
+      password: 'password'
+    }
   },
   computed: {
     me() {
@@ -96,6 +100,9 @@ export default {
     },
     isShow() {
       return this.$store.getters.myPermissions.includes('account:updateSelf')
+    },
+    showPassword() {
+      (this.password === 'password') ? this.password = 'text' : this.password = 'password'
     }
   }
 }
