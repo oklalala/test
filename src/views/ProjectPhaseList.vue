@@ -7,15 +7,15 @@
       </div>
       <div class="operationGroup-right">
         <el-form
-          label-position="top"
-          label-width="80px"
+          label-position="left"
+          label-width="90px"
           :model="newProjectPhase">
-          <el-form-item label="新增專案">
+          <el-form-item label="新增專案：">
             <el-input v-model="newProjectPhase.name"
               placeholder="第二次開挖">
             </el-input>
           </el-form-item>
-          <el-button type="primary" @click="createProjectPhase">
+          <el-button type="primary" @click="createProjectPhase" v-if="!!newProjectPhase.name">
             <i class="el-icon-plus"></i>
           </el-button>
         </el-form>
@@ -27,7 +27,7 @@
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
-        width="180">
+        width="50">
       </el-table-column>
       <el-table-column
         prop="id"

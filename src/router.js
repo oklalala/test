@@ -212,7 +212,7 @@ let router = new Router({
       component: ProjectPhaseList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all(store.dispatch('getProjectPhases')).then(() => {
+        Promise.all([store.dispatch('getProjectPhases')]).then(() => {
           next()
         })
       }
