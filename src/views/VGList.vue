@@ -3,11 +3,11 @@
     <h1>軸力計</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteVGs">刪除</el-button>
+        <el-button type="primary" @click="deleteVGs" v-if="!!deleteList.length">刪除</el-button>
       </div>
       <div class="operationGroup-right">
         <el-input v-model="newVG.number" placeholder="新增軸力計"></el-input>
-        <el-button type="primary" @click="createVG">
+        <el-button type="primary" @click="createVG" v-if="!!newVG.number">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
@@ -77,6 +77,12 @@ export default {
     deleteVGs() {
       if (this.deleteList.length === 0) return
       this.$store.dispatch('deleteVGs', this.deleteList)
+        .then(() => {
+          this.$message({ message: `軸力計 ${this.deleteList} 已刪除`, type: 'success', showClose: true, center: true, duration: 1200 })
+        })
+        .catch(e => {
+          this.$message({ message: `已被專案使用`, type: 'error', showClose: true, center: true, duration: 1200 })
+        })
     },
     updateDeleteList(value) {
       this.deleteList = value.map(vg => vg.id)
