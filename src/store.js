@@ -71,7 +71,7 @@ const projectPhases = {
       return sendAPI('get', `/project-phase/${projectPhaseId}`, true)
     },
     updateProjectPhase(context, { projectPhaseId, payload }) {
-      return sendAPI('put', `/project-phase/${projectPhaseId}`, true, payload)
+      return sendAPI('put', `/project-phased/${projectPhaseId}`, true, payload)
     },
     deleteProjectPhases({ dispatch }, projectPhaseIds) {
       let projectPhaseIdsStr = projectPhaseIds.join(',')

@@ -41,9 +41,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="company.name"
+        prop="name"
         label="專案階段"
-        width="180">
+        width="200">
+        <template slot-scope="scope">
+          <el-input 
+            @keyup.native="editProjectPhase(scope.row.id,scope.row.name)"
+            v-model="scope.row.name">
+          </el-input>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -87,6 +93,16 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(projectPhase => projectPhase.id)
+    },
+    editProjectPhase(id, newName) {
+      this.$store
+        .dispatch('updateProjectPhase', {
+          projectPhaseId: id,
+          payload: { name: newName }
+        })
+        .then(() => {
+          this.reset()
+        })
     }
   }
 }
