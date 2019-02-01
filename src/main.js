@@ -4,9 +4,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import moment from 'moment'
 import './plugins/element.js'
 import '@/assets/scss/custom-theme.scss'
-import moment from 'moment'
 
 import {
   Row,

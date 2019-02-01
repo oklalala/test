@@ -3,7 +3,7 @@
     <h1>帳號列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteUsers">刪除</el-button>
+        <el-button type="primary" @click="deleteUsers" v-if="!!deleteList.length">刪除</el-button>
       </div>
       <div class="operationGroup-right">
         <el-button type="primary" @click="toPath('CreateUser')">
@@ -33,7 +33,7 @@
       <el-table-column
         prop="name"
         label="姓名"
-        width="180">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="company.name"
