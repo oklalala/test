@@ -63,6 +63,12 @@ export default {
     deleteSOItems() {
       if (this.deleteList.length === 0) return
       this.$store.dispatch('deleteSOItems', this.deleteList)
+        .then(() => {
+          this.$message({ message: `傾度管 ${this.deleteList} 已刪除`, type: 'success' })
+        })
+        .catch(e => {
+          this.$message({ message: `已選定 OPT 不能刪除`, type: 'error' })
+        })
     },
     updateDeleteList(value) {
       this.deleteList = value.map(soItem => soItem.id)
