@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <el-row :gutter="20">
-      <navbar/>
-      <el-col :span="18" :offset="6">
+    <el-container>
+      <el-header>
+        <navbar/>
+      </el-header>
+      <el-main id='main'>
         <router-view></router-view>
-      </el-col>
-    </el-row>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
@@ -20,4 +22,7 @@ export default {
 </script>
 
 <style>
+#main {
+  padding: 60px 10px;
+}
 </style>

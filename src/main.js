@@ -31,7 +31,15 @@ import {
   submenu,
   tag,
   datePicker,
-  loading
+  loading,
+  Container,
+  Header,
+  Aside,
+  Main,
+  Footer,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem
 } from 'element-ui'
 
 Vue.use(Row)
@@ -56,6 +64,14 @@ Vue.use(submenu)
 Vue.use(tag)
 Vue.use(datePicker)
 Vue.use(loading)
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Aside)
+Vue.use(Main)
+Vue.use(Footer)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
 
 Vue.prototype.$message = Message
 Vue.prototype.moment = moment
