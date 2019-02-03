@@ -105,7 +105,15 @@ export default {
 }
 
 .el-menu--popup.el-menu--popup-bottom-start {
-  left: -20px;
+  left: 50px;
   min-width: 100px;
+}
+
+li.is-opened > div.el-menu--horizontal {
+  left: -85px !important;
+  top: 108px !important;
+}
+.el-menu--horizontal > ul, .el-submenu .el-menu-item{
+  min-width: 70px;
 }
 </style>
