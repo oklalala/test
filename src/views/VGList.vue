@@ -76,12 +76,25 @@ export default {
     },
     deleteVGs() {
       if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteVGs', this.deleteList)
+      this.$store
+        .dispatch('deleteVGs', this.deleteList)
         .then(() => {
-          this.$message({ message: `軸力計 ${this.deleteList} 已刪除`, type: 'success', showClose: true, center: true, duration: 1200 })
+          this.$message({
+            message: `軸力計 ${this.deleteList} 已刪除`,
+            type: 'success',
+            showClose: true,
+            center: true,
+            duration: 1200
+          })
         })
         .catch(e => {
-          this.$message({ message: `已被專案使用`, type: 'error', showClose: true, center: true, duration: 1200 })
+          this.$message({
+            message: `已被專案使用`,
+            type: 'error',
+            showClose: true,
+            center: true,
+            duration: 1200
+          })
         })
     },
     updateDeleteList(value) {

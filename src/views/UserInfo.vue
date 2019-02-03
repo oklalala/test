@@ -102,7 +102,9 @@ export default {
       return this.$store.getters.myPermissions.includes('account:updateSelf')
     },
     showPassword() {
-      (this.password === 'password') ? this.password = 'text' : this.password = 'password'
+      this.password === 'password'
+        ? (this.password = 'text')
+        : (this.password = 'password')
     }
   }
 }

@@ -153,11 +153,11 @@ export default {
         this.toPath('UserList')
       })
     },
-    isShow (feature) {
+    isShow(feature) {
       return this.$store.getters.rolePermissions
         .filter(permissions => permissions.role === this.newUser.roleName)
-        .shift().permissions
-        .filter(permission => permission.value)
+        .shift()
+        .permissions.filter(permission => permission.value)
         .map(permission => permission.name)
         .includes(feature)
     }
