@@ -1,37 +1,40 @@
 <template>
-  <div class="entry">
-    <el-form>
-      <el-form-item label="帳號">
-        <el-input
-          type="text"
-          name="account"
-          v-model="account"
-          placeholder="請輸入帳號" @input="removeError">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="密碼">
-        <el-input
-          type="password"
-          name="password"
-          v-model="password"
-          placeholder="請輸入密碼" @input="removeError">
-        </el-input>
-      </el-form-item>
-      <el-form-item>
-        <p class="feedback">
-          {{ feedback }}
-        </p>
-        <div class="button-container">
-          <el-button
-            type="primary"
-            native-type="submit"
-            @click.prevent="submit">
-            登入
-          </el-button>
-        </div>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-row class="entry" type='flex' justify='center'>
+    <el-col :md='8' :sm='10' :span='12'>
+      <el-form>
+        <el-form-item label="帳號">
+          <el-input
+            type="text"
+            name="account"
+            v-model="account"
+            placeholder="請輸入帳號" @input="removeError">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="密碼">
+          <el-input
+            type="password"
+            name="password"
+            v-model="password"
+            placeholder="請輸入密碼" @input="removeError">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <p class="feedback">
+            {{ feedback }}
+          </p>
+          <div class="button-container">
+            <el-button
+              type="primary"
+              native-type="submit"
+              style='float:right;'
+              @click.prevent="submit">
+              登入
+            </el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
