@@ -51,15 +51,20 @@ export default {
   },
   methods: {
     submit() {
-      if (!this.account || !this.password) {
-        return (this.feedback = '帳號密碼不匹配')
-      }
+      if (!this.account) return (this.feedback = '請輸入帳號')
+      if (!this.password) return (this.feedback = '請輸入密碼')
       this.$store
         .dispatch('login', {
           account: this.account,
           password: this.password
         })
         .then(() => {
+          this.$message({
+            message: `${this.account} 歡迎您`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
           this.$router.push({ name: 'ProjectList' })
         })
         .catch(err => {
