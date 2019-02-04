@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>
+      <el-header height='120px'>
         <navbar/>
       </el-header>
       <el-main id='main'>
@@ -20,9 +20,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#main {
-  padding: 60px 10px;
-}
-</style>
