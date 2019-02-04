@@ -1,55 +1,53 @@
 <template>
-  <div class="projectList">
-    <h1>專案列表</h1>
-    <el-row class="projectList" type='flex' justify='center'>
-      <el-col span='22'>
-        <el-table
-          :data="projectList"
-          height="550px"
-          class="projectList-table">
-          <el-table-column
-            fixed
-            prop="id"
-            label="案號"
-            show-overflow-tooltip='true'
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="名稱"
-            width="160">
-          </el-table-column>
-          <el-table-column
-            label="監控資料"
-            width="120">
-            <template slot-scope="scope">
-              <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="傾度管量測"
-            width="130"
-            v-if="isShow('project:soItemMeasure')">
-            <template slot-scope="scope">
-              <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })">傾度管資料</el-button>
-              <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="status"
-            label="專案狀態"
-            width="100"
-            :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
-            :filter-method="statusFilter"
-            v-if="isShow('project:filter')">
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-col>
-    </el-row>
-  </div>
+  <el-row class="projectList" type='flex' justify='center'>
+    <el-col :span='22' :sm='18' :md='14'>
+      <h1>專案列表</h1>
+      <el-table
+        :data="projectList"
+        height="550px"
+        class="projectList-table">
+        <el-table-column
+          fixed
+          prop="id"
+          label="案號"
+          show-overflow-tooltip='true'
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="名稱"
+          width="160">
+        </el-table-column>
+        <el-table-column
+          label="監控資料"
+          width="120">
+          <template slot-scope="scope">
+            <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="傾度管量測"
+          width="130"
+          v-if="isShow('project:soItemMeasure')">
+          <template slot-scope="scope">
+            <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })">傾度管資料</el-button>
+            <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="專案狀態"
+          width="100"
+          :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
+          :filter-method="statusFilter"
+          v-if="isShow('project:filter')">
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
