@@ -1,44 +1,45 @@
 <template>
-  <div class="vgList">
-    <h1>軸力計</h1>
-    <div class="operationGroup">
-      <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteVGs" v-if="!!deleteList.length">刪除</el-button>
-      </div>
-      <div class="operationGroup-right">
-        <el-input v-model="newVG.number" placeholder="新增軸力計"></el-input>
-        <el-button type="primary" @click="createVG" v-if="!!newVG.number">
-          <i class="el-icon-plus"></i>
-        </el-button>
-      </div>
-    </div>
-    <el-table
-    :data="vgList"
-    class="vgList-table"
-    @selection-change="updateDeleteList">
-    <el-table-column
-      type="selection"
-      :selectable="checkable"
-      width="55">
-    </el-table-column>
-    <el-table-column
-      prop="number"
-      label="編號"
-      width="200">
-      <template slot-scope="scope">
-        <el-input 
-        @keyup.native="editVG(scope.row.id,scope.row.number)"
-        v-model="scope.row.number">
-        </el-input>
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="projectName"
-      label="所在專案"
-      width="240">
-    </el-table-column>
-  </el-table>
-  </div>
+  <el-row class="vgList" type='flex' justify='center'>
+    <el-col :span='22' :sm='18' :md='14'>
+      <h1>軸力計</h1>
+      <el-row class="operationGroup" type='flex' justify="between">
+        <el-col class="operationGroup-left" :sm='4'>
+          <el-button type="primary" @click="deleteVGs" v-if="!!deleteList.length">刪除</el-button>
+        </el-col>
+        <el-col class="operationGroup-right" :span='24' :sm='8'>
+          <el-input v-model="newVG.number" placeholder="新增軸力計"></el-input>
+          <el-button class='addButton' type="primary" @click="createVG" v-if="!!newVG.number">
+            <i class="el-icon-plus"></i>
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-table
+      :data="vgList"
+      class="vgList-table"
+      @selection-change="updateDeleteList">
+        <el-table-column
+          type="selection"
+          :selectable="checkable"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="number"
+          label="編號"
+          width="150">
+          <template slot-scope="scope">
+            <el-input 
+            @keyup.native="editVG(scope.row.id,scope.row.number)"
+            v-model="scope.row.number">
+            </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="projectName"
+          label="所在專案">
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -116,3 +117,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.addButton {
+  position: absolute;
+  right: 0;
+}
+</style>
+
