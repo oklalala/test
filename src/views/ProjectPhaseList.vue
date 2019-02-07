@@ -1,5 +1,5 @@
 <template>
-  <el-row class="projectSetting" type='flex' justify='center'>
+  <el-row class="projectPhaseList" type='flex' justify='center'>
     <el-col :span='22' :sm='18' :md='14'>
       <h1>專案執行階段</h1>
       <div class="operationGroup">
