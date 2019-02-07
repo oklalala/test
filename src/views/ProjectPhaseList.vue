@@ -4,7 +4,10 @@
       <h1>專案執行階段</h1>
       <div class="operationGroup">
         <div class="operationGroup-left">
-          <el-button type="primary" @click="deleteProjectPhase">刪除</el-button>
+          <el-button 
+            type="primary" 
+            @click="deleteProjectPhase" 
+            v-if='!!deleteList.length'>刪除</el-button>
         </div>
         <div class="operationGroup-right">
           <el-form
