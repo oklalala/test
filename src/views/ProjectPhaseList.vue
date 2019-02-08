@@ -11,7 +11,7 @@
         </div>
         <div class="operationGroup-right">
           <el-form
-            label-position="left"
+            label-position="top"
             label-width="90px"
             :model="newProjectPhase">
             <el-form-item label="新增專案：">
@@ -31,12 +31,13 @@
         @selection-change="updateDeleteList">
         <el-table-column
           type="selection"
-          width="50">
+          width="40">
         </el-table-column>
         <el-table-column
           prop="id"
           label="序號"
-          width="170">
+          show-overflow-tooltip
+          width="80">
           <template slot-scope="scope">
             <span class="clickable"
               @click="toPath('ProjectPhaseEdit', { soId: scope.row.id })">

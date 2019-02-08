@@ -10,7 +10,7 @@
           fixed
           prop="id"
           label="案號"
-          show-overflow-tooltip='true'
+          show-overflow-tooltip
           width="80">
         </el-table-column>
         <el-table-column

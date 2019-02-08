@@ -18,12 +18,13 @@
         @selection-change="updateDeleteList">
         <el-table-column
           type="selection"
-          width="55">
+          width="40">
         </el-table-column>
         <el-table-column
           prop="id"
           label="編號"
-          width="180">
+          show-overflow-tooltip
+          width="80">
           <template slot-scope="scope">
             <span class="clickable"
               @click="toPath('EditUser', { userId: scope.row.id })">
