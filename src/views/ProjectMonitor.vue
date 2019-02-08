@@ -1,95 +1,97 @@
 <template>
-  <div class="projectMonitor">
-    <h1>查看監控資料</h1>
-    <h3>基本資料</h3>
-    案號：{{project.number}}
-    <br>
-    <br>
-    名稱：{{project.name}}
-    <h3>配置圖</h3>
-    <h4 @click='show = !show'>顯示/隱藏</h4>
-    <img :src="showImage" v-if="show">
-    <h3>監控值</h3>
-    <el-tabs type="border-card">
-      <el-tab-pane label="軸力計 ( VG )"> 
-        <div class="block">
-          <span class="demonstration">請選擇支撐階數</span>
-          <el-pagination
-            layout="prev, pager, next"
-            @current-change="currentFloor"
-            :total="project.floor * 10">
-          </el-pagination>
-        </div>
-        <el-form label-position="top">
-          <el-row :gutter="20">
-            <el-col :span="13">
-              <el-form-item label="日期">
-                <el-date-picker
-                  v-model="vgDate"
-                  format='yyyy-MM-dd'
-                  type="date"
-                  placeholder="選擇日期時間">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="9" :offset="2">
-              <el-form-item label="位置">
-                <el-select v-model="selectedVG" placeholder="请选择">
-                  <el-option
-                    v-for="vg in subVGLocation"
-                    :key="vg.number"
-                    :label="vg.number"
-                    :value="vg.number">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <VGChart 
-          v-if='isVGSelected'
-          :vgChartData="vgChartData" 
-          :project='project'
-          :floorIndex='floorIndex'/>
-        <el-button v-if="isShow('project:export')">匯出資料</el-button>
-      </el-tab-pane>
+  <el-row class="projectMonitor" type='flex' justify='center'>  
+    <el-col :span='22' :sm='18' :md='14'>
+      <h1>查看監控資料</h1>
+      <h3>基本資料</h3>
+      案號：{{project.number}}
+      <br>
+      <br>
+      名稱：{{project.name}}
+      <h3>配置圖</h3>
+      <h4 @click='show = !show'>顯示/隱藏</h4>
+      <img :src="showImage" v-if="show">
+      <h3>監控值</h3>
+      <el-tabs type="border-card" stretch>
+        <el-tab-pane label="軸力計 ( VG )"> 
+          <div class="block">
+            <span class="demonstration">請選擇支撐階數</span>
+            <el-pagination
+              layout="prev, pager, next"
+              @current-change="currentFloor"
+              :total="project.floor * 10">
+            </el-pagination>
+          </div>
+          <el-form label-position="top">
+            <el-row :gutter="20">
+              <el-col :xs="24" :sm="14" :md="14">
+                <el-form-item label="日期">
+                  <el-date-picker
+                    v-model="vgDate"
+                    format='yyyy-MM-dd'
+                    type="date"
+                    placeholder="選擇日期">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="10" :md="10">
+                <el-form-item label="位置">
+                  <el-select v-model="selectedVG" placeholder="請選擇">
+                    <el-option
+                      v-for="vg in subVGLocation"
+                      :key="vg.number"
+                      :label="vg.number"
+                      :value="vg.number">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <VGChart 
+            v-if='isVGSelected'
+            :vgChartData="vgChartData" 
+            :project='project'
+            :floorIndex='floorIndex'/>
+          <el-button v-if="isShow('project:export')">匯出資料</el-button>
+        </el-tab-pane>
 
-      <el-tab-pane label="傾度管 ( SO )">
-        <el-form label-position="top">
-          <el-row :gutter="20">
-            <el-col :span="13">
-              <el-form-item label="日期">
-                <el-date-picker
-                  v-model="soDate"
-                  format='yyyy-MM-dd'
-                  type="date"
-                  placeholder="選擇日期時間">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col :span="9" :offset="2">
-              <el-form-item label="位置">
-                <el-select v-model="selectedSO" placeholder="请选择" label="位置">
-                  <el-option
-                    v-for="soItem in project.soLocation"
-                    :key="soItem.number"
-                    :label="soItem.number"
-                    :value="soItem.number">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <SOChart 
-          v-if="isSOSelected" 
-          :soChartData="soChartData"
-          :project="project"/>
-        <el-button v-if="isShow('project:export')">匯出資料</el-button>
-      </el-tab-pane>
-    </el-tabs>
-    <br>
-  </div>
+        <el-tab-pane label="傾度管 ( SO )">
+          <el-form label-position="top">
+            <el-row :gutter="20">
+              <el-col :xs="24" :sm="14" :md="14">
+                <el-form-item label="日期">
+                  <el-date-picker
+                    v-model="soDate"
+                    format='yyyy-MM-dd'
+                    type="date"
+                    placeholder="選擇日期">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="10" :md="10">
+                <el-form-item label="位置">
+                  <el-select v-model="selectedSO" placeholder="請選擇" label="位置">
+                    <el-option
+                      v-for="soItem in project.soLocation"
+                      :key="soItem.number"
+                      :label="soItem.number"
+                      :value="soItem.number">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <SOChart 
+            v-if="isSOSelected" 
+            :soChartData="soChartData"
+            :project="project"/>
+          <el-button v-if="isShow('project:export')">匯出資料</el-button>
+        </el-tab-pane>
+      </el-tabs>
+      <br>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

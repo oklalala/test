@@ -1,7 +1,6 @@
 <template>
   <div class="chart">
     <ve-line 
-      width='90%'
       :data="soChartData" 
       :settings="soChart" 
       :mark-line="soMark"

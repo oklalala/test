@@ -1,7 +1,6 @@
 <template>
   <div class="chart">
     <ve-line 
-      width='90%'
       :grid='vgGrid'
       :data="vgChartData" 
       :mark-line="vgMark"
