@@ -105,7 +105,8 @@ let router = new Router({
         Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('getCompanies'),
-          store.dispatch('getSOItems')
+          store.dispatch('getSOItems'),
+          store.dispatch('getRolesPermissions')
         ]).then(() => {
           next()
         })

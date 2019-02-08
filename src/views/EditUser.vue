@@ -1,5 +1,5 @@
 <template>
-  <div class="createUser">
+  <div class="editUser">
     <h1>帳號設定</h1>
     <h2>基本資料</h2>
     <el-form
@@ -59,7 +59,7 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item label="傾度管">
+      <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
           v-model="newUser.soId"
           placeholder="請選擇"
@@ -109,7 +109,7 @@ export default {
     return {
       newUser: {
         name: '',
-        roleName: null,
+        roleName: 'OPT', // default setting for isShow method
         companyId: null,
         soId: '',
         account: ''
@@ -150,17 +150,7 @@ export default {
         }
       })
     },
-    reset() {
-      this.newUser = {
-        name: '',
-        roleName: '',
-        companyId: '',
-        soId: '',
-        account: ''
-      }
-    },
     cancel() {
-      this.reset()
       this.toPath('UserList')
     },
     edit() {
@@ -170,9 +160,16 @@ export default {
           payload: this.newUser
         })
         .then(() => {
-          this.reset()
           this.toPath('UserList')
         })
+    },
+    isShow(feature) {
+      return this.$store.getters.rolePermissions
+        .filter(permissions => permissions.role === this.newUser.roleName)
+        .shift()
+        .permissions.filter(permission => permission.value)
+        .map(permission => permission.name)
+        .includes(feature)
     }
   }
 }
