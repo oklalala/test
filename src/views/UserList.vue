@@ -1,54 +1,52 @@
 <template>
-  <el-row class="userList" type='flex' justify='center'>
-    <el-col :span='22' :sm='18' :md='14'>
-      <h1>帳號列表</h1>
-      <div class="operationGroup">
-        <div class="operationGroup-left">
-          <el-button type="primary" @click="deleteUsers" v-if="!!deleteList.length">刪除</el-button>
-        </div>
-        <div class="operationGroup-right">
-          <el-button type="primary" @click="toPath('CreateUser')">
-            <i class="el-icon-plus"></i>
-          </el-button>
-        </div>
+  <div class="userList">
+    <h1>帳號列表</h1>
+    <div class="operationGroup">
+      <div class="operationGroup-left">
+        <el-button type="primary" @click="deleteUsers" v-if="!!deleteList.length">刪除</el-button>
       </div>
-      <el-table
-        :data="userList"
-        class="userList-table"
-        @selection-change="updateDeleteList">
-        <el-table-column
-          type="selection"
-          width="40">
-        </el-table-column>
-        <el-table-column
-          prop="id"
-          label="編號"
-          show-overflow-tooltip
-          width="80">
-          <template slot-scope="scope">
-            <span class="clickable"
-              @click="toPath('EditUser', { userId: scope.row.id })">
-              {{ scope.row.id }}
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="company.name"
-          label="公司"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="roleName"
-          label="角色">
-        </el-table-column>
-      </el-table>
-    </el-col>
-  </el-row>
+      <div class="operationGroup-right">
+        <el-button type="primary" @click="toPath('CreateUser')">
+          <i class="el-icon-plus"></i>
+        </el-button>
+      </div>
+    </div>
+    <el-table
+      :data="userList"
+      class="userList-table"
+      @selection-change="updateDeleteList">
+      <el-table-column
+        type="selection"
+        width="40">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="編號"
+        show-overflow-tooltip
+        width="80">
+        <template slot-scope="scope">
+          <span class="clickable"
+            @click="toPath('EditUser', { userId: scope.row.id })">
+            {{ scope.row.id }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="company.name"
+        label="公司"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="roleName"
+        label="角色">
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>

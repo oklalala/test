@@ -5,7 +5,11 @@
         <navbar/>
       </el-header>
       <el-main id='main'>
-        <router-view></router-view>
+        <el-row type='flex' justify='center'>  
+          <el-col :span='22' :sm='18' :md='14'>
+            <router-view></router-view>
+          </el-col>
+        </el-row>
       </el-main>
     </el-container>
   </div>

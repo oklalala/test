@@ -1,41 +1,39 @@
 <template>
-  <el-row class="permission-setup" type='flex' justify='center'>
-    <el-col :span='22' :sm='18' :md='14'>
-      <h1>權限設定</h1>
-      <el-table
-        :data="rolePermissions">
-        <el-table-column
-          prop="role"
-          label="角色"
-          width="140">
-        </el-table-column>
-        <el-table-column
-          prop="permissions"
-          label="權限">
-          <template slot-scope="scope">
-            <div 
-              v-if="permissions"
-              v-for="(item, index) in scope.row.permissions"
-              :key="index">
-              <el-checkbox
-                @change="updateRolePermissions(item.value, scope.row.role ,index)"
-                :value="item.value">
-                {{ permissions[item.name] }}
-              </el-checkbox>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="button-container">
-        <el-button type="primary" @click="submit">
-          確認送出
-        </el-button>
-        <el-button type="primary" @click="toPath('ProjectList')">
-          取消修改
-        </el-button>
-      </div>
-    </el-col>
-  </el-row>
+  <div class="permission-setup">
+    <h1>權限設定</h1>
+    <el-table
+      :data="rolePermissions">
+      <el-table-column
+        prop="role"
+        label="角色"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="permissions"
+        label="權限">
+        <template slot-scope="scope">
+          <div 
+            v-if="permissions"
+            v-for="(item, index) in scope.row.permissions"
+            :key="index">
+            <el-checkbox
+              @change="updateRolePermissions(item.value, scope.row.role ,index)"
+              :value="item.value">
+              {{ permissions[item.name] }}
+            </el-checkbox>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="button-container">
+      <el-button type="primary" @click="submit">
+        確認送出
+      </el-button>
+      <el-button type="primary" @click="toPath('ProjectList')">
+        取消修改
+      </el-button>
+    </div>
+  </div>
 </template>
 
 <script>
