@@ -1,6 +1,6 @@
 <template>
   <el-row class="user-info" type='flex' justify='center'>
-    <el-col :md='8' :span='18'>
+    <el-col  :xs='18' :sm='12' :md='12'>
       <h1>帳號資料</h1>
       <el-form>
         <section>
