@@ -67,8 +67,7 @@ export default {
           })
           this.$router.push({ name: 'ProjectList' })
         })
-        .catch(err => {
-          console.log(err.message)
+        .catch(() => {
           this.feedback = '帳號密碼不匹配'
         })
     },

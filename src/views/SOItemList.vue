@@ -72,7 +72,7 @@ export default {
             duration: 1200
           })
         })
-        .catch(e => {
+        .catch(() => {
           this.$message({ message: `已選定 OPT 不能刪除`, type: 'error' })
         })
     },

@@ -74,7 +74,8 @@ export default {
   padding: 0;
 }
 
-.el-menu-item.submenu, .el-submenu.submenu {
+.el-menu-item.submenu,
+.el-submenu.submenu {
   float: right;
 }
 
@@ -90,7 +91,8 @@ li.is-opened > div.el-menu--horizontal {
   left: -85px !important;
   top: 108px !important;
 }
-.el-menu--horizontal > ul, .el-submenu .el-menu-item{
+.el-menu--horizontal > ul,
+.el-submenu .el-menu-item {
   min-width: 70px;
 }
 </style>
