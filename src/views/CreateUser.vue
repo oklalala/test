@@ -28,17 +28,13 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col>
-          <el-form-item label="帳號">
-            <el-input v-model="newUser.account"></el-input>
-            <h6 type="info">預設密碼: 000</h6>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="帳號">
+        <el-input v-model="newUser.account"></el-input>
+        <h6 class='hint' type="info">預設密碼: 000</h6>
+      </el-form-item>
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
-          <el-col :span="22">
+          <el-col :span="17" :sm='21' :md='21'>
             <el-select
               v-model="newUser.companyId"
               placeholder="請選擇"
@@ -51,12 +47,10 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
-            <el-button
+          <el-col :span="7" :sm='3' :md='3'>
+            <el-button 
               style="width: 100%"
-              @click="toPath('CompanyList')">
-              維護
-            </el-button>
+              @click="toPath('CompanyList')">維護</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -164,3 +158,9 @@ export default {
   }
 }
 </script>
+<style>
+.hint {
+  margin: 0;
+  color: #797d85;
+}
+</style>
