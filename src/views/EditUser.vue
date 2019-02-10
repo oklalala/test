@@ -37,7 +37,7 @@
       </el-row>
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
-          <el-col :span="22">
+          <el-col :span="17" :sm='21' :md='21'>
             <el-select
               v-model="newUser.companyId"
               placeholder="請選擇"
@@ -50,7 +50,7 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="7" :sm='3' :md='3'>
             <el-button
               style="width: 100%"
               @click="toPath('CompanyList')">
