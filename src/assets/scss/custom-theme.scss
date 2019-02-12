@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 // 提示使用者的訊息
 .feedback {
   color: red;
