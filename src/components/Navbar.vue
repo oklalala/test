@@ -3,6 +3,24 @@
     <el-header>
       <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
     </el-header>
+    <section id="nav">
+      <ul class="nav__main">
+        <li @click="toPath('UserInfo')">帳號資料</li>
+        <li @click="toPath('ProjectList')">專案列表</li>
+      </ul>
+      <ul class="nav__sub">
+        <li @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
+        <li @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
+        <li @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
+        <el-submenu>
+          <template slot="title" id='popupLevel2'>專案設定</template>
+          <li @click="toPath('ProjectSetting')">專案資料</li>
+          <li @click="toPath('ProjectPhaseList')">執行階段</li>
+        </el-submenu>
+        <li @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
+        <li class='submenu' @click="logout">登出</li>
+      </ul>
+    </section>
     <el-main>
       <template v-if="isLogined" class="layout-navbar-menu">
         <template class="layout-navbar-menu-forAdmin">
