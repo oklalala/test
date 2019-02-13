@@ -3,7 +3,10 @@
     <el-header>
       <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
     </el-header>
-    <font-awesome-icon icon="bars" />
+    <label for="menu" id="burger">
+      <font-awesome-icon icon="bars" />
+    </label>
+    <input type="checkbox" id="menu">
     <section id="nav">
       <ul class="nav__items">
         <li class="nav__item" tabindex='0' @click="toPath('UserInfo')">帳號資料</li>
@@ -94,5 +97,26 @@ export default {
 }
 .el-header {
   padding: 0;
+}
+
+#menu, #burger {
+  color: white;
+  display: none;
+}
+#burger {
+  font-size: 30px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+@media screen and (max-width: 600px) {
+  #burger {
+    display: block;
+  }
+  
+  #menu:checked ~ #nav {
+    display: none;
+  }
 }
 </style>
