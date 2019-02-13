@@ -7,7 +7,8 @@ import store from './store'
 import moment from 'moment'
 import './plugins/element.js'
 import '@/assets/scss/custom-theme.scss'
-
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 import {
   Row,
   Col,
@@ -75,6 +76,8 @@ Vue.use(DropdownItem)
 
 Vue.prototype.$message = Message
 Vue.prototype.moment = moment
+
+library.add(faBars)
 
 Vue.config.productionTip = false
 

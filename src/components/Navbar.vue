@@ -3,6 +3,7 @@
     <el-header>
       <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
     </el-header>
+    <font-awesome-icon icon="bars" />
     <section id="nav">
       <ul class="nav__items">
         <li class="nav__item" tabindex='0' @click="toPath('UserInfo')">帳號資料</li>
@@ -12,11 +13,11 @@
         <li class="nav__item" tabindex='0' @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
         <li class="nav__item" tabindex='0' @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
         <li class="nav__item" tabindex='0' @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
-        <el-submenu>
+        <!-- <el-submenu>
           <template slot="title" id='popupLevel2'>專案設定</template>
           <li class="nav__item" tabindex='0' @click="toPath('ProjectSetting')">專案資料</li>
           <li class="nav__item" tabindex='0' @click="toPath('ProjectPhaseList')">執行階段</li>
-        </el-submenu>
+        </el-submenu> -->
         <li class="nav__item" tabindex='0' @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
         <li class="nav__item" tabindex='0' @click="logout">登出</li>
       </ul>
@@ -27,11 +28,16 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import RoleIsMixin from '@/mixins/RoleIs'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 export default {
   name: 'Navbar',
   mixins: [ToPathMixin, RoleIsMixin],
   data() {
     return {}
+  },
+  components: {
+    FontAwesomeIcon
   },
   computed: {
     isLogined() {
@@ -79,7 +85,6 @@ export default {
   color: #ffd04b;
   border-bottom: 3px solid #ffd04b;
 }
-
 
 .layout-navbar-title {
   font-size: 30px;
