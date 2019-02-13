@@ -9,20 +9,20 @@
     <input type="checkbox" id="menu">
     <section id="nav">
       <ul class="nav__items">
-        <li class="nav__item" tabindex='0' @click="toPath('UserInfo')">帳號資料</li>
-        <li class="nav__item" tabindex='0' @click="toPath('ProjectList')">專案列表</li>
+        <li class="nav__item" @click="toPath('UserInfo')">帳號資料</li>
+        <li class="nav__item" @click="toPath('ProjectList')">專案列表</li>
       </ul>
       <ul class="nav__items">
-        <li class="nav__item" tabindex='0' @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
-        <li class="nav__item" tabindex='0' @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
-        <li class="nav__item" tabindex='0' @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
-        <!-- <el-submenu>
-          <template slot="title" id='popupLevel2'>專案設定</template>
-          <li class="nav__item" tabindex='0' @click="toPath('ProjectSetting')">專案資料</li>
-          <li class="nav__item" tabindex='0' @click="toPath('ProjectPhaseList')">執行階段</li>
-        </el-submenu> -->
-        <li class="nav__item" tabindex='0' @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
-        <li class="nav__item" tabindex='0' @click="logout">登出</li>
+        <li class="nav__item" @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
+        <li class="nav__item" @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
+        <li class="nav__item" @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
+        <li class="nav__item" @click="projectSubMenuShow = !projectSubMenuShow">專案設定</li>
+        <ul class="nav__sub" v-if="projectSubMenuShow">
+          <li class="nav__item" @click="toPath('ProjectSetting')">專案資料</li>
+          <li class="nav__item" @click="toPath('ProjectPhaseList')">執行階段</li>
+        </ul>
+        <li class="nav__item" @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
+        <li class="nav__item" @click="logout">登出</li>
       </ul>
     </section>
   </el-container>
@@ -37,7 +37,9 @@ export default {
   name: 'Navbar',
   mixins: [ToPathMixin, RoleIsMixin],
   data() {
-    return {}
+    return {
+      projectSubMenuShow: false
+    }
   },
   components: {
     FontAwesomeIcon
@@ -54,7 +56,6 @@ export default {
     },
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
-      // return true
     }
   }
 }
@@ -90,6 +91,15 @@ export default {
 @media screen and (max-width: 600px) {
   .nav__item {
     display: block;
+    line-height: 40px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .nav__sub {
+    position: absolute;
+    background:#545c64;
+    padding: 0;
   }
 }
 
