@@ -65,10 +65,17 @@ export default {
   display: flex;
   justify-content: space-between;
   background:#545c64;
+  z-index: 4;
 }
 .nav__items {
   padding: 0;
   margin: 0;
+}
+/* navbar for mobile */
+@media screen and (max-width: 600px) {
+  #nav {
+    display: block;
+  }
 }
 .nav__item {
   display: inline-block;
@@ -79,6 +86,13 @@ export default {
   cursor: pointer;
   border-bottom: 3px solid transparent;
 }
+
+@media screen and (max-width: 600px) {
+  .nav__item {
+    display: block;
+  }
+}
+
 .nav__item:hover {
   background: #434a50;
 }
