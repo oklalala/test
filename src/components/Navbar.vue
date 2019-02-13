@@ -9,19 +9,19 @@
     <input type="checkbox" id="menu">
     <section id="nav">
       <ul class="nav__items">
-        <li class="nav__item" @click="toPath('UserInfo')">帳號資料</li>
-        <li class="nav__item" @click="toPath('ProjectList')">專案列表</li>
+        <li class="nav__item" :class="{ active: isActive('/user-info') }" @click="toPath('UserInfo')">帳號資料</li>
+        <li class="nav__item" :class="{ active: isActive('/project-list') }" @click="toPath('ProjectList')">專案列表</li>
       </ul>
       <ul class="nav__items">
-        <li class="nav__item" @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
-        <li class="nav__item" @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
-        <li class="nav__item" @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
-        <li class="nav__item" @click="projectSubMenuShow = !projectSubMenuShow">專案設定</li>
+        <li class="nav__item" :class="{ active: isActive('/vg-list') }" @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
+        <li class="nav__item" :class="{ active: isActive('/soItem-list') }" @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
+        <li class="nav__item" :class="{ active: isActive('/user-list') }" @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
+        <li class="nav__item" :class="{ active: isActive('/project-setting') || isActive('/project-phase-list') }" @click="projectSubMenuShow = !projectSubMenuShow">專案設定</li>
         <ul class="nav__sub" v-if="projectSubMenuShow">
-          <li class="nav__item" @click="toPath('ProjectSetting')">專案資料</li>
-          <li class="nav__item" @click="toPath('ProjectPhaseList')">執行階段</li>
+          <li class="nav__item" :class="{ active: isActive('/project-setting') }" @click="toPath('ProjectSetting')">專案資料</li>
+          <li class="nav__item" :class="{ active: isActive('/project-phase-list') }" @click="toPath('ProjectPhaseList')">執行階段</li>
         </ul>
-        <li class="nav__item" @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
+        <li class="nav__item" :class="{ active: isActive('/permisson-setup') }" @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
         <li class="nav__item" @click="logout">登出</li>
       </ul>
     </section>
@@ -56,6 +56,9 @@ export default {
     },
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
+    },
+    isActive(route) {
+      return this.$route.path === route
     }
   }
 }
@@ -107,7 +110,7 @@ export default {
   background: #434a50;
 }
 
-.nav__item:focus {
+.active {
   outline: none;
   color: #ffd04b;
   border-bottom: 3px solid #ffd04b;
