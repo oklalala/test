@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header height='120px'>
+      <el-header>
         <navbar/>
       </el-header>
       <el-main id='main'>
@@ -24,3 +24,12 @@ export default {
   }
 }
 </script>
+
+<style>
+@media screen and (min-width: 600px) {
+  #main {
+    padding-top: 60px;
+  }
+} 
+</style>
+

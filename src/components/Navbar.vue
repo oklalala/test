@@ -3,11 +3,10 @@
     <el-header>
       <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
     </el-header>
-    <label for="menu" id="burger">
+    <label for="menu" id="burger" @click="isMobile = !isMobile">
       <font-awesome-icon icon="bars" />
     </label>
-    <input type="checkbox" id="menu">
-    <section id="nav">
+    <section id="nav" v-if="!isMobile" v-show="isLogined">
       <ul class="nav__items">
         <li class="nav__item" :class="{ active: isActive('/user-info') }" @click="toPath('UserInfo')">帳號資料</li>
         <li class="nav__item" :class="{ active: isActive('/project-list') }" @click="toPath('ProjectList')">專案列表</li>
@@ -16,11 +15,12 @@
         <li class="nav__item" :class="{ active: isActive('/vg-list') }" @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
         <li class="nav__item" :class="{ active: isActive('/soItem-list') }" @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
         <li class="nav__item" :class="{ active: isActive('/user-list') }" @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
-        <li class="nav__item" :class="{ active: isActive('/project-setting') || isActive('/project-phase-list') }" @click="projectSubMenuShow = !projectSubMenuShow">專案設定</li>
-        <ul class="nav__sub" v-if="projectSubMenuShow">
-          <li class="nav__item" :class="{ active: isActive('/project-setting') }" @click="toPath('ProjectSetting')">專案資料</li>
-          <li class="nav__item" :class="{ active: isActive('/project-phase-list') }" @click="toPath('ProjectPhaseList')">執行階段</li>
-        </ul>
+        <li class="nav__item" :class="{ active: isActive('/project-setting') || isActive('/project-phase-list') }" @click.capture="projectSubMenuShow = !projectSubMenuShow">專案設定
+          <ul class="nav__sub" v-if="projectSubMenuShow">
+            <li class="nav__item" :class="{ active: isActive('/project-setting') }" @click="toPath('ProjectSetting')">專案資料</li>
+            <li class="nav__item" :class="{ active: isActive('/project-phase-list') }" @click="toPath('ProjectPhaseList')">執行階段</li>
+          </ul>
+        </li>
         <li class="nav__item" :class="{ active: isActive('/permisson-setup') }" @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
         <li class="nav__item" @click="logout">登出</li>
       </ul>
@@ -38,7 +38,8 @@ export default {
   mixins: [ToPathMixin, RoleIsMixin],
   data() {
     return {
-      projectSubMenuShow: false
+      projectSubMenuShow: false,
+      isMobile: screen.width <= 600
     }
   },
   components: {
@@ -47,6 +48,9 @@ export default {
   computed: {
     isLogined() {
       return !!this.$store.getters.token
+    },
+    currentRoute() {
+      return this.$route.path
     }
   },
   methods: {
@@ -59,6 +63,13 @@ export default {
     },
     isActive(route) {
       return this.$route.path === route
+    }
+  },
+  watch: {
+    currentRoute: function (val, oldVal) {
+      if (val !== '/project-setting' && val !== '/project-phase-list') {
+        this.projectSubMenuShow = false
+      }
     }
   }
 }
@@ -88,7 +99,6 @@ export default {
   line-height: 60px;
   color: white;
   cursor: pointer;
-  border-bottom: 3px solid transparent;
 }
 
 @media screen and (max-width: 600px) {
@@ -103,6 +113,8 @@ export default {
     position: absolute;
     background:#545c64;
     padding: 0;
+    top: 120px;
+    right: 58px;
   }
 }
 
@@ -113,7 +125,6 @@ export default {
 .active {
   outline: none;
   color: #ffd04b;
-  border-bottom: 3px solid #ffd04b;
 }
 
 .layout-navbar-title {
