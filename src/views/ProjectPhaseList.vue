@@ -1,29 +1,17 @@
 <template>
   <div class="projectPhaseList">
     <h1>專案執行階段</h1>
-    <div class="operationGroup">
-      <div class="operationGroup-left">
-        <el-button 
-          type="primary" 
-          @click="deleteProjectPhase" 
-          v-if='!!deleteList.length'>刪除</el-button>
-      </div>
-      <div class="operationGroup-right">
-        <el-form
-          label-position="top"
-          label-width="90px"
-          :model="newProjectPhase">
-          <el-form-item label="新增專案：">
-            <el-input v-model="newProjectPhase.name"
-              placeholder="第二次開挖">
-            </el-input>
-          </el-form-item>
-          <el-button type="primary" @click="createProjectPhase" v-if="!!newProjectPhase.name">
-            <i class="el-icon-plus"></i>
-          </el-button>
-        </el-form>
-      </div>
-    </div>
+    <el-row class="operationGroup" type='flex' justify="between">
+      <el-col class="operationGroup-left" :sm='4'>
+        <el-button type="primary" @click="deleteProjectPhases" v-if="!!deleteList.length">刪除</el-button>
+      </el-col>
+      <el-col class="operationGroup-right" :span='24' :sm='8'>
+        <el-input v-model="newProjectPhase.name" placeholder="新增專案階段"></el-input>
+        <el-button class='addButton' type="primary" @click="createProjectPhase" v-if="!!newProjectPhase.name">
+          <i class="el-icon-plus"></i>
+        </el-button>
+      </el-col>
+    </el-row>
     <el-table
       :data="projectPhaseList"
       class="projectPhaseList-table"
@@ -86,13 +74,15 @@ export default {
         })
     },
     reset() {
-      this.newProjectPhase = {
-        name: ''
-      }
+      this.$store.dispatch('getProjectPhases').then(() => {
+        this.newProjectPhase = {
+          number: ''
+        }
+      })
     },
-    deleteProjectPhase() {
+    deleteProjectPhases() {
       if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteProjectPhase', this.deleteList)
+      this.$store.dispatch('deleteProjectPhases', this.deleteList)
     },
     updateDeleteList(value) {
       this.deleteList = value.map(projectPhase => projectPhase.id)
