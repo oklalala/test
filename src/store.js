@@ -84,7 +84,7 @@ const projectPhases = {
       })
     },
     createProjectPhase(context, payload) {
-      return sendAPI('post', `/project-phase`, true, payload)
+      return sendAPI('post', '/project-phased', true, payload)
     }
   }
 }
