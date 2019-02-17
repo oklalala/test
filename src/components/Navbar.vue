@@ -66,7 +66,7 @@ export default {
     }
   },
   watch: {
-    currentRoute: function (val, oldVal) {
+    currentRoute: function(val) {
       if (val !== '/project-setting' && val !== '/project-phase-list') {
         this.projectSubMenuShow = false
       }
@@ -79,7 +79,7 @@ export default {
 #nav {
   display: flex;
   justify-content: space-between;
-  background:#545c64;
+  background: #545c64;
   z-index: 4;
 }
 .nav__items {
@@ -111,7 +111,7 @@ export default {
 @media screen and (min-width: 600px) {
   .nav__sub {
     position: absolute;
-    background:#545c64;
+    background: #545c64;
     padding: 0;
     top: 120px;
     right: 58px;
@@ -137,7 +137,8 @@ export default {
   padding: 0;
 }
 
-#menu, #burger {
+#menu,
+#burger {
   color: white;
   display: none;
 }
@@ -152,7 +153,7 @@ export default {
   #burger {
     display: block;
   }
-  
+
   #menu:checked ~ #nav {
     display: none;
   }
