@@ -71,7 +71,7 @@
         <el-tab-pane label="OPT">
           <el-select
             v-model="newProject.OPT"
-            placeholder="金貝貝"
+            placeholder="請選擇 OPT"
             multiple
             @change="updateSelectedOPTs"
             style="width: 100%">
@@ -102,7 +102,7 @@
         <el-tab-pane label="USER">
           <el-select
             v-model="newProject.USER"
-            placeholder="阿土伯"
+            placeholder="請選擇 USER"
             multiple
             @change="updateSelectedUSERs"
             style="width: 100%">
