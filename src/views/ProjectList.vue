@@ -7,7 +7,7 @@
       class="projectList-table">
       <el-table-column
         fixed
-        prop="id"
+        prop="number"
         label="案號"
         show-overflow-tooltip
         width="80">
