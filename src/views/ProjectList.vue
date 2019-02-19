@@ -9,8 +9,7 @@
         fixed
         prop="number"
         label="案號"
-        show-overflow-tooltip
-        width="80">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="name"

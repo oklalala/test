@@ -21,8 +21,7 @@
       </el-table-column>
       <el-table-column
         label="案號"
-        show-overflow-tooltip
-        width="80">
+        width="100">
         <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('ProjectEdit', { projectId: scope.row.id })">
