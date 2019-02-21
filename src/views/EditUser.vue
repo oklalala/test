@@ -101,7 +101,7 @@ export default {
 
   mixins: [ToPathMixin],
   created() {
-    if (this.$route.params.userId) {
+    if (!!this.$route.params.userId) {
       this.loadUser(this.$route.params.userId)
     }
   },
@@ -146,7 +146,7 @@ export default {
           roleName: user.roleName,
           companyId: user.company.id,
           account: user.account,
-          soId: user.soItem.id
+          soId: user.soItem ? user.soItem.id : ''
         }
       })
     },
