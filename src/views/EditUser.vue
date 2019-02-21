@@ -67,7 +67,7 @@
           <el-option
             v-for="item in soItems"
             :key="item.id"
-            :label="item.name"
+            :label="item.number"
             :value="item.id">
           </el-option>
         </el-select>
@@ -146,7 +146,7 @@ export default {
           roleName: user.roleName,
           companyId: user.company.id,
           account: user.account,
-          soId: ''
+          soId: user.soItem.id
         }
       })
     },
