@@ -146,7 +146,7 @@ export default {
           roleName: user.roleName,
           companyId: user.company.id,
           account: user.account,
-          soId: ''
+          soId: user.soId
         }
       })
     },
