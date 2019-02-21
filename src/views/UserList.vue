@@ -20,21 +20,15 @@
         width="40">
       </el-table-column>
       <el-table-column
-        prop="id"
-        label="編號"
-        show-overflow-tooltip
-        width="80">
-        <template slot-scope="scope">
-          <span class="clickable"
-            @click="toPath('EditUser', { userId: scope.row.id })">
-            {{ scope.row.id }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="name"
         label="姓名"
         width="100">
+        <template slot-scope="scope">
+          <span class="clickable"
+            @click="toPath('EditUser', { userId: scope.row.id })">
+            {{ scope.row.name }}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="company.name"

@@ -58,6 +58,9 @@ export default {
           axisLabel: {
             formatter: '{value} 噸'
           }
+        },
+        series: {
+          smooth: false
         }
       },
       vgGrid: {

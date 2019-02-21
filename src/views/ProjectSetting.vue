@@ -20,14 +20,12 @@
         width="40">
       </el-table-column>
       <el-table-column
-        prop="id"
         label="案號"
-        show-overflow-tooltip
-        width="80">
+        width="100">
         <template slot-scope="scope">
           <span class="clickable"
             @click="toPath('ProjectEdit', { projectId: scope.row.id })">
-            {{ scope.row.id }}
+            {{ scope.row.number }}
           </span>
         </template>
       </el-table-column>
