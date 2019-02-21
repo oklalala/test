@@ -181,7 +181,7 @@
             </el-input>
           </div>
           <br>
-          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">import VGs</el-button>
+          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">產生軸力計編碼</el-button>
           <br>
           <br>
 
