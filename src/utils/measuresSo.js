@@ -26,7 +26,7 @@ let ON = 0
 let OFF = 1
 let PI = 3.1415926
 
-export default function(wiseIP, formData) {
+export default function(wiseIP, formData, soItem) {
   console.log(store.getters.getTest)
   wiseConfig.wiseIP = 'http://' + wiseIP
   let digitX, digitTemp, digitY
@@ -58,6 +58,7 @@ export default function(wiseIP, formData) {
         digitTemp.Eg,
         digitX.Eg,
         digitY.Eg,
+        soItem,
         formData
       )
       formData.unshift(tableData)
@@ -127,7 +128,7 @@ function delay() {
   console.groupEnd()
 }
 
-function getMeasurementData(rowTemp, rowX, rowY, formData) {
+function getMeasurementData(rowTemp, rowX, rowY, soItem, formData) {
   let VoltageTemp, VoltageX, VoltageY
   let slopeX, temp, slopeY
   let degreeX, degreeY
@@ -140,8 +141,8 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
   // X軸斜率(mm/m)： ${slopeX}
   // Y軸斜率(mm/m)：${slopeY}
   temp = calculatingTemperature(VoltageTemp)
-  slopeX = calculatingTiltForMM(VoltageX, temp)
-  slopeY = calculatingTiltForMM(VoltageY / 1000000, temp)
+  slopeX = calculatingTiltForMM(VoltageX, temp, soItem)
+  slopeY = calculatingTiltForMM(VoltageY, temp, soItem)
   // X軸斜率(度C)： ${degreeX}
   // Y軸斜率(度C)： ${degreeY}
   degreeX = calculatingTiltForDegress(slopeX)
@@ -192,17 +193,22 @@ function calculatingTemperature(Eg) {
   // 37.7705 * Math.pow(Eg, 0)
   // )
 }
-function calculatingTiltForMM(volts, tempC) {
+
+function calculatingTiltForMM(volts, tempC, soItem) {
   // 計算傾斜 mm/m
-  // 傾度管公式： C5 x Volts2 + C4 x Volts + C3 + C2 x TdegC + C1 x TdegC2 +C0 x Volts x TdegC
-  let SO_C = store.getters.getSO_C
-  let rawData = [tempC * volts, tempC * tempC, tempC, 1, volts, volts * volts]
+  console.log(soItem)
   let slope = 0
-  SO_C.forEach((item, index) => {
-    slope += item * rawData[index]
-  })
+  if(soItem.soModel.id === 'something'){
+    let SO = soItem.parameters
+    // 傾度管公式： C0 x Volts x TdegC + C1 x TdegC2 + C2 x TdegC + C3  + C4 x Volts + C5 x Volts2
+    let rawData = [SO.c0 * tempC * volts, SO.c1 * tempC * tempC, SO.c2 * tempC, SO.c3 * 1, SO.c4 * volts, SO.c5 * volts * volts]
+    slope = rawData.reduce((prev, curr) =>{
+      return prev + curr
+    },0 )
+  }
   return slope
 }
+
 function calculatingTiltForDegress(tilt) {
   // 計算傾斜度數
   return (tilt / 1000 / PI) * 180

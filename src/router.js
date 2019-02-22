@@ -203,8 +203,11 @@ let router = new Router({
       path: '/measures/so/:projectId',
       name: 'MeasuresSo',
       component: MeasuresSo,
-      meta: {
-        requireAuth: true
+      meta: {requireAuth: true},
+      beforeEnter: (to, from, next) => {
+        store.dispatch('getMe').then(() => {
+          next()
+        })
       }
     },
     {

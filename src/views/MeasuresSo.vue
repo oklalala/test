@@ -50,12 +50,12 @@
         <el-table-column
           prop="date"
           label="日期"
-          width="200">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="time"
           label="時間"
-          width="200">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="temp"
@@ -92,6 +92,7 @@
       <el-button @click="uploadMeasuresDatas" :disabled="!measuresSoDatas.length" >確認無誤並上傳</el-button>
     </section>
   </el-form>
+  <button type="button" name="button" @click="uploadMeasuresDatas">test</button>
   <p>要加入故障排除方式</p>
 </div>
 </template>
@@ -106,23 +107,35 @@ export default {
       projectId: '',
       project: {},
       projectPhaseId: '',
-      soLocationNumber: ''
+      soLocationNumber: '',
+      soItem:{},
     }
   },
   methods: {
     measures: function() {
-      startMeasures(this.wiseIP, this.measuresSoDatas)
+      startMeasures(this.wiseIP, this.measuresSoDatas, this.soItem)
     },
     clearMeasuresDatas: function() {
       this.measuresSoDatas = []
     },
     uploadMeasuresDatas: function() {
       let measuresData = {}
+      if(!this.projectPhaseId){
+        console.log("fuck")
+        return
+      }
+      if(!this.soLocationNumber){
+        console.log("shit")
+        return
+      }
       measuresData.projectId = this.projectId
       measuresData.projectPhaseId = this.projectPhaseId
       measuresData.soLocationNumber = this.soLocationNumber
+      measuresData.soItemId = this.soItem.id
+      measuresData.soItemParameters = this.soItem.parameters
       measuresData.measureResult = this.measuresSoDatas
-      this.$store.dispatch('uploadMeasuresDatas', JSON.stringify(measuresData))
+      console.log(measuresData)
+      // this.$store.dispatch('uploadMeasuresDatas', measuresData)
     },
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
@@ -134,6 +147,13 @@ export default {
     },
     getProjectPhases: function() {
       this.$store.dispatch('getProjectPhases')
+    },
+    getSOItem: function(){
+      this.$store.dispatch('getSOItem',this.me.soItem.id)
+      .then(response=>{
+      this.soItem = response.data.data
+      console.log(this.soItem)
+      })
     }
   },
   computed: {
@@ -148,10 +168,13 @@ export default {
     },
     projectPhases: function() {
       return this.$store.getters.projectPhases
+    },
+    me : function(){
+      return this.$store.getters.me
     }
   },
   mounted() {
-    this.getProjectId(), this.getProjectPhases(), this.getProject()
+    this.getProjectId(), this.getProjectPhases(), this.getProject(),this.getSOItem()
   }
 }
 </script>
