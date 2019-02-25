@@ -1,8 +1,16 @@
 <template>
   <div class="projectList">
     <h1>專案列表</h1>
+    <el-select class='status-filter' v-model="status" multiple placeholder="請篩選" v-if="isShow('project:filter')">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.text"
+        :value="item.value">
+      </el-option>
+    </el-select>
     <el-table
-      :data="projectList"
+      :data="filteredProject"
       height="550px"
       class="projectList-table">
       <el-table-column
@@ -36,8 +44,6 @@
         prop="status"
         label="專案狀態"
         width="100"
-        :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
-        :filter-method="statusFilter"
         v-if="isShow('project:filter')">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
@@ -55,12 +61,30 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      deleteList: []
+      deleteList: [],
+      options: [
+        { text: '結案', value: 'end' },
+        { text: '執行', value: 'in-progress' }
+      ],
+      status: ['in-progress']
     }
   },
   computed: {
     projectList() {
       return this.$store.getters.projects
+    },
+    filteredProject() {
+      return this.projectList.filter(item => {
+        if (this.status.length === 0) {
+          return false;
+        } 
+        else if (this.status.length === 1) {
+          return item.status === this.status[0];
+        }
+        else if (this.status.length === 2) {
+          return item;//do nothing
+        }
+      })
     }
   },
   methods: {
@@ -92,5 +116,9 @@ export default {
 <style>
 .el-table::before {
   height: 0;
+}
+
+.status-filter {
+  float: right;
 }
 </style>
