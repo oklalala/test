@@ -299,7 +299,7 @@
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
 import sendImageAPI from '../utils/ImageAPI'
-import { userInfo } from 'os';
+import { userInfo } from 'os'
 
 export default {
   name: 'ProjectEdit',
@@ -407,10 +407,10 @@ export default {
     showImage() {
       return `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
     },
-    numOfFloor (){
+    numOfFloor() {
       return this.project.vgLocation.length / this.project.floor
     },
-    fullVGsInfo (){
+    fullVGsInfo() {
       return this.project.vgLocation
     },
     project() {

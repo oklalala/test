@@ -76,13 +76,11 @@ export default {
     filteredProject() {
       return this.projectList.filter(item => {
         if (this.status.length === 0) {
-          return false;
-        } 
-        else if (this.status.length === 1) {
-          return item.status === this.status[0];
-        }
-        else if (this.status.length === 2) {
-          return item;//do nothing
+          return false
+        } else if (this.status.length === 1) {
+          return item.status === this.status[0]
+        } else if (this.status.length === 2) {
+          return item //do nothing
         }
       })
     }

@@ -180,15 +180,14 @@ let router = new Router({
           store.dispatch('getVGs'),
           store.dispatch('getSteels')
         ])
-        .then(() => {
-          if (from.path !== '/steel-list') {
-            return store.dispatch('getProject', to.params.projectId)
-          }
-          else return Promise.resolve()
-        })
-        .then(() => {          
-          next()
-        })
+          .then(() => {
+            if (from.path !== '/steel-list') {
+              return store.dispatch('getProject', to.params.projectId)
+            } else return Promise.resolve()
+          })
+          .then(() => {
+            next()
+          })
       }
     },
     {
