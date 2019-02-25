@@ -174,11 +174,12 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getCompanies'),
           store.dispatch('getMe'),
+          store.dispatch('getCompanies'),
           store.dispatch('getUsers'),
           store.dispatch('getVGs'),
-          store.dispatch('getSteels')
+          store.dispatch('getSteels'),
+          store.dispatch('getProject', to.params.projectId)
         ]).then(() => {
           next()
         })
@@ -190,13 +191,11 @@ let router = new Router({
       component: ProjectMonitor,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          // store.dispatch('getProjectStatus'),
-          // store.dispatch('getProject'),
-          // store.dispatch('getCompanies')
-        ]).then(() => {
-          next()
-        })
+        Promise.all([store.dispatch('getProject', to.params.projectId)]).then(
+          () => {
+            next()
+          }
+        )
       }
     },
     {
@@ -205,6 +204,13 @@ let router = new Router({
       component: MeasuresSo,
       meta: {
         requireAuth: true
+      },
+      beforeEnter: (to, from, next) => {
+        Promise.all([store.dispatch('getProject', to.params.projectId)]).then(
+          () => {
+            next()
+          }
+        )
       }
     },
     {
