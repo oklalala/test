@@ -102,31 +102,31 @@ export default {
   name: 'ProjectMonitor',
   components: { VGChart, SOChart },
   mixins: [ToPathMixin],
-  created() {
-    if (this.$route.params.projectId) {
-      this.loadProject(this.$route.params.projectId).then(() => {
-        this.setVGTable(0)
-      })
-    }
+  mounted() {
+    // if (this.$route.params.projectId) {
+    //   this.loadProject(this.$route.params.projectId).then(() => {
+    this.setVGTable(0)
+    //   })
+    // }
   },
   data() {
     return {
-      project: {
-        // OPT: [],
-        // USER: [],
-        // address: '',
-        // companyId: '',
-        // floor: 0,
-        // name: '',
-        // number: '',
-        // sitePlan: '',
-        // soLocation: [],
-        // soManagement: {},
-        // status: '',
-        // vgIds: [],
-        // vgLocation: [],
-        // vgManagement: [],
-      },
+      // project: {
+      // OPT: [],
+      // USER: [],
+      // address: '',
+      // companyId: '',
+      // floor: 0,
+      // name: '',
+      // number: '',
+      // sitePlan: '',
+      // soLocation: [],
+      // soManagement: {},
+      // status: '',
+      // vgIds: [],
+      // vgLocation: [],
+      // vgManagement: [],
+      // },
       vgDate: '',
       soDate: '',
       selectedVG: '',
@@ -183,14 +183,12 @@ export default {
     isSOSelected() {
       this.getSOData(this.soDate, this.selectedSO)
       return !!this.selectedSO && !!this.soDate
+    },
+    project() {
+      return this.$store.getters.currentProject
     }
   },
   methods: {
-    loadProject(projectId) {
-      return this.$store.dispatch('getProject', projectId).then(res => {
-        this.project = res.data.data
-      })
-    },
     currentFloor(selectedFloor) {
       this.selectedVG = ''
       this.floorIndex = selectedFloor - 1
