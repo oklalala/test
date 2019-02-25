@@ -178,9 +178,15 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getUsers'),
           store.dispatch('getVGs'),
-          store.dispatch('getSteels'),
-          store.dispatch('getProject', to.params.projectId)
-        ]).then(() => {
+          store.dispatch('getSteels')
+        ])
+        .then(() => {
+          if (from.path !== '/steel-list') {
+            return store.dispatch('getProject', to.params.projectId)
+          }
+          else return Promise.resolve()
+        })
+        .then(() => {          
           next()
         })
       }

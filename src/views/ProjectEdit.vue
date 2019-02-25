@@ -80,21 +80,6 @@
               :value="opt.id">
             </el-option>
           </el-select>
-
-          <!-- <el-table
-            :data="newProject.OPT"
-            class="projectList-table">
-            <el-table-column
-              label="負責人"
-              type="selection"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="OPT"
-              width="320">
-            </el-table-column>
-          </el-table> -->
         </el-tab-pane>
         <el-tab-pane label="USER">
           <el-select
@@ -110,21 +95,6 @@
               :value="user.id">
             </el-option>
           </el-select>
-            
-          <!-- <el-table
-            :data="newProject.USER"
-            class="projectList-table">
-            <el-table-column
-              label="負責人"
-              type="selection"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="USER"
-              width="320">
-            </el-table-column>
-          </el-table> -->
         </el-tab-pane>
       </el-tabs>
 
@@ -142,7 +112,6 @@
         <div class="el-upload__text" v-if="!newProject.sitePlan">將文件拖到此處，或<em>點擊上傳</em></div>
         <el-button class="reselect" size="small" type="primary" v-if="!!newProject.sitePlan">另選圖片</el-button>
       </el-upload>  
-
 
       <h2>監控設定</h2>
       <el-tabs type="border-card">
@@ -330,6 +299,7 @@
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
 import sendImageAPI from '../utils/ImageAPI'
+import { userInfo } from 'os';
 
 export default {
   name: 'ProjectEdit',
@@ -448,10 +418,10 @@ export default {
     },
     newProject() {
       this.getVGTable(0)
+
       this.selectedOPT = this.project.OPT.map(opt => opt.id)
-      this.project.USER.forEach(user => {
-        this.selectedUSER.push(user.id)
-      })
+      this.selectedUSER = this.project.USER.map(user => user.id)
+
       return {
         number: this.project.number, // CNT-16Q3
         status: this.project.status, // end or in-progress
