@@ -146,7 +146,11 @@ export default {
           roleName: user.roleName,
           companyId: user.company.id,
           account: user.account,
+<<<<<<< HEAD
           soId: user.soItem ? user.soItem.id : ''
+=======
+          soId: user.soId
+>>>>>>> feature/postMeasureSoData
         }
       })
     },

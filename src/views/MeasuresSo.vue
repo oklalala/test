@@ -50,12 +50,12 @@
         <el-table-column
           prop="date"
           label="日期"
-          width="200">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="time"
           label="時間"
-          width="200">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="temp"
@@ -121,7 +121,8 @@ export default {
       measuresData.projectPhaseId = this.projectPhaseId
       measuresData.soLocationNumber = this.soLocationNumber
       measuresData.measureResult = this.measuresSoDatas
-      this.$store.dispatch('uploadMeasuresDatas', JSON.stringify(measuresData))
+      console.log(measuresData)
+      // this.$store.dispatch('uploadMeasuresDatas', measuresData)
     },
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
