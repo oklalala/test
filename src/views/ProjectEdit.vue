@@ -168,7 +168,7 @@
           </div>
 
           <el-row :gutter="20" v-if="!!newProject.vgLocation.length">
-            <el-col :span="5">
+            <el-col :md='6' :sm='8' :span="24">
               <h2>管理值<span>單位：噸</span></h2>
               注意值
               <el-input
@@ -186,9 +186,10 @@
                 placeholder="104.2">
               </el-input>
             </el-col>
-            <el-col :span="19">
+            <el-col :md='16' :sm='16' :span="24">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
               <el-button
+                class='maintainSteel'
                 @click="toPath('SteelList')">
                 維護鋼材資料
               </el-button>
@@ -299,7 +300,6 @@
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
 import sendImageAPI from '../utils/ImageAPI'
-import { userInfo } from 'os'
 
 export default {
   name: 'ProjectEdit',
@@ -548,5 +548,9 @@ img {
   position: absolute;
   bottom: 10px;
   right: 20px;
+}
+
+.maintainSteel {
+  float: right;
 }
 </style>
