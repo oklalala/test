@@ -242,7 +242,7 @@
                   <template slot-scope="scope">
                     <el-select
                       v-model="scope.row.steelId"
-                      placeholder="请选择">
+                      placeholder="請選擇鋼材">
                       <el-option
                         v-for="steel in Steels"
                         :key="steel.id"
@@ -383,7 +383,7 @@ export default {
         sitePlan: '', // 上傳的圖片
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
-        floor: 3, //. vg階數
+        floor: 1, //. vg階數
         vgManagement: [],
         soManagement: {
           notice: 0,

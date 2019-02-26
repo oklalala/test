@@ -104,7 +104,6 @@ export default {
       wiseIP: '192.168.58.200',
       measuresSoDatas: [],
       projectId: '',
-      project: {},
       projectPhaseId: '',
       soLocationNumber: ''
     }
@@ -127,11 +126,6 @@ export default {
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
     },
-    getProject: function() {
-      this.$store.dispatch('getProject', this.projectId).then(res => {
-        this.project = res.data.data
-      })
-    },
     getProjectPhases: function() {
       this.$store.dispatch('getProjectPhases')
     }
@@ -139,6 +133,9 @@ export default {
   computed: {
     projects: function() {
       return this.$store.getters.projects
+    },
+    project: function() {
+      return this.$store.getters.currentProject
     },
     projectNumber: function() {
       return this.project.number

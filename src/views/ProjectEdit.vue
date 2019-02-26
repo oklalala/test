@@ -80,21 +80,6 @@
               :value="opt.id">
             </el-option>
           </el-select>
-
-          <el-table
-            :data="newProject.OPT"
-            class="projectList-table">
-            <el-table-column
-              label="負責人"
-              type="selection"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="OPT"
-              width="320">
-            </el-table-column>
-          </el-table>
         </el-tab-pane>
         <el-tab-pane label="USER">
           <el-select
@@ -110,21 +95,6 @@
               :value="user.id">
             </el-option>
           </el-select>
-            
-          <el-table
-            :data="newProject.USER"
-            class="projectList-table">
-            <el-table-column
-              label="負責人"
-              type="selection"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="USER"
-              width="320">
-            </el-table-column>
-          </el-table>
         </el-tab-pane>
       </el-tabs>
 
@@ -142,7 +112,6 @@
         <div class="el-upload__text" v-if="!newProject.sitePlan">將文件拖到此處，或<em>點擊上傳</em></div>
         <el-button class="reselect" size="small" type="primary" v-if="!!newProject.sitePlan">另選圖片</el-button>
       </el-upload>  
-
 
       <h2>監控設定</h2>
       <el-tabs type="border-card">
@@ -246,7 +215,7 @@
                   <template slot-scope="scope">
                     <el-select
                       v-model="scope.row.steelId"
-                      placeholder="请选择">
+                      placeholder="請選擇鋼材">
                       <el-option
                         v-for="steel in Steels"
                         :key="steel.id"
@@ -330,25 +299,19 @@
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
 import sendImageAPI from '../utils/ImageAPI'
+import { userInfo } from 'os'
 
 export default {
   name: 'ProjectEdit',
 
   mixins: [ToPathMixin, CalculateVGMixin],
-  created() {
-    if (this.$route.params.projectId) {
-      this.loadProject(this.$route.params.projectId)
-    }
-  },
   data() {
     return {
       removedVG: '',
       addedVG: '',
       floorIndex: 0, // used in array
-      numOfFloor: 0, //
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
-      fullVGsInfo: [], // from calculateVG.js
       image: [{ url: 'haha' }], // preview url in blob
       selectedOPT: [], // custom and self OPTs
       selectedUSER: [], // custom USERs
@@ -362,27 +325,27 @@ export default {
           label: '執行'
         }
       ],
-      VGItems: [],
-      newProject: {
-        number: '', // CNT-16Q3
-        status: '', // end or in-progress
-        name: '', // 測試專案
-        address: '', // 三路
-        companyId: '',
-        sitePlan: '', // 上傳的圖片
-        OPT: [], // {id:..} 公司或客戶的 operator
-        USER: [], // {id:..} 客戶的使用者
-        floor: 3, //. vg階數
-        vgManagement: [],
-        soManagement: {
-          notice: 0,
-          warning: 0,
-          action: 0
-        },
-        vgIds: [],
-        vgLocation: [],
-        soLocation: []
-      }
+      VGItems: []
+      // newProject: {
+      //   number: '', // CNT-16Q3
+      //   status: '', // end or in-progress
+      //   name: '', // 測試專案
+      //   address: '', // 三路
+      //   companyId: '',
+      //   sitePlan: '', // 上傳的圖片
+      //   OPT: [], // {id:..} 公司或客戶的 operator
+      //   USER: [], // {id:..} 客戶的使用者
+      //   floor: 1, //. vg階數
+      //   vgManagement: [],
+      //   soManagement: {
+      //     notice: 0,
+      //     warning: 0,
+      //     action: 0
+      //   },
+      //   vgIds: [],
+      //   vgLocation: [],
+      //   soLocation: []
+      // }
     }
   },
   computed: {
@@ -443,6 +406,38 @@ export default {
     },
     showImage() {
       return `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
+    },
+    numOfFloor() {
+      return this.project.vgLocation.length / this.project.floor
+    },
+    fullVGsInfo() {
+      return this.project.vgLocation
+    },
+    project() {
+      return this.$store.getters.currentProject
+    },
+    newProject() {
+      this.getVGTable(0)
+
+      this.selectedOPT = this.project.OPT.map(opt => opt.id)
+      this.selectedUSER = this.project.USER.map(user => user.id)
+
+      return {
+        number: this.project.number, // CNT-16Q3
+        status: this.project.status, // end or in-progress
+        name: this.project.name, // 測試專案
+        address: this.project.address, // 三路
+        companyId: this.project.companyId,
+        sitePlan: this.project.sitePlan, // 上傳的圖片
+        OPT: this.project.OPT,
+        USER: this.project.USER,
+        floor: this.project.floor, //. vg階數
+        vgManagement: this.project.vgManagement,
+        soManagement: this.project.soManagement,
+        vgIds: this.project.vgIds,
+        vgLocation: this.project.vgLocation,
+        soLocation: this.project.soLocation
+      }
     }
   },
   methods: {
@@ -452,37 +447,6 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)
-    },
-    loadProject(projectId) {
-      this.$store.dispatch('getProject', projectId).then(res => {
-        let project = res.data.data
-        project.OPT.forEach(opt => {
-          this.selectedOPT.push(opt.id)
-        })
-        project.USER.forEach(user => {
-          this.selectedUSER.push(user.id)
-        })
-
-        this.newProject = {
-          number: project.number, // CNT-16Q3
-          status: project.status, // end or in-progress
-          name: project.name, // 測試專案
-          address: project.address, // 三路
-          companyId: project.companyId,
-          sitePlan: project.sitePlan, // 上傳的圖片
-          OPT: project.OPT,
-          USER: project.USER,
-          floor: project.floor, //. vg階數
-          vgManagement: project.vgManagement,
-          soManagement: project.soManagement,
-          vgIds: project.vgIds,
-          vgLocation: project.vgLocation,
-          soLocation: project.soLocation
-        }
-        this.numOfFloor = project.vgLocation.length / project.floor
-        this.fullVGsInfo = project.vgLocation
-        this.getVGTable(0)
-      })
     },
     cancel() {
       this.toPath('ProjectSetting')

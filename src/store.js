@@ -10,22 +10,31 @@ Vue.use(Vuex)
 
 const projects = {
   state: {
-    data: []
+    data: [],
+    currentOne: []
     // projectStatus: ['end', 'in-progress']
   },
   mutations: {
     setProjects(state, projects) {
       state.data = projects
+    },
+    setProject(state, project) {
+      state.currentOne = project
     }
   },
   getters: {
     projects(state) {
       return state.data
+    },
+    currentProject(state) {
+      return state.currentOne
     }
   },
   actions: {
-    getProject(context, projectId) {
-      return sendAPI('get', `/project/${projectId}`, true)
+    getProject({ commit }, projectId) {
+      return sendAPI('get', `/project/${projectId}`, true).then(res => {
+        commit('setProject', res.data.data)
+      })
     },
     updateProject(context, { projectId, payload }) {
       return sendAPI('put', `/project/${projectId}`, true, payload)
