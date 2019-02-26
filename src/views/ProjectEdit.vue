@@ -190,7 +190,7 @@
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
               <el-button
                 class='maintainSteel'
-                @click="toPath('SteelList')">
+                @click="saveCurrentAndGo">
                 維護鋼材資料
               </el-button>
               <el-table class="vg-table" :data="vgTable">
@@ -519,6 +519,10 @@ export default {
       var start = floorIndex * this.numOfFloor
       var end = (floorIndex + 1) * this.numOfFloor
       this.vgTable = this.fullVGsInfo.slice(start, end)
+    },
+    saveCurrentAndGo() {
+      this.$store.dispatch('updateCurrentProject', this.newProject)
+      this.toPath('SteelList')
     }
   }
 }

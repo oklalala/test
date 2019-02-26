@@ -36,6 +36,9 @@ const projects = {
         commit('setProject', res.data.data)
       })
     },
+    updateCurrentProject({ commit }, payload) {
+      commit('setProject', payload)
+    },
     updateProject(context, { projectId, payload }) {
       return sendAPI('put', `/project/${projectId}`, true, payload)
     },
