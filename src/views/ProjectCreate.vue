@@ -82,21 +82,6 @@
               :value="opt.id">
             </el-option>
           </el-select>
-            
-          <el-table
-            :data="OPTList"
-            class="projectList-table">
-            <el-table-column
-              label="負責人"
-              type="selection"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="OPT"
-              width="320">
-            </el-table-column>
-          </el-table>
         </el-tab-pane>
 
         <el-tab-pane label="USER">
@@ -113,21 +98,6 @@
               :value="user.id">
             </el-option>
           </el-select>
-            
-          <el-table
-            :data="USERList"
-            class="projectList-table">
-            <el-table-column
-              label="負責人"
-              type="selection"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="USER"
-              width="320">
-            </el-table-column>
-          </el-table>
         </el-tab-pane>
       </el-tabs>
 
