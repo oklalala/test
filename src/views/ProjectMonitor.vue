@@ -224,7 +224,7 @@ export default {
         soNumber: soNumber
       }
       return this.$store.dispatch('getMeasuredSO', payload).then(res => {
-        this.soChartData.rows =res.data.data
+        this.soChartData.rows = res.data.data
       })
     }
   }

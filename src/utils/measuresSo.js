@@ -23,7 +23,6 @@ let ON = 0
 let OFF = 1
 let PI = 3.1415926
 export default function(wiseIP, formData, soItem, depth) {
-  console.log(store.getters.getTest)
   wiseConfig.wiseIP = 'http://' + wiseIP
   let digitX, digitTemp, digitY
   let tableData
@@ -50,30 +49,47 @@ export default function(wiseIP, formData, soItem, depth) {
       initializationSO(powerChannel, OFF, switchChannel, OFF)
     })
     .then(() => {
-      tableData = getMeasurementData(digitTemp.Eg, digitX.Eg, digitY.Eg, soItem, depth, formData)
+      tableData = getMeasurementData(
+        digitTemp.Eg,
+        digitX.Eg,
+        digitY.Eg,
+        soItem,
+        depth,
+        formData
+      )
       formData.unshift(tableData)
     })
 }
 
-function initializationSO(powerChannel, powerStatus, switchChannel, switchStatus) {
+function initializationSO(
+  powerChannel,
+  powerStatus,
+  switchChannel,
+  switchStatus
+) {
   return requestMeasuresSO('Patch', '/do_value/slot_0', {
-    DOVal: [{
-      Ch: powerChannel,
-      Val: powerStatus
-    }, {
-      Ch: switchChannel,
-      Val: switchStatus
-    }]
+    DOVal: [
+      {
+        Ch: powerChannel,
+        Val: powerStatus
+      },
+      {
+        Ch: switchChannel,
+        Val: switchStatus
+      }
+    ]
   })
 }
 
 function switchSO(channel, value) {
   delay()
   return requestMeasuresSO('Patch', '/do_value/slot_0', {
-    DOVal: [{
-      Ch: channel,
-      Val: value
-    }]
+    DOVal: [
+      {
+        Ch: channel,
+        Val: value
+      }
+    ]
   })
 }
 
@@ -101,14 +117,8 @@ function makeBasicAuth(user, password) {
 }
 
 function delay() {
-  // console.groupCollapsed('delay', true)
-  // for(let i = 0; i < 5000; i++) {
-  //   console.log(i)
-  // }
-  // console.groupEnd()
-  // 不用 console 的方式實作 delay
-  var starttime = new Date().getTime();
-  do {} while ((new Date().getTime() - starttime) < 500)
+  var starttime = new Date().getTime()
+  do {} while (new Date().getTime() - starttime < 500)
 }
 
 function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
@@ -135,7 +145,9 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
   displacementX = calculatingHorizontalDisplacement(degreeX, 100)
   displacementY = calculatingHorizontalDisplacement(degreeY, 100)
   console.log(formData)
-  totalDisplacement = formData.length ? formData[0].totalDisplacement + displacementX : displacementX
+  totalDisplacement = formData.length
+    ? formData[0].totalDisplacement + displacementX
+    : displacementX
   depth = -totalDepth + formData.length
   let tableData = {
     date: getDate(),
@@ -153,7 +165,7 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
 function calculatingTemperature(Eg) {
   let tempFormulaParameter = store.getters.getTempFormulaParameter
   let temp = tempFormulaParameter.reduce((value, parameter, index) => {
-    if(index % 2 === 0) {
+    if (index % 2 === 0) {
       return value - parameter * Math.pow(Eg, index)
     } else {
       return value + parameter * Math.pow(Eg, index)
@@ -175,10 +187,18 @@ function calculatingTiltForMM(volts, tempC, soItem) {
   // 這邊可加入判斷式與各型號的公式
   // 計算傾斜 mm/m
   let slope = 0
-  if(soItem.soModel.id === 'something') {
+  let soModel = soItem.soModel.id
+  if (soModel === 'something') {
     let SO = soItem.parameters
     // 傾度管公式： C0 x Volts x TdegC + C1 x TdegC2 + C2 x TdegC + C3  + C4 x Volts + C5 x Volts2
-    let rawData = [SO.c0 * tempC * volts, SO.c1 * tempC * tempC, SO.c2 * tempC, SO.c3 * 1, SO.c4 * volts, SO.c5 * volts * volts]
+    let rawData = [
+      SO.c0 * tempC * volts,
+      SO.c1 * tempC * tempC,
+      SO.c2 * tempC,
+      SO.c3 * 1,
+      SO.c4 * volts,
+      SO.c5 * volts * volts
+    ]
     slope = rawData.reduce((prev, curr) => {
       return prev + curr
     }, 0)
@@ -188,7 +208,7 @@ function calculatingTiltForMM(volts, tempC, soItem) {
 
 function calculatingTiltForDegress(tilt) {
   // 計算傾斜度數
-  return(tilt / 1000 / PI) * 180
+  return (tilt / 1000 / PI) * 180
 }
 
 function calculatingHorizontalDisplacement(degree, length) {

@@ -203,13 +203,17 @@ let router = new Router({
       path: '/measures/so/:projectId',
       name: 'MeasuresSo',
       component: MeasuresSo,
-      meta: {requireAuth: true},
+      meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
+        // console.log(to,from,next)
         Promise.all([
           store.dispatch('getMe'),
-          // store.dispatch('getProject')
-        ])
-        .then(() => {
+          store.dispatch('getProjects'),
+
+          // console.log("fuck",to,from,next)
+          // store.dispatch('getProject',to.params.projectId)
+
+        ]).then(() => {
           next()
         })
       }
