@@ -1,5 +1,5 @@
 <template>
-  <div class="projectMonitor">  
+  <div class="projectMonitor">
     <h1>查看監控資料</h1>
     <h3>基本資料</h3>
     案號：{{project.number}}
@@ -11,7 +11,7 @@
     <img :src="showImage" v-if="show">
     <h3>監控值</h3>
     <el-tabs type="border-card" stretch>
-      <el-tab-pane label="軸力計 ( VG )"> 
+      <el-tab-pane label="軸力計 ( VG )">
         <div class="block">
           <span class="demonstration">請選擇支撐階數</span>
           <el-pagination
@@ -46,9 +46,9 @@
             </el-col>
           </el-row>
         </el-form>
-        <VGChart 
+        <VGChart
           v-if='isVGSelected'
-          :vgChartData="vgChartData" 
+          :vgChartData="vgChartData"
           :project='project'
           :floorIndex='floorIndex'/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
@@ -81,8 +81,8 @@
             </el-col>
           </el-row>
         </el-form>
-        <SOChart 
-          v-if="isSOSelected" 
+        <SOChart
+          v-if="isSOSelected"
           :soChartData="soChartData"
           :project="project"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
@@ -224,11 +224,7 @@ export default {
         soNumber: soNumber
       }
       return this.$store.dispatch('getMeasuredSO', payload).then(res => {
-        var soData = res.data.data
-        this.soChartData.rows = soData
-        this.soChartData.rows.map(
-          soDatium => (soDatium.depth = -soDatium.depth)
-        )
+        this.soChartData.rows =res.data.data
       })
     }
   }

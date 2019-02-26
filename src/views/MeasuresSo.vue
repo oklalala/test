@@ -20,7 +20,7 @@
        </el-select>
      </el-form-item>
       <el-form-item label="量測點編號">
-        <el-select v-model="soLocationNumber" placeholder="SO-01">
+        <el-select v-model="locationNumber" placeholder="SO-01" @change="changeLocation">
          <el-option
            v-for="location in project.soLocation"
            :key="location.number"
@@ -35,10 +35,10 @@
       </el-form-item>
       <el-form-item label="請由下往上量，間隔 1m 量測一次" label-width="300px">
       </el-form-item>
-    <el-button @click="measures" :disabled="measuresSoDatas.length === 10">量測</el-button>
+    <el-button @click="measures" :disabled="measuresSoDatas.length === soLocation.depth">量測</el-button>
     </section>
     <section v-if="measuresSoDatas.length">
-      <p>應量測10筆，已量測{{measuresSoDatas.length}}筆</p>
+      <p>應量測 {{soLocation.depth}} 筆，已量測{{measuresSoDatas.length}}筆</p>
       <el-table
         :data="measuresSoDatas"
         style="width: 100%">
@@ -89,10 +89,10 @@
         </el-table-column>
       </el-table>
       <el-button @click="clearMeasuresDatas">清除資料</el-button>
-      <el-button @click="uploadMeasuresDatas" :disabled="!measuresSoDatas.length" >確認無誤並上傳</el-button>
+      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length < soLocation.depth" >確認無誤並上傳</el-button>
     </section>
   </el-form>
-  <button type="button" name="button" @click="uploadMeasuresDatas">test</button>
+  <button type="button" @click="uploadMeasuresDatas">fuck</button>
   <p>要加入故障排除方式</p>
 </div>
 </template>
@@ -107,13 +107,17 @@ export default {
       projectId: '',
       project: {},
       projectPhaseId: '',
-      soLocationNumber: '',
+      locationNumber: '',
+      soLocation:{
+        depth:0,
+        number:''
+      },
       soItem:{},
     }
   },
   methods: {
     measures: function() {
-      startMeasures(this.wiseIP, this.measuresSoDatas, this.soItem)
+      startMeasures(this.wiseIP, this.measuresSoDatas, this.soItem, this.soLocation.depth)
     },
     clearMeasuresDatas: function() {
       this.measuresSoDatas = []
@@ -122,20 +126,20 @@ export default {
       let measuresData = {}
       if(!this.projectPhaseId){
         console.log("fuck")
-        return
+        // return
       }
-      if(!this.soLocationNumber){
+      if(!this.locationNumber){
         console.log("shit")
-        return
+        // return
       }
       measuresData.projectId = this.projectId
       measuresData.projectPhaseId = this.projectPhaseId
-      measuresData.soLocationNumber = this.soLocationNumber
+      measuresData.soLocationNumber = this.locationNumber
       measuresData.soItemId = this.soItem.id
       measuresData.soItemParameters = this.soItem.parameters
       measuresData.measureResult = this.measuresSoDatas
-      console.log(measuresData)
-      // this.$store.dispatch('uploadMeasuresDatas', measuresData)
+      // console.log(measuresData)
+      this.$store.dispatch('uploadMeasuresDatas', measuresData)
     },
     getProjectId: function() {
       this.projectId = this.$route.params.projectId
@@ -151,9 +155,15 @@ export default {
     getSOItem: function(){
       this.$store.dispatch('getSOItem',this.me.soItem.id)
       .then(response=>{
-      this.soItem = response.data.data
-      console.log(this.soItem)
+        this.soItem = response.data.data
       })
+    },
+    changeLocation:function(){
+      let filterResult
+      filterResult = this.project.soLocation.filter(item=>{
+        return item.number === this.locationNumber
+      })
+      this.soLocation = filterResult[0]
     }
   },
   computed: {

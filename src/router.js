@@ -205,7 +205,11 @@ let router = new Router({
       component: MeasuresSo,
       meta: {requireAuth: true},
       beforeEnter: (to, from, next) => {
-        store.dispatch('getMe').then(() => {
+        Promise.all([
+          store.dispatch('getMe'),
+          // store.dispatch('getProject')
+        ])
+        .then(() => {
           next()
         })
       }
