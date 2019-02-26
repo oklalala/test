@@ -376,7 +376,7 @@ export default {
       ],
       newProject: {
         number: '', // CNT-16Q3
-        status: '', // end or in-progress
+        status: 'in-progress', // end or in-progress
         name: '', // 測試專案
         address: '', // 三路
         companyId: '',
