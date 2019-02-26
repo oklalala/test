@@ -20,7 +20,7 @@
        </el-select>
      </el-form-item>
       <el-form-item label="量測點編號" required>
-        <el-select v-model="soLocationNumber" placeholder="SO-01" @change="changeLocation">
+        <el-select v-model="soLocationNumber" placeholder="SO-01" @change="onChangeLocation">
          <el-option
            v-for="location in project.soLocation"
            :key="location.number"
@@ -36,8 +36,8 @@
       <span>應量測深度 {{currentDepth}} 公尺</span>
       <el-form-item label=" 請由下往上量，間隔 1m 量測一次" label-width="300px">
       </el-form-item>
-    <el-button @click="measures" :disabled="measuresSoDatas.length === currentDepth || !projectPhaseId || isMeasures">
-      <span v-if="isMeasures">量測中</span>
+    <el-button @click="measures" :disabled="measuresSoDatas.length === currentDepth || !projectPhaseId || isMeasuring">
+      <span v-if="isMeasuring">量測中</span>
       <span v-else>量測</span>
     </el-button>
     </section>
@@ -93,8 +93,8 @@
         </el-table-column>
       </el-table>
       <el-button @click="clearMeasuresDatas">清除資料</el-button>
-      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length < currentDepth || isPost" >
-        <span v-if="isPost">已上傳</span>
+      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length < currentDepth || isSend" >
+        <span v-if="isSend">已上傳</span>
         <span v-else>確認無誤並上傳</span>
       </el-button>
     </section>
@@ -109,46 +109,41 @@ export default {
     return {
       wiseIP: '192.168.58.200',
       measuresSoDatas: [],
-      projectId: '',
       projectPhaseId: '',
       soLocationNumber: '',
       soItem: {},
-      isPost: false,
-      isMeasures: false,
+      isSend: false,
+      isMeasuring: false,
       currentSoLocationIndex: -1
     }
   },
   methods: {
     measures: function() {
-      console.log('fuck')
-      // startMeasures(
-      //   this.wiseIP,
-      //   this.measuresSoDatas,
-      //   this.soItem,
-      //   this.currentDepth
-      // )
-      // this.isMeasures = true
+      startMeasures(
+        this.wiseIP,
+        this.measuresSoDatas,
+        this.soItem,
+        this.currentDepth
+      ).then(()=> {
+        this.isMeasuring = false;
+      })
+      this.isMeasuring = true
     },
     clearMeasuresDatas: function() {
       this.measuresSoDatas = []
-      this.isPost = false
+      this.isSend = false
     },
     uploadMeasuresDatas: function() {
-      let measuresData = {}
-      measuresData.projectId = this.projectId
-      measuresData.projectPhaseId = this.projectPhaseId
-      measuresData.soLocationNumber = this.soLocationNumber
-      measuresData.soItemId = this.soItem.id
-      measuresData.soItemParameters = this.soItem.parameters
-      measuresData.measureResult = this.measuresSoDatas
+      let measuresData = {
+        projectId: this.$route.params.projectId,
+        projectPhaseId: this.projectPhaseId,
+        soLocationNumber: this.soLocationNumber,
+        soItemId: this.soItem.id,
+        soItemParameters: this.soItem.parameters,
+        measureResult: this.measuresSoDatas
+      }
       this.$store.dispatch('uploadMeasuresDatas', measuresData)
-      this.isPost = true
-    },
-    getProjectId: function() {
-      this.projectId = this.$route.params.projectId
-    },
-    getProjectPhases: function() {
-      this.$store.dispatch('getProjectPhases')
+      this.isSend = true
     },
     getSOItem: function() {
       this.$store.dispatch('getSOItem', this.me.soItem.id).then(response => {
@@ -156,19 +151,15 @@ export default {
         console.log(this.soItem)
       })
     },
-    changeLocation: function() {
+    onChangeLocation: function() {
       let filterResult
       filterResult = this.project.soLocation.filter(item => {
         return item.number === this.soLocationNumber
       })
-      this.currentSoLocationIndex = this.project.soLocation.indexOf(filterResult[0])
+      this.currentSoLocationIndex = this.project.soLocation.indexOf(filterResult.shift())
     },
-
   },
   computed: {
-    projects: function() {
-      return this.$store.getters.projects
-    },
     project: function() {
       return this.$store.getters.currentProject
     },
@@ -185,18 +176,12 @@ export default {
       return this.$store.getters.me
     },
     currentDepth: function(){
-      return this.currentSoLocationIndex !== -1 ? this.project.soLocation[this.currentSoLocationIndex].depth : 0
-    }
-  },
-  watch:{
-    measuresSoDatas: function(){
-      this.isMeasures = false
+      return !!~this.currentSoLocationIndex ? this.project.soLocation[this.currentSoLocationIndex].depth : 0
     }
   },
   mounted() {
-    this.getProjectId(),
-    this.getProjectPhases(),
     this.getSOItem()
   }
 }
+
 </script>

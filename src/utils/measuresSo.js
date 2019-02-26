@@ -2,8 +2,6 @@
 import axios from 'axios'
 import store from '../store'
 let wiseConfig = {
-  user: 'root',
-  password: '0000',
   wiseIP: ''
 }
 // methods  url_path               data
@@ -26,7 +24,8 @@ export default function(wiseIP, formData, soItem, depth) {
   wiseConfig.wiseIP = 'http://' + wiseIP
   let digitX, digitTemp, digitY
   let tableData
-  initializationSO(powerChannel, OFF, switchChannel, OFF)
+
+  return initializationSO(powerChannel, OFF, switchChannel, OFF)
     .then(() => switchSO(powerChannel, ON))
     .then(() => switchSO(switchChannel, ON))
     .then(() => getSORawData())
@@ -67,7 +66,7 @@ function initializationSO(
   switchChannel,
   switchStatus
 ) {
-  return requestMeasuresSO('Patch', '/do_value/slot_0', {
+  return soAPI('PATCH', '/do_value/slot_0', {
     DOVal: [
       {
         Ch: powerChannel,
@@ -82,8 +81,8 @@ function initializationSO(
 }
 
 function switchSO(channel, value) {
-  delay()
-  return requestMeasuresSO('Patch', '/do_value/slot_0', {
+  delay500ms()
+  return soAPI('PATCH', '/do_value/slot_0', {
     DOVal: [
       {
         Ch: channel,
@@ -94,31 +93,25 @@ function switchSO(channel, value) {
 }
 
 function getSORawData() {
-  delay()
-  return requestMeasuresSO('Get', '/ai_value/slot_0/ch_0', '')
+  delay500ms()
+  return soAPI('GET', '/ai_value/slot_0/ch_0', '')
 }
 
-function requestMeasuresSO(method, path, data) {
+function soAPI(method, path, data) {
   return axios({
     method: method,
     url: wiseConfig.wiseIP + path,
     data: JSON.stringify(data),
     headers: {
       Accept: 'application/json',
-      Authorization: makeBasicAuth(wiseConfig.user, wiseConfig.password)
+      Authorization: `Basic cm9vdDowMDAw`
     }
   })
 }
 
-function makeBasicAuth(user, password) {
-  var tok = user + ':' + password
-  var hash = window.btoa(tok)
-  return 'Basic ' + hash
-}
-
-function delay() {
-  var starttime = new Date().getTime()
-  do {} while (new Date().getTime() - starttime < 500)
+function delay500ms() {
+  var starttime = new Date().getHHMMSS()
+  do {} while (new Date().getHHMMSS() - starttime < 500)
 }
 
 function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
@@ -149,9 +142,9 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
     ? formData[0].totalDisplacement + displacementX
     : displacementX
   depth = -totalDepth + formData.length
-  let tableData = {
-    date: getDate(),
-    time: getTime(),
+  return {
+    date: getYYYYMMDD(),
+    time: getHHMMSS(),
     temp: temp,
     VoltageX: VoltageX,
     degreeX: degreeX,
@@ -159,7 +152,6 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
     totalDisplacement: totalDisplacement,
     depth: depth
   }
-  return tableData
 }
 
 function calculatingTemperature(Eg) {
@@ -218,15 +210,15 @@ function calculatingHorizontalDisplacement(degree, length) {
   return Math.sin((degree * PI) / 180) * length
 }
 
-function getDate() {
+function getYYYYMMDD() {
   let date = new Date()
   let year = date.getFullYear()
-  let month = date.getMonth() + 1
-  let day = date.getDate()
+  let month = date.getMonth() + 1 > 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
+  let day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`
   return `${year}/${month}/${day}`
 }
 
-function getTime() {
+function getHHMMSS() {
   let date = new Date()
   let hour = date.getHours()
   let minute = date.getMinutes() > 10 ?  date.getMinutes() :  `0${date.getMinutes()}`

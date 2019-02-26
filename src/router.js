@@ -211,8 +211,12 @@ let router = new Router({
         requireAuth: true
       },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getProject', to.params.projectId)],store.dispatch('getMe')).then(
-          () => {
+        Promise.all([
+          store.dispatch('getProject', to.params.projectId),
+          store.dispatch('getMe'),
+          store.dispatch('getProjectPhases')
+        ])
+        .then(() => {
             next()
           }
         )
