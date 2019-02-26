@@ -1,8 +1,6 @@
 /** @format */
-
 import axios from 'axios'
 import store from '../store'
-
 let wiseConfig = {
   user: 'root',
   password: '0000',
@@ -19,15 +17,12 @@ let wiseConfig = {
 // patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":1}]}:
 // patch    /do_value/slot_0       {"DOVal":[{"Ch":1,"Val":0}]}:
 // get      /ai_value/slot_0/ch_0  ""
-
 let powerChannel = 0
 let switchChannel = 1
 let ON = 0
 let OFF = 1
 let PI = 3.1415926
-
-export default function(wiseIP, formData) {
-  console.log(store.getters.getTest)
+export default function(wiseIP, formData, soItem, depth) {
   wiseConfig.wiseIP = 'http://' + wiseIP
   let digitX, digitTemp, digitY
   let tableData
@@ -58,6 +53,8 @@ export default function(wiseIP, formData) {
         digitTemp.Eg,
         digitX.Eg,
         digitY.Eg,
+        soItem,
+        depth,
         formData
       )
       formData.unshift(tableData)
@@ -120,14 +117,11 @@ function makeBasicAuth(user, password) {
 }
 
 function delay() {
-  console.groupCollapsed('delay', true)
-  for (let i = 0; i < 5000; i++) {
-    console.log(i)
-  }
-  console.groupEnd()
+  var starttime = new Date().getTime()
+  do {} while (new Date().getTime() - starttime < 500)
 }
 
-function getMeasurementData(rowTemp, rowX, rowY, formData) {
+function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
   let VoltageTemp, VoltageX, VoltageY
   let slopeX, temp, slopeY
   let degreeX, degreeY
@@ -140,8 +134,8 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
   // X軸斜率(mm/m)： ${slopeX}
   // Y軸斜率(mm/m)：${slopeY}
   temp = calculatingTemperature(VoltageTemp)
-  slopeX = calculatingTiltForMM(VoltageX, temp)
-  slopeY = calculatingTiltForMM(VoltageY / 1000000, temp)
+  slopeX = calculatingTiltForMM(VoltageX, temp, soItem)
+  slopeY = calculatingTiltForMM(VoltageY, temp, soItem)
   // X軸斜率(度C)： ${degreeX}
   // Y軸斜率(度C)： ${degreeY}
   degreeX = calculatingTiltForDegress(slopeX)
@@ -150,13 +144,11 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
   // X軸水平位移量(cm)： ${displacementY}
   displacementX = calculatingHorizontalDisplacement(degreeX, 100)
   displacementY = calculatingHorizontalDisplacement(degreeY, 100)
-
   console.log(formData)
   totalDisplacement = formData.length
     ? formData[0].totalDisplacement + displacementX
     : displacementX
-  depth = 10 - formData.length
-
+  depth = -totalDepth + formData.length
   let tableData = {
     date: getDate(),
     time: getTime(),
@@ -167,7 +159,6 @@ function getMeasurementData(rowTemp, rowX, rowY, formData) {
     totalDisplacement: totalDisplacement,
     depth: depth
   }
-
   return tableData
 }
 
@@ -180,7 +171,6 @@ function calculatingTemperature(Eg) {
       return value + parameter * Math.pow(Eg, index)
     }
   }, 0)
-
   return temp
   // 計算溫度的公式
   // return (
@@ -192,17 +182,30 @@ function calculatingTemperature(Eg) {
   // 37.7705 * Math.pow(Eg, 0)
   // )
 }
-function calculatingTiltForMM(volts, tempC) {
+
+function calculatingTiltForMM(volts, tempC, soItem) {
+  // 這邊可加入判斷式與各型號的公式
   // 計算傾斜 mm/m
-  // 傾度管公式： C5 x Volts2 + C4 x Volts + C3 + C2 x TdegC + C1 x TdegC2 +C0 x Volts x TdegC
-  let SO_C = store.getters.getSO_C
-  let rawData = [tempC * volts, tempC * tempC, tempC, 1, volts, volts * volts]
   let slope = 0
-  SO_C.forEach((item, index) => {
-    slope += item * rawData[index]
-  })
+  let soModel = soItem.soModel.id
+  if (soModel === 'something') {
+    let SO = soItem.parameters
+    // 傾度管公式： C0 x Volts x TdegC + C1 x TdegC2 + C2 x TdegC + C3  + C4 x Volts + C5 x Volts2
+    let rawData = [
+      SO.c0 * tempC * volts,
+      SO.c1 * tempC * tempC,
+      SO.c2 * tempC,
+      SO.c3 * 1,
+      SO.c4 * volts,
+      SO.c5 * volts * volts
+    ]
+    slope = rawData.reduce((prev, curr) => {
+      return prev + curr
+    }, 0)
+  }
   return slope
 }
+
 function calculatingTiltForDegress(tilt) {
   // 計算傾斜度數
   return (tilt / 1000 / PI) * 180
@@ -214,6 +217,7 @@ function calculatingHorizontalDisplacement(degree, length) {
   //       求 Z 軸水平偏移量： (X 軸水平偏移平方 + y 軸水平偏移平方) 開根號
   return Math.sin((degree * PI) / 180) * length
 }
+
 function getDate() {
   let date = new Date()
   let year = date.getFullYear()
@@ -221,6 +225,7 @@ function getDate() {
   let day = date.getDate()
   return `${year}/${month}/${day}`
 }
+
 function getTime() {
   let date = new Date()
   let hour = date.getHours()
