@@ -189,7 +189,7 @@
             <el-col :md='16' :sm='16' :span="24">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
               <el-button
-                class="maintainSteel"
+                class='maintainSteel'
                 @click="saveCurrentAndGo">
                 維護鋼材資料
               </el-button>
