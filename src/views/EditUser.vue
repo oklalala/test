@@ -98,22 +98,16 @@
 import ToPathMixin from '@/mixins/ToPath'
 export default {
   name: 'EditUser',
-
   mixins: [ToPathMixin],
-  created() {
-    if (this.$route.params.userId) {
-      this.loadUser(this.$route.params.userId)
-    }
-  },
   data() {
     return {
-      newUser: {
-        name: '',
-        roleName: 'OPT', // default setting for isShow method
-        companyId: null,
-        soId: '',
-        account: ''
-      }
+      // newUser: {
+      //   name: '',
+      //   roleName: 'OPT', // default setting for isShow method
+      //   companyId: null,
+      //   soId: '',
+      //   account: ''
+      // }
     }
   },
   computed: {
@@ -128,6 +122,18 @@ export default {
     },
     soItems() {
       return this.$store.getters.soItems
+    },
+    user() {
+      return this.$store.getters.currentUser
+    },
+    newUser() {
+      return {
+        name: this.user.name,
+        roleName: this.user.roleName,
+        companyId: this.user.company.id,
+        account: this.user.account,
+        soId: this.user.soItem ? this.user.soItem.id : ''
+      }
     }
   },
   methods: {
@@ -137,18 +143,6 @@ export default {
     },
     updateDeleteList(value) {
       this.deleteList = value.map(user => user.id)
-    },
-    loadUser(userId) {
-      this.$store.dispatch('getUser', userId).then(res => {
-        let user = res.data.data
-        this.newUser = {
-          name: user.name,
-          roleName: user.roleName,
-          companyId: user.company.id,
-          account: user.account,
-          soId: user.soItem ? user.soItem.id : ''
-        }
-      })
     },
     cancel() {
       this.toPath('UserList')

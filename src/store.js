@@ -134,16 +134,23 @@ const companies = {
 
 const users = {
   state: {
-    data: []
+    data: [],
+    currentOne: []
   },
   mutations: {
     setUsers(state, users) {
       state.data = users
+    },
+    setUser(state, user) {
+      state.currentOne = user
     }
   },
   getters: {
     users(state) {
       return state.data
+    },
+    currentUser(state) {
+      return state.currentOne
     },
     OPTs(state) {
       return state.data.filter(user => user.roleName == 'OPT')
@@ -153,8 +160,10 @@ const users = {
     }
   },
   actions: {
-    getUser(context, userId) {
-      return sendAPI('get', `/user/${userId}`, true)
+    getUser({ commit }, userId) {
+      return sendAPI('get', `/user/${userId}`, true).then(res => {
+        commit('setUser', res.data.data)
+      })
     },
     updateUser(context, { userId, payload }) {
       return sendAPI('put', `/user/${userId}`, true, payload)
