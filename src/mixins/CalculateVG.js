@@ -45,9 +45,9 @@ var mixin = {
       var hostsArr = set1DArray(generateHost)
       // [1,1,1,1,1,1,1,1,4,4,4,4,4,4,4]
 
-      function getFloorItems(floor, arr) {
+      function getFloorItems(floorIndex, arr) {
         var floorItems = arr.filter((x, index) => {
-          if (index % 3 == floor) return x
+          if (index % floor == floorIndex) return x
         })
         return floorItems
       }
@@ -55,8 +55,8 @@ var mixin = {
 
       function getAllFloorItems(arr) {
         var allFloorItems = []
-        for (var i = 0; i < floor; i++) {
-          allFloorItems.push(getFloorItems(i, arr))
+        for (var floorIndex = 0; floorIndex < floor; floorIndex++) {
+          allFloorItems.push(getFloorItems(floorIndex, arr))
         }
         return allFloorItems
       }
@@ -77,21 +77,20 @@ var mixin = {
       function setToObj() {
         var hostsArr = allHostsArr.flat()
         var portsArr = allPortsArr.flat()
-        var floor = 0
+        var floorIndex = 0
         for (var i = 0; i < hostsArr.length; i++) {
-          if (i % numOfFloor == 0) floor += 1
+          if (i % numOfFloor == 0) floorIndex += 1
           VGItems[i] = {
-            floor: floor,
+            floor: floorIndex,
             host: hostsArr[i],
             port: portsArr[i],
-            serial: `vg-${floor}-0${(i % numOfFloor) + 1}`,
+            serial: `vg-${floorIndex}-0${(i % numOfFloor) + 1}`,
             steelId: ''
             // TODO: fn serial(num){return (num < 10 ? '0' : '') + num}
           }
         }
       }
       setToObj()
-      console.log(VGItems)
       return VGItems
       // var VGItems = [
       //   { floor: 1, host: 1, port: 1, serial: "vg-1-01", steelId: 0 },
