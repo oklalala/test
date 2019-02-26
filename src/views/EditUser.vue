@@ -136,10 +136,9 @@ export default {
       return this.$store.getters.currentUser
     },
     newUser() {
-      console.log(this.user,'this is user')
       this.selectedRole = this.user.roleName
       this.selectedCompany = this.user.company.id
-      this.selectedSOItem = this.user.soItem ?  this.user.soItem.id : ''
+      this.selectedSOItem = this.user.soItem ? this.user.soItem.id : ''
       return this.user
     }
   },
