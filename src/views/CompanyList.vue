@@ -37,11 +37,6 @@
         label="公司名稱">
       </el-table-column>
     </el-table>
-    <div class="button-container">
-      <el-button type="primary" @click="toPath('CreateUser')">
-        離開
-      </el-button>
-    </div>
 
     <el-dialog
       title="新增公司"

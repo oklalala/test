@@ -138,7 +138,7 @@ const companies = {
 const users = {
   state: {
     data: [],
-    currentOne: []
+    currentOne: {}
   },
   mutations: {
     setUsers(state, users) {
@@ -167,6 +167,9 @@ const users = {
       return sendAPI('get', `/user/${userId}`, true).then(res => {
         commit('setUser', res.data.data)
       })
+    },
+    updateCurrentUser({ commit }, payload) {
+      commit('setUser', payload)
     },
     updateUser(context, { userId, payload }) {
       return sendAPI('put', `/user/${userId}`, true, payload)

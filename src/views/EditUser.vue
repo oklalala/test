@@ -15,7 +15,7 @@
         <el-col :span="12">
           <el-form-item label="角色">
             <el-select
-              v-model="newUser.roleName"
+              v-model="selectedRole"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
@@ -31,7 +31,7 @@
       <el-row :gutter="20">
         <el-col>
           <el-form-item label="帳號">
-            <el-input v-model="newUser.account"></el-input>
+            <el-input v-model="newUser.account" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -39,7 +39,7 @@
         <el-row :gutter="20">
           <el-col :span="17" :sm='21' :md='21'>
             <el-select
-              v-model="newUser.companyId"
+              v-model="selectedCompany"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
@@ -53,7 +53,7 @@
           <el-col :span="7" :sm='3' :md='3'>
             <el-button
               style="width: 100%"
-              @click="toPath('CompanyList')">
+              @click="saveCurrentAndGo">
               維護
             </el-button>
           </el-col>
@@ -61,7 +61,7 @@
       </el-form-item>
       <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
-          v-model="newUser.soId"
+          v-model='selectedSOItem'
           placeholder="請選擇"
           style="width: 100%">
           <el-option
@@ -91,6 +91,11 @@
         </el-row>
       </el-form-item>
     </el-form>
+    <!-- {{selectedSOItem}}
+    <br>
+    {{user}}
+    <br>
+    {{newUser}} -->
   </div>
 </template>
 
@@ -101,6 +106,9 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
+      selectedRole: '',
+      selectedCompany: '',
+      selectedSOItem: ''
       // newUser: {
       //   name: '',
       //   roleName: 'OPT', // default setting for isShow method
@@ -127,13 +135,10 @@ export default {
       return this.$store.getters.currentUser
     },
     newUser() {
-      return {
-        name: this.user.name,
-        roleName: this.user.roleName,
-        companyId: this.user.company.id,
-        account: this.user.account,
-        soId: this.user.soItem ? this.user.soItem.id : ''
-      }
+      this.selectedRole = this.user.roleName
+      this.selectedCompany = this.user.company.id
+      this.selectedSOItem = this.user.soItem ? this.user.soItem.id : ''
+      return this.user
     }
   },
   methods: {
@@ -148,10 +153,17 @@ export default {
       this.toPath('UserList')
     },
     edit() {
+      let user = {
+        name: this.newUser.name,
+        roleName: this.selectedRole,
+        companyId: this.selectedCompany,
+        account: this.newUser.account,
+        soId: this.selectedSOItem
+      }
       this.$store
         .dispatch('updateUser', {
           userId: this.$route.params.userId,
-          payload: this.newUser
+          payload: user
         })
         .then(() => {
           this.toPath('UserList')
@@ -159,11 +171,18 @@ export default {
     },
     isShow(feature) {
       return this.$store.getters.rolePermissions
-        .filter(permissions => permissions.role === this.newUser.roleName)
+        .filter(permissions => permissions.role === this.selectedRole)
         .shift()
         .permissions.filter(permission => permission.value)
         .map(permission => permission.name)
         .includes(feature)
+    },
+    saveCurrentAndGo() {
+      this.newUser.roleName = this.selectedRole
+      this.newUser.company.id = this.selectedCompany
+      this.newUser.soItem = { id: this.selectedSOItem }
+      this.$store.dispatch('updateCurrentUser', this.newUser)
+      this.toPath('CompanyList')
     }
   }
 }

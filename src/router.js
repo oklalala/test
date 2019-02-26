@@ -107,9 +107,15 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getSOItems'),
           store.dispatch('getRolesPermissions')
-        ]).then(() => {
-          next()
-        })
+        ])
+          .then(() => {
+            if (from.path !== '/company-list') {
+              return store.dispatch('getUser', to.params.userId)
+            } else return Promise.resolve()
+          })
+          .then(() => {
+            next()
+          })
       }
     },
     {
