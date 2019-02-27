@@ -241,7 +241,7 @@
             </el-input>
           </div>
           <br>
-          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">import SOs</el-button>
+          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">產生傾度管編碼</el-button>
           <br>
 
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">

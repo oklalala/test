@@ -156,7 +156,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable">Change</el-button>
+        <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable">確認轉換</el-button>
 
           <div class="block" v-if="!!newProject.vgLocation.length">
             <span class="demonstration">請選擇支撐階數</span>
