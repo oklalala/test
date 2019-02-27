@@ -15,7 +15,7 @@
         <el-col :span="12">
           <el-form-item label="角色">
             <el-select
-              v-model="newUser.roleName"
+              v-model="selectedRole"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
@@ -36,7 +36,7 @@
         <el-row :gutter="20">
           <el-col :span="17" :sm='21' :md='21'>
             <el-select
-              v-model="newUser.companyId"
+              v-model="selectedCompany"
               placeholder="請選擇"
               style="width: 100%">
               <el-option
@@ -50,13 +50,13 @@
           <el-col :span="7" :sm='3' :md='3'>
             <el-button 
               style="width: 100%"
-              @click="toPath('CompanyList')">維護</el-button>
+              @click="saveCurrentAndGo">維護</el-button>
           </el-col>
         </el-row>
       </el-form-item>
       <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
-          v-model="newUser.soId"
+          v-model="selectedSOItem"
           placeholder="請選擇"
           style="width: 100%">
           <el-option
@@ -86,6 +86,9 @@
         </el-row>
       </el-form-item>
     </el-form>
+    {{user}}
+    <br>
+    {{newUser}}
   </div>
 </template>
 
@@ -93,17 +96,12 @@
 import ToPathMixin from '@/mixins/ToPath'
 export default {
   name: 'CreateUser',
-
   mixins: [ToPathMixin],
   data() {
     return {
-      newUser: {
-        name: '',
-        roleName: 'USER',
-        companyId: null,
-        soId: '',
-        account: ''
-      }
+      selectedRole: 'USER',
+      selectedCompany: '',
+      selectedSOItem: ''
     }
   },
   computed: {
@@ -118,6 +116,15 @@ export default {
     },
     soItems() {
       return this.$store.getters.soItems
+    },
+    user() {
+      return this.$store.getters.currentUser
+    },
+    newUser() {
+      this.selectedRole = this.user['roleName'] || 'USER'
+      this.selectedCompany = this.user['companyId'] || ''
+      this.selectedSOItem = this.user['soId'] || ''
+      return this.user
     }
   },
   methods: {
@@ -128,32 +135,33 @@ export default {
     updateDeleteList(value) {
       this.deleteList = value.map(user => user.id)
     },
-    reset() {
-      this.newUser = {
-        name: '',
-        roleName: null,
-        companyId: null,
-        soId: '',
-        account: ''
-      }
-    },
     cancel() {
-      this.reset()
+      this.$store.commit('setUser', {})
       this.toPath('UserList')
     },
     submit() {
+      this.newUser.roleName = this.selectedRole
+      this.newUser.companyId = this.selectedCompany
+      this.newUser.soId = this.selectedSOItem
       this.$store.dispatch('createUser', this.newUser).then(() => {
-        this.reset()
         this.toPath('UserList')
       })
     },
     isShow(feature) {
       return this.$store.getters.rolePermissions
-        .filter(permissions => permissions.role === this.newUser.roleName)
+        .filter(auth => auth.role === this.selectedRole)
         .shift()
         .permissions.filter(permission => permission.value)
         .map(permission => permission.name)
         .includes(feature)
+    },
+    saveCurrentAndGo() {
+      this.newUser.roleName = this.selectedRole
+      this.newUser.companyId = this.selectedCompany
+      this.newUser.soId = this.selectedSOItem
+      this.$store.dispatch('updateCurrentUser', this.newUser).then(() => {
+        this.toPath('CompanyList')
+      })
     }
   }
 }

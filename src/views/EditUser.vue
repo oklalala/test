@@ -91,11 +91,6 @@
         </el-row>
       </el-form-item>
     </el-form>
-    <!-- {{selectedSOItem}}
-    <br>
-    {{user}}
-    <br>
-    {{newUser}} -->
   </div>
 </template>
 
@@ -109,13 +104,33 @@ export default {
       selectedRole: '',
       selectedCompany: '',
       selectedSOItem: ''
-      // newUser: {
-      //   name: '',
-      //   roleName: 'OPT', // default setting for isShow method
-      //   companyId: null,
-      //   soId: '',
-      //   account: ''
-      // }
+      // newUser: { 
+      //   "account": "zxcvzc",
+      //   "name": "OPT1-2",
+      //   "password": "000",
+      //   "phone": "00000",
+      //   "email": "enioy74@gmail.com",
+      //   "roleName": "OPT",
+      //   "company": { 
+      //     "id": "83b4c898-68cd-4b7a-9da2-608c7feaf472",
+      //     "name": "湯尼水泥" 
+      //     },
+      //   "soItem": { 
+      //     "id": "5a6b4845-3233-44b9-89cb-290228fe7e71",
+      //     "number": "這是蝦米" 
+      //     },
+      //   "projects": [ 
+      //     { "id": "a3f8f558-3e3b-450e-a4cf-2b02ac565da9",
+      //       "number": "VG-TEST",
+      //       "name": "測試軸力計" },
+      //     { "id": "b9f58673-07cb-4caa-8374-f1e5364d08a9",
+      //       "number": "test0003",
+      //       "name": "傾度管測試專案" },
+      //     { "id": "d6d94b1e-4127-4463-9c68-2bc1c3da899b",
+      //       "number": "qweqwe",
+      //       "name": "最完整的資料" } 
+      //     ] 
+      //   } 
     }
   },
   computed: {
@@ -150,6 +165,7 @@ export default {
       this.deleteList = value.map(user => user.id)
     },
     cancel() {
+      this.$store.commit('setUser', {})
       this.toPath('UserList')
     },
     edit() {
@@ -181,8 +197,9 @@ export default {
       this.newUser.roleName = this.selectedRole
       this.newUser.company.id = this.selectedCompany
       this.newUser.soItem = { id: this.selectedSOItem }
-      this.$store.dispatch('updateCurrentUser', this.newUser)
-      this.toPath('CompanyList')
+      this.$store.dispatch('updateCurrentUser', this.newUser).then(() => {
+        this.toPath('CompanyList')
+      })
     }
   }
 }
