@@ -460,8 +460,17 @@ export default {
       this.mergeVGLocation(this.newProject.vgLocation, this.fullVGsInfo)
       this.$store.dispatch('createProject', this.newProject).then(() => {
         this.reset()
-        this.toPath('ProjectSetting')
-      })
+        this.$message({
+            message: `成功新增 ${this.newProject.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
+          this.toPath('ProjectSetting')
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     resetMember() {
       this.USERList = []

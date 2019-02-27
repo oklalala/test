@@ -97,7 +97,7 @@ export default {
           this.toPath('ProjectList')
         })
         .catch(e => {
-          this.$message.error(e, '資料更新失敗')
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
     isShow() {

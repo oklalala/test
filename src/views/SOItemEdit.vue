@@ -210,7 +210,16 @@ export default {
           payload: this.newSOItem
         })
         .then(() => {
+          this.$message({
+            message: `成功編輯 ${this.newSO.number}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
           this.toPath('SOItemList')
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     }
   }

@@ -86,9 +86,6 @@
         </el-row>
       </el-form-item>
     </el-form>
-    {{user}}
-    <br>
-    {{newUser}}
   </div>
 </template>
 
@@ -144,8 +141,18 @@ export default {
       this.newUser.companyId = this.selectedCompany
       this.newUser.soId = this.selectedSOItem
       this.$store.dispatch('createUser', this.newUser).then(() => {
-        this.toPath('UserList')
-      })
+          this.$message({
+            message: `成功新增 ${this.newUser.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
+          this.$store.commit('setUser', {})
+          this.toPath('UserList')
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     isShow(feature) {
       return this.$store.getters.rolePermissions
