@@ -301,7 +301,6 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (!to.meta.requireAuth) next()
-
   if (store.getters.token) {
     next()
   } else if (localStore.get('ground_monitor_token')) {
@@ -310,7 +309,9 @@ router.beforeEach((to, from, next) => {
     store.commit('setMyId', data.myId)
     store.commit('setMyRole', data.myRole)
     store.commit('setMyPermissions', data.myPermissions)
-    next()
+    next({
+      name: 'ProjectList'
+    })
   } else {
     next({
       name: 'Entry'
