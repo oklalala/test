@@ -391,10 +391,10 @@ export default {
     },
     USERs() {
       var allUSER = this.$store.getters.USERs
-      var customeersUSER = allUSER.filter(
-        user => user.company.id == this.newProject.companyId
+      var customersUSER = allUSER.filter(
+        user => user.company && user.company.id == this.newProject.companyId
       )
-      return customeersUSER
+      return customersUSER
     },
     myCompany() {
       return this.$store.getters.me.company
@@ -458,9 +458,11 @@ export default {
     submit() {
       this.initVGLocation()
       this.mergeVGLocation(this.newProject.vgLocation, this.fullVGsInfo)
-      this.$store.dispatch('createProject', this.newProject).then(() => {
-        this.reset()
-        this.$message({
+      this.$store
+        .dispatch('createProject', this.newProject)
+        .then(() => {
+          this.reset()
+          this.$message({
             message: `成功新增 ${this.newProject.name}`,
             type: 'success',
             center: true,
