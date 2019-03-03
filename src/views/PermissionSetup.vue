@@ -13,10 +13,10 @@
         label="權限">
         <template slot-scope="scope">
           <div 
-            v-if="permissions"
             v-for="(item, index) in scope.row.permissions"
             :key="index">
             <el-checkbox
+              v-if='item.name !=="account:updateSelf"'
               @change="updateRolePermissions(item.value, scope.row.role ,index)"
               :value="item.value">
               {{ permissions[item.name] }}
@@ -50,6 +50,9 @@ export default {
     },
     rolePermissions() {
       return this.$store.getters.rolePermissions
+    },
+    permissionsList() {
+      
     }
   },
   methods: {
@@ -61,16 +64,16 @@ export default {
         value
       })
     },
-    submit() {
-      this.$store
-        .dispatch('updateRolePermissions')
-        .then(() => {
-          this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
-          this.toPath('ProjectList')
-        })
-        .catch(e => {
-          this.$message.error(e, '權限設定失敗')
-        })
+  submit() {
+    this.$store
+      .dispatch('updateRolePermissions')
+      .then(() => {
+        this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
+        this.toPath('ProjectList')
+      })
+      .catch(e => {
+        this.$message.error(e, '權限設定失敗')
+      })
     }
   }
 }
