@@ -142,19 +142,68 @@ export default {
       subVGLocation: [],
       floorIndex: 0,
       show: true,
-      vgChartData: {
-        columns: ['createdAt', 'strutAxialForce'],
-        rows: [
-          { createdAt: '2019-01-30T00:00:00.000Z', strutAxialForce: 90 },
-          { createdAt: '2019-01-30T03:00:00.000Z', strutAxialForce: -80 },
-          { createdAt: '2019-01-30T06:00:00.000Z', strutAxialForce: 110 },
-          { createdAt: '2019-01-30T09:00:00.000Z', strutAxialForce: 130 },
-          { createdAt: '2019-01-30T12:00:00.000Z', strutAxialForce: -80 },
-          { createdAt: '2019-01-30T15:00:00.000Z', strutAxialForce: 90 },
-          { createdAt: '2019-01-30T18:00:00.000Z', strutAxialForce: 30 },
-          { createdAt: '2019-01-30T21:00:00.000Z', strutAxialForce: 40 }
-        ]
-      },
+      vgChartData: [
+        {
+          position: 'vg-1-1',
+          data: [
+            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T06:42:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T09:28:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150]
+          ]
+        },
+        {
+          position: 'vg-1-2',
+          data: [
+            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150]
+          ]
+        },
+        {
+          position: 'vg-1-3',
+          data: [
+            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150]
+          ]
+        },
+        {
+          position: 'vg-1-4',
+          data: [
+            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150]
+          ]
+        },
+        {
+          position: 'vg-1-5',
+          data: [
+            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150]
+          ]
+        }
+      ],
       // initSOData: [
       //   {
       //     "c0": 10,
