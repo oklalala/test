@@ -309,9 +309,7 @@ router.beforeEach((to, from, next) => {
     store.commit('setMyId', data.myId)
     store.commit('setMyRole', data.myRole)
     store.commit('setMyPermissions', data.myPermissions)
-    next({
-      name: 'ProjectList'
-    })
+    next()
   } else {
     next({
       name: 'Entry'
