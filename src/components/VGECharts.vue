@@ -11,22 +11,22 @@ import moment from 'moment'
 export default {
   name: 'VGECharts',
   props: {
-    vgChartData: Object,
+    vgChartData: Array,
     project: Object
   },
   data() {
     return {
       orgOptions: {},
       testData: [
-        ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
+        ['2019-01-30T00:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150],
+        ['2019-01-30T23:59:00+8000', Math.floor(Math.random() * 300) - 150]
       ],
       markLine: {
         silent: true,
@@ -78,15 +78,13 @@ export default {
       },
       tooltip: {
         trigger: 'axis',
-        Label: {
-          formatter(value) {
-            // 輸入的時間 與 v-charts 軸上的時間有落差
-            console.log(moment(value).format('HH:mm'))
-            return moment(value)
-              .subtract(8, 'h')
-              .format('HH:mm')
-          }
-        }
+        // Label: {
+        //   formatter(value) {
+        //     // 輸入的時間 與 v-charts 軸上的時間有落差
+        //     return moment(value)
+        //       .format('HH:mm')
+        //   }
+        // }
       },
       legend: {
         data: ['VG-1-1', 'VG-1-2', 'VG-1-3', 'VG-1-4', 'VG-1-5']
@@ -102,26 +100,13 @@ export default {
           saveAsImage: {}
         }
       },
-      dataset: {
-        source: [
-          ['depth', '10:00', '12:00'],
-          [-5, 0, 0],
-          [-4, 0.2, 2],
-          [-3, 0.4, -3],
-          [-2, 0.5, -0.4],
-          [-1, 0.1, -0.2],
-          [0, -0.3, -0.5],
-        ]
-      },
       xAxis: {
         type: 'time',
         axisLabel: {
           formatter(value) {
             // 輸入的時間 與 v-charts 軸上的時間有落差
-            console.log(value)
-            console.log(moment(value).format('HH:mm'))
             return moment(value)
-              .subtract(8, 'h')
+              // .subtract(8, 'h')
               .format('HH:mm')
           }
         }
@@ -136,15 +121,15 @@ export default {
           name: 'VG-1-1',
           type: 'line',
           data: [
-            ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
+            ['2019-01-30T00:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T23:59:00+8000', Math.floor(Math.random() * 300) - 150]
           ],
           markLine: this.markLine
         },
@@ -152,15 +137,15 @@ export default {
           name: 'VG-1-2',
           type: 'line',
           data: [
-            ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
+            ['2019-01-30T00:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T23:59:00+8000', Math.floor(Math.random() * 300) - 150]
           ],
           markLine: this.markLine
         },
@@ -168,50 +153,50 @@ export default {
           name: 'VG-1-3',
           type: 'line',
           data: [
-            ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-            ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
+            ['2019-01-30T00:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T23:59:00+8000', Math.floor(Math.random() * 300) - 150]
           ],
           markLine: this.markLine
         },
-        // {
-        //   name: 'VG-1-4',
-        //   type: 'line',
-        //   data: [
-        //     ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
-        //   ],
-        //   markLine: this.markLine
-        // },
-        // {
-        //   name: 'VG-1-5',
-        //   type: 'line',
-        //   data: [
-        //     ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
-        //   ],
-        //   markLine: this.markLine
-        // }
+        {
+          name: 'VG-1-4',
+          type: 'line',
+          data: [
+            ['2019-01-30T00:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T23:59:00+8000', Math.floor(Math.random() * 300) - 150]
+          ],
+          markLine: this.markLine
+        },
+        {
+          name: 'VG-1-5',
+          type: 'line',
+          data: [
+            ['2019-01-30T00:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150],
+            ['2019-01-30T23:59:00+8000', Math.floor(Math.random() * 300) - 150]
+          ],
+          markLine: this.markLine
+        }
       ]
     }
   }
