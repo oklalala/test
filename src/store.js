@@ -490,10 +490,10 @@ export default new Vuex.Store({
     getMeasuredVG(context, payload) {
       var projectId = payload.projectId
       var date = payload.date
-      var vgLocationNumber = payload.vgNumber
+      var floor = payload.floor
       return sendAPI(
         'get',
-        `/measures/vg?projectId=${projectId}&date=${date}&vgLocationNumber=${vgLocationNumber}`,
+        `/measures/vg?projectId=${projectId}&date=${date}&floor=${floor}`,
         true
       )
     },

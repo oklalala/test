@@ -74,6 +74,15 @@ Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 
+import ECharts from 'vue-echarts/components/ECharts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/legend'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/markLine'
+import 'echarts/lib/component/dataset'
+
+Vue.component('chart', ECharts)
+
 Vue.prototype.$message = Message
 Vue.prototype.moment = moment
 
