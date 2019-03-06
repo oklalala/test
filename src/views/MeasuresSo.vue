@@ -9,7 +9,7 @@
     </section>
     <section>
       <h2>量測作業</h2>
-      <el-form-item label="專案階段">
+      <el-form-item label="專案階段" required>
         <el-select v-model="projectPhaseId" placeholder="第一次開挖">
          <el-option
            v-for="projectPhase in projectPhases"
@@ -19,8 +19,8 @@
          </el-option>
        </el-select>
      </el-form-item>
-      <el-form-item label="量測點編號">
-        <el-select v-model="soLocationNumber" placeholder="SO-01">
+      <el-form-item label="量測點編號" required>
+        <el-select v-model="soLocationNumber" placeholder="SO-01" @change="onChangeLocation">
          <el-option
            v-for="location in project.soLocation"
            :key="location.number"
@@ -29,16 +29,20 @@
          </el-option>
        </el-select>
      </el-form-item>
-      <el-form-item label="WISE IP">
-        <el-input :value="wiseIP" >
+      <el-form-item label="WISE IP" required>
+        <el-input  v-model="wiseIP">
         </el-input>
       </el-form-item>
-      <el-form-item label="請由下往上量，間隔 1m 量測一次" label-width="300px">
+      <span>應量測深度 {{currentDepth}} 公尺</span>
+      <el-form-item label=" 請由下往上量，間隔 1m 量測一次" label-width="300px">
       </el-form-item>
-    <el-button @click="measures" :disabled="measuresSoDatas.length === 10">量測</el-button>
+    <el-button @click="measures" :disabled="measuresSoDatas.length === currentDepth || !projectPhaseId || isMeasuring">
+      <span v-if="isMeasuring">量測中</span>
+      <span v-else>量測</span>
+    </el-button>
     </section>
     <section v-if="measuresSoDatas.length">
-      <p>應量測10筆，已量測{{measuresSoDatas.length}}筆</p>
+      <p>應量測 {{currentDepth}} 筆，已量測{{measuresSoDatas.length}}筆</p>
       <el-table
         :data="measuresSoDatas"
         style="width: 100%">
@@ -50,17 +54,22 @@
         <el-table-column
           prop="date"
           label="日期"
-          width="200">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="time"
           label="時間"
-          width="200">
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="depth"
+          label="深度(m)"
+          width="80">
         </el-table-column>
         <el-table-column
           prop="temp"
           label="溫度(c)"
-          width="120">
+          width="150">
         </el-table-column>
         <el-table-column
           prop="VoltageX"
@@ -70,29 +79,26 @@
         <el-table-column
           prop="degreeX"
           label="傾斜角度(度C)"
-          width="120">
+          width="150">
         </el-table-column>
         <el-table-column
           prop="displacement"
           label="位移量(cm)"
-          width="120">
+          width="150">
         </el-table-column>
         <el-table-column
           prop="totalDisplacement"
           label="總位移量(cm)"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="depth"
-          label="深度(m)"
-          width="120">
+          width="150">
         </el-table-column>
       </el-table>
       <el-button @click="clearMeasuresDatas">清除資料</el-button>
-      <el-button @click="uploadMeasuresDatas" :disabled="!measuresSoDatas.length" >確認無誤並上傳</el-button>
+      <el-button @click="uploadMeasuresDatas" :disabled="measuresSoDatas.length < currentDepth || isSend" >
+        <span v-if="isSend">已上傳</span>
+        <span v-else>確認無誤並上傳</span>
+      </el-button>
     </section>
   </el-form>
-  <p>要加入故障排除方式</p>
 </div>
 </template>
 
@@ -103,37 +109,57 @@ export default {
     return {
       wiseIP: '192.168.58.200',
       measuresSoDatas: [],
-      projectId: '',
       projectPhaseId: '',
-      soLocationNumber: ''
+      soLocationNumber: '',
+      soItem: {},
+      isSend: false,
+      isMeasuring: false,
+      currentSoLocationIndex: -1
     }
   },
   methods: {
     measures: function() {
-      startMeasures(this.wiseIP, this.measuresSoDatas)
+      startMeasures(
+        this.wiseIP,
+        this.measuresSoDatas,
+        this.soItem,
+        this.currentDepth
+      ).then(()=> {
+        this.isMeasuring = false;
+      })
+      this.isMeasuring = true
     },
     clearMeasuresDatas: function() {
       this.measuresSoDatas = []
+      this.isSend = false
     },
     uploadMeasuresDatas: function() {
-      let measuresData = {}
-      measuresData.projectId = this.projectId
-      measuresData.projectPhaseId = this.projectPhaseId
-      measuresData.soLocationNumber = this.soLocationNumber
-      measuresData.measureResult = this.measuresSoDatas
-      this.$store.dispatch('uploadMeasuresDatas', JSON.stringify(measuresData))
+      let measuresData = {
+        projectId: this.$route.params.projectId,
+        projectPhaseId: this.projectPhaseId,
+        soLocationNumber: this.soLocationNumber,
+        soItemId: this.soItem.id,
+        soItemParameters: this.soItem.parameters,
+        measureResult: this.measuresSoDatas
+      }
+      this.$store.dispatch('uploadMeasuresDatas', measuresData)
+      this.isSend = true
     },
-    getProjectId: function() {
-      this.projectId = this.$route.params.projectId
+    getSOItem: function() {
+      this.$store.dispatch('getSOItem', this.me.soItem.id).then(response => {
+        this.soItem = response.data.data
+        console.log(this.soItem)
+      })
     },
-    getProjectPhases: function() {
-      this.$store.dispatch('getProjectPhases')
-    }
+    onChangeLocation: function() {
+      let filterResult
+      filterResult = this.project.soLocation.filter(item => {
+        return item.number === this.soLocationNumber
+      })
+      this.currentSoLocationIndex = this.project.soLocation.indexOf(filterResult.shift())
+    },
   },
   computed: {
-    projects: function() {
-      return this.$store.getters.projects
-    },
     project: function() {
       return this.$store.getters.currentProject
     },
@@ -145,10 +171,17 @@ export default {
     },
     projectPhases: function() {
       return this.$store.getters.projectPhases
+    },
+    me: function() {
+      return this.$store.getters.me
+    },
+    currentDepth: function(){
+      return !!~this.currentSoLocationIndex ? this.project.soLocation[this.currentSoLocationIndex].depth : 0
     }
   },
   mounted() {
-    this.getProjectId(), this.getProjectPhases(), this.getProject()
+    this.getSOItem()
   }
 }
+
 </script>
