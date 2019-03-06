@@ -38,9 +38,6 @@
             </el-col>
           </el-row>
         </el-form>
-        {{vgDate}}
-        {{selectedFloor}}
-        {{vgChartData}}
         <VGECharts
           :selectedDay='vgDate'
           :selectedFloor='selectedFloor'
@@ -103,42 +100,13 @@ export default {
   components: { VGChart, SOChart, VGECharts, SOECharts },
   mixins: [ToPathMixin],
   created() {
+    this.getFloorList(this.project.floor)
     this.getVGData(this.vgDate, 1)
-    // this.vgChartData = [
-    //   {
-    //     vgLocation: 'vg-1-1',
-    //     data: [
-    //       ['2019-01-30T03:00:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T06:42:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T09:28:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T12:24:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T15:00:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T18:00:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T21:32:00+0800', Math.floor(Math.random() * 300) - 150]
-    //     ]
-    //   },
-    //   {
-    //     vgLocation: 'vg-1-2',
-    //     data: [
-    //       ['2019-01-30T03:00:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T10:42:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T11:21:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T12:24:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T15:00:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T18:00:00+0800', Math.floor(Math.random() * 300) - 150],
-    //       ['2019-01-30T21:32:00+0800', Math.floor(Math.random() * 300) - 150]
-    //     ]
-    //   }]
     // console.log(this.vgChartData, 'fffff created')
     
   },
   mounted() {
-    this.$nextTick(function () {
-        console.log('hahahah')
-      // this.getVGData(this.vgDate, 1)
-    })
-    this.getFloorList(this.project.floor)
-    console.log(this.vgChartData, 'ffff mounted')
+    this.getVGData(this.vgDate, 1)
   },
   data() {
     return {
@@ -274,7 +242,6 @@ export default {
         floor
       }
       return this.$store.dispatch('getMeasuredVG', payload).then(res => {
-        console.log(res.data.data)
         this.vgChartData = res.data.data
       })
     },
