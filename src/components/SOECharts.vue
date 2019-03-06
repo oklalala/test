@@ -1,6 +1,5 @@
 <template>
-  <div class="hello">
-    <!-- <div id="myChart" :style="{width: '300px', height: '300px'}"></div> -->
+  <div class="soECharts">
     <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
   </div>
 </template>
@@ -9,7 +8,7 @@
 import moment from 'moment'
 
 export default {
-  name: 'VGECharts',
+  name: 'SOECharts',
   data() {
     return {
       orgOptions: {},
@@ -70,14 +69,6 @@ export default {
     this.orgOptions = {
       tooltip: {
         trigger: 'axis',
-        Label: {
-          formatter(value) {
-            // 輸入的時間 與 v-charts 軸上的時間有落差
-            return moment(value)
-              .subtract(8, 'h')
-              .format('HH:mm')
-          }
-        }
       },
       legend: {
         data: ['10:00', '12:00']
