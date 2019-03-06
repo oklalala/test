@@ -51,7 +51,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="10" :md="10">
               <el-form-item label="位置">
-                <el-select v-model="selectedSO" placeholder="請選擇" label="位置">
+                <el-select v-model="selectedSO" placeholder="請選擇位置">
                   <el-option
                     v-for="soItem in project.soLocation"
                     :key="soItem.number"
@@ -62,18 +62,25 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="14" :md="14">
-              <el-form-item label="日期">
-                <el-date-picker
-                  v-model="soDate"
-                  format='yyyy-MM-dd'
-                  type="date"
-                  placeholder="選擇日期">
-                </el-date-picker>
+              <el-form-item 
+                v-if="!!selectedSO"
+                label="日期">
+                <el-select 
+                  v-model="soDate" 
+                  placeholder="請選擇日期">
+                  <el-option
+                    v-for="date in soDateList"
+                    :key="date"
+                    :label="date"
+                    :value="date">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
         <SOECharts 
+          v-if="!!selectedSO && !!soDate"
           :soChartData="soChartData"
           :project="project"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
@@ -96,16 +103,6 @@ export default {
   components: { SOChart, VGECharts, SOECharts },
   mixins: [ToPathMixin],
   created() {
-    this.soChartData = [
-      { depth: -5, '10:00': 0.2, '12:00': 2 },
-      { depth: -4, '10:00': 0.4, '12:00': -3 },
-      { depth: -3, '10:00': 0.5, '12:00': -0.4 },
-      { depth: -2, '10:00': 0.1, '12:00': -0.2 },
-      { depth: -1, '10:00': -0.3, '12:00': -0.5 }
-    ]
-    this.getVGData(this.vgDate, 1)
-  },
-  mounted() {
     this.getVGData(this.vgDate, 1)
   },
   data() {
@@ -225,6 +222,13 @@ export default {
     },
     vgDate(value) {
       this.getVGData(value, this.selectedFloor)
+    },
+    selectedSO(value) {
+      this.soDate = ''
+      this.getSOData(value)
+    },
+    soDate(value) {
+      this.soChartData = this.soChartData.filter(item => item.date === value)[0].soData
     }
   },
   methods: {
@@ -241,22 +245,17 @@ export default {
         this.vgChartData = res.data.data
       })
     },
-    // getSOData(dateTime, soNumber) {
-    //   if (!dateTime || !soNumber) return
-    //   var payload = {
-    //     projectId: this.$route.params.projectId,
-    //     date: moment(dateTime).format('YYYY/MM/DD'),
-    //     soNumber: soNumber
-    //   }
-    //   return this.$store.dispatch('getMeasuredSO', payload).then(res => {
-    //     var soData = res.data.data
-    //     console.log(soData, 'gogoggo')
-    //     this.soChartData.rows = soData[2].measureResult
-    //     this.soChartData.rows.map(
-    //       soDatium => (soDatium.depth = -soDatium.depth)
-    //     )
-    //   })
-    // },
+    getSOData(soLocationNumber) {
+      if (!soLocationNumber) return
+      var payload = {
+        projectId: this.$route.params.projectId,
+        soLocationNumber
+      }
+      return this.$store.dispatch('getMeasuredSO', payload).then(res => {
+        this.soChartData = res.data.data
+        this.soDateList = res.data.data.map(x => x.date)
+      })
+    }
     
   }
 }
