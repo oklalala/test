@@ -498,11 +498,10 @@ export default new Vuex.Store({
     },
     getMeasuredSO(context, payload) {
       var projectId = payload.projectId
-      var date = payload.date
-      var soLocationNumber = payload.soNumber
+      var soLocationNumber = payload.soLocationNumber
       return sendAPI(
         'get',
-        `/measures/so?projectId=${projectId}&date=${date}&soLocationNumber=${soLocationNumber}`,
+        `/measures/so?projectId=${projectId}&soLocationNumber=${soLocationNumber}`,
         true
       )
     }
