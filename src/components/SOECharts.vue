@@ -12,9 +12,7 @@ export default {
     project: Object
   },
   data() {
-    return {
-      
-    }
+    return {}
   },
   computed: {
     soManagement() {
@@ -73,14 +71,12 @@ export default {
       tuningArr[0] = this.soChartData[0].depth - 1
       let c = []
       c.push(tuningArr)
-      let m = this.soChartData.forEach(item => (
-        c.push(Object.values(item))
-      ))
+      let m = this.soChartData.forEach(item => c.push(Object.values(item)))
       c.map(x => (x[0] += 1))
       c.unshift(Object.keys(this.soChartData[0]))
       return c
     },
-    seriesData(){
+    seriesData() {
       return this.soLegend.map(item => ({
         name: item,
         type: 'line',
@@ -90,7 +86,7 @@ export default {
         },
         markLine: this.markLine,
         smooth: true
-      })) 
+      }))
     },
     options() {
       return {
@@ -102,15 +98,15 @@ export default {
         },
         dataset: {
           source: this.soData
-          // [ 
+          // [
           //   [ "depth", "10:00", "12:00" ],
           //   [ -5, 0, 0 ],
           //   [ -4, 0.2, 2 ],
           //   [ -3, 0.4, -3 ],
           //   [ -2, 0.5, -0.4 ],
           //   [ -1, 0.1, -0.2 ],
-          //   [ 0, -0.3, -0.5 ] 
-          // ] 
+          //   [ 0, -0.3, -0.5 ]
+          // ]
         },
         xAxis: {
           type: 'value',

@@ -221,11 +221,9 @@ let router = new Router({
           store.dispatch('getProject', to.params.projectId),
           store.dispatch('getMe'),
           store.dispatch('getProjectPhases')
-        ])
-        .then(() => {
-            next()
-          }
-        )
+        ]).then(() => {
+          next()
+        })
       }
     },
     {

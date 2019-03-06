@@ -124,8 +124,8 @@ export default {
         this.measuresSoDatas,
         this.soItem,
         this.currentDepth
-      ).then(()=> {
-        this.isMeasuring = false;
+      ).then(() => {
+        this.isMeasuring = false
       })
       this.isMeasuring = true
     },
@@ -156,8 +156,10 @@ export default {
       filterResult = this.project.soLocation.filter(item => {
         return item.number === this.soLocationNumber
       })
-      this.currentSoLocationIndex = this.project.soLocation.indexOf(filterResult.shift())
-    },
+      this.currentSoLocationIndex = this.project.soLocation.indexOf(
+        filterResult.shift()
+      )
+    }
   },
   computed: {
     project: function() {
@@ -175,13 +177,14 @@ export default {
     me: function() {
       return this.$store.getters.me
     },
-    currentDepth: function(){
-      return !!~this.currentSoLocationIndex ? this.project.soLocation[this.currentSoLocationIndex].depth : 0
+    currentDepth: function() {
+      return ~this.currentSoLocationIndex
+        ? this.project.soLocation[this.currentSoLocationIndex].depth
+        : 0
     }
   },
   mounted() {
     this.getSOItem()
   }
 }
-
 </script>

@@ -108,20 +108,20 @@ export default {
   data() {
     return {
       // project: {
-        // OPT: [],
-        // USER: [],
-        // address: '',
-        // companyId: '',
-        // floor: 0,
-        // name: '',
-        // number: '',
-        // sitePlan: '',
-        // soLocation: [],
-        // soManagement: {},
-        // status: '',
-        // vgIds: [],
-        // vgLocation: [],
-        // vgManagement: [],
+      // OPT: [],
+      // USER: [],
+      // address: '',
+      // companyId: '',
+      // floor: 0,
+      // name: '',
+      // number: '',
+      // sitePlan: '',
+      // soLocation: [],
+      // soManagement: {},
+      // status: '',
+      // vgIds: [],
+      // vgLocation: [],
+      // vgManagement: [],
       // },
       // vgDate: '2019/01/30',
       vgDate: moment().toDate(),
@@ -228,7 +228,9 @@ export default {
       this.getSOData(value)
     },
     soDate(value) {
-      this.soChartData = this.soChartData.filter(item => item.date === value)[0].soData
+      this.soChartData = this.soChartData.filter(
+        item => item.date === value
+      )[0].soData
     }
   },
   methods: {
@@ -256,7 +258,6 @@ export default {
         this.soDateList = res.data.data.map(x => x.date)
       })
     }
-    
   }
 }
 </script>
