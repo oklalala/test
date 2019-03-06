@@ -227,7 +227,6 @@ const steels = {
 
 const measureSO = {
   state: {
-    SO_C: [1.8162e-2, 4.026e-3, -1.4713e-1, 6.6525, 7.9756e1, 3.5082e-2],
     tempFormulaParameter: [
       37.7705,
       137.7711,
@@ -499,11 +498,10 @@ export default new Vuex.Store({
     },
     getMeasuredSO(context, payload) {
       var projectId = payload.projectId
-      var date = payload.date
-      var soLocationNumber = payload.soNumber
+      var soLocationNumber = payload.soLocationNumber
       return sendAPI(
         'get',
-        `/measures/so?projectId=${projectId}&date=${date}&soLocationNumber=${soLocationNumber}`,
+        `/measures/so?projectId=${projectId}&soLocationNumber=${soLocationNumber}`,
         true
       )
     }

@@ -1,128 +1,137 @@
 <template>
   <div class="soECharts">
-    <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
+    <chart ref="chart1" :options="options" :auto-resize="true"></chart>
   </div>
 </template>
 
 <script>
 export default {
   name: 'SOECharts',
+  props: {
+    soChartData: Array,
+    project: Object
+  },
   data() {
-    return {
-      orgOptions: {},
-      testData: [
-        ['2019-01-30T00:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T03:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T10:42:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T11:21:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T12:24:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T15:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T18:00:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T21:32:00.000Z', Math.floor(Math.random() * 300) - 150],
-        ['2019-01-30T23:59:00.000Z', Math.floor(Math.random() * 300) - 150]
-      ],
-
-      markLine: {
+    return {}
+  },
+  computed: {
+    soManagement() {
+      return this.project.soManagement
+    },
+    markLine() {
+      return {
         silent: true,
         data: [
           {
+            lineStyle: { color: 'green' },
             name: '管理值',
-            xAxis: 5,
+            xAxis: this.soManagement.notice,
             label: { normal: { formatter: '管理值' } }
           },
           {
+            lineStyle: { color: 'green' },
             name: '管理值',
-            xAxis: -5,
+            xAxis: -this.soManagement.notice,
             label: { normal: { formatter: '管理值' } }
           },
           {
             lineStyle: { color: 'blue' },
             name: '警戒值',
-            xAxis: 10,
+            xAxis: this.soManagement.warning,
             label: { normal: { formatter: '警戒值' } }
           },
           {
             lineStyle: { color: 'blue' },
             name: '警戒值',
-            xAxis: -10,
+            xAxis: -this.soManagement.warning,
             label: { normal: { formatter: '警戒值' } }
           },
           {
             lineStyle: { color: 'red' },
             name: '行動值',
-            xAxis: 15,
+            xAxis: this.soManagement.action,
             label: { normal: { formatter: '行動值' } }
           },
           {
             lineStyle: { color: 'red' },
             name: '行動值',
-            xAxis: -15,
+            xAxis: -this.soManagement.action,
             label: { normal: { formatter: '行動值' } }
           }
         ]
       }
-    }
-  },
-  mounted() {
-    this.orgOptions = {
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['10:00', '12:00']
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          saveAsImage: {}
-        }
-      },
-      dataset: {
-        source: [
-          { depth: -5, '10:00': 0, '12:00': 0 },
-          { depth: -4, '10:00': 0.2, '12:00': 2 },
-          { depth: -3, '10:00': 0.4, '12:00': -3 },
-          { depth: -2, '10:00': 0.5, '12:00': -0.4 },
-          { depth: -1, '10:00': 0.1, '12:00': -0.2 },
-          { depth: 0, '10:00': -0.3, '12:00': -0.5 }
-        ]
-      },
-      xAxis: {
-        type: 'value',
-        max: 15 * 2,
-        min: -15 * 2
-      },
-      yAxis: {
-        type: 'category'
-      },
-      series: [
-        {
-          name: '10:00',
-          type: 'line',
-          encode: {
-            // 将 "amount" 列映射到 X 轴。
-            x: '10:00',
-            // 将 "product" 列映射到 Y 轴。
-            y: 'depth'
-          },
-          markLine: this.markLine,
-          smooth: true
+    },
+    soLegend() {
+      var arr = Object.keys(this.soChartData[0])
+      arr.shift()
+      return arr
+    },
+    soData() {
+      let tuningArr = new Array(3).fill(0)
+      tuningArr[0] = this.soChartData[0].depth - 1
+      let c = []
+      c.push(tuningArr)
+      let m = this.soChartData.forEach(item => c.push(Object.values(item)))
+      c.map(x => (x[0] += 1))
+      c.unshift(Object.keys(this.soChartData[0]))
+      return c
+    },
+    seriesData() {
+      return this.soLegend.map(item => ({
+        name: item,
+        type: 'line',
+        encode: {
+          x: item,
+          y: 'depth'
         },
-        {
-          name: '12:00',
-          type: 'line',
-          encode: {
-            x: '12:00',
-            y: 'depth'
-          },
-          markLine: this.markLine,
-          smooth: true
-        }
-      ]
+        markLine: this.markLine,
+        smooth: true
+      }))
+    },
+    options() {
+      return {
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: this.soLegend
+        },
+        dataset: {
+          source: this.soData
+          // [
+          //   [ "depth", "10:00", "12:00" ],
+          //   [ -5, 0, 0 ],
+          //   [ -4, 0.2, 2 ],
+          //   [ -3, 0.4, -3 ],
+          //   [ -2, 0.5, -0.4 ],
+          //   [ -1, 0.1, -0.2 ],
+          //   [ 0, -0.3, -0.5 ]
+          // ]
+        },
+        xAxis: {
+          type: 'value',
+          max: this.soManagement.action * 2,
+          min: -this.soManagement.action * 2
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: this.seriesData
+        // [
+        //   {
+        //     name: '10:00',
+        //     type: 'line',
+        //     encode: {
+        //       // 将 "amount" 列映射到 X 轴。
+        //       x: '10:00',
+        //       // 将 "product" 列映射到 Y 轴。
+        //       y: 'depth'
+        //     },
+        //     markLine: this.markLine,
+        //     smooth: true
+        //   }
+        // ]
+      }
     }
   }
 }
