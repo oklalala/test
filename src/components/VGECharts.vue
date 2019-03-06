@@ -16,9 +16,10 @@ export default {
     selectedFloor: Number
   },
   created() {
-    this.fetchData()
     this.setVGMarkLine()
     this.setVGChartScope()
+    this.fetchData()
+    
   },
   updated() {
     this.fetchData()
@@ -40,10 +41,12 @@ export default {
           },
           {
             label: { formatter: '管理值', position: 'start' },
+            lineStyle: { color: 'green' },
             yAxis: -50
           },
           {
             label: { formatter: '管理值', position: 'start' },
+            lineStyle: { color: 'green' },
             yAxis: 50
           },
           {
@@ -153,12 +156,12 @@ export default {
     },
     setVGMarkLine() {
       var vg = this.project.vgManagement[this.selectedFloor]
-      this.markLine.data[0].yAxis = vg.notice
-      this.markLine.data[1].yAxis = -vg.notice
-      this.markLine.data[2].yAxis = vg.warning
-      this.markLine.data[3].yAxis = -vg.warning
-      this.markLine.data[4].yAxis = vg.action
-      this.markLine.data[5].yAxis = -vg.action
+      this.markLine.data[0].yAxis = -vg.action
+      this.markLine.data[1].yAxis = -vg.warning
+      this.markLine.data[2].yAxis = -vg.notice
+      this.markLine.data[3].yAxis = vg.notice
+      this.markLine.data[4].yAxis = vg.warning
+      this.markLine.data[5].yAxis = vg.action
     },
     setVGChartScope() {
       var vg = this.project.vgManagement[this.selectedFloor]
