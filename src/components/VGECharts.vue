@@ -15,8 +15,32 @@ export default {
     project: Object,
     selectedDay: String
   },
+  created() {
+    this.fetchData()
+    
+    console.warn(this.vgChartData, 'created')
+  },
+  mounted() {
+    
+    // this.$nextTick(function () {
+    //     console.warn('hahahahahahahahahahahah')
+    //     // Code that will run only after the
+      // this.fetchData()
+        
+    //     // entire view has been rendered
+    //   })
+    
+    console.warn(this.vgChartData,'mounted')
+    // setTimeout(() => {
+      
+    // }, 1000);
+  },
   updated() {
-    this.getData()
+    this.fetchData()
+    console.warn(this.vgChartData,'updated')
+  },
+  destroyed() {
+    console.warn(this.vgChartData,'destroyed')
   },
   data() {
     return {
@@ -61,15 +85,16 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: []
+          // data: this.vgsPosition
+          data:['VG-1-1','VG-1-2','VG-1-3','VG-1-4','VG-1-5']
         },
         grid: {
           containLabel: true
         },
         xAxis: {
           type: 'time',
-          min: +moment(this.selectedDay).startOf('day'),
-          max: +moment(this.selectedDay).endOf('day'),
+          // min: +moment(this.selectedDay.split('/').join('-')).startOf('day'),
+          // max: +moment(this.selectedDay.split('/').join('-')).endOf('day'),
           axisLabel: {
             formatter(value) {
               return moment(value).format('HH:mm')
@@ -82,57 +107,85 @@ export default {
           type: 'value'
         },
         series: [
-          {
-            name: 'VG-1-1',
-            type: 'line',
-            data: [],
-            markLine: this.markLine
-          },
-          {
-            name: 'VG-1-2',
-            type: 'line',
-            data: [],
-            markLine: this.markLine
-          },
-          {
-            name: 'VG-1-3',
-            type: 'line',
-            data: [],
-            markLine: this.markLine
-          },
-          {
-            name: 'VG-1-4',
-            type: 'line',
-            data: [],
-            markLine: this.markLine
-          },
-          {
-            name: 'VG-1-5',
-            type: 'line',
-            data: [],
-            markLine: this.markLine
-          }
+        //   {
+        //     name: 'VG-1-1',
+        //     type: 'line',
+        //     data: [],
+        //     markLine: this.markLine
+        //   },
+        //   {
+        //     name: 'VG-1-2',
+        //     type: 'line',
+        //     data: [],
+        //     markLine: this.markLine
+        //   },
+        //   {
+        //     name: 'VG-1-3',
+        //     type: 'line',
+        //     data: [],
+        //     markLine: this.markLine
+        //   },
+        //   {
+        //     name: 'VG-1-4',
+        //     type: 'line',
+        //     data: [ 
+        //       [ "2019-01-30T00:00:00+00:00", 0 ],
+        //       [ "2019-01-30T03:00:00+00:00", 0 ],
+        //       [ "2019-01-30T06:00:00+00:00", 0 ],
+        //       [ "2019-01-30T09:00:00+00:00", 0 ],
+        //       [ "2019-01-30T12:00:00+00:00", 0 ],
+        //       [ "2019-01-30T15:00:00+00:00", 0 ],
+        //       [ "2019-01-30T18:00:00+00:00", 0 ],
+        //       [ "2019-01-30T21:00:00+00:00", 0 ]],
+        //     markLine: this.markLine
+        //   },
+        //   {
+        //     name: 'VG-1-5',
+        //     type: 'line',
+        //     data: [
+        //       ['2019-01-30T03:00:00+0800', Math.floor(Math.random() * 300) - 150],
+        //       ['2019-01-30T06:42:00+0800', Math.floor(Math.random() * 300) - 150],
+        //       ['2019-01-30T09:28:00+0800', Math.floor(Math.random() * 300) - 150],
+        //       ['2019-01-30T12:24:00+0800', Math.floor(Math.random() * 300) - 150],
+        //       ['2019-01-30T15:00:00+0800', Math.floor(Math.random() * 300) - 150],
+        //       ['2019-01-30T18:00:00+0800', Math.floor(Math.random() * 300) - 150],
+        //       ['2019-01-30T21:32:00+0800', Math.floor(Math.random() * 300) - 150]
+        //     ],
+
+        //     markLine: this.markLine
+        //   }
         ]
       }
     }
   },
-  methods: {
-    getData() {
-      var vgsData = this.vgChartData.map(x => x = x.data)
+  // computed: {
+  //   // vgsPosition() {
+  //   //   return this.vgChartData.map(x => x = x.vgLocation)
+  //   // }
+  // },
+  // watch: {
+  //   vgChartData (value) {
+  //     console.log('watch', value)
+  //     this.orgOptions.series = value.map((item, index) => ({
+  //       name: item.vgLocation,
+  //       type: 'line',
+  //       data: item.data,
+  //       markLine: this.markLine
+  //     }))
 
-      // vgsData = vgsData.push([ "2019-01-30T23:59:00+00:00", 0 ])
-      var vgsPosition = this.vgChartData.map(x => x = x.vgLocation)
-      console.log(vgsData, vgsPosition)
-      this.orgOptions.legend.data = vgsPosition
-      for ( var i = 0; i < this.vgChartData.length; i++){
-        this.orgOptions.series[i] = {
-          name: vgsPosition[i],
-          type: 'line',
-          data: vgsData[i],
-          markLine: this.markLine
-        }
-      }
-      console.log(this.orgOptions)
+  //   }
+  // },
+  methods: {
+    fetchData() {
+  //     debugger
+      console.log(this.vgChartData)
+      this.orgOptions.series = this.vgChartData.map((item, index) => ({
+        name: item.vgLocation,
+        type: 'line',
+        data: item.data,
+        markLine: this.markLine
+      }))
+      console.log('>>>>>>>', this.orgOptions.series)
     }
   }
 }
