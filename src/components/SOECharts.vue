@@ -25,11 +25,13 @@ export default {
         silent: true,
         data: [
           {
+            lineStyle: { color: 'green' },
             name: '管理值',
             xAxis: this.soManagement.notice,
             label: { normal: { formatter: '管理值' } }
           },
           {
+            lineStyle: { color: 'green' },
             name: '管理值',
             xAxis: -this.soManagement.notice,
             label: { normal: { formatter: '管理值' } }
@@ -113,7 +115,7 @@ export default {
         xAxis: {
           type: 'value',
           max: this.soManagement.action * 2,
-          min: -this.soManagement.action * 1.2 * 2
+          min: -this.soManagement.action * 2
         },
         yAxis: {
           type: 'value'
