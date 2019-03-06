@@ -12,7 +12,7 @@ export default {
   props: {
     vgChartData: Array,
     project: Object,
-    selectedDay: String,
+    selectedDay: Date,
     selectedFloor: Number
   },
   created() {
@@ -73,8 +73,8 @@ export default {
         },
         xAxis: {
           type: 'time',
-          min: +moment(this.selectedDay.split('/').join('-')).startOf('day'),
-          max: +moment(this.selectedDay.split('/').join('-')).endOf('day'),
+          min: +moment(this.selectedDay).startOf('day'),
+          max: +moment(this.selectedDay).endOf('day'),
           axisLabel: {
             formatter(value) {
               return moment(value).format('HH:mm')
