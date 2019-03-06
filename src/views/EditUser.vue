@@ -104,22 +104,22 @@ export default {
       selectedRole: '',
       selectedCompany: '',
       selectedSOItem: ''
-      // newUser: { 
+      // newUser: {
       //   "account": "zxcvzc",
       //   "name": "OPT1-2",
       //   "password": "000",
       //   "phone": "00000",
       //   "email": "enioy74@gmail.com",
       //   "roleName": "OPT",
-      //   "company": { 
+      //   "company": {
       //     "id": "83b4c898-68cd-4b7a-9da2-608c7feaf472",
-      //     "name": "湯尼水泥" 
+      //     "name": "湯尼水泥"
       //     },
-      //   "soItem": { 
+      //   "soItem": {
       //     "id": "5a6b4845-3233-44b9-89cb-290228fe7e71",
-      //     "number": "這是蝦米" 
+      //     "number": "這是蝦米"
       //     },
-      //   "projects": [ 
+      //   "projects": [
       //     { "id": "a3f8f558-3e3b-450e-a4cf-2b02ac565da9",
       //       "number": "VG-TEST",
       //       "name": "測試軸力計" },
@@ -128,9 +128,9 @@ export default {
       //       "name": "傾度管測試專案" },
       //     { "id": "d6d94b1e-4127-4463-9c68-2bc1c3da899b",
       //       "number": "qweqwe",
-      //       "name": "最完整的資料" } 
-      //     ] 
-      //   } 
+      //       "name": "最完整的資料" }
+      //     ]
+      //   }
     }
   },
   computed: {

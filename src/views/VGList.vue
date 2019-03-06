@@ -69,18 +69,20 @@ export default {
     },
     createVG() {
       if (!this.newVG.number) alert("Enter the vg's name PLZ")
-      this.$store.dispatch('createVG', this.newVG).then(() => {
-        this.reset()
-        this.$message({
-          message: `成功新增 ${this.newVG.number}`,
-          type: 'success',
-          center: true,
-          duration: 1800
+      this.$store
+        .dispatch('createVG', this.newVG)
+        .then(() => {
+          this.reset()
+          this.$message({
+            message: `成功新增 ${this.newVG.number}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
         })
-      })
-      .catch(e => {
-        this.$message.error(`請重新檢查 ${e.response.data.result}`)
-      })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     deleteVGs() {
       if (this.deleteList.length === 0) return

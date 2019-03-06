@@ -1,5 +1,5 @@
 <template>
-  <div class="projectMonitor">  
+  <div class="projectMonitor">
     <h1>查看監控資料</h1>
     <h3>基本資料</h3>
     案號：{{project.number}}
@@ -11,15 +11,7 @@
     <img :src="showImage" v-if="show">
     <h3>監控值</h3>
     <el-tabs type="border-card" stretch>
-      <el-tab-pane label="軸力計 ( VG )"> 
-        <div class="block">
-          <span class="demonstration">請選擇支撐階數</span>
-          <el-pagination
-            layout="prev, pager, next"
-            @current-change="currentFloor"
-            :total="project.floor * 10">
-          </el-pagination>
-        </div>
+      <el-tab-pane label="軸力計 ( VG )">
         <el-form label-position="top">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="14" :md="14">
@@ -34,23 +26,23 @@
             </el-col>
             <el-col :xs="24" :sm="10" :md="10">
               <el-form-item label="位置">
-                <el-select v-model="selectedVG" placeholder="請選擇">
+                <el-select v-model="selectedFloor" placeholder="請選擇">
                   <el-option
-                    v-for="vg in subVGLocation"
-                    :key="vg.number"
-                    :label="vg.number"
-                    :value="vg.number">
+                    v-for="floor in floorList"
+                    :key="floor"
+                    :label="floor"
+                    :value="floor">
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-        <VGChart 
-          v-if='isVGSelected'
-          :vgChartData="vgChartData" 
-          :project='project'
-          :floorIndex='floorIndex'/>
+        <VGECharts
+          :selectedDay='vgDate'
+          :selectedFloor='selectedFloor'
+          :vgChartData="vgChartData"
+          :project='project'/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
       </el-tab-pane>
 
@@ -81,8 +73,11 @@
             </el-col>
           </el-row>
         </el-form>
-        <SOChart 
-          v-if="isSOSelected" 
+        <SOECharts 
+          :soChartData="soChartData"
+          :project="project"/>
+        <SOChart
+          v-if="isSOSelected"
           :soChartData="soChartData"
           :project="project"/>
         <el-button v-if="isShow('project:export')">匯出資料</el-button>
@@ -96,67 +91,109 @@
 import ToPathMixin from '@/mixins/ToPath'
 import SOChart from '../components/SOChart'
 import VGChart from '../components/VGChart'
+import VGECharts from '../components/VGECharts'
+import SOECharts from '../components/SOECharts'
 import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VGChart, SOChart },
+  components: { SOChart, VGECharts, SOECharts },
   mixins: [ToPathMixin],
+  created() {
+    this.getFloorList(this.project.floor)
+    this.getVGData(this.vgDate, 1)
+  },
   mounted() {
-    // if (this.$route.params.projectId) {
-    //   this.loadProject(this.$route.params.projectId).then(() => {
-    this.setVGTable(0)
-    //   })
-    // }
+    this.getVGData(this.vgDate, 1)
   },
   data() {
     return {
       // project: {
-      // OPT: [],
-      // USER: [],
-      // address: '',
-      // companyId: '',
-      // floor: 0,
-      // name: '',
-      // number: '',
-      // sitePlan: '',
-      // soLocation: [],
-      // soManagement: {},
-      // status: '',
-      // vgIds: [],
-      // vgLocation: [],
-      // vgManagement: [],
+        // OPT: [],
+        // USER: [],
+        // address: '',
+        // companyId: '',
+        // floor: 0,
+        // name: '',
+        // number: '',
+        // sitePlan: '',
+        // soLocation: [],
+        // soManagement: {},
+        // status: '',
+        // vgIds: [],
+        // vgLocation: [],
+        // vgManagement: [],
       // },
-      vgDate: '',
+      // vgDate: '2019/01/30',
+      vgDate: moment().toDate(),
       soDate: '',
-      selectedVG: '',
+      floorList: [1],
+      selectedFloor: 1,
       selectedSO: '',
-      subVGLocation: [],
       floorIndex: 0,
       show: true,
-      vgChartData: {
-        columns: ['createdAt', 'strutAxialForce'],
-        rows: [
-          { createdAt: '2019-01-30T00:00:00.000Z', strutAxialForce: 90 },
-          { createdAt: '2019-01-30T03:00:00.000Z', strutAxialForce: -80 },
-          { createdAt: '2019-01-30T06:00:00.000Z', strutAxialForce: 110 },
-          { createdAt: '2019-01-30T09:00:00.000Z', strutAxialForce: 130 },
-          { createdAt: '2019-01-30T12:00:00.000Z', strutAxialForce: -80 },
-          { createdAt: '2019-01-30T15:00:00.000Z', strutAxialForce: 90 },
-          { createdAt: '2019-01-30T18:00:00.000Z', strutAxialForce: 30 },
-          { createdAt: '2019-01-30T21:00:00.000Z', strutAxialForce: 40 }
-        ]
-      },
-      // initSOData: [
-      //   {
-      //     "c0": 10,
-      //     "c1": 40,
-      //     "c2": 45,
-      //     "c3": 60,
-      //     "c4": 70,
-      //     "c5": 77,
-      //   }
-      // ],
+      vgChartData: [
+        // {
+        //   vgLocation: 'vg-1-1',
+        //   data: [
+        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T06:42:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T09:28:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+        //   ]
+        // },
+        // {
+        //   vgLocation: 'vg-1-2',
+        //   data: [
+        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+        //   ]
+        // },
+        // {
+        //   vgLocation: 'vg-1-3',
+        //   data: [
+        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+        //   ]
+        // },
+        // {
+        //   vgLocation: 'vg-1-4',
+        //   data: [
+        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+        //   ]
+        // },
+        // {
+        //   vgLocation: 'vg-1-5',
+        //   data: [
+        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+        //   ]
+        // }
+      ],
       soChartData: {
         columns: ['totalDisplacement', 'depth'],
         rows: [
@@ -176,10 +213,6 @@ export default {
         return `${process.env.VUE_APP_API_URL}/${this.project.sitePlan}`
       }
     },
-    isVGSelected() {
-      this.getVGData(this.vgDate, this.selectedVG)
-      return !!this.selectedVG && !!this.vgDate
-    },
     isSOSelected() {
       this.getSOData(this.soDate, this.selectedSO)
       return !!this.selectedSO && !!this.soDate
@@ -188,30 +221,26 @@ export default {
       return this.$store.getters.currentProject
     }
   },
+  watch: {
+    selectedFloor(value) {
+      this.getVGData(this.vgDate, value)
+    },
+    vgDate(value) {
+      this.getVGData(value, this.selectedFloor)
+    }
+  },
   methods: {
-    currentFloor(selectedFloor) {
-      this.selectedVG = ''
-      this.floorIndex = selectedFloor - 1
-      this.setVGTable(this.floorIndex)
-    },
-    setVGTable(floorIndex) {
-      var numOfFloor = this.project.vgLocation.length / this.project.floor
-      var start = floorIndex * numOfFloor
-      var end = (floorIndex + 1) * numOfFloor
-      this.subVGLocation = this.project.vgLocation.slice(start, end)
-    },
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
     },
-    getVGData(dateTime, vgNumber) {
-      if (!dateTime || !vgNumber) return
+    getVGData(dateTime, floor) {
       var payload = {
         projectId: this.$route.params.projectId,
         date: moment(dateTime).format('YYYY/MM/DD'),
-        vgNumber: vgNumber
+        floor
       }
       return this.$store.dispatch('getMeasuredVG', payload).then(res => {
-        this.vgChartData.rows = res.data.data
+        this.vgChartData = res.data.data
       })
     },
     getSOData(dateTime, soNumber) {
@@ -223,11 +252,15 @@ export default {
       }
       return this.$store.dispatch('getMeasuredSO', payload).then(res => {
         var soData = res.data.data
-        this.soChartData.rows = soData
+        this.soChartData.rows = soData[2].measureResult
         this.soChartData.rows.map(
           soDatium => (soDatium.depth = -soDatium.depth)
         )
       })
+    },
+    getFloorList(floor) {
+      var floorList = Array.from(Array(floor).keys())
+      this.floorList = floorList.map(x => (x += 1))
     }
   }
 }

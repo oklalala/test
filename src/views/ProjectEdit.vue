@@ -373,10 +373,10 @@ export default {
     },
     USERs() {
       var allUSER = this.$store.getters.USERs
-      var customeersUSER = allUSER.filter(
-        user => user.company.id == this.newProject.companyId
+      var customersUSER = allUSER.filter(
+        user => user.company && user.company.id == this.newProject.companyId
       )
-      return customeersUSER
+      return customersUSER
     },
     myCompany() {
       return this.$store.getters.me.company

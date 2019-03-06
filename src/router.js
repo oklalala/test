@@ -301,7 +301,6 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (!to.meta.requireAuth) next()
-
   if (store.getters.token) {
     next()
   } else if (localStore.get('ground_monitor_token')) {
