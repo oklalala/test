@@ -97,13 +97,11 @@ import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VGChart, SOChart, VGECharts, SOECharts },
+  components: { SOChart, VGECharts, SOECharts },
   mixins: [ToPathMixin],
   created() {
     this.getFloorList(this.project.floor)
     this.getVGData(this.vgDate, 1)
-    // console.log(this.vgChartData, 'fffff created')
-    
   },
   mounted() {
     this.getVGData(this.vgDate, 1)
@@ -129,7 +127,7 @@ export default {
       // vgDate: '2019/01/30',
       vgDate: moment().toDate(),
       soDate: '',
-      floorList: [1], 
+      floorList: [1],
       selectedFloor: 1,
       selectedSO: '',
       floorIndex: 0,
@@ -223,7 +221,7 @@ export default {
       return this.$store.getters.currentProject
     }
   },
-  watch:{
+  watch: {
     selectedFloor(value) {
       this.getVGData(this.vgDate, value)
     },
@@ -262,7 +260,7 @@ export default {
     },
     getFloorList(floor) {
       var floorList = Array.from(Array(floor).keys())
-      this.floorList = floorList.map(x => x += 1)
+      this.floorList = floorList.map(x => (x += 1))
     }
   }
 }

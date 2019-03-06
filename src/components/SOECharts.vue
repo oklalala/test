@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   name: 'SOECharts',
   data() {
@@ -68,7 +66,7 @@ export default {
   mounted() {
     this.orgOptions = {
       tooltip: {
-        trigger: 'axis',
+        trigger: 'axis'
       },
       legend: {
         data: ['10:00', '12:00']
@@ -84,13 +82,13 @@ export default {
         }
       },
       dataset: {
-        source:[
-          { depth:-5,'10:00': 0, '12:00': 0},
-          { depth:-4,'10:00': 0.2,'12:00': 2},
-          { depth:-3,'10:00': 0.4,'12:00': -3},
-          { depth:-2,'10:00': 0.5,'12:00': -0.4},
-          { depth:-1,'10:00': 0.1,'12:00': -0.2},
-          { depth:0, '10:00':-0.3,'12:00': -0.5}
+        source: [
+          { depth: -5, '10:00': 0, '12:00': 0 },
+          { depth: -4, '10:00': 0.2, '12:00': 2 },
+          { depth: -3, '10:00': 0.4, '12:00': -3 },
+          { depth: -2, '10:00': 0.5, '12:00': -0.4 },
+          { depth: -1, '10:00': 0.1, '12:00': -0.2 },
+          { depth: 0, '10:00': -0.3, '12:00': -0.5 }
         ]
       },
       xAxis: {

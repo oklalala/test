@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     vgsPosition() {
-      return this.vgChartData.map(item => item = item.vgLocation)
+      return this.vgChartData.map(item => (item = item.vgLocation))
     },
     vgManagement() {
       return this.project.vgManagement[this.selectedFloor - 1]
@@ -60,10 +60,10 @@ export default {
       }
     },
     seriesData() {
-      if(!this.vgChartData.length) {
-        return {type: 'line', markLine: this.markLine}
+      if (!this.vgChartData.length) {
+        return { type: 'line', markLine: this.markLine }
       }
-      return this.vgChartData.map((item, index) => ({
+      return this.vgChartData.map(item => ({
         name: item.vgLocation,
         type: 'line',
         data: item.data,
@@ -73,7 +73,7 @@ export default {
     options() {
       return {
         tooltip: {
-          trigger: 'axis',
+          trigger: 'axis'
         },
         legend: {
           data: this.vgsPosition
