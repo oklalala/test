@@ -228,7 +228,7 @@ export default {
       this.getSOData(value)
     },
     soDate(value) {
-      this.soChartData = this.soChartData.filter(
+      this.soChartData = value && this.soChartData.filter(
         item => item.date === value
       )[0].soData
     }
