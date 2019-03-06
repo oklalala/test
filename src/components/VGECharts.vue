@@ -1,6 +1,5 @@
 <template>
   <div class="vgECharts">
-    {{vgChartData}}
     <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
   </div>
 </template>
@@ -13,34 +12,16 @@ export default {
   props: {
     vgChartData: Array,
     project: Object,
-    selectedDay: String
+    selectedDay: String,
+    selectedFloor: Number
   },
   created() {
     this.fetchData()
-    
-    console.warn(this.vgChartData, 'created')
-  },
-  mounted() {
-    
-    // this.$nextTick(function () {
-    //     console.warn('hahahahahahahahahahahah')
-    //     // Code that will run only after the
-      // this.fetchData()
-        
-    //     // entire view has been rendered
-    //   })
-    
-    console.warn(this.vgChartData,'mounted')
-    // setTimeout(() => {
-      
-    // }, 1000);
+    this.setVGMarkLine()
+    this.setVGChartScope()
   },
   updated() {
     this.fetchData()
-    console.warn(this.vgChartData,'updated')
-  },
-  destroyed() {
-    console.warn(this.vgChartData,'destroyed')
   },
   data() {
     return {
@@ -79,22 +60,21 @@ export default {
       },
       orgOptions: {
         title: {
-          text: '折线图堆叠'
+          text: `第 ${this.selectedFloor} 階軸力計`
         },
         tooltip: {
           trigger: 'axis',
         },
         legend: {
-          // data: this.vgsPosition
-          data:['VG-1-1','VG-1-2','VG-1-3','VG-1-4','VG-1-5']
+          data: this.vgsPosition
         },
         grid: {
           containLabel: true
         },
         xAxis: {
           type: 'time',
-          // min: +moment(this.selectedDay.split('/').join('-')).startOf('day'),
-          // max: +moment(this.selectedDay.split('/').join('-')).endOf('day'),
+          min: +moment(this.selectedDay.split('/').join('-')).startOf('day'),
+          max: +moment(this.selectedDay.split('/').join('-')).endOf('day'),
           axisLabel: {
             formatter(value) {
               return moment(value).format('HH:mm')
@@ -151,41 +131,39 @@ export default {
         //       ['2019-01-30T18:00:00+0800', Math.floor(Math.random() * 300) - 150],
         //       ['2019-01-30T21:32:00+0800', Math.floor(Math.random() * 300) - 150]
         //     ],
-
         //     markLine: this.markLine
         //   }
         ]
       }
     }
   },
-  // computed: {
-  //   // vgsPosition() {
-  //   //   return this.vgChartData.map(x => x = x.vgLocation)
-  //   // }
-  // },
-  // watch: {
-  //   vgChartData (value) {
-  //     console.log('watch', value)
-  //     this.orgOptions.series = value.map((item, index) => ({
-  //       name: item.vgLocation,
-  //       type: 'line',
-  //       data: item.data,
-  //       markLine: this.markLine
-  //     }))
-
-  //   }
-  // },
+  computed: {
+    vgsPosition() {
+      return this.vgChartData.map(item => item = item.vgLocation)
+    }
+  },
   methods: {
     fetchData() {
-  //     debugger
-      console.log(this.vgChartData)
       this.orgOptions.series = this.vgChartData.map((item, index) => ({
         name: item.vgLocation,
         type: 'line',
         data: item.data,
         markLine: this.markLine
       }))
-      console.log('>>>>>>>', this.orgOptions.series)
+    },
+    setVGMarkLine() {
+      var vg = this.project.vgManagement[this.selectedFloor]
+      this.markLine.data[0].yAxis = vg.notice
+      this.markLine.data[1].yAxis = -vg.notice
+      this.markLine.data[2].yAxis = vg.warning
+      this.markLine.data[3].yAxis = -vg.warning
+      this.markLine.data[4].yAxis = vg.action
+      this.markLine.data[5].yAxis = -vg.action
+    },
+    setVGChartScope() {
+      var vg = this.project.vgManagement[this.selectedFloor]
+      this.orgOptions.yAxis.max = vg.action * 1.2
+      this.orgOptions.yAxis.min = -vg.action * 1.2
     }
   }
 }
