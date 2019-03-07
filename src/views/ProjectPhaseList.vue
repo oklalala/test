@@ -37,7 +37,7 @@
         label="專案階段">
         <template slot-scope="scope">
           <el-input 
-            @keyup.native="editProjectPhase(scope.row.id,scope.row.name)"
+            @blur="editProjectPhase(scope.row.id,scope.row.name)"
             v-model="scope.row.name">
           </el-input>
         </template>

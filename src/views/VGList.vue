@@ -27,7 +27,7 @@
         width="150">
         <template slot-scope="scope">
           <el-input 
-          @keyup.native="editVG(scope.row.id,scope.row.number)"
+          @blur="editVG(scope.row.id,scope.row.number)"
           v-model="scope.row.number">
           </el-input>
         </template>

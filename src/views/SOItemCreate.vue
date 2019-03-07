@@ -41,7 +41,7 @@
               label="參數值">
               <template slot-scope="scope">
                 <el-input 
-                @keyup.native="editSO(scope.row.key,scope.row.value)"
+                @blur="editSO(scope.row.key,scope.row.value)"
                 v-model.number="scope.row.value">
                 </el-input>
               </template>
