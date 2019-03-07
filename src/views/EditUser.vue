@@ -166,7 +166,6 @@ export default {
       this.deleteList = value.map(user => user.id)
     },
     cancel() {
-      this.$store.commit('setUser', {})
       this.toPath('UserList')
     },
     edit() {
@@ -184,15 +183,15 @@ export default {
         })
         .then(() => {
           this.toPath('UserList')
-        // }).catch(e => {
-        //   this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        }).catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
     isShow(feature) {
       return this.$store.getters.rolePermissions
-        .filter(permissions => permissions.role === this.selectedRole)
-        .shift()
-        .permissions.filter(permission => permission.value)
+        .filter(auth => auth.role === this.selectedRole)
+        .shift().permissions
+        .filter(permission => permission.value)
         .map(permission => permission.name)
         .includes(feature)
     },

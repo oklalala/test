@@ -134,7 +134,6 @@ export default {
       this.deleteList = value.map(user => user.id)
     },
     cancel() {
-      this.$store.commit('setUser', {})
       this.toPath('UserList')
     },
     submit() {
@@ -150,7 +149,6 @@ export default {
             center: true,
             duration: 1800
           })
-          this.$store.commit('setUser', {})
           this.toPath('UserList')
         })
         .catch(e => {

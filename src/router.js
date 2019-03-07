@@ -73,7 +73,10 @@ let router = new Router({
         requireAuth: true
       },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getUsers').then(() => {
+        Promise.all([
+          store.commit('setUser', {}),
+          store.dispatch('getUsers')
+        ]).then(() => {
           next()
         })
       }
