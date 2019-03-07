@@ -292,6 +292,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-button
+              type="primary"
               style="width: 100%"
               @click="submit">
               確定送出

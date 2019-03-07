@@ -76,6 +76,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-button
+              type="primary"
               style="width: 100%"
               @click="edit">
               確定送出
@@ -183,6 +184,8 @@ export default {
         })
         .then(() => {
           this.toPath('UserList')
+        // }).catch(e => {
+        //   this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
     isShow(feature) {
