@@ -211,7 +211,7 @@ export default {
         })
         .then(() => {
           this.$message({
-            message: `成功編輯 ${this.newSO.number}`,
+            message: `成功編輯 ${this.newSOItem.number}`,
             type: 'success',
             center: true,
             duration: 1800
