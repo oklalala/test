@@ -7,7 +7,7 @@
     <br>
     名稱：{{project.name}}
     <h3>配置圖</h3>
-    <h4 @click='show = !show'>顯示/隱藏</h4>
+    <h4 class='show-picture' @click='show = !show'>顯示/隱藏</h4>
     <img :src="showImage" v-if="show">
     <h3>監控值</h3>
     <el-tabs type="border-card" stretch>
@@ -260,3 +260,9 @@ export default {
   }
 }
 </script>
+<style>
+.show-picture{
+  cursor: pointer;
+  width: 80px;
+}
+</style>
