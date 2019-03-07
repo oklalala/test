@@ -17,7 +17,7 @@
         fixed
         prop="number"
         label="案號"
-        width="100">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="name"
@@ -37,7 +37,6 @@
         v-if="isShow('project:soItemMeasure')">
         <template slot-scope="scope">
           <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })">傾度管資料</el-button>
-          <!-- <el-button @click="toPath('MeasureSO', { projectId: scope.row.id })">傾度管資料</el-button> -->
         </template>
       </el-table-column>
       <el-table-column
