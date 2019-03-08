@@ -4,20 +4,21 @@
     <el-form
       label-position="top"
       label-width="80px"
-      :model="newProject">
+      :model="newProject"
+      :rules="rules">
       
       <h2>基本資料</h2>
       
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="專案案號" required>
+          <el-form-item label="專案案號" prop='number'>
             <el-input v-model="newProject.number"
-              placeholder="CNT - 16Q4"
+              placeholder="CNT-16Q4"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="專案狀態" required>
+          <el-form-item label="專案狀態" prop='status'>
             <el-select
               v-model="newProject.status"
               placeholder="請選擇"
@@ -35,7 +36,7 @@
 
       <el-row :gutter="20">
         <el-col>
-          <el-form-item label="專案名稱" required>
+          <el-form-item label="專案名稱" prop='name'>
             <el-input v-model="newProject.name"
               placeholder="阡福町商業大樓"
             ></el-input>
@@ -43,7 +44,7 @@
         </el-col>
       </el-row>
 
-      <el-form-item label="地點">
+      <el-form-item label="地點" prop='address' >
         <el-input
           v-model="newProject.address"
           placeholder="大武街 34 號"
@@ -69,35 +70,39 @@
       <h2>參與人員</h2>
       <el-tabs type="border-card">
         <el-tab-pane label="OPT">
-          <el-select
-            v-model="newProject.OPT"
-            placeholder="請選擇 OPT"
-            multiple
-            @change="updateSelectedOPTs"
-            style="width: 100%">
-            <el-option
-              v-for="opt in OPTs"
-              :key="opt.id"
-              :label="opt.name"
-              :value="opt.id">
-            </el-option>
-          </el-select>
+          <el-form-item>
+            <el-select
+              v-model="newProject.OPT"
+              placeholder="請選擇 OPT"
+              multiple
+              @change="updateSelectedOPTs"
+              style="width: 100%">
+              <el-option
+                v-for="opt in OPTs"
+                :key="opt.id"
+                :label="opt.name"
+                :value="opt.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-tab-pane>
 
         <el-tab-pane label="USER">
-          <el-select
-            v-model="newProject.USER"
-            placeholder="請選擇 USER"
-            multiple
-            @change="updateSelectedUSERs"
-            style="width: 100%">
-            <el-option
-              v-for="user in USERs"
-              :key="user.id"
-              :label="user.name"
-              :value="user.id">
-            </el-option>
-          </el-select>
+          <el-form-item>
+            <el-select
+              v-model="newProject.USER"
+              placeholder="請選擇 USER"
+              multiple
+              @change="updateSelectedUSERs"
+              style="width: 100%">
+              <el-option
+                v-for="user in USERs"
+                :key="user.id"
+                :label="user.name"
+                :value="user.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-tab-pane>
       </el-tabs>
 
@@ -139,16 +144,18 @@
             <!-- <h3 v-if="isEnoughtVG" >Add more gauge please</h3> -->
           </el-form-item>
           <div class="demo-input-suffix">
-            支撐階數：
-            <el-input 
-              v-model.number="newProject.floor"
-              placeholder="3">
-            </el-input>
-            每層數量：
-            <el-input
-              v-model.number="numOfFloor"
-              placeholder="5">
-            </el-input>
+            <el-form-item label="支撐階數：">
+              <el-input 
+                v-model.number="newProject.floor"
+                placeholder="3">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="每層數量：">
+              <el-input
+                v-model.number="numOfFloor"
+                placeholder="5">
+              </el-input>
+            </el-form-item>
           </div>
           <br>
           <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">產生軸力計編碼</el-button>
@@ -167,21 +174,33 @@
           <el-row :gutter="20" v-if="!!fullVGsInfo.length">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
-              注意值
-              <el-input
-                v-model.number="newProject.vgManagement[floorIndex].notice"
-                placeholder="68.3">
-              </el-input>
-              警戒值
-              <el-input
-                v-model.number="newProject.vgManagement[floorIndex].warning"
-                placeholder="79.6">
-              </el-input>
-              行動值
-              <el-input
-                v-model.number="newProject.vgManagement[floorIndex].action"
-                placeholder="104.2">
-              </el-input>
+              <el-form-item label="注意值" prop="vgNotice">
+                <el-input-number
+                  :step="0.01"
+                  size='mini'
+                  :controls=false
+                  v-model.number="newProject.vgManagement[floorIndex].notice"
+                  placeholder="68.3">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="警戒值" prop="vgWarning">
+                <el-input-number
+                  :step="0.01"
+                  size='mini'
+                  :controls=false
+                  v-model.number="newProject.vgManagement[floorIndex].warning"
+                  placeholder="79.6">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="行動值" prop="vgAction">
+                <el-input-number
+                  :step="0.01"
+                  size='mini'
+                  :controls=false
+                  v-model.number="newProject.vgManagement[floorIndex].action"
+                  placeholder="104.2">
+                </el-input-number>
+              </el-form-item>
             </el-col>
             <el-col :span="19">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
@@ -229,16 +248,18 @@
 
         <el-tab-pane label="傾度管 ( SO )">
           <div class="demo-input-suffix">
-            數量：
-            <el-input
-              v-model.number="soQt"
-              placeholder="5">
-            </el-input>
-            每孔深度 ( m )：
-            <el-input
-              v-model.number="soDepth"
-              placeholder="20.5">
-            </el-input>
+            <el-form-item label="數量：" prop="vgAction">
+              <el-input
+                v-model.number="soQt"
+                placeholder="5">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="每孔深度 ( m )：" prop="vgAction">
+              <el-input
+                v-model.number="soDepth"
+                placeholder="20.5">
+              </el-input>
+            </el-form-item>
           </div>
           <br>
           <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">產生傾度管編碼</el-button>
@@ -247,21 +268,33 @@
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
-              注意值
-              <el-input
-                v-model.number="newProject.soManagement.notice"
-                placeholder="4.24">
-              </el-input>
-              警戒值
-              <el-input
-                v-model.number="newProject.soManagement.warning"
-                placeholder="9.88">
-              </el-input>
-              行動值
-              <el-input
-                v-model.number="newProject.soManagement.action"
-                placeholder="15.06">
-              </el-input>
+              <el-form-item label="注意值" prop="soNotice">
+                <el-input-number
+                  :step="0.01"
+                  :controls=false
+                  size='mini'
+                  v-model.number="newProject.soManagement.notice"
+                  placeholder="4.24">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="警戒值" prop="soWarning">
+                <el-input-number
+                  :step="0.01"
+                  :controls=false
+                  size='mini'
+                  v-model.number="newProject.soManagement.warning"
+                  placeholder="9.88">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="行動值" prop="soAction">
+                <el-input-number
+                  :step="0.01"
+                  :controls=false
+                  size='mini'
+                  v-model.number="newProject.soManagement.action"
+                  placeholder="15.06">
+                </el-input-number>
+              </el-form-item>
             </el-col>
             <el-col :span="14">
               <h2>位置編號<span>( SO - 流水號 )</span></h2>
@@ -278,7 +311,7 @@
                   width="200">
                   <template slot-scope="scope">
                     <el-input 
-                    v-model.number="scope.row.depth">
+                      v-model.number="scope.row.depth">
                     </el-input>
                   </template>
                 </el-table-column>
@@ -363,6 +396,14 @@ export default {
         vgIds: [],
         vgLocation: [],
         soLocation: []
+      },
+      rules: {
+        number: [
+          { required: true, message: '請輸入編號', trigger: 'blur' },
+          { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
+        ],
+        name:{ required: true, message: '請輸入專案名稱', trigger: 'blur' },
+        vgNotice:{ required: true, message: '請輸入注意值', trigger: 'blur'}
       }
     }
   },

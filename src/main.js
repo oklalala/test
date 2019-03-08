@@ -20,6 +20,7 @@ import {
   Select,
   Option,
   Input,
+  InputNumber,
   Table,
   TableColumn,
   Checkbox,
@@ -53,6 +54,7 @@ Vue.use(FormItem)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Input)
+Vue.use(InputNumber)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Checkbox)

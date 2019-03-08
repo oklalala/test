@@ -68,34 +68,38 @@
       <h2>參與人員</h2>
       <el-tabs type="border-card">
         <el-tab-pane label="OPT">
-          <el-select
-            v-model="selectedOPT"
-            placeholder="請選擇 OPT"
-            multiple
-            @change="updateSelectedOPTs"
-            style="width: 100%">
-            <el-option
-              v-for="opt in OPTs"
-              :key="opt.id"
-              :label="opt.name"
-              :value="opt.id">
-            </el-option>
-          </el-select>
+          <el-form-item>
+            <el-select
+              v-model="selectedOPT"
+              placeholder="請選擇 OPT"
+              multiple
+              @change="updateSelectedOPTs"
+              style="width: 100%">
+              <el-option
+                v-for="opt in OPTs"
+                :key="opt.id"
+                :label="opt.name"
+                :value="opt.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="USER">
-          <el-select
-            v-model="selectedUSER"
-            placeholder="請選擇 USER"
-            multiple
-            @change="updateSelectedUSERs"
-            style="width: 100%">
-            <el-option
-              v-for="user in USERs"
-              :key="user.id"
-              :label="user.name"
-              :value="user.id">
-            </el-option>
-          </el-select>
+          <el-form-item label="客戶公司名稱">
+            <el-select
+              v-model="selectedUSER"
+              placeholder="請選擇 USER"
+              multiple
+              @change="updateSelectedUSERs"
+              style="width: 100%">
+              <el-option
+                v-for="user in USERs"
+                :key="user.id"
+                :label="user.name"
+                :value="user.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-tab-pane>
       </el-tabs>
 
@@ -133,32 +137,31 @@
               </el-option>
             </el-select>
           </el-form-item>
-        <el-form-item label="換軸力計">
-          <el-select 
-            v-model="removedVG" 
-            style="width: 100%">
-            <el-option
-              v-for="vg in selectedVGs"
-              :key="vg.id"
-              :label="vg.number"
-              :value="vg.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="換成">
-          <el-select 
-            v-model="addedVG" 
-            style="width: 100%">
-            <el-option
-              v-for="vg in unSelectedVGs"
-              :key="vg.id"
-              :label="vg.number"
-              :value="vg.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable">確認轉換</el-button>
-
+          <el-form-item label="換軸力計">
+            <el-select 
+              v-model="removedVG" 
+              style="width: 100%">
+              <el-option
+                v-for="vg in selectedVGs"
+                :key="vg.id"
+                :label="vg.number"
+                :value="vg.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="換成">
+            <el-select 
+              v-model="addedVG" 
+              style="width: 100%">
+              <el-option
+                v-for="vg in unSelectedVGs"
+                :key="vg.id"
+                :label="vg.number"
+                :value="vg.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable">確認轉換</el-button>
           <div class="block" v-if="!!newProject.vgLocation.length">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
@@ -171,21 +174,33 @@
           <el-row :gutter="20" v-if="!!newProject.vgLocation.length">
             <el-col :md='6' :sm='8' :span="24">
               <h2>管理值<span>單位：噸</span></h2>
-              注意值
-              <el-input
-                v-model.number="newProject.vgManagement[floorIndex].notice"
-                placeholder="68.3">
-              </el-input>
-              警戒值
-              <el-input
-                v-model.number="newProject.vgManagement[floorIndex].warning"
-                placeholder="79.6">
-              </el-input>
-              行動值
-              <el-input
-                v-model.number="newProject.vgManagement[floorIndex].action"
-                placeholder="104.2">
-              </el-input>
+              <el-form-item label="注意值" prop='vgNotice'>
+                <el-input-number
+                  :step="0.1"
+                  :controls=false
+                  siez="mini"
+                  v-model.number="newProject.vgManagement[floorIndex].notice"
+                  placeholder="68.3">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="警戒值" prop='vgWarning'>
+                <el-input-number
+                  :step="0.1"
+                  :controls=false
+                  siez="mini"
+                  v-model.number="newProject.vgManagement[floorIndex].warning"
+                  placeholder="79.6">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="行動值" prop='vgAction'>
+                <el-input-number
+                  :step="0.1"
+                  :controls=false
+                  siez="mini"
+                  v-model.number="newProject.vgManagement[floorIndex].action"
+                  placeholder="104.2">
+                </el-input-number>
+              </el-form-item>
             </el-col>
             <el-col :md='16' :sm='16' :span="24">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
@@ -236,21 +251,33 @@
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
-              注意值
-              <el-input
-                v-model.number="newProject.soManagement.notice"
-                placeholder="4.24">
-              </el-input>
-              警戒值
-              <el-input
-                v-model.number="newProject.soManagement.warning"
-                placeholder="9.88">
-              </el-input>
-              行動值
-              <el-input
-                v-model.number="newProject.soManagement.action"
-                placeholder="15.06">
-              </el-input>
+              <el-form-item label="注意值" prop='soNotice'>
+                <el-input-number
+                  :step="0.01"
+                  :controls=false
+                  siez="mini"
+                  v-model.number="newProject.soManagement.notice"
+                  placeholder="4.24">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="警戒值" prop='soWarning'>
+                <el-input-number
+                  :step="0.01"
+                  :controls=false
+                  siez="mini"
+                  v-model.number="newProject.soManagement.warning"
+                  placeholder="9.88">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item label="行動值" prop='soAction'>
+                <el-input-number
+                  :step="0.01"
+                  :controls=false
+                  siez="mini"
+                  v-model.number="newProject.soManagement.action"
+                  placeholder="15.06">
+                </el-input-number>
+              </el-form-item>
             </el-col>
             <el-col :span="14">
               <h2>位置編號<span>( SO - 流水號 )</span></h2>
