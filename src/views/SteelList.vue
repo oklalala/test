@@ -57,17 +57,21 @@
       <el-table-column
         type="selection"
         :selectable="checkable"
-        width="55">
+        width="40">
       </el-table-column>
       <el-table-column
         prop="name"
         label="鋼材名稱"
         width="200">
         <template slot-scope="scope">
-          <span class="clickable"
+          <el-button 
+            class="clickable"
+            type="primary"
+            size="mini" 
+            round
             @click="loadSteel(scope.row)">
             {{ scope.row.name }}
-          </span>
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column

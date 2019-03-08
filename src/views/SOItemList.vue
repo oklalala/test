@@ -21,12 +21,16 @@
       </el-table-column>
       <el-table-column
         label="編號"
-        width="100">
+        width="130">
         <template slot-scope="scope">
-          <span class="clickable"
+          <el-button 
+            class="clickable"
+            type="primary"
+            size="mini" 
+            round
             @click="toPath('SOItemEdit', { soId: scope.row.id })">
             {{ scope.row.number }}
-          </span>
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column

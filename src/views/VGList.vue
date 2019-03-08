@@ -19,7 +19,7 @@
       <el-table-column
         type="selection"
         :selectable="checkable"
-        width="55">
+        width="40">
       </el-table-column>
       <el-table-column
         prop="number"

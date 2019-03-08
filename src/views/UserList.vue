@@ -22,12 +22,16 @@
       <el-table-column
         prop="name"
         label="姓名"
-        width="100">
+        width="130">
         <template slot-scope="scope">
-          <span class="clickable"
+          <el-button 
+            class="clickable"
+            type="primary"
+            size="mini" 
+            round
             @click="toPath('EditUser', { userId: scope.row.id })">
             {{ scope.row.name }}
-          </span>
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column

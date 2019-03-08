@@ -19,17 +19,20 @@
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
-        width="180">
+        width="40">
       </el-table-column>
       <el-table-column
         prop="id"
-        label="編號"
-        width="180">
+        label="編號">
         <template slot-scope="scope">
-          <span class="clickable"
+          <el-button 
+            class="clickable"
+            type="primary"
+            size="mini" 
+            round
             @click="readAndOpenCompanyDialog(scope.row.name)">
             {{ scope.row.id }}
-          </span>
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column
