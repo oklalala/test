@@ -305,17 +305,41 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta.requireAuth) next()
-  if (store.getters.token) {
+  // console.log('is next req auth?', to.meta.requireAuth)
+  // console.log('target ', from.path, ' -> ', to.path)
+
+  //put last path from local store into VueX and next to target
+  let localLastPath = localStore.get('ground_monitor_last_path')
+  if (!store.getters.lastPath && localLastPath) {
+    // console.log('load last path from local ', localLastPath)
+    store.commit('setLastPath', localLastPath)
+    if (to.name === 'Entry') {
+      next({ path: localLastPath })
+      return
+    }
+  }
+
+  if (!to.meta.requireAuth) {
     next()
-  } else if (localStore.get('ground_monitor_token')) {
-    let data = localStore.get('ground_monitor_token')
-    store.commit('setToken', data.token)
-    store.commit('setMyId', data.myId)
-    store.commit('setMyRole', data.myRole)
-    store.commit('setMyPermissions', data.myPermissions)
+    return
+  }
+
+  let localToken = localStore.get('ground_monitor_token')
+  if (!store.getters.token && localToken) {
+    // console.log('commit local token into vueX')
+    store.commit('setToken', localToken.token)
+    store.commit('setMyId', localToken.myId)
+    store.commit('setMyRole', localToken.myRole)
+    store.commit('setMyPermissions', localToken.myPermissions)
+  }
+
+  if (store.getters.token) {
+    // console.log('use store token')
+    store.commit('setLastPath', to.path)
+    localStore.set('ground_monitor_last_path', to.path)
     next()
   } else {
+    // console.log('token missing, go to entrance')
     next({
       name: 'Entry'
     })

@@ -376,7 +376,8 @@ export default new Vuex.Store({
     roles: [],
     rolePermissions: [],
     companies: [],
-    soItems: []
+    soItems: [],
+    lastPath: ''
   },
   mutations: {
     setToken(state, token) {
@@ -390,6 +391,9 @@ export default new Vuex.Store({
     },
     setMyPermissions(state, myPermissions) {
       state.myPermissions = myPermissions
+    },
+    setLastPath(state, path) {
+      state.lastPath = path
     },
     setMe(state, me) {
       state.me = me
@@ -427,6 +431,9 @@ export default new Vuex.Store({
     },
     myPermissions(state) {
       return state.myPermissions
+    },
+    lastPath(state) {
+      return state.lastPath
     },
     me(state) {
       return state.me
