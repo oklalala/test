@@ -1,40 +1,41 @@
 <template>
   <div class="steelList">
     <h1>鋼材資料</h1>
-    <h3>新增鋼材</h3>
     <el-form
       label-position="top"
       label-width="80px"
-      :model="newSteel">
-      <el-form-item label="型號">
-        <el-input v-model="newSteel.name"></el-input>
+      :model="newSteel"
+      :rules="rules">
+      <h3>新增鋼材</h3>
+      <el-form-item label="型號" prop='name'>
+        <el-input v-model="newSteel.name" :disabled="!isShow"></el-input>
       </el-form-item>
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="ES ( kg/cm^2 )">
-            <el-input v-model.number="newSteel.es"></el-input>
+          <el-form-item label="ES ( kg/cm^2 )" prop='es'>
+            <el-input v-model.number="newSteel.es" :disabled="!isShow"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">        
-          <el-form-item label="TCM">
-            <el-input v-model.number="newSteel.tcm"></el-input>
+          <el-form-item label="TCM" prop='tcm'>
+            <el-input v-model.number="newSteel.tcm" :disabled="!isShow"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="TCG">
-            <el-input v-model.number="newSteel.tcg"></el-input>
+          <el-form-item label="TCG" prop='tcg'>
+            <el-input v-model.number="newSteel.tcg" :disabled="!isShow"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="截面積 ( cm^2 )">
-            <el-input v-model.number="newSteel.sectionArea"></el-input>
+          <el-form-item label="截面積 ( cm^2 )" prop='sectionArea'>
+            <el-input v-model.number="newSteel.sectionArea" :disabled="!isShow"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-button type="primary" @click="createSteel" v-if="!editable">
+      <el-button type="primary" @click="createSteel" v-if="!isEdit" :disabled="passRequired">
         新增鋼材
       </el-button>
-      <el-button type="primary" @click="editSteel" v-if="editable">
+      <el-button type="primary" @click="editSteel" v-if="isEdit" :disabled="passRequired">
         編輯鋼材
       </el-button>
     </el-form>
@@ -42,7 +43,7 @@
     <h3>鋼材列表</h3>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button @click="resetTable">新增</el-button>
+        <el-button @click="addSteel">新增</el-button>
       </div>
       <div class="operationGroup-right">
         <el-button type="primary" @click="deleteSteels" v-show="deletable">刪除</el-button>
@@ -51,7 +52,7 @@
     <el-table
       :data="steelList"
       class="steelList-table"
-      :highlight-current-row="highLight"
+      :highlight-current-row="isEdit"
       @selection-change="updateDeleteList">
       <el-table-column
         type="selection"
@@ -105,13 +106,30 @@ export default {
       choosedId: '',
       newSteel: {
         name: '',
-        sectionArea: 0,
-        es: 0,
-        tcm: 0,
-        tcg: 0
+        sectionArea: '',
+        es: '',
+        tcm: '',
+        tcg: ''
       },
-      editable: false,
-      highLight: true
+      rules: {
+        name: [
+          { required: true, message: '請輸入鋼材名稱',trigger: 'blur' }
+        ],
+        tcg: [
+          { required: true, message: '請輸入 TCG', trigger: 'blur' }
+        ],
+        tcm: [
+          { required: true, message: '請輸入 TCM', trigger: 'blur' }
+        ],
+        es: [
+          { required: true, message: '請輸入 ES', trigger: 'blur' }
+        ],
+        sectionArea: [
+          { required: true, message: '請輸入截面積', trigger: 'blur' }
+        ]
+      },
+      isEdit: false,
+      isShow: false
     }
   },
   computed: {
@@ -120,21 +138,34 @@ export default {
     },
     deletable() {
       return this.deleteList.length != 0
+    },
+    passRequired() {
+      let name = this.newSteel.name
+      let sectionArea = this.newSteel.sectionArea
+      let es = this.newSteel.es
+      let tcm = this.newSteel.tcm
+      let tcg = this.newSteel.tcg
+      console.log(name, sectionArea, es, tcm, tcg)
+      return !(name && sectionArea && es && tcm && tcg)
     }
   },
   methods: {
-    reset() {
+    resetInput() {
       this.choosedId = ''
       this.newSteel = {
         name: '',
-        sectionArea: 0,
-        es: 0,
-        tcm: 0,
-        tcg: 0
+        sectionArea: '',
+        es: '',
+        tcm: '',
+        tcg: ''
       }
     },
+    addSteel() {
+      this.resetInput()
+      this.isEdit = false
+      this.isShow = true
+    },
     createSteel() {
-      if (!this.newSteel.name) alert("Enter the steel's name PLZ")
       this.$store.dispatch('createSteel', this.newSteel).then(() => {
         this.resetTable()
       })
@@ -148,8 +179,7 @@ export default {
       this.resetTable()
     },
     updateDeleteList(value) {
-      this.highLight = true
-      this.editable = true
+      this.isEdit = true
       this.deleteList = value.map(steel => steel.id)
     },
     checkable(row) {
@@ -169,7 +199,8 @@ export default {
         })
     },
     loadSteel(steelObj) {
-      this.editable = true
+      this.isEdit = true
+      this.isShow = true
       this.choosedId = steelObj.id
       this.newSteel = {
         name: steelObj.name,
@@ -181,9 +212,9 @@ export default {
     },
     resetTable() {
       this.$store.dispatch('getSteels').then(() => {
-        this.highLight = false
-        this.editable = false
-        this.reset()
+        this.isEdit = false
+        this.resetInput()
+        this.isShow = false
       })
     }
   }
