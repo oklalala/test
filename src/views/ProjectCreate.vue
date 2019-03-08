@@ -111,13 +111,15 @@
       <el-upload 
         class="upload-demo" 
         drag
-        action="https://jsonplaceholder.typicode.com/posts/" 
+        action="uploadURL" 
         :on-change="getImage" 
         list-type="picture"
-        :auto-upload="false">
+        :before-upload="beforeImgUpload"
+        :auto-upload="true">
         <img :src="this.image.url" alt="" v-if="imageSelected">
         <i class="el-icon-upload" v-if="!imageSelected"></i>
         <div class="el-upload__text" v-if="!imageSelected">將文件拖到此處，或<em>點擊上傳</em></div>
+        <div slot="tip" class="el-upload__tip">上傳文件不能超過2Mb</div>
         <el-button class="reselect" size="small" type="primary" v-if="imageSelected">另選圖片</el-button>
       </el-upload>
 
@@ -438,6 +440,9 @@ export default {
     myCompany() {
       return this.$store.getters.me.company
     },
+    uploadURL() {
+      return `${process.env.VUE_APP_API_URL}/uploads`
+    },
     VGs() {
       return this.$store.getters.vgs
     },
@@ -539,6 +544,13 @@ export default {
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
       })
+    },
+    beforeImgUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error('上傳圖片大小不能超過 2MB!');
+      }
+      return isLt2M;
     },
     getVGItems() {
       var floor = this.newProject.floor

@@ -108,13 +108,15 @@
       <el-upload 
         class="upload-demo" 
         drag
-        action="must have"
+        :action="uploadURL"
         :on-change="getImage"
         list-type="picture"
-        :auto-upload="false">
+        :before-upload="beforeImgUpload"
+        :auto-upload="true">
         <img :src="image" v-if="!!newProject.sitePlan">
         <i class="el-icon-upload" v-if="!newProject.sitePlan"></i>
         <div class="el-upload__text" v-if="!newProject.sitePlan">將文件拖到此處，或<em>點擊上傳</em></div>
+        <div slot="tip" class="el-upload__tip">上傳文件不能超過2Mb</div>
         <el-button class="reselect" size="small" type="primary" v-if="!!newProject.sitePlan">另選圖片</el-button>
       </el-upload> 
 
@@ -392,6 +394,9 @@ export default {
       var allCompany = this.$store.getters.companies
       return allCompany.filter(company => company.id != this.myCompany.id)
     },
+    myCompany() {
+      return this.$store.getters.me.company
+    },
     soItems() {
       return this.$store.getters.soItems
     },
@@ -411,8 +416,8 @@ export default {
       )
       return customersUSER
     },
-    myCompany() {
-      return this.$store.getters.me.company
+    uploadURL() {
+      return `${process.env.VUE_APP_API_URL}/uploads`
     },
     VGs() {
       return this.$store.getters.vgs
@@ -535,6 +540,13 @@ export default {
           this.newProject.sitePlan
         }`
       })
+    },
+    beforeImgUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error('上傳圖片大小不能超過 2MB!');
+      }
+      return isLt2M;
     },
     switchVG(removedVG, addedVG) {
       var index = this.newProject.vgIds.indexOf(removedVG)
