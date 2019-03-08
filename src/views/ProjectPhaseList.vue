@@ -21,18 +21,6 @@
         width="40">
       </el-table-column>
       <el-table-column
-        prop="id"
-        label="序號"
-        show-overflow-tooltip
-        width="80">
-        <template slot-scope="scope">
-          <span class="clickable"
-            @click="toPath('ProjectPhaseEdit', { soId: scope.row.id })">
-            {{ scope.row.id }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="name"
         label="專案階段">
         <template slot-scope="scope">
