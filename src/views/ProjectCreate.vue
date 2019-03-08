@@ -143,13 +143,15 @@
             <h3 v-if="!isEnoughtVG">請增加軸力計</h3>
           </el-form-item>
           <el-form-item label="支撐階數：">
-            <el-input 
+            <el-input
+              @change='fullVGsInfo=[]'
               v-model.number="newProject.floor"
               placeholder="3">
             </el-input>
           </el-form-item>
           <el-form-item label="每層數量：">
             <el-input
+              @change='fullVGsInfo=[]'
               v-model.number="numOfFloor"
               placeholder="5">
             </el-input>
@@ -548,6 +550,7 @@ export default {
       this.getVGTable(this.floorIndex)
     },
     updateSelectedVGs(value) {
+      this.fullVGsInfo=[]
       var VGList = []
       value.forEach(id => {
         var selectedVG = this.VGs.filter(vg => vg.id == id)
