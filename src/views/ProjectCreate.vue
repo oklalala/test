@@ -248,12 +248,14 @@
         <el-tab-pane label="傾度管 ( SO )">
           <el-form-item label="數量：" prop="vgAction">
             <el-input
+              @change="newProject.soLocation=[]"
               v-model.number="soQt"
               placeholder="5">
             </el-input>
           </el-form-item>
           <el-form-item label="每孔深度 ( m )：" prop="vgAction">
             <el-input
+              @change="newProject.soLocation=[]"
               v-model.number="soDepth"
               placeholder="20.5">
             </el-input>
