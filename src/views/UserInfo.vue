@@ -42,22 +42,6 @@
             </el-input>
           </el-form-item>
         </section>
-        <section>
-          <h3>參與專案</h3>
-          <el-table
-            :data="me.projects"
-            style="width: 100%">
-            <el-table-column
-              prop="id"
-              label="案號"
-              width="180">
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="名稱">
-            </el-table-column>
-          </el-table>
-        </section>
         <div class="button-container">
           <el-button type="primary" @click="submit">
             確認
