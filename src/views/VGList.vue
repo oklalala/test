@@ -114,6 +114,7 @@ export default {
       return !row.projectName
     },
     editVG(id, newNumber) {
+      if(newNumber === this.$store.getters.vgs.filter(vg => vg.id == id)[0].number) return
       this.$store
         .dispatch('updateVG', {
           vgId: id,
