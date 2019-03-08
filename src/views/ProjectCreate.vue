@@ -126,7 +126,6 @@
 
         <el-tab-pane label="軸力計 ( VG )"> 
           <el-form-item label="使用軸力計編號">
-            {{needMoreGauge}}
             <el-select 
               v-model="newProject.vgIds" 
               placeholder="可複選"
@@ -141,22 +140,20 @@
                 :value="vg.id">
               </el-option>
             </el-select>
-            <!-- <h3 v-if="isEnoughtVG" >Add more gauge please</h3> -->
+            <h3 v-if="!isEnoughtVG">請增加軸力計</h3>
           </el-form-item>
-          <div class="demo-input-suffix">
-            <el-form-item label="支撐階數：">
-              <el-input 
-                v-model.number="newProject.floor"
-                placeholder="3">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="每層數量：">
-              <el-input
-                v-model.number="numOfFloor"
-                placeholder="5">
-              </el-input>
-            </el-form-item>
-          </div>
+          <el-form-item label="支撐階數：">
+            <el-input 
+              v-model.number="newProject.floor"
+              placeholder="3">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="每層數量：">
+            <el-input
+              v-model.number="numOfFloor"
+              placeholder="5">
+            </el-input>
+          </el-form-item>
           <br>
           <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">產生軸力計編碼</el-button>
           <br>
@@ -247,20 +244,18 @@
         </el-tab-pane>
 
         <el-tab-pane label="傾度管 ( SO )">
-          <div class="demo-input-suffix">
-            <el-form-item label="數量：" prop="vgAction">
-              <el-input
-                v-model.number="soQt"
-                placeholder="5">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="每孔深度 ( m )：" prop="vgAction">
-              <el-input
-                v-model.number="soDepth"
-                placeholder="20.5">
-              </el-input>
-            </el-form-item>
-          </div>
+          <el-form-item label="數量：" prop="vgAction">
+            <el-input
+              v-model.number="soQt"
+              placeholder="5">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="每孔深度 ( m )：" prop="vgAction">
+            <el-input
+              v-model.number="soDepth"
+              placeholder="20.5">
+            </el-input>
+          </el-form-item>
           <br>
           <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">產生傾度管編碼</el-button>
           <br>
@@ -358,7 +353,6 @@ export default {
     return {
       soQt: 0,
       soDepth: 0,
-      needMoreGauge: '', // alert text
       floorIndex: 0, // used in array
       numOfFloor: 0, //
       VGList: [], // get usable VGs
@@ -449,15 +443,11 @@ export default {
       return usable >= needed
     },
     preparedShowVG() {
-      if (!this.isEnoughtVG) {
-        this.needMoreGauge = 'Add more gauge please'
-        return false
-      }
-      this.needMoreGauge = ''
       var hasFloor = !!this.newProject.floor
       var hasNumOfFloor = !!this.numOfFloor
       var hasSelectedVG = this.newProject.vgIds.length !== 0
-      return hasFloor && hasNumOfFloor && hasSelectedVG
+      var required = hasFloor && hasNumOfFloor && hasSelectedVG
+      return required && this.isEnoughtVG
     },
     getPagination() {
       return this.newProject.floor * 10
@@ -609,7 +599,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 h2 span {
   font-size: 14px;
   padding-left: 30px;
@@ -634,4 +624,13 @@ img {
   bottom: 10px;
   right: 20px;
 }
+
+h3 {
+  color: red;
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 20px;
+}
+
 </style>
