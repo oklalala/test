@@ -71,7 +71,7 @@ export default {
       tuningArr[0] = this.soChartData[0].depth - 1
       let c = []
       c.push(tuningArr)
-      let m = this.soChartData.forEach(item => c.push(Object.values(item)))
+      this.soChartData.forEach(item => c.push(Object.values(item)))
       c.map(x => (x[0] += 1))
       c.unshift(Object.keys(this.soChartData[0]))
       return c

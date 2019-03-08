@@ -183,15 +183,16 @@ export default {
         })
         .then(() => {
           this.toPath('UserList')
-        }).catch(e => {
+        })
+        .catch(e => {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
     isShow(feature) {
       return this.$store.getters.rolePermissions
         .filter(auth => auth.role === this.selectedRole)
-        .shift().permissions
-        .filter(permission => permission.value)
+        .shift()
+        .permissions.filter(permission => permission.value)
         .map(permission => permission.name)
         .includes(feature)
     },

@@ -92,15 +92,13 @@
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-import SOChart from '../components/SOChart'
-import VGChart from '../components/VGChart'
 import VGECharts from '../components/VGECharts'
 import SOECharts from '../components/SOECharts'
 import moment from 'moment'
 
 export default {
   name: 'ProjectMonitor',
-  components: { SOChart, VGECharts, SOECharts },
+  components: { VGECharts, SOECharts },
   mixins: [ToPathMixin],
   created() {
     this.getVGData(this.vgDate, 1)
@@ -261,7 +259,7 @@ export default {
 }
 </script>
 <style>
-.show-picture{
+.show-picture {
   cursor: pointer;
   width: 80px;
 }
