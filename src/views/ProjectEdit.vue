@@ -108,15 +108,15 @@
       <el-upload 
         class="upload-demo" 
         drag
-        action="https://jsonplaceholder.typicode.com/posts/" 
+        action="must have"
         :on-change="getImage"
         list-type="picture"
         :auto-upload="false">
-        <img :src="showImage" v-if="!!newProject.sitePlan">
+        <img :src="image" v-if="!!newProject.sitePlan">
         <i class="el-icon-upload" v-if="!newProject.sitePlan"></i>
         <div class="el-upload__text" v-if="!newProject.sitePlan">將文件拖到此處，或<em>點擊上傳</em></div>
         <el-button class="reselect" size="small" type="primary" v-if="!!newProject.sitePlan">另選圖片</el-button>
-      </el-upload>  
+      </el-upload> 
 
       <h2>監控設定</h2>
       <el-tabs type="border-card">
@@ -334,6 +334,9 @@ export default {
   name: 'ProjectEdit',
 
   mixins: [ToPathMixin, CalculateVGMixin],
+  created() {
+    this.image = `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
+  },
   data() {
     return {
       removedVG: '',
@@ -341,7 +344,7 @@ export default {
       floorIndex: 0, // used in array
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
-      image: [{ url: 'haha' }], // preview url in blob
+      image: '', // preview url in blob
       selectedOPT: [], // custom and self OPTs
       selectedUSER: [], // custom USERs
       selectedStatus: '',
@@ -433,9 +436,6 @@ export default {
     },
     Steels() {
       return this.$store.getters.steels
-    },
-    showImage() {
-      return `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
     },
     numOfFloor() {
       return this.project.vgLocation.length / this.project.floor
@@ -529,9 +529,9 @@ export default {
       this.newProject.USER = USERList
     },
     getImage(file) {
-      this.image = file
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
+        this.image = `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
       })
     },
     switchVG(removedVG, addedVG) {
