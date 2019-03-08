@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     vgList() {
-      return this.$store.getters.vgs
+      return JSON.parse(JSON.stringify(this.$store.getters.vgs))
     }
   },
   methods: {
