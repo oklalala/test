@@ -34,6 +34,11 @@
             <el-input v-model="newUser.account" disabled></el-input>
           </el-form-item>
         </el-col>
+        <el-col>
+          <el-form-item label="密碼">
+            <el-input v-model="newUser.password"></el-input>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
@@ -158,13 +163,6 @@ export default {
     }
   },
   methods: {
-    deleteUsers() {
-      if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteUsers', this.deleteList)
-    },
-    updateDeleteList(value) {
-      this.deleteList = value.map(user => user.id)
-    },
     cancel() {
       this.toPath('UserList')
     },
@@ -174,6 +172,7 @@ export default {
         roleName: this.selectedRole,
         companyId: this.selectedCompany,
         account: this.newUser.account,
+        // password: this.newUser.password,
         soId: this.selectedSOItem
       }
       this.$store

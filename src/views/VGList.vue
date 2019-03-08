@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     vgList() {
-      return this.$store.getters.vgs
+      return JSON.parse(JSON.stringify(this.$store.getters.vgs))
     }
   },
   methods: {
@@ -114,6 +114,11 @@ export default {
       return !row.projectName
     },
     editVG(id, newNumber) {
+      if (
+        newNumber ===
+        this.$store.getters.vgs.filter(vg => vg.id == id)[0].number
+      )
+        return
       this.$store
         .dispatch('updateVG', {
           vgId: id,

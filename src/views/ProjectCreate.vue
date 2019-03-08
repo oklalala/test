@@ -546,11 +546,11 @@ export default {
       })
     },
     beforeImgUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
-        this.$message.error('上傳圖片大小不能超過 2MB!');
+        this.$message.error('上傳圖片大小不能超過 2MB!')
       }
-      return isLt2M;
+      return isLt2M
     },
     getVGItems() {
       var floor = this.newProject.floor
