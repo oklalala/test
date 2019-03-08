@@ -469,6 +469,9 @@ export default {
         .then(() => {
           this.toPath('ProjectSetting')
         })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     resetMember() {
       this.selectedUSER = []

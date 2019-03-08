@@ -138,6 +138,9 @@ export default {
       this.$store.dispatch('createSteel', this.newSteel).then(() => {
         this.resetTable()
       })
+      .catch(e => {
+        this.$message.error(`請重新檢查 ${e.response.data.result}`)
+      })
     },
     deleteSteels() {
       if (this.deleteList.length === 0) return
@@ -160,6 +163,9 @@ export default {
         })
         .then(() => {
           this.resetTable()
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
     loadSteel(steelObj) {
