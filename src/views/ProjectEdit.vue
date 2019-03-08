@@ -20,11 +20,12 @@
         <el-col :span="12">
           <el-form-item label="專案狀態">
             <el-select
-              v-model="newProject.status"
+              v-model="selectedStatus"
+              @change="updateSelectedStatus"
               style="width: 100%">
               <el-option
                 v-for="item in statusList"
-                :key="item.name"
+                :key="item.value"
                 :label="item.label"
                 :value="item.value">
               </el-option>
@@ -104,7 +105,7 @@
         class="upload-demo" 
         drag
         action="https://jsonplaceholder.typicode.com/posts/" 
-        :on-change="uploadChange"
+        :on-change="getImage"
         list-type="picture"
         :auto-upload="false">
         <img :src="showImage" v-if="!!newProject.sitePlan">
@@ -316,6 +317,7 @@ export default {
       image: [{ url: 'haha' }], // preview url in blob
       selectedOPT: [], // custom and self OPTs
       selectedUSER: [], // custom USERs
+      selectedStatus: '',
       statusList: [
         {
           value: 'end',
@@ -422,6 +424,7 @@ export default {
 
       this.selectedOPT = this.project.OPT.map(opt => opt.id)
       this.selectedUSER = this.project.USER.map(user => user.id)
+      this.selectedStatus = this.project.status
 
       return {
         number: this.project.number, // CNT-16Q3
@@ -479,6 +482,9 @@ export default {
       this.newProject.OPT = []
       this.newProject.USER = []
     },
+    updateSelectedStatus(value) {
+      this.newProject.status = value
+    },
     updateSelectedOPTs(value) {
       var OPTList = []
       value.forEach(id => {
@@ -495,7 +501,7 @@ export default {
       })
       this.newProject.USER = USERList
     },
-    uploadChange(file) {
+    getImage(file) {
       this.image = file
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
