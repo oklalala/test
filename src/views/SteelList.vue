@@ -112,18 +112,10 @@ export default {
         tcg: ''
       },
       rules: {
-        name: [
-          { required: true, message: '請輸入鋼材名稱',trigger: 'blur' }
-        ],
-        tcg: [
-          { required: true, message: '請輸入 TCG', trigger: 'blur' }
-        ],
-        tcm: [
-          { required: true, message: '請輸入 TCM', trigger: 'blur' }
-        ],
-        es: [
-          { required: true, message: '請輸入 ES', trigger: 'blur' }
-        ],
+        name: [{ required: true, message: '請輸入鋼材名稱', trigger: 'blur' }],
+        tcg: [{ required: true, message: '請輸入 TCG', trigger: 'blur' }],
+        tcm: [{ required: true, message: '請輸入 TCM', trigger: 'blur' }],
+        es: [{ required: true, message: '請輸入 ES', trigger: 'blur' }],
         sectionArea: [
           { required: true, message: '請輸入截面積', trigger: 'blur' }
         ]
@@ -166,12 +158,14 @@ export default {
       this.isShow = true
     },
     createSteel() {
-      this.$store.dispatch('createSteel', this.newSteel).then(() => {
-        this.resetTable()
-      })
-      .catch(e => {
-        this.$message.error(`請重新檢查 ${e.response.data.result}`)
-      })
+      this.$store
+        .dispatch('createSteel', this.newSteel)
+        .then(() => {
+          this.resetTable()
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     deleteSteels() {
       if (this.deleteList.length === 0) return
