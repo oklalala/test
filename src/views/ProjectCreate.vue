@@ -107,7 +107,7 @@
         class="upload-demo" 
         drag
         action="https://jsonplaceholder.typicode.com/posts/" 
-        :on-change="uploadChange"
+        :on-change="getImage" 
         list-type="picture"
         :auto-upload="false">
         <img :src="this.image.url" alt="" v-if="imageSelected">
@@ -331,7 +331,6 @@ export default {
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
       fullVGsInfo: [], // from calculateVG.js
-      imageSelected: false, // optimize UX
       image: [{ url: 'haha' }], // preview url in blob
       OPTList: [], // custom and self OPTs
       USERList: [], // custom USERs
@@ -427,6 +426,9 @@ export default {
     },
     preparedShowSO() {
       return !!this.soQt && !!this.soDepth
+    },
+    imageSelected() {
+      return this.newProject.sitePlan
     }
   },
   methods: {
@@ -497,8 +499,7 @@ export default {
       })
       this.USERList = USERList
     },
-    uploadChange(file) {
-      this.imageSelected = true
+    getImage(file) {
       this.image = file
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
