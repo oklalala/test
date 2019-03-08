@@ -531,7 +531,9 @@ export default {
     getImage(file) {
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
-        this.image = `${process.env.VUE_APP_API_URL}/${this.newProject.sitePlan}`
+        this.image = `${process.env.VUE_APP_API_URL}/${
+          this.newProject.sitePlan
+        }`
       })
     },
     switchVG(removedVG, addedVG) {

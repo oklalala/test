@@ -400,8 +400,8 @@ export default {
           { required: true, message: '請輸入編號', trigger: 'blur' },
           { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
         ],
-        name:{ required: true, message: '請輸入專案名稱', trigger: 'blur' },
-        vgNotice:{ required: true, message: '請輸入注意值', trigger: 'blur'}
+        name: { required: true, message: '請輸入專案名稱', trigger: 'blur' },
+        vgNotice: { required: true, message: '請輸入注意值', trigger: 'blur' }
       }
     }
   },
@@ -552,7 +552,7 @@ export default {
       this.getVGTable(this.floorIndex)
     },
     updateSelectedVGs(value) {
-      this.fullVGsInfo=[]
+      this.fullVGsInfo = []
       var VGList = []
       value.forEach(id => {
         var selectedVG = this.VGs.filter(vg => vg.id == id)
@@ -637,5 +637,4 @@ h3 {
   right: 0;
   top: 20px;
 }
-
 </style>
