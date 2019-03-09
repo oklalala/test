@@ -64,21 +64,30 @@ export default {
   data() {
     return {
       password: 'password',
-      rules:{
-        phone: [ 
-            { required: true, pattern: /[0][9]\d{8}/, message: '請輸入電話號碼 : 09xxxxxxxx', trigger: 'blur' }
+      rules: {
+        phone: [
+          {
+            required: true,
+            pattern: /[0][9]\d{8}/,
+            message: '請輸入電話號碼 : 09xxxxxxxx',
+            trigger: 'blur'
+          }
         ],
         email: [
           { required: true, message: '請輸入 email', trigger: 'blur' },
-          { type: 'email', message: '請確認格式 example@chuen.com.tw', trigger: ['blur', 'change'] }
-        ],
+          {
+            type: 'email',
+            message: '請確認格式 example@chuen.com.tw',
+            trigger: ['blur', 'change']
+          }
+        ]
       }
     }
   },
   computed: {
     me() {
       return this.$store.getters.me
-    },
+    }
   },
   methods: {
     updateMe(payload) {
