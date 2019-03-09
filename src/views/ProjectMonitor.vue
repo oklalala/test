@@ -256,30 +256,34 @@ export default {
       })
     },
     exportVG() {
-      this.$store.dispatch('exportVG', this.$route.params.projectId).then(res => {
-        this.$message({
-          message: `成功下載 ${this.newProject.name}`,
-          type: 'success',
-          center: true,
-          duration: 1800
+      this.$store
+        .dispatch('exportVG', this.$route.params.projectId)
+        .then(res => {
+          this.$message({
+            message: `成功下載 ${this.newProject.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
         })
-      })
-      .catch(e => {
-        this.$message.error(`請重新檢查 ${e.response.data.result}`)
-      })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     exportSO() {
-      this.$store.dispatch('exportSO', this.$route.params.projectId).then(res => {
-        this.$message({
-          message: `成功下載 ${this.newProject.name}`,
-          type: 'success',
-          center: true,
-          duration: 1800
+      this.$store
+        .dispatch('exportSO', this.$route.params.projectId)
+        .then(res => {
+          this.$message({
+            message: `成功下載 ${this.newProject.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
         })
-      })
-      .catch(e => {
-        this.$message.error(`請重新檢查 ${e.response.data.result}`)
-      })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     }
   }
 }
