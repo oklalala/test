@@ -68,8 +68,8 @@ export default {
         phone: [
           {
             required: true,
-            pattern: /[0][9]\d{8}/,
-            message: '請輸入電話號碼 : 09xxxxxxxx',
+            pattern: /^[0][9]\d{2}\-?\d{6}$/,
+            message: '請輸入電話號碼 : 09xx-xxxxxx',
             trigger: 'blur'
           }
         ],
