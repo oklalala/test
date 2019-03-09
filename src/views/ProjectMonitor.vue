@@ -43,7 +43,7 @@
           :selectedFloor='selectedFloor'
           :vgChartData="vgChartData"
           :project='project'/>
-        <el-button v-if="isShow('project:export')">匯出資料</el-button>
+        <el-button v-if="isShow('project:export')" @click='exportVG'>匯出資料</el-button>
       </el-tab-pane>
 
       <el-tab-pane label="傾度管 ( SO )">
@@ -83,7 +83,7 @@
           v-if="!!selectedSO && !!soDate"
           :soChartData="soChartData"
           :project="project"/>
-        <el-button v-if="isShow('project:export')">匯出資料</el-button>
+        <el-button v-if="isShow('project:export')" @click='exportSO'>匯出資料</el-button>
       </el-tab-pane>
     </el-tabs>
     <br>
@@ -253,6 +253,32 @@ export default {
       return this.$store.dispatch('getMeasuredSO', payload).then(res => {
         this.soChartData = res.data.data
         this.soDateList = res.data.data.map(x => x.date)
+      })
+    },
+    exportVG() {
+      this.$store.dispatch('exportVG', this.$route.params.projectId).then(res => {
+        this.$message({
+          message: `成功下載 ${this.newProject.name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+      })
+      .catch(e => {
+        this.$message.error(`請重新檢查 ${e.response.data.result}`)
+      })
+    },
+    exportSO() {
+      this.$store.dispatch('exportSO', this.$route.params.projectId).then(res => {
+        this.$message({
+          message: `成功下載 ${this.newProject.name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+      })
+      .catch(e => {
+        this.$message.error(`請重新檢查 ${e.response.data.result}`)
       })
     }
   }

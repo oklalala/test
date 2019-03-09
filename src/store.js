@@ -290,6 +290,9 @@ const vgs = {
     },
     updateVG(context, { vgId, payload }) {
       return sendAPI('put', `/vg/${vgId}`, true, payload)
+    },
+    exportVG(context, projectId) {
+      return sendAPI('get', `/measures/vg/export?${projectId}`, true)
     }
   }
 }
@@ -328,6 +331,9 @@ const soItems = {
     },
     createSOItem(context, payload) {
       return sendAPI('post', '/so-item', true, payload)
+    },
+    exportSO(context, projectId) {
+      return sendAPI('get', `/measures/so/export?${projectId}`, true)
     }
   }
 }
