@@ -25,14 +25,11 @@
         prop="id"
         label="編號">
         <template slot-scope="scope">
-          <el-button 
+          <h4 
             class="clickable"
-            type="primary"
-            size="mini" 
-            round
             @click="readAndOpenCompanyDialog(scope.row.name)">
             {{ scope.row.id }}
-          </el-button>
+          </h4>
         </template>
       </el-table-column>
       <el-table-column
@@ -101,6 +98,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-</style>

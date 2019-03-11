@@ -64,14 +64,11 @@
         label="鋼材名稱"
         width="200">
         <template slot-scope="scope">
-          <el-button 
+          <h4 
             class="clickable"
-            type="primary"
-            size="mini" 
-            round
             @click="loadSteel(scope.row)">
             {{ scope.row.name }}
-          </el-button>
+          </h4>
         </template>
       </el-table-column>
       <el-table-column

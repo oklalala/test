@@ -24,14 +24,11 @@
         label="姓名"
         width="130">
         <template slot-scope="scope">
-          <el-button 
+          <h4 
             class="clickable"
-            type="primary"
-            size="mini" 
-            round
             @click="toPath('EditUser', { userId: scope.row.id })">
             {{ scope.row.name }}
-          </el-button>
+          </h4>
         </template>
       </el-table-column>
       <el-table-column

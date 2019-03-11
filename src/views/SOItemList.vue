@@ -23,14 +23,11 @@
         label="編號"
         width="130">
         <template slot-scope="scope">
-          <el-button 
+          <h4 
             class="clickable"
-            type="primary"
-            size="mini" 
-            round
             @click="toPath('SOItemEdit', { soId: scope.row.id })">
             {{ scope.row.number }}
-          </el-button>
+          </h4>
         </template>
       </el-table-column>
       <el-table-column
