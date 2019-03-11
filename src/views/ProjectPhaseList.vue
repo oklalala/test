@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     projectPhaseList() {
-      return this.$store.getters.projectPhases
+      return JSON.parse(JSON.stringify(this.$store.getters.projectPhases))
     }
   },
   methods: {
@@ -76,6 +76,11 @@ export default {
       this.deleteList = value.map(projectPhase => projectPhase.id)
     },
     editProjectPhase(id, newName) {
+      if (
+        newName ===
+        this.$store.getters.projectPhases.filter(projectPhase => projectPhase.id == id)[0].name
+      )
+        return
       this.$store
         .dispatch('updateProjectPhase', {
           projectPhaseId: id,
