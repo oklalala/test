@@ -146,14 +146,14 @@
           </el-form-item>
           <el-form-item label="支撐階數：">
             <el-input
-              @change='fullVGsInfo=[]'
+              @keyup.native='fullVGsInfo=[]'
               v-model.number="newProject.floor"
               placeholder="3">
             </el-input>
           </el-form-item>
           <el-form-item label="每層數量：">
             <el-input
-              @change='fullVGsInfo=[]'
+              @keyup.native='fullVGsInfo=[]'
               v-model.number="numOfFloor"
               placeholder="5">
             </el-input>
@@ -250,14 +250,14 @@
         <el-tab-pane label="傾度管 ( SO )">
           <el-form-item label="數量：" prop="vgAction">
             <el-input
-              @change="newProject.soLocation=[]"
+              @keyup.native="newProject.soLocation=[]"
               v-model.number="soQt"
               placeholder="5">
             </el-input>
           </el-form-item>
           <el-form-item label="每孔深度 ( m )：" prop="vgAction">
             <el-input
-              @change="newProject.soLocation=[]"
+              @keyup.native="newProject.soLocation=[]"
               v-model.number="soDepth"
               placeholder="20.5">
             </el-input>
