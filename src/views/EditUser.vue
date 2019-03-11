@@ -28,18 +28,10 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col>
-          <el-form-item label="帳號">
-            <el-input v-model="newUser.account" disabled></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col>
-          <el-form-item label="密碼">
-            <el-input v-model="newUser.password"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="帳號">
+        <el-input v-model="newUser.account" disabled></el-input>
+        <h4 class='password'>密碼：{{newUser.password}}</h4>
+      </el-form-item>
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
           <el-col :span="17" :sm='21' :md='21'>
@@ -206,3 +198,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.password {
+  color: #606266;
+  font-weight: normal;
+}
+</style>
+
