@@ -211,9 +211,9 @@
               </el-button>
               <el-table class="vg-table" :data="vgTable">
                 <el-table-column
-                  prop="host"
-                  label="VG ID"
-                  width="320">
+                  prop="host.number"
+                  label="VG"
+                  width="120">
                 </el-table-column>
                 <el-table-column
                   prop="port"
@@ -554,8 +554,7 @@ export default {
     },
     getVGItems() {
       var floor = this.newProject.floor
-      var vgList = this.newProject.vgIds
-      this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, vgList)
+      this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, this.VGList)
       this.initVGManagement()
       this.getVGTable(0)
     },

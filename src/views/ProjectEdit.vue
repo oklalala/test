@@ -213,14 +213,9 @@
               </el-button>
               <el-table class="vg-table" :data="vgTable">
                 <el-table-column
-                  prop="vgId"
-                  label="VG ID"
-                  width="320">
-                </el-table-column>
-                <el-table-column
                   prop="vgNumber"
-                  label="Port"
-                  width="80">
+                  label="VG"
+                  width="120">
                 </el-table-column>
                 <el-table-column
                   prop="number"
