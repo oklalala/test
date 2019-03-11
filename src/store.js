@@ -131,6 +131,9 @@ const companies = {
       return sendAPI('delete', `/companies/${companyIdsStr}`, true).then(() => {
         dispatch('getCompanies')
       })
+    },
+    updateCompany(context, { companyId, payload }) {
+      return sendAPI('put', `/company/${companyId}`, true, payload)
     }
   }
 }

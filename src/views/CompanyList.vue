@@ -1,18 +1,17 @@
 <template>
   <div class="companyList">
-    <div class="operationGroup">
-      <div class="operationGroup-left">
-        <el-button type="primary" @click="openCompanyDialog">新增</el-button>
-      </div>
-      <div class="operationGroup-right">
-        <el-button
-          type="primary"
-          v-if="hasDeleteItems"
-          @click="deleteCompany">
-          刪除
+    <h1>公司列表</h1>
+    <el-row class="operationGroup" type='flex' justify="between">
+      <el-col class="operationGroup-left" :sm='4'>
+        <el-button type="primary" @click="deleteCompanies" v-if="!!deleteList.length">刪除</el-button>
+      </el-col>
+      <el-col class="operationGroup-right" :span='24' :sm='8'>
+        <el-input v-model="newCompany.name" placeholder="新增公司名稱"></el-input>
+        <el-button class='addButton' type="primary" @click="createCompany" v-if="!!newCompany.name">
+          <i class="el-icon-plus"></i>
         </el-button>
-      </div>
-    </div>
+      </el-col>
+    </el-row>
     <el-table
       :data="companyList"
       class="companyList-table"
@@ -22,78 +21,63 @@
         width="40">
       </el-table-column>
       <el-table-column
-        prop="id"
-        label="編號">
-        <template slot-scope="scope">
-          <h4 
-            class="clickable"
-            @click="readAndOpenCompanyDialog(scope.row.name)">
-            {{ scope.row.id }}
-          </h4>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="name"
         label="公司名稱">
+        <template slot-scope="scope">
+          <el-input 
+            @blur="editCompany(scope.row.id,scope.row.name)"
+            v-model="scope.row.name">
+          </el-input>
+        </template>
       </el-table-column>
     </el-table>
-
-    <el-dialog
-      title="新增公司"
-      :visible.sync="createCompanyDialogVisible">
-      <el-input v-model="newCompanyName" placeholder="請輸入公司名稱"></el-input>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="createCompany">
-          確認
-        </el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  name: 'CompanyList',
+  name: 'companyList',
   mixins: [ToPathMixin],
   data() {
     return {
-      createCompanyDialogVisible: false,
       deleteList: [],
-      newCompanyName: null
+      newCompany: {
+        name: ''
+      }
     }
   },
   computed: {
-    hasDeleteItems() {
-      return this.deleteList.length > 0
-    },
     companyList() {
-      return this.$store.getters.companies
+      return JSON.parse(JSON.stringify(this.$store.getters.companies))
     }
   },
   methods: {
-    openCompanyDialog() {
-      this.newCompanyName = ''
-      this.createCompanyDialogVisible = true
-    },
-    readAndOpenCompanyDialog(name) {
-      this.newCompanyName = name
-      this.createCompanyDialogVisible = true
-    },
     createCompany() {
       this.$store.dispatch('createCompany', {
-        name: this.newCompanyName
+        name: this.newCompany.name
       })
-      this.createCompanyDialogVisible = false
     },
-    deleteCompany() {
+    deleteCompanies() {
       if (this.deleteList.length === 0) return
       this.$store.dispatch('deleteCompanies', this.deleteList)
     },
     updateDeleteList(value) {
       this.deleteList = value.map(company => company.id)
+    },
+    editCompany(id, newName) {
+      console.log(newName,
+      this.$store.getters.companies.filter(company => company.id == id)[0].name)
+      if (
+        newName ===
+        this.$store.getters.companies.filter(company => company.id == id)[0].name
+      )
+        return
+      this.$store
+        .dispatch('updateCompany', {
+          companyId: id,
+          payload: { name: newName }
+        })
     }
   }
 }
