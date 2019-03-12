@@ -57,7 +57,10 @@ export default {
   data() {
     return {
       deleteList: [],
-      statusFilter:[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]
+      statusFilter: [
+        { text: '結案', value: 'end' },
+        { text: '執行', value: 'in-progress' }
+      ]
     }
   },
   computed: {

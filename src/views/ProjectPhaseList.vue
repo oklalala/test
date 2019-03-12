@@ -78,7 +78,9 @@ export default {
     editProjectPhase(id, newName) {
       if (
         newName ===
-        this.$store.getters.projectPhases.filter(projectPhase => projectPhase.id == id)[0].name
+        this.$store.getters.projectPhases.filter(
+          projectPhase => projectPhase.id == id
+        )[0].name
       )
         return
       this.$store

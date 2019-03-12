@@ -66,18 +66,16 @@ export default {
       this.deleteList = value.map(company => company.id)
     },
     editCompany(id, newName) {
-      console.log(newName,
-      this.$store.getters.companies.filter(company => company.id == id)[0].name)
       if (
         newName ===
-        this.$store.getters.companies.filter(company => company.id == id)[0].name
+        this.$store.getters.companies.filter(company => company.id == id)[0]
+          .name
       )
         return
-      this.$store
-        .dispatch('updateCompany', {
-          companyId: id,
-          payload: { name: newName }
-        })
+      this.$store.dispatch('updateCompany', {
+        companyId: id,
+        payload: { name: newName }
+      })
     }
   }
 }
