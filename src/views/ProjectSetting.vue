@@ -38,7 +38,7 @@
       <el-table-column
         prop="status"
         label="專案狀態"
-        :filters="[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]"
+        :filters="statusFilter"
         :filter-method="statusFilter">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
@@ -56,7 +56,8 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      deleteList: []
+      deleteList: [],
+      statusFilter:[{ text: '結案', value: 'end' }, { text: '執行', value: 'in-progress' }]
     }
   },
   computed: {
