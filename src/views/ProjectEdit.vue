@@ -180,7 +180,7 @@
                 <el-input-number
                   :step="0.1"
                   :controls=false
-                  siez="mini"
+                  size="mini"
                   v-model.number="newProject.vgManagement[floorIndex].notice"
                   placeholder="68.3">
                 </el-input-number>
@@ -189,7 +189,7 @@
                 <el-input-number
                   :step="0.1"
                   :controls=false
-                  siez="mini"
+                  size="mini"
                   v-model.number="newProject.vgManagement[floorIndex].warning"
                   placeholder="79.6">
                 </el-input-number>
@@ -198,7 +198,7 @@
                 <el-input-number
                   :step="0.1"
                   :controls=false
-                  siez="mini"
+                  size="mini"
                   v-model.number="newProject.vgManagement[floorIndex].action"
                   placeholder="104.2">
                 </el-input-number>
@@ -216,6 +216,11 @@
                   prop="vgNumber"
                   label="VG"
                   width="120">
+                </el-table-column>
+                <el-table-column
+                  prop="port"
+                  label="Port"
+                  width="100">
                 </el-table-column>
                 <el-table-column
                   prop="number"
@@ -252,7 +257,7 @@
                 <el-input-number
                   :step="0.01"
                   :controls=false
-                  siez="mini"
+                  size="mini"
                   v-model.number="newProject.soManagement.notice"
                   placeholder="4.24">
                 </el-input-number>
@@ -261,7 +266,7 @@
                 <el-input-number
                   :step="0.01"
                   :controls=false
-                  siez="mini"
+                  size="mini"
                   v-model.number="newProject.soManagement.warning"
                   placeholder="9.88">
                 </el-input-number>
@@ -270,7 +275,7 @@
                 <el-input-number
                   :step="0.01"
                   :controls=false
-                  siez="mini"
+                  size="mini"
                   v-model.number="newProject.soManagement.action"
                   placeholder="15.06">
                 </el-input-number>
