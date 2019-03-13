@@ -406,12 +406,30 @@ export default {
           { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
         ],
         name: { required: true, message: '請輸入專案名稱', trigger: 'blur' },
-        'soManagement.notice': [{ required: true, message: '請輸入注意值', trigger: 'blur' },
-        { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}],
-        'soManagement.warning': [{ required: true, message: '請輸入警戒值', trigger: 'blur' },
-        { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}],
-        'soManagement.action': [{ required: true, message: '請輸入行動值', trigger: 'blur' },
-        { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}]
+        'soManagement.notice': [
+          { required: true, message: '請輸入注意值', trigger: 'blur' },
+          {
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: '小數點下最多兩位 0.01',
+            trigger: 'blur'
+          }
+        ],
+        'soManagement.warning': [
+          { required: true, message: '請輸入警戒值', trigger: 'blur' },
+          {
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: '小數點下最多兩位 0.01',
+            trigger: 'blur'
+          }
+        ],
+        'soManagement.action': [
+          { required: true, message: '請輸入行動值', trigger: 'blur' },
+          {
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: '小數點下最多兩位 0.01',
+            trigger: 'blur'
+          }
+        ]
       }
     }
   },
