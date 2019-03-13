@@ -309,7 +309,7 @@ router.beforeEach((to, from, next) => {
 
   let storeToken = store.getters.token
   let localToken = localStore.get('ground_monitor_token')
-  if (!storeToken && localToken){
+  if (!storeToken && localToken) {
     store.commit('setToken', localToken.token)
     store.commit('setMyId', localToken.myId)
     store.commit('setMyRole', localToken.myRole)
