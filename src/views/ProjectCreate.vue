@@ -175,21 +175,36 @@
           <el-row :gutter="20" v-if="!!fullVGsInfo.length">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
-              <el-form-item label="注意值" prop='getVGNotice'>
+              <el-form-item 
+                label="注意值" 
+                :prop="'vgManagement['+this.floorIndex+'].notice'"
+                :rules="[
+                  { required: true, message: '請檢查注意值', trigger: 'blur' },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: 'blur' },]">
                 <el-input
                   size='mini'
                   v-model.number="newProject.vgManagement[floorIndex].notice"
                   placeholder="68.3">
                 </el-input>
               </el-form-item>
-              <el-form-item label="警戒值" prop="vgWarning">
+              <el-form-item 
+                label="警戒值" 
+                :prop="'vgManagement['+this.floorIndex+'].warning'"
+                :rules="[
+                  { required: true, message: '請檢查注意值', trigger: 'blur' },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: 'blur' },]">
                 <el-input
                   size='mini'
                   v-model.number="newProject.vgManagement[floorIndex].warning"
                   placeholder="79.6">
                 </el-input>
               </el-form-item>
-              <el-form-item label="行動值" prop="vgAction">
+              <el-form-item 
+                label="行動值" 
+                :prop="'vgManagement['+this.floorIndex+'].action'"
+                :rules="[
+                  { required: true, message: '請檢查注意值', trigger: 'blur' },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: 'blur' },]">
                 <el-input
                   size='mini'
                   v-model.number="newProject.vgManagement[floorIndex].action"
@@ -391,7 +406,6 @@ export default {
           { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
         ],
         name: { required: true, message: '請輸入專案名稱', trigger: 'blur' },
-        getVGNotice: { required: true, message: '請輸入注意值', trigger: 'blur' },
         'soManagement.notice': [{ required: true, message: '請輸入注意值', trigger: 'blur' },
         { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}],
         'soManagement.warning': [{ required: true, message: '請輸入警戒值', trigger: 'blur' },
@@ -402,9 +416,6 @@ export default {
     }
   },
   computed: {
-    getVGNotice() {
-      return vgManagement[this.floorIndex].notice
-    },
     projectList() {
       return this.$store.getters.projects
     },
