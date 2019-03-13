@@ -38,7 +38,7 @@
       <el-table-column
         prop="status"
         label="專案狀態"
-        :filters="statusFilter"
+        :filters="statusList"
         :filter-method="statusFilter">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       deleteList: [],
-      statusFilter: [
+      statusList: [
         { text: '結案', value: 'end' },
         { text: '執行', value: 'in-progress' }
       ]
