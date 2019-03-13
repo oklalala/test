@@ -84,10 +84,12 @@ export default {
           .name
       )
         return
-      this.$store.dispatch('updateCompany', {
-        companyId: id,
-        payload: { name: newName }
-      }).then(() => {
+      this.$store
+        .dispatch('updateCompany', {
+          companyId: id,
+          payload: { name: newName }
+        })
+        .then(() => {
           this.$message({
             message: `成功編輯 ${this.newName}`,
             type: 'success',
