@@ -59,7 +59,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
-      this.toPath('Entry')
     },
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
