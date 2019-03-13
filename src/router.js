@@ -53,7 +53,7 @@ let router = new Router({
       }
     },
     {
-      path: '/company-list',
+      path: '/companies',
       name: 'CompanyList',
       component: CompanyList,
       meta: {
@@ -66,7 +66,7 @@ let router = new Router({
       }
     },
     {
-      path: '/user-list',
+      path: '/users',
       name: 'UserList',
       component: UserList,
       meta: {
@@ -112,7 +112,7 @@ let router = new Router({
           store.dispatch('getRolesPermissions')
         ])
           .then(() => {
-            if (from.path !== '/company-list') {
+            if (from.path !== '/companies') {
               return store.dispatch('getUser', to.params.userId)
             } else return Promise.resolve()
           })
@@ -138,7 +138,7 @@ let router = new Router({
       }
     },
     {
-      path: '/project-list',
+      path: '/projects',
       name: 'ProjectList',
       component: ProjectList,
       meta: { requireAuth: true },
@@ -190,7 +190,7 @@ let router = new Router({
           store.dispatch('getSteels')
         ])
           .then(() => {
-            if (from.path !== '/steel-list') {
+            if (from.path !== '/steels') {
               return store.dispatch('getProject', to.params.projectId)
             } else return Promise.resolve()
           })
@@ -230,7 +230,7 @@ let router = new Router({
       }
     },
     {
-      path: '/project-phase-list',
+      path: '/project-phases',
       name: 'ProjectPhaseList',
       component: ProjectPhaseList,
       meta: { requireAuth: true },
@@ -241,7 +241,7 @@ let router = new Router({
       }
     },
     {
-      path: '/vg-list',
+      path: '/vgs',
       name: 'VGList',
       component: VGList,
       meta: { requireAuth: true },
@@ -252,7 +252,7 @@ let router = new Router({
       }
     },
     {
-      path: '/steel-list',
+      path: '/steels',
       name: 'SteelList',
       component: SteelList,
       meta: { requireAuth: true },
@@ -263,7 +263,7 @@ let router = new Router({
       }
     },
     {
-      path: '/soItem-list',
+      path: '/so-items',
       name: 'SOItemList',
       component: SOItemList,
       meta: { requireAuth: true },

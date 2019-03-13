@@ -11,7 +11,7 @@ const ProjectCommands = {
   }
 }
 
-const projectURL = `${process.env.VUE_DEV_SERVER_URL}/project-list`
+const projectURL = `${process.env.VUE_DEV_SERVER_URL}/projects`
 
 module.exports = {
   url: projectURL,

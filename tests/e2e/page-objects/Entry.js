@@ -38,7 +38,7 @@ const EntryCommands = {
     return this.api
   },
   shouldSeeProjectPageIfSuccess() {
-    this.api.pause(1000).assert.urlContains('/project-list')
+    this.api.pause(1000).assert.urlContains('/projects')
     return this.api
   }
 }
