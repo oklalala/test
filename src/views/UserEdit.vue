@@ -1,5 +1,5 @@
 <template>
-  <div class="editUser">
+  <div class="userEdit">
     <h1>帳號設定</h1>
     <h2>基本資料</h2>
     <el-form
@@ -85,7 +85,7 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  name: 'EditUser',
+  name: 'UserEdit',
   mixins: [ToPathMixin],
   data() {
     return {

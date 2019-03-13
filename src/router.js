@@ -8,7 +8,7 @@ import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
 import UserList from './views/UserList.vue'
 import UserCreate from './views/UserCreate.vue'
-import EditUser from './views/EditUser.vue'
+import UserEdit from './views/UserEdit.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectSetting from './views/ProjectSetting.vue'
@@ -100,9 +100,9 @@ let router = new Router({
       }
     },
     {
-      path: '/edit-user/:userId',
-      name: 'EditUser',
-      component: EditUser,
+      path: '/user/:userId',
+      name: 'UserEdit',
+      component: UserEdit,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
@@ -177,7 +177,7 @@ let router = new Router({
       }
     },
     {
-      path: '/project-edit/:projectId',
+      path: '/project/:projectId',
       name: 'ProjectEdit',
       component: ProjectEdit,
       meta: { requireAuth: true },
@@ -288,7 +288,7 @@ let router = new Router({
       }
     },
     {
-      path: '/soItem-edit/:soId',
+      path: '/soItem/:soId',
       name: 'SOItemEdit',
       component: SOItemEdit,
       meta: { requireAuth: true },

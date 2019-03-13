@@ -26,7 +26,7 @@
         <template slot-scope="scope">
           <h4 
             class="clickable"
-            @click="toPath('EditUser', { userId: scope.row.id })">
+            @click="toPath('UserEdit', { userId: scope.row.id })">
             {{ scope.row.name }}
           </h4>
         </template>
