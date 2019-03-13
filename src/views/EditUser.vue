@@ -33,28 +33,18 @@
         <h4 class='password'>密碼：{{newUser.password}}</h4>
       </el-form-item>
       <el-form-item label="公司名稱">
-        <el-row :gutter="20">
-          <el-col :span="17" :sm='21' :md='21'>
-            <el-select
-              v-model="selectedCompany"
-              placeholder="請選擇"
-              style="width: 100%">
-              <el-option
-                v-for="item in companies"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="7" :sm='3' :md='3'>
-            <el-button
-              style="width: 100%"
-              @click="saveCurrentAndGo">
-              維護
-            </el-button>
-          </el-col>
-        </el-row>
+        <el-select
+          v-model="selectedCompany"
+          placeholder="請選擇"
+          style="width: 100%"
+          disabled>
+          <el-option
+            v-for="item in companies"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
