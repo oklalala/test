@@ -477,13 +477,6 @@ export default {
     }
   },
   methods: {
-    deleteProjects() {
-      if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteProjects', this.deleteList)
-    },
-    updateDeleteList(value) {
-      this.deleteList = value.map(project => project.id)
-    },
     cancel() {
       this.toPath('ProjectSetting')
     },

@@ -170,8 +170,20 @@ export default {
     },
     deleteSteels() {
       if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteSteels', this.deleteList)
-      this.resetTable()
+      this.$store
+        .dispatch('deleteSteels', this.deleteList)
+        .then(() => {
+          this.$message({
+            message: `成功刪除 ${this.deleteList}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
+          this.resetTable()
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     updateDeleteList(value) {
       this.isEdit = true

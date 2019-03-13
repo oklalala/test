@@ -71,7 +71,19 @@ export default {
   methods: {
     deleteProjects() {
       if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteProjects', this.deleteList)
+      this.$store
+        .dispatch('deleteProjects', this.deleteList)
+        .then(() => {
+          this.$message({
+            message: `成功刪除 ${this.deleteList}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     },
     updateDeleteList(value) {
       this.deleteList = value.map(project => project.id)

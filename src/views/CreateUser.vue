@@ -126,13 +126,6 @@ export default {
     }
   },
   methods: {
-    deleteUsers() {
-      if (this.deleteList.length === 0) return
-      this.$store.dispatch('deleteUsers', this.deleteList)
-    },
-    updateDeleteList(value) {
-      this.deleteList = value.map(user => user.id)
-    },
     cancel() {
       this.toPath('UserList')
     },
