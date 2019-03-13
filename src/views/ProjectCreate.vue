@@ -179,8 +179,8 @@
                 label="注意值" 
                 :prop="'vgManagement['+this.floorIndex+'].notice'"
                 :rules="[
-                  { required: true, message: '請檢查注意值', trigger: 'blur' },
-                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: 'blur' },]">
+                  { required: true, message: '請檢查注意值', trigger: ['blur', 'change'] },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
                 <el-input
                   size='mini'
                   v-model.number="newProject.vgManagement[floorIndex].notice"
@@ -191,8 +191,8 @@
                 label="警戒值" 
                 :prop="'vgManagement['+this.floorIndex+'].warning'"
                 :rules="[
-                  { required: true, message: '請檢查注意值', trigger: 'blur' },
-                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: 'blur' },]">
+                  { required: true, message: '請檢查警戒值', trigger: ['blur', 'change'] },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
                 <el-input
                   size='mini'
                   v-model.number="newProject.vgManagement[floorIndex].warning"
@@ -203,8 +203,8 @@
                 label="行動值" 
                 :prop="'vgManagement['+this.floorIndex+'].action'"
                 :rules="[
-                  { required: true, message: '請檢查注意值', trigger: 'blur' },
-                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: 'blur' },]">
+                  { required: true, message: '請檢查行動值', trigger: ['blur', 'change'] },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
                 <el-input
                   size='mini'
                   v-model.number="newProject.vgManagement[floorIndex].action"
