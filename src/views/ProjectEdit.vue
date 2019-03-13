@@ -4,8 +4,8 @@
     <el-form
       label-position="top"
       label-width="80px"
-      :model="newProject">
-      
+      :model="newProject"
+      :rules="rules">
       <h2>基本資料</h2>
       
       <el-row :gutter="20">
@@ -64,6 +64,11 @@
           </el-option>
         </el-select>
       </el-form-item>
+
+      {{customersOPT}}
+      <br>
+      <br>
+      {{selfOPT}}
 
       <h2>參與人員</h2>
       <el-tabs type="border-card">
@@ -176,32 +181,41 @@
           <el-row :gutter="20" v-if="!!newProject.vgLocation.length">
             <el-col :md='6' :sm='8' :span="24">
               <h2>管理值<span>單位：噸</span></h2>
-              <el-form-item label="注意值" prop='vgNotice'>
-                <el-input-number
-                  :step="0.1"
-                  :controls=false
+              <el-form-item 
+                label="注意值" 
+                :prop="'vgManagement['+this.floorIndex+'].notice'"
+                :rules="[
+                  { required: true, message: '請檢查注意值', trigger: ['blur', 'change'] },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
+                <el-input
                   size="mini"
                   v-model.number="newProject.vgManagement[floorIndex].notice"
                   placeholder="68.3">
-                </el-input-number>
+                </el-input>
               </el-form-item>
-              <el-form-item label="警戒值" prop='vgWarning'>
-                <el-input-number
-                  :step="0.1"
-                  :controls=false
+              <el-form-item 
+                label="警戒值" 
+                :prop="'vgManagement['+this.floorIndex+'].warning'"
+                :rules="[
+                  { required: true, message: '請檢查警戒值', trigger: ['blur', 'change'] },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
+                <el-input
                   size="mini"
                   v-model.number="newProject.vgManagement[floorIndex].warning"
                   placeholder="79.6">
-                </el-input-number>
+                </el-input>
               </el-form-item>
-              <el-form-item label="行動值" prop='vgAction'>
-                <el-input-number
-                  :step="0.1"
-                  :controls=false
+              <el-form-item 
+                label="行動值" 
+                :prop="'vgManagement['+this.floorIndex+'].action'"
+                :rules="[
+                  { required: true, message: '請檢查行動值', trigger: ['blur', 'change'] },
+                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
+                <el-input
                   size="mini"
                   v-model.number="newProject.vgManagement[floorIndex].action"
                   placeholder="104.2">
-                </el-input-number>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :md='16' :sm='16' :span="24">
@@ -253,32 +267,26 @@
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
-              <el-form-item label="注意值" prop='soNotice'>
-                <el-input-number
-                  :step="0.01"
-                  :controls=false
+              <el-form-item label="注意值" prop='soManagement.notice'>
+                <el-input
                   size="mini"
                   v-model.number="newProject.soManagement.notice"
                   placeholder="4.24">
-                </el-input-number>
+                </el-input>
               </el-form-item>
-              <el-form-item label="警戒值" prop='soWarning'>
-                <el-input-number
-                  :step="0.01"
-                  :controls=false
+              <el-form-item label="警戒值" prop='soManagement.warning'>
+                <el-input
                   size="mini"
                   v-model.number="newProject.soManagement.warning"
                   placeholder="9.88">
-                </el-input-number>
+                </el-input>
               </el-form-item>
-              <el-form-item label="行動值" prop='soAction'>
-                <el-input-number
-                  :step="0.01"
-                  :controls=false
+              <el-form-item label="行動值" prop='soManagement.action'>
+                <el-input
                   size="mini"
                   v-model.number="newProject.soManagement.action"
                   placeholder="15.06">
-                </el-input-number>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="14">
@@ -341,6 +349,10 @@ export default {
   },
   data() {
     return {
+      customersOPT:[],
+      selfOPT:[],
+      currentCompanyId: '',
+
       removedVG: '',
       addedVG: '',
       floorIndex: 0, // used in array
@@ -360,7 +372,33 @@ export default {
           label: '執行'
         }
       ],
-      VGItems: []
+      VGItems: [],
+      rules: {
+        'soManagement.notice': [
+          { required: true, message: '請輸入注意值', trigger: 'blur' },
+          {
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: '小數點下最多兩位 0.01',
+            trigger: 'blur'
+          }
+        ],
+        'soManagement.warning': [
+          { required: true, message: '請輸入警戒值', trigger: 'blur' },
+          {
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: '小數點下最多兩位 0.01',
+            trigger: 'blur'
+          }
+        ],
+        'soManagement.action': [
+          { required: true, message: '請輸入行動值', trigger: 'blur' },
+          {
+            pattern: /^\d+(\.\d{1,2})?$/,
+            message: '小數點下最多兩位 0.01',
+            trigger: 'blur'
+          }
+        ]
+      }
       // newProject: {
       //   number: '', // CNT-16Q3
       //   status: '', // end or in-progress
@@ -400,14 +438,13 @@ export default {
     soItems() {
       return this.$store.getters.soItems
     },
-
     OPTs() {
       var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(
-        user => user.company.id == this.newProject.companyId
+      this.customersOPT = allOPT.filter(
+        user => user.company.id == this.currentCompanyId
       )
-      var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
-      return selfOPT.concat(customersOPT)
+      this.selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
+      return this.selfOPT.concat(this.customersOPT)
     },
     USERs() {
       var allUSER = this.$store.getters.USERs
@@ -507,7 +544,8 @@ export default {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
-    resetMember() {
+    resetMember(value) {
+      this.currentCompanyId = value
       this.selectedUSER = []
       this.selectedOPT = []
       this.newProject.OPT = []
