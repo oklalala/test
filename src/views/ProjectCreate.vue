@@ -175,32 +175,26 @@
           <el-row :gutter="20" v-if="!!fullVGsInfo.length">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
-              <el-form-item label="注意值" prop="vgNotice">
-                <el-input-number
-                  :step="0.01"
+              <el-form-item label="注意值" prop='getVGNotice'>
+                <el-input
                   size='mini'
-                  :controls=false
                   v-model.number="newProject.vgManagement[floorIndex].notice"
                   placeholder="68.3">
-                </el-input-number>
+                </el-input>
               </el-form-item>
               <el-form-item label="警戒值" prop="vgWarning">
-                <el-input-number
-                  :step="0.01"
+                <el-input
                   size='mini'
-                  :controls=false
                   v-model.number="newProject.vgManagement[floorIndex].warning"
                   placeholder="79.6">
-                </el-input-number>
+                </el-input>
               </el-form-item>
               <el-form-item label="行動值" prop="vgAction">
-                <el-input-number
-                  :step="0.01"
+                <el-input
                   size='mini'
-                  :controls=false
                   v-model.number="newProject.vgManagement[floorIndex].action"
                   placeholder="104.2">
-                </el-input-number>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="19">
@@ -269,32 +263,26 @@
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
-              <el-form-item label="注意值" prop="soNotice">
-                <el-input-number
-                  :step="0.01"
+              <el-form-item label="注意值" prop="soManagement.notice">
+                <el-input
                   :controls=false
-                  size='mini'
                   v-model.number="newProject.soManagement.notice"
                   placeholder="4.24">
-                </el-input-number>
+                </el-input>
               </el-form-item>
-              <el-form-item label="警戒值" prop="soWarning">
-                <el-input-number
-                  :step="0.01"
+              <el-form-item label="警戒值" prop="soManagement.warning">
+                <el-input
                   :controls=false
-                  size='mini'
                   v-model.number="newProject.soManagement.warning"
                   placeholder="9.88">
-                </el-input-number>
+                </el-input>
               </el-form-item>
-              <el-form-item label="行動值" prop="soAction">
-                <el-input-number
-                  :step="0.01"
+              <el-form-item label="行動值" prop="soManagement.action">
+                <el-input
                   :controls=false
-                  size='mini'
                   v-model.number="newProject.soManagement.action"
                   placeholder="15.06">
-                </el-input-number>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="14">
@@ -403,11 +391,20 @@ export default {
           { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
         ],
         name: { required: true, message: '請輸入專案名稱', trigger: 'blur' },
-        vgNotice: { required: true, message: '請輸入注意值', trigger: 'blur' }
+        getVGNotice: { required: true, message: '請輸入注意值', trigger: 'blur' },
+        'soManagement.notice': [{ required: true, message: '請輸入注意值', trigger: 'blur' },
+        { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}],
+        'soManagement.warning': [{ required: true, message: '請輸入警戒值', trigger: 'blur' },
+        { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}],
+        'soManagement.action': [{ required: true, message: '請輸入行動值', trigger: 'blur' },
+        { pattern: /^\d+(\.\d{1,2})?$/, message: '小數點下最多兩位 0.01', trigger: 'blur'}]
       }
     }
   },
   computed: {
+    getVGNotice() {
+      return vgManagement[this.floorIndex].notice
+    },
     projectList() {
       return this.$store.getters.projects
     },
