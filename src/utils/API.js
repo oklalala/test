@@ -17,4 +17,10 @@ export default function(method, path, isAuth, data) {
     headers
   }
   return axios.create(configs)[method](path, data)
+    .catch(e => {
+      let message = e.response.data.result
+      if (message === 'jwt expired' || message === 'invalid token') {
+        store.dispatch('logout')
+      }
+    })
 }

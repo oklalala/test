@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import localStore from 'store'
+import router from './router'
 
 import sendAPI from '@/utils/API'
 
@@ -475,6 +476,7 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit('setToken', '')
       localStore.remove('ground_monitor_token')
+      router.push('/')
     },
     getMe({ getters, commit }) {
       return sendAPI('get', `/user/${getters.myId}`, true).then(res => {

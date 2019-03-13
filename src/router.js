@@ -306,41 +306,26 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   //put last path from local store into VueX and next to target
-  let localLastPath = localStore.get('ground_monitor_last_path')
-  if (!store.getters.lastPath && localLastPath) {
-    store.commit('setLastPath', localLastPath)
-    if (to.path === '/') {
-      next({ name: 'ProjectList' })
-      return
-    }
-    if (to.name === 'Entry') {
-      next({ path: localLastPath })
-      return
-    }
-  }
 
-  if (!to.meta.requireAuth) {
-    next()
-    return
-  }
-
+  let storeToken = store.getters.token
   let localToken = localStore.get('ground_monitor_token')
-  if (!store.getters.token && localToken) {
+  if (!storeToken && localToken){
     store.commit('setToken', localToken.token)
     store.commit('setMyId', localToken.myId)
     store.commit('setMyRole', localToken.myRole)
     store.commit('setMyPermissions', localToken.myPermissions)
-  }
+    storeToken = localToken.token
 
-  if (store.getters.token) {
-    store.commit('setLastPath', to.path)
-    localStore.set('ground_monitor_last_path', to.path)
-    next()
-  } else {
+    if (to.path === '/') {
+      next({ name: 'ProjectList' })
+    }
+  } else if (!storeToken && to.meta.requireAuth) {
     next({
       name: 'Entry'
     })
   }
+
+  next()
 })
 
 export default router
