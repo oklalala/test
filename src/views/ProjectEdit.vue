@@ -65,11 +65,6 @@
         </el-select>
       </el-form-item>
 
-      {{customersOPT}}
-      <br>
-      <br>
-      {{selfOPT}}
-
       <h2>參與人員</h2>
       <el-tabs type="border-card">
         <el-tab-pane label="OPT">
@@ -449,7 +444,7 @@ export default {
     USERs() {
       var allUSER = this.$store.getters.USERs
       var customersUSER = allUSER.filter(
-        user => user.company && user.company.id == this.newProject.companyId
+        user => user.company.id == this.currentCompanyId
       )
       return customersUSER
     },
