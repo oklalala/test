@@ -132,7 +132,7 @@ export default {
       return this.$store.getters.companies
     },
     soItems() {
-      return this.$store.getters.soItems
+      return this.$store.getters.soItems.filter(soItem => soItem.OPT === null)
     },
     user() {
       return this.$store.getters.currentUser
