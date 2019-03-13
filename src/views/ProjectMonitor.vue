@@ -25,7 +25,7 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="10" :md="10">
-              <el-form-item label="位置">
+              <el-form-item label="支撐階數">
                 <el-select v-model="selectedFloor" placeholder="請選擇">
                   <el-option
                     v-for="floor in floorList"
