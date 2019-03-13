@@ -495,6 +495,12 @@ export default {
           payload: this.newProject
         })
         .then(() => {
+          this.$message({
+            message: `成功編輯 ${this.newProject.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
           this.toPath('ProjectSetting')
         })
         .catch(e => {

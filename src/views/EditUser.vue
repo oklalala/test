@@ -173,6 +173,12 @@ export default {
           payload: user
         })
         .then(() => {
+          this.$message({
+            message: `成功編輯 ${user.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
           this.toPath('UserList')
         })
         .catch(e => {

@@ -101,7 +101,15 @@ export default {
           payload: { name: newName }
         })
         .then(() => {
-          this.reset()
+          this.$message({
+            message: `成功編輯 ${this.newProject.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     }
   }

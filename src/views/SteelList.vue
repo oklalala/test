@@ -199,6 +199,12 @@ export default {
           payload: this.newSteel
         })
         .then(() => {
+          this.$message({
+            message: `成功編輯 ${this.newSteel.name}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
           this.resetTable()
         })
         .catch(e => {

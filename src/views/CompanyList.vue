@@ -87,7 +87,17 @@ export default {
       this.$store.dispatch('updateCompany', {
         companyId: id,
         payload: { name: newName }
-      })
+      }).then(() => {
+          this.$message({
+            message: `成功編輯 ${this.newName}`,
+            type: 'success',
+            center: true,
+            duration: 1800
+          })
+        })
+        .catch(e => {
+          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+        })
     }
   }
 }
