@@ -514,8 +514,12 @@ export default {
           this.toPath('ProjectSetting')
         })
         .catch(e => {
-          this.$message.error(`請重新檢查 ${e.response.data.result}`)
-        })
+          if(e.response.data.result === 'number must be unique') {
+            this.$message.error(`請重新檢查 案號重複`)
+          }
+          else {
+            this.$message.error(`請重新檢查 ${e.response.data.result}`)
+          }})
     },
     resetMember() {
       this.USERList = []
