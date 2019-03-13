@@ -7,7 +7,7 @@ import localStore from 'store'
 import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
 import UserList from './views/UserList.vue'
-import CreateUser from './views/CreateUser.vue'
+import UserCreate from './views/UserCreate.vue'
 import EditUser from './views/EditUser.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
@@ -82,9 +82,9 @@ let router = new Router({
       }
     },
     {
-      path: '/create-user',
-      name: 'CreateUser',
-      component: CreateUser,
+      path: '/user-create',
+      name: 'UserCreate',
+      component: UserCreate,
       meta: {
         requireAuth: true
       },

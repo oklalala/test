@@ -6,7 +6,7 @@
         <el-button type="primary" @click="deleteUsers" v-if="!!deleteList.length">刪除</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('CreateUser')">
+        <el-button type="primary" @click="toPath('UserCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>

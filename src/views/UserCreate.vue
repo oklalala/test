@@ -1,5 +1,5 @@
 <template>
-  <div class="createUser">
+  <div class="userCreate">
     <h1>帳號設定</h1>
     <h2>基本資料</h2>
     <el-form
@@ -93,7 +93,7 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  name: 'CreateUser',
+  name: 'UserCreate',
   mixins: [ToPathMixin],
   data() {
     return {
@@ -134,7 +134,7 @@ export default {
       this.newUser.companyId = this.selectedCompany
       this.newUser.soId = this.selectedSOItem
       this.$store
-        .dispatch('createUser', this.newUser)
+        .dispatch('UserCreate', this.newUser)
         .then(() => {
           this.$message({
             message: `成功新增 ${this.newUser.name}`,
