@@ -367,7 +367,11 @@ export default {
       VGItems: [],
       rules: {
         'soManagement.notice': [
-          { required: true, message: '請輸入注意值', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '請輸入注意值',
+            trigger: ['blur', 'change']
+          },
           {
             pattern: /^\d+(\.\d{0,2})?$/,
             message: '小數點下最多兩位 0.01',
@@ -375,7 +379,11 @@ export default {
           }
         ],
         'soManagement.warning': [
-          { required: true, message: '請輸入警戒值', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '請輸入警戒值',
+            trigger: ['blur', 'change']
+          },
           {
             pattern: /^\d+(\.\d{0,2})?$/,
             message: '小數點下最多兩位 0.01',
@@ -383,7 +391,11 @@ export default {
           }
         ],
         'soManagement.action': [
-          { required: true, message: '請輸入行動值', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '請輸入行動值',
+            trigger: ['blur', 'change']
+          },
           {
             pattern: /^\d+(\.\d{0,2})?$/,
             message: '小數點下最多兩位 0.01',
@@ -537,9 +549,9 @@ export default {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
-    numberManagement(){
-      this.newProject.vgManagement.forEach((vgManagement) => {
-        for(let i in vgManagement) {
+    numberManagement() {
+      this.newProject.vgManagement.forEach(vgManagement => {
+        for (let i in vgManagement) {
           vgManagement[i] = +vgManagement[i]
         }
       })

@@ -402,12 +402,29 @@ export default {
       },
       rules: {
         number: [
-          { required: true, message: '請輸入編號', trigger: ['blur', 'change'] },
-          { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: ['blur', 'change'] }
+          {
+            required: true,
+            message: '請輸入編號',
+            trigger: ['blur', 'change']
+          },
+          {
+            min: 3,
+            max: 12,
+            message: '長度在 3 到 12 個字元',
+            trigger: ['blur', 'change']
+          }
         ],
-        name: { required: true, message: '請輸入專案名稱', trigger: ['blur', 'change'] },
+        name: {
+          required: true,
+          message: '請輸入專案名稱',
+          trigger: ['blur', 'change']
+        },
         'soManagement.notice': [
-          { required: true, message: '請輸入注意值', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '請輸入注意值',
+            trigger: ['blur', 'change']
+          },
           {
             pattern: /^\d(\.\d{0,2})?$/,
             message: '數字格式為 x.xx',
@@ -415,7 +432,11 @@ export default {
           }
         ],
         'soManagement.warning': [
-          { required: true, message: '請輸入警戒值', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '請輸入警戒值',
+            trigger: ['blur', 'change']
+          },
           {
             pattern: /^\d(\.\d{0,2})?$/,
             message: '數字格式為 x.xx',
@@ -423,7 +444,11 @@ export default {
           }
         ],
         'soManagement.action': [
-          { required: true, message: '請輸入行動值', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '請輸入行動值',
+            trigger: ['blur', 'change']
+          },
           {
             pattern: /^\d(\.\d{0,2})?$/,
             message: '數字格式為 x.xx',
@@ -583,9 +608,9 @@ export default {
       }
       return isLt2M
     },
-    numberManagement(){
-      this.newProject.vgManagement.forEach((vgManagement) => {
-        for(let i in vgManagement) {
+    numberManagement() {
+      this.newProject.vgManagement.forEach(vgManagement => {
+        for (let i in vgManagement) {
           vgManagement[i] = +vgManagement[i]
         }
       })
