@@ -24,5 +24,6 @@ export default function(method, path, isAuth, data) {
       if (message === 'jwt expired' || message === 'invalid token') {
         store.dispatch('logout')
       }
+      return Promise.reject(e)
     })
 }
