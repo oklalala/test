@@ -181,10 +181,10 @@
                 :prop="'vgManagement['+this.floorIndex+'].notice'"
                 :rules="[
                   { required: true, message: '請檢查注意值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
+                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
                 <el-input
                   size="mini"
-                  v-model.number="newProject.vgManagement[floorIndex].notice"
+                  v-model="newProject.vgManagement[floorIndex].notice"
                   placeholder="68.3">
                 </el-input>
               </el-form-item>
@@ -193,10 +193,10 @@
                 :prop="'vgManagement['+this.floorIndex+'].warning'"
                 :rules="[
                   { required: true, message: '請檢查警戒值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
+                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
                 <el-input
                   size="mini"
-                  v-model.number="newProject.vgManagement[floorIndex].warning"
+                  v-model="newProject.vgManagement[floorIndex].warning"
                   placeholder="79.6">
                 </el-input>
               </el-form-item>
@@ -205,10 +205,10 @@
                 :prop="'vgManagement['+this.floorIndex+'].action'"
                 :rules="[
                   { required: true, message: '請檢查行動值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{1})?$/, message: '小數點下最多兩位 0.1', trigger: ['blur', 'change'] }]">
+                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
                 <el-input
                   size="mini"
-                  v-model.number="newProject.vgManagement[floorIndex].action"
+                  v-model="newProject.vgManagement[floorIndex].action"
                   placeholder="104.2">
                 </el-input>
               </el-form-item>
@@ -265,22 +265,22 @@
               <el-form-item label="注意值" prop='soManagement.notice'>
                 <el-input
                   size="mini"
-                  v-model.number="newProject.soManagement.notice"
-                  placeholder="4.24">
+                  v-model="newProject.soManagement.notice"
+                  placeholder="1.68">
                 </el-input>
               </el-form-item>
               <el-form-item label="警戒值" prop='soManagement.warning'>
                 <el-input
                   size="mini"
-                  v-model.number="newProject.soManagement.warning"
-                  placeholder="9.88">
+                  v-model="newProject.soManagement.warning"
+                  placeholder="2.88">
                 </el-input>
               </el-form-item>
               <el-form-item label="行動值" prop='soManagement.action'>
                 <el-input
                   size="mini"
-                  v-model.number="newProject.soManagement.action"
-                  placeholder="15.06">
+                  v-model="newProject.soManagement.action"
+                  placeholder="3.77">
                 </el-input>
               </el-form-item>
             </el-col>
@@ -367,27 +367,27 @@ export default {
       VGItems: [],
       rules: {
         'soManagement.notice': [
-          { required: true, message: '請輸入注意值', trigger: 'blur' },
+          { required: true, message: '請輸入注意值', trigger: ['blur', 'change'] },
           {
-            pattern: /^\d+(\.\d{1,2})?$/,
+            pattern: /^\d+(\.\d{0,2})?$/,
             message: '小數點下最多兩位 0.01',
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ],
         'soManagement.warning': [
-          { required: true, message: '請輸入警戒值', trigger: 'blur' },
+          { required: true, message: '請輸入警戒值', trigger: ['blur', 'change'] },
           {
-            pattern: /^\d+(\.\d{1,2})?$/,
+            pattern: /^\d+(\.\d{0,2})?$/,
             message: '小數點下最多兩位 0.01',
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ],
         'soManagement.action': [
-          { required: true, message: '請輸入行動值', trigger: 'blur' },
+          { required: true, message: '請輸入行動值', trigger: ['blur', 'change'] },
           {
-            pattern: /^\d+(\.\d{1,2})?$/,
+            pattern: /^\d+(\.\d{0,2})?$/,
             message: '小數點下最多兩位 0.01',
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ]
       }
@@ -518,6 +518,7 @@ export default {
       })
       this.newProject.OPT = this.selectedOPT
       this.newProject.USER = this.selectedUSER
+      this.numberManagement()
       this.$store
         .dispatch('updateProject', {
           projectId: this.$route.params.projectId,
@@ -535,6 +536,17 @@ export default {
         .catch(e => {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
+    },
+    numberManagement(){
+      this.newProject.vgManagement.forEach((vgManagement) => {
+        for(let i in vgManagement) {
+          vgManagement[i] = +vgManagement[i]
+        }
+      })
+      let soManagement = this.newProject.soManagement
+      for (let i in soManagement) {
+        soManagement[i] = +soManagement[i]
+      }
     },
     resetMember(value) {
       this.currentCompanyId = value
