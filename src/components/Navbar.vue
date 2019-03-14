@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       projectSubMenuShow: false,
-      isMobile: screen.width <= 600
+      isMobile: screen.width <= 700
     }
   },
   components: {
@@ -89,7 +89,7 @@ export default {
   margin: 0;
 }
 /* navbar for mobile */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   #nav {
     display: block;
   }
@@ -103,14 +103,14 @@ export default {
   cursor: pointer;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .nav__item {
     display: block;
     line-height: 40px;
   }
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 700px) {
   .nav__sub {
     position: absolute;
     background: #545c64;
@@ -151,7 +151,7 @@ export default {
   right: 15px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   #burger {
     display: block;
   }

@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style>
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 700px) {
   #main {
     padding-top: 60px;
   }
