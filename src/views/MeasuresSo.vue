@@ -148,7 +148,6 @@ export default {
     getSOItem: function() {
       this.$store.dispatch('getSOItem', this.me.soItem.id).then(response => {
         this.soItem = response.data.data
-        console.log(this.soItem)
       })
     },
     onChangeLocation: function() {

@@ -153,51 +153,15 @@ export default {
         //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
         //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
         //   ]
-        // },
-        // {
-        //   vgLocation: 'vg-1-3',
-        //   data: [
-        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
-        //   ]
-        // },
-        // {
-        //   vgLocation: 'vg-1-4',
-        //   data: [
-        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
-        //   ]
-        // },
-        // {
-        //   vgLocation: 'vg-1-5',
-        //   data: [
-        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
-        //   ]
         // }
       ],
       soChartData: [
-        { depth: -5, '10:00': 0, '12:00': 0 },
-        { depth: -4, '10:00': 0.2, '12:00': 2 },
-        { depth: -3, '10:00': 0.4, '12:00': -3 },
-        { depth: -2, '10:00': 0.5, '12:00': -0.4 },
-        { depth: -1, '10:00': 0.1, '12:00': -0.2 },
-        { depth: 0, '10:00': -0.3, '12:00': -0.5 }
+        // { depth: -5, '10:00': 0, '12:00': 0 },
+        // { depth: -4, '10:00': 0.2, '12:00': 2 },
+        // { depth: -3, '10:00': 0.4, '12:00': -3 },
+        // { depth: -2, '10:00': 0.5, '12:00': -0.4 },
+        // { depth: -1, '10:00': 0.1, '12:00': -0.2 },
+        // { depth: 0, '10:00': -0.3, '12:00': -0.5 }
       ]
     }
   },
@@ -258,7 +222,7 @@ export default {
     exportVG() {
       this.$store
         .dispatch('exportVG', this.$route.params.projectId)
-        .then(res => {
+        .then(() => {
           this.$message({
             message: `成功下載 ${this.newProject.name}`,
             type: 'success',
@@ -273,7 +237,7 @@ export default {
     exportSO() {
       this.$store
         .dispatch('exportSO', this.$route.params.projectId)
-        .then(res => {
+        .then(() => {
           this.$message({
             message: `成功下載 ${this.newProject.name}`,
             type: 'success',

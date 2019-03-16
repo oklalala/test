@@ -137,7 +137,6 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
   // X軸水平位移量(cm)： ${displacementY}
   displacementX = calculatingHorizontalDisplacement(degreeX, 100)
   displacementY = calculatingHorizontalDisplacement(degreeY, 100)
-  console.log(formData)
   totalDisplacement = formData.length
     ? formData[0].totalDisplacement + displacementX
     : displacementX

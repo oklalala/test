@@ -138,7 +138,6 @@ export default {
       let es = this.newSteel.es
       let tcm = this.newSteel.tcm
       let tcg = this.newSteel.tcg
-      console.log(name, sectionArea, es, tcm, tcg)
       return !(name && sectionArea && es && tcm && tcg)
     }
   },

@@ -13,7 +13,6 @@ const projects = {
   state: {
     data: [],
     currentOne: []
-    // projectStatus: ['end', 'in-progress']
   },
   mutations: {
     setProjects(state, projects) {

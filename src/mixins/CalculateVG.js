@@ -18,10 +18,6 @@ var mixin = {
         return arr
       })()
       // [8,7]
-      // ;(function() {
-      //   var isValid = numOfHostsPorts[0] < 14
-      //   return isValid ? console.log('go') : console.log('noway')
-      // })()
 
       function generatePort(x) {
         return Array.from({ length: x }, (v, k) => k + 1)

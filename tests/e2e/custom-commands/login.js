@@ -14,7 +14,6 @@ util.inherits(Login, events.EventEmitter)
 
 Login.prototype.command = function(payload) {
   axios.post('http://localhost:3333/v1/login', payload).then(res => {
-    console.log(res.data.token)
     store.set('ground_monitor_token', res.data.token)
     this.emit('complete')
   })

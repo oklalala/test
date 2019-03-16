@@ -128,9 +128,9 @@ export default {
         //     name: '10:00',
         //     type: 'line',
         //     encode: {
-        //       // 将 "amount" 列映射到 X 轴。
+        //       // 將 "time" 列映射到 X 軸。
         //       x: '10:00',
-        //       // 将 "product" 列映射到 Y 轴。
+        //       // 將 "depth" 列映射到 Y 軸。
         //       y: 'depth'
         //     },
         //     markLine: this.markLine,

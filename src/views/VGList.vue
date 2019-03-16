@@ -97,7 +97,7 @@ export default {
             duration: 1200
           })
         })
-        .catch(() => {
+        .catch(e => {
           this.$message({
             message: `已被專案使用`,
             type: 'error',

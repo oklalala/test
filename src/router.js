@@ -17,8 +17,6 @@ import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
 import ProjectMonitor from './views/ProjectMonitor.vue'
 import ProjectPhaseList from './views/ProjectPhaseList.vue'
-// import ProjectPhaseCreate from './views/ProjectPhaseCreate.vue'
-// import ProjectPhaseEdit from './views/ProjectPhaseEdit.vue'
 import VGList from './views/VGList.vue'
 import SteelList from './views/SteelList.vue'
 import SOItemList from './views/SOItemList.vue'
@@ -293,10 +291,7 @@ let router = new Router({
       component: SOItemEdit,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          // store.dispatch('getSOItem'),
-          store.dispatch('getSOModels')
-        ]).then(() => {
+        Promise.all([store.dispatch('getSOModels')]).then(() => {
           next()
         })
       }
@@ -305,8 +300,6 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  //put last path from local store into VueX and next to target
-
   let storeToken = store.getters.token
   let localToken = localStore.get('ground_monitor_token')
   if (!storeToken && localToken) {
