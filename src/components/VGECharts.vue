@@ -73,7 +73,13 @@ export default {
     options() {
       return {
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
         },
         legend: {
           data: this.vgsPosition
