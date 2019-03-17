@@ -66,7 +66,7 @@
       </el-form-item>
 
       <h2>參與人員</h2>
-      <el-tabs type="border-card">
+      <el-tabs type="border-card" stretch>
         <el-tab-pane label="OPT">
           <el-form-item>
             <el-select
@@ -121,7 +121,7 @@
       </el-upload> 
 
       <h2>監控設定</h2>
-      <el-tabs type="border-card">
+      <el-tabs type="border-card" stretch>
         <el-tab-pane label="軸力計 ( VG )"> 
           <el-form-item label="使用軸力計編號">
             <el-select 

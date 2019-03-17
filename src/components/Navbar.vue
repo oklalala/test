@@ -4,7 +4,7 @@
       <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
     </el-header>
     <label for="menu" id="burger" @click="isMobile = !isMobile">
-      <font-awesome-icon icon="bars" />
+      <font-awesome-icon icon="bars" v-show="isLogined"/>
     </label>
     <section id="nav" v-if="!isMobile" v-show="isLogined">
       <ul class="nav__items">
