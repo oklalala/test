@@ -102,7 +102,7 @@ export default {
     this.getVGData(this.vgDate, 1)
   },
   mounted() {
-    this.vgDate = this.showDate
+    this.vgDate = this.lastDate
   },
   data() {
     return {
@@ -123,7 +123,7 @@ export default {
       // vgManagement: [],
       // },
       // vgDate: '2019/01/30',
-      vgDate: this.showDate,
+      vgDate: this.lastDate,
       soDate: '',
       soDateList: [],
       selectedFloor: 1,
@@ -178,7 +178,7 @@ export default {
     startDate() {
       return moment(this.project.dataRangeVg.start).toDate()
     },
-    showDate() {
+    lastDate() {
       return moment(this.project.dataRangeVg.end).toDate()
     },
     floorList() {
@@ -188,7 +188,7 @@ export default {
       var startDate = moment(this.startDate)
         .subtract(1, 'd')
         .toDate()
-      var endDate = moment(this.showDate).toDate()
+      var endDate = moment(this.lastDate).toDate()
       return {
         disabledDate(time) {
           return time.getTime() < startDate || time.getTime() > endDate
@@ -278,5 +278,9 @@ export default {
 }
 .inline {
   display: inline-block;
+}
+
+.vgECharts, .soECharts {
+  overflow-y: auto
 }
 </style>
