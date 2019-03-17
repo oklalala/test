@@ -125,8 +125,11 @@ export default {
     position: absolute;
     background: #545c64;
     padding: 0;
-    top: 120px;
-    right: 58px;
+    top: 122px;
+    right: 100px;
+  }
+  .nav__sub > .nav__item {
+    display: block;
   }
 }
 
