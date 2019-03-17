@@ -2,12 +2,10 @@
   <div class="projectMonitor">
     <h1>查看監控資料</h1>
     <h3>基本資料</h3>
-    案號：{{project.number}}
-    <br>
-    <br>
-    名稱：{{project.name}}
-    <h3>配置圖</h3>
-    <h4 class='show-picture' @click='show = !show'>顯示/隱藏</h4>
+    <p>案號：{{project.number}}</p>
+    <p>名稱：{{project.name}}</p>
+    <h3 class="inline">配置圖</h3>
+    <h4 class='inline show-picture clickable' @click='show = !show'>顯示/隱藏</h4>
     <img :src="showImage" v-if="show">
     <h3>監控值</h3>
     <el-tabs type="border-card" stretch>
@@ -270,9 +268,13 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .show-picture {
+  padding-left: 20px;
   cursor: pointer;
-  width: 80px;
+  width: 110px;
+}
+.inline {
+  display: inline-block;
 }
 </style>
