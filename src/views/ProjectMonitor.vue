@@ -280,7 +280,8 @@ export default {
   display: inline-block;
 }
 
-.vgECharts, .soECharts {
-  overflow-y: auto
+.vgECharts,
+.soECharts {
+  overflow-y: auto;
 }
 </style>
