@@ -18,7 +18,6 @@
                   v-model="vgDate"
                   format='yyyy-MM-dd'
                   type="date"
-                  placeholder="選擇日期"
                   :picker-options="disabledDate">
                 </el-date-picker>
               </el-form-item>
@@ -101,6 +100,9 @@ export default {
   mixins: [ToPathMixin],
   created() {
     this.getVGData(this.vgDate, 1)
+  },
+  mounted() {
+    this.vgDate = this.showDate
   },
   data() {
     return {
