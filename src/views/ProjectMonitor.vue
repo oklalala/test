@@ -20,7 +20,8 @@
                   v-model="vgDate"
                   format='yyyy-MM-dd'
                   type="date"
-                  placeholder="選擇日期">
+                  placeholder="選擇日期"
+                  :picker-options="disabledDate">
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -122,7 +123,7 @@ export default {
       // vgManagement: [],
       // },
       // vgDate: '2019/01/30',
-      vgDate: moment().toDate(),
+      vgDate: this.showDate,
       soDate: '',
       soDateList: [],
       selectedFloor: 1,
@@ -174,8 +175,25 @@ export default {
     project() {
       return this.$store.getters.currentProject
     },
+    startDate() {
+      return moment(this.project.dataRangeVg.start).toDate()
+    },
+    showDate() {
+      return moment(this.project.dataRangeVg.end).toDate()
+    },
     floorList() {
       return Array.from(Array(this.project.floor).keys()).map(x => (x += 1))
+    },
+    disabledDate() {
+      var startDate = moment(this.startDate)
+        .subtract(1, 'd')
+        .toDate()
+      var endDate = moment(this.showDate).toDate()
+      return {
+        disabledDate(time) {
+          return time.getTime() < startDate || time.getTime() > endDate
+        }
+      }
     }
   },
   watch: {
