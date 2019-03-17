@@ -45,6 +45,12 @@ export default {
       isMobile: screen.width <= 700
     }
   },
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
   components: {
     FontAwesomeIcon
   },
@@ -65,6 +71,10 @@ export default {
     },
     isActive(route) {
       return this.$route.path === route
+    },
+    handleResize(event) {
+      var currentWidth = event.currentTarget.innerWidth
+      if (currentWidth >= 700) this.isMobile = false
     }
   },
   watch: {
