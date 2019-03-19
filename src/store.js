@@ -447,6 +447,9 @@ export default new Vuex.Store({
     me(state) {
       return state.me
     },
+    myCompany(state) {
+      return state.me.company
+    },
     permissions(state) {
       return state.permissions
     },

@@ -489,7 +489,7 @@ export default {
       return customersUSER
     },
     myCompany() {
-      return this.$store.getters.me.company
+      return this.$store.getters.myCompany
     },
     uploadURL() {
       return `${process.env.VUE_APP_API_URL}/uploads`
