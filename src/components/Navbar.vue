@@ -125,8 +125,7 @@ export default {
     position: absolute;
     background: #545c64;
     padding: 0;
-    top: 122px;
-    right: 100px;
+    transform: translateX(-15px);
   }
   .nav__sub > .nav__item {
     display: block;
