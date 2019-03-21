@@ -10,7 +10,7 @@
     <section>
       <h2>量測作業</h2>
       <el-form-item label="專案階段" required>
-        <el-select v-model="projectPhaseId" placeholder="第一次開挖">
+        <el-select v-model="projectPhaseId" placeholder="第一次開挖" @change="clearMeasuresDatas">
          <el-option
            v-for="projectPhase in projectPhases"
            :key="projectPhase.id"
@@ -29,8 +29,8 @@
          </el-option>
        </el-select>
      </el-form-item>
-      <el-form-item label="WISE IP" required>
-        <el-input  v-model="wiseIP">
+      <el-form-item label="WISE IP" required >
+        <el-input  v-model="wiseIP" @change="clearMeasuresDatas">
         </el-input>
       </el-form-item>
       <span>應量測深度 {{currentDepth}} 公尺</span>
@@ -126,14 +126,24 @@ export default {
   },
   methods: {
     measures: function() {
-      startMeasures(
+      let racePromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('Promise A win!')
+        }, 5000)
+      })
+      let raceMeasures = startMeasures(
         this.wiseIP,
         this.measuresSoDatas,
         this.soItem,
         this.currentDepth
-      ).then(() => {
-        this.isMeasuring = false
-      })
+      )
+      Promise.race([racePromise, raceMeasures])
+        .then(() => {
+          this.isMeasuring = false
+        })
+        .catch(() => {
+          this.isMeasuring = false
+        })
       this.isMeasuring = true
     },
     clearMeasuresDatas: function() {
@@ -165,6 +175,7 @@ export default {
       this.currentSoLocationIndex = this.project.soLocation.indexOf(
         filterResult.shift()
       )
+      this.clearMeasuresDatas()
     }
   },
   computed: {
