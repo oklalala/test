@@ -110,8 +110,8 @@ function soAPI(method, path, data) {
 }
 
 function delay500ms() {
-  var starttime = new Date().getHHMMSS()
-  do {} while (new Date().getHHMMSS() - starttime < 500)
+  var starttime = new Date().getTime()
+  do {} while (new Date().getTime() - starttime < 500)
 }
 
 function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
