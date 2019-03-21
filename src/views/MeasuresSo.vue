@@ -107,7 +107,7 @@ import startMeasures from '@/utils/measuresSo'
 export default {
   beforeCreate() {
     if (window.location.protocol === 'https:') {
-      window.location = `http://geo-stage.chuen.com.tw:3333/v1${
+      window.location = `http://geo-stage.chuen.com.tw${
         window.location.pathname
       }`
     }
