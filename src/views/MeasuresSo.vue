@@ -112,6 +112,11 @@ export default {
       }`
     }
   },
+  beforeDestroy() {
+    window.location = `https://geo-stage.chuen.com.tw${
+      window.location.pathname
+    }`
+  },
   data() {
     return {
       wiseIP: '192.168.58.200',
