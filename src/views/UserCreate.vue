@@ -134,7 +134,7 @@ export default {
       this.newUser.companyId = this.selectedCompany
       this.newUser.soId = this.selectedSOItem
       this.$store
-        .dispatch('UserCreate', this.newUser)
+        .dispatch('createUser', this.newUser)
         .then(() => {
           this.$message({
             message: `成功新增 ${this.newUser.name}`,
