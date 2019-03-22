@@ -223,10 +223,10 @@ let router = new Router({
           store.dispatch('getMe'),
           store.dispatch('getProjectPhases')
         ]).then(() => {
-          next()
           if (window.location.protocol === 'https:') {
             window.location = `http://geo-stage.chuen.com.tw${to.path}`
           }
+          // next()
         })
       }
     },
