@@ -321,13 +321,4 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach((to, from, next ) => {
-  var protocol = window.location.protocol
-  if (to.name === 'MeasuresSo' && protocol === 'https:') {
-    window.location = `http://geo-stage.chuen.com.tw${to.path}`
-    // } else if (to.name !== 'MeasuresSo' && protocol === 'http:') {
-    //   window.location = `https://geo-stage.chuen.com.tw${to.path}`
-  }
-})
-
 export default router
