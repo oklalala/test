@@ -49,11 +49,10 @@
           style="width: 100%">
         </el-input>
       </el-form-item>
-
       <el-form-item label="客戶公司名稱">
         <el-select
-          v-model="newProject.companyId"
-          @change="resetMember"
+          v-model="selectedCompany"
+          @change="updateSelectedCompany"
           placeholder="雨宮營造"
           style="width: 100%">
           <el-option
@@ -76,7 +75,7 @@
               @change="updateSelectedOPTs"
               style="width: 100%">
               <el-option
-                v-for="opt in OPTs"
+                v-for="opt in OPTList"
                 :key="opt.id"
                 :label="opt.name"
                 :value="opt.id">
@@ -93,7 +92,7 @@
               @change="updateSelectedUSERs"
               style="width: 100%">
               <el-option
-                v-for="user in USERs"
+                v-for="user in USERList"
                 :key="user.id"
                 :label="user.name"
                 :value="user.id">
@@ -344,15 +343,17 @@ export default {
   },
   data() {
     return {
-      currentCompanyId: '',
       removedVG: '',
       addedVG: '',
       floorIndex: 0, // used in array
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
       image: '', // preview url in blob
+      OPTList: [],
+      USERList: [],
       selectedOPT: [], // custom and self OPTs
       selectedUSER: [], // custom USERs
+      selectedCompany: '',
       selectedStatus: '',
       statusList: [
         {
@@ -425,6 +426,20 @@ export default {
       // }
     }
   },
+  watch: {
+    selectedCompany(newCompanyId) {
+      var allOPT = this.$store.getters.OPTs
+      var customersOPT = allOPT.filter(OPT => OPT.company.id == newCompanyId)
+      var selfOPT = allOPT.filter(OPT => OPT.company.id == this.myCompany.id)
+      this.OPTList = selfOPT.concat(customersOPT)
+
+      var allUSER = this.$store.getters.USERs
+      var customersUSER = allUSER.filter(
+        user => user.company.id == newCompanyId
+      )
+      this.USERList = customersUSER
+    }
+  },
   computed: {
     projectList() {
       return this.$store.getters.projects
@@ -441,21 +456,6 @@ export default {
     },
     soItems() {
       return this.$store.getters.soItems
-    },
-    OPTs() {
-      var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(
-        user => user.company.id == this.currentCompanyId
-      )
-      var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
-      return selfOPT.concat(customersOPT)
-    },
-    USERs() {
-      var allUSER = this.$store.getters.USERs
-      var customersUSER = allUSER.filter(
-        user => user.company.id == this.currentCompanyId
-      )
-      return customersUSER
     },
     uploadURL() {
       return `${process.env.VUE_APP_API_URL}/uploads`
@@ -556,13 +556,6 @@ export default {
         soManagement[i] = +soManagement[i]
       }
     },
-    resetMember(value) {
-      this.currentCompanyId = value
-      this.selectedUSER = []
-      this.selectedOPT = []
-      this.newProject.OPT = []
-      this.newProject.USER = []
-    },
     updateSelectedStatus(value) {
       this.newProject.status = value
     },
@@ -581,6 +574,21 @@ export default {
         USERList = USERList.concat(selectedUSER)
       })
       this.newProject.USER = USERList
+    },
+    updateSelectedCompany(value) {
+      this.newProject.companyId = value
+      this.selectedUSER = []
+      this.selectedOPT = []
+      this.newProject.OPT = []
+      this.newProject.USER = []
+    },
+    updateSelectedVGs(value) {
+      var VGList = []
+      value.forEach(id => {
+        var selectedVG = this.VGs.filter(vg => vg.id == id)
+        VGList = VGList.concat(selectedVG)
+      })
+      this.VGList = VGList
     },
     getImage(file) {
       sendImageAPI(file.raw).then(res => {
@@ -607,14 +615,6 @@ export default {
       this.floorIndex = selectedFloor - 1
       this.getVGTable(this.floorIndex)
     },
-    updateSelectedVGs(value) {
-      var VGList = []
-      value.forEach(id => {
-        var selectedVG = this.VGs.filter(vg => vg.id == id)
-        VGList = VGList.concat(selectedVG)
-      })
-      this.VGList = VGList
-    },
     getVGTable(floorIndex) {
       var start = floorIndex * this.numOfFloor
       var end = (floorIndex + 1) * this.numOfFloor
@@ -627,6 +627,7 @@ export default {
     setSelectedBox() {
       this.selectedOPT = this.project.OPT.map(opt => opt.name)
       this.selectedUSER = this.project.USER.map(user => user.name)
+      this.selectedCompany = this.project.companyId
       this.selectedStatus = this.project.status
     }
   }
