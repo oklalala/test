@@ -138,9 +138,7 @@ export default {
       return this.$store.getters.currentUser
     },
     newUser() {
-      this.selectedRole = this.user.roleName
-      this.selectedCompany = this.user.company.id
-      this.selectedSOItem = this.user.soItem ? this.user.soItem.id : ''
+      this.setSelectBox()
       return this.user
     }
   },
@@ -190,6 +188,11 @@ export default {
       this.$store.dispatch('updateCurrentUser', this.newUser).then(() => {
         this.toPath('CompanyList')
       })
+    },
+    setSelectBox() {
+      this.selectedRole = this.user.roleName
+      this.selectedCompany = this.user.company.id
+      this.selectedSOItem = this.user.soItem ? this.user.soItem.id : ''
     }
   }
 }

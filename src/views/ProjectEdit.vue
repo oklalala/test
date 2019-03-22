@@ -494,11 +494,7 @@ export default {
     },
     newProject() {
       this.getVGTable(0)
-
-      this.selectedOPT = this.project.OPT.map(opt => opt.id)
-      this.selectedUSER = this.project.USER.map(user => user.id)
-      this.selectedStatus = this.project.status
-
+      this.setSelectedBox()
       return {
         number: this.project.number, // CNT-16Q3
         status: this.project.status, // end or in-progress
@@ -627,6 +623,11 @@ export default {
     saveCurrentAndGo() {
       this.$store.dispatch('updateCurrentProject', this.newProject)
       this.toPath('SteelList')
+    },
+    setSelectedBox() {
+      this.selectedOPT = this.project.OPT.map(opt => opt.name)
+      this.selectedUSER = this.project.USER.map(user => user.name)
+      this.selectedStatus = this.project.status
     }
   }
 }
