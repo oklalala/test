@@ -322,10 +322,10 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from, next ) => {
-  // var protocol = window.location.protocol
-  if (to.name === 'MeasuresSo') {
+  var protocol = window.location.protocol
+  if (to.name === 'MeasuresSo' && protocol === 'https:') {
     window.location = `http://geo-stage.chuen.com.tw${to.path}`
-  } else {
+  } else if (protocol === 'http:') {
     window.location = `https://geo-stage.chuen.com.tw${to.path}`
   }
 })
