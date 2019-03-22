@@ -105,20 +105,32 @@
 <script>
 import startMeasures from '@/utils/measuresSo'
 export default {
-  beforeRouteEnter (to, from, next) {
+  // beforeRouteEnter (to, from, next) {
+  //   if (window.location.protocol === 'https:') {
+  //     window.location = `http://geo-stage.chuen.com.tw${
+  //       to.path
+  //     }`
+  //   }
+  //   next()
+  // },
+  // beforeRouteLeave(to,from,next){
+  //   window.location = `https://geo-stage.chuen.com.tw${
+  //     to.path
+  //   }`
+  //   next()
+  // },
+  beforeCreate() {
     if (window.location.protocol === 'https:') {
       window.location = `http://geo-stage.chuen.com.tw${
-        to.path
+        window.location.pathname
       }`
     }
-    next()
   },
-  beforeRouteLeave(to,from,next){
-    window.location = `https://geo-stage.chuen.com.tw${
-      to.path
-    }`
-    next()
-  },
+  // beforeDestroy() {
+  //   window.location = `https://geo-stage.chuen.com.tw${
+  //     window.location.pathname
+  //   }`
+  // },
   data() {
     return {
       wiseIP: '192.168.58.200',
