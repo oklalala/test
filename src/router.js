@@ -224,7 +224,7 @@ let router = new Router({
           store.dispatch('getProjectPhases')
         ]).then(() => {
           next()
-          window.location = `http://geo-stage.chuen.com.tw${to.path}`
+          // window.location = `http://geo-stage.chuen.com.tw${to.path}`
         })
       }
     },
