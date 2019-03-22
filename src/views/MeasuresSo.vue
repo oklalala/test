@@ -168,9 +168,11 @@ export default {
       this.isSend = true
     },
     getSOItem: function() {
-      this.$store.dispatch('getSOItem', this.me.soItem.id).then(response => {
-        this.soItem = response.data.data
-      })
+      if (this.me.soItem) {
+        this.$store.dispatch('getSOItem', this.me.soItem.id).then(response => {
+          this.soItem = response.data.data
+        })
+      }
     },
     onChangeLocation: function() {
       let filterResult
