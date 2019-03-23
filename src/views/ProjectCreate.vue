@@ -5,6 +5,7 @@
       label-position="top"
       label-width="80px"
       :model="newProject"
+      ref="newProject"
       :rules="rules">
       
       <h2>基本資料</h2>
@@ -127,7 +128,7 @@
       <el-tabs type="border-card" stretch>
 
         <el-tab-pane label="軸力計 ( VG )"> 
-          <el-form-item label="使用軸力計編號">
+          <el-form-item label="使用軸力計編號" prop='vgIds'>
             <el-select 
               v-model="newProject.vgIds" 
               placeholder="可複選"
@@ -331,7 +332,7 @@
             <el-button
               type="primary"
               style="width: 100%"
-              @click="submit">
+              @click="submit('newProject')">
               確定送出
             </el-button>
           </el-col>
@@ -417,6 +418,11 @@ export default {
         name: {
           required: true,
           message: '請輸入專案名稱',
+          trigger: ['blur', 'change']
+        },
+        vgIds: {
+          required: true,
+          message: '請選擇軸力計',
           trigger: ['blur', 'change']
         },
         'soManagement.notice': [
@@ -549,7 +555,17 @@ export default {
       this.reset()
       this.toPath('ProjectSetting')
     },
-    submit() {
+    submit(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.createProject()
+        } else {
+          this.$message.error(`請重新檢查必填欄位`)
+          return false
+        }
+      })
+    },
+    createProject() {
       this.numberManagement()
       this.initVGLocation()
       this.mergeVGLocation(this.newProject.vgLocation, this.fullVGsInfo)
