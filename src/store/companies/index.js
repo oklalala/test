@@ -1,3 +1,5 @@
+/** @format */
+import sendAPI from '@/utils/API'
 export default {
   state: {
     data: []

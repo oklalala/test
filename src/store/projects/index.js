@@ -1,3 +1,6 @@
+/** @format */
+import sendAPI from '@/utils/API'
+import sendImageAPI from '@/utils/ImageAPI'
 export default {
   state: {
     data: [],
@@ -9,6 +12,9 @@ export default {
     },
     setProject(state, project) {
       state.currentOne = project
+    },
+    updateConfigImage(state, url) {
+      state.currentOne.sitePlan = url
     }
   },
   getters: {
@@ -44,6 +50,11 @@ export default {
     },
     createProject(context, payload) {
       return sendAPI('post', `/project`, true, payload)
+    },
+    uploadConfigImage({ commit }, file) {
+      return sendImageAPI(file).then(res => {
+        commit('updateConfigImage', res.data.url)
+      })
     }
   }
 }

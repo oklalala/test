@@ -622,8 +622,8 @@ export default {
       this.VGList = VGList
     },
     getImage(file) {
-      sendImageAPI(file.raw).then(res => {
-        this.newProject.sitePlan = res.data.url
+      this.$store.dispatch('uploadConfigImage', file.raw)
+      sendImageAPI(file.raw).then(() => {
         this.image = `${process.env.VUE_APP_API_URL}/${
           this.newProject.sitePlan
         }`
