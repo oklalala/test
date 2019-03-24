@@ -259,7 +259,7 @@ export default {
 
           FileSaver.saveAs(blob, name)
           this.$message({
-            message: `成功下載 ${this.newProject.name}`,
+            message: `成功下載 ${this.project.name}`,
             type: 'success',
             center: true,
             duration: 1800
@@ -276,7 +276,7 @@ export default {
           const blob = new Blob([response.data], { type })
           FileSaver.saveAs(blob, name)
           this.$message({
-            message: `成功下載 ${this.newProject.name}`,
+            message: `成功下載 ${this.project.name}`,
             type: 'success',
             center: true,
             duration: 1800
