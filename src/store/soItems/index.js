@@ -36,7 +36,7 @@ export default {
       return sendAPI('post', '/so-item', true, payload)
     },
     exportSO(context, projectId) {
-      return sendAPI('get', `/measures/so/export?${projectId}`, true)
+      return sendAPI('get', `/measures/so/export?projectId=${projectId}`, true)
     }
   }
 }

@@ -249,15 +249,28 @@ export default {
       })
     },
     exportVG() {
-      this.$store
-        .dispatch('exportVG', this.$route.params.projectId)
-        .then(response => {
-          const type = response.headers['content-type']
-          const time = moment().format('MMDD hhmm')
-          const name = `軸力計數據-${this.project.name}-${time}`
-          const blob = new Blob([response.data], { type })
-
-          FileSaver.saveAs(blob, name)
+      const projectId = this.$route.params.projectId
+      const time = moment().format('MMDD hhmm')
+      const token = this.$store.getters.token
+      this.$message({
+        message: `正在下載'${this.project.name}'的軸力計資料`,
+        type: 'info',
+        center: true,
+        duration: 1800
+      })
+      fetch(
+        `https://geo-stage.chuen.com.tw:3333/v1/measures/vg/export?projectId=${projectId}`,
+        {
+          headers: {
+            'x-access-token': token
+          }
+        }
+      )
+        .then(res => res.blob())
+        .then(myBlob => {
+          saveAs(myBlob, `${this.project.name}-${time}.xlsx`)
+        })
+        .then(() => {
           this.$message({
             message: `成功下載 ${this.project.name}`,
             type: 'success',
@@ -267,14 +280,28 @@ export default {
         })
     },
     exportSO() {
-      this.$store
-        .dispatch('exportSO', this.$route.params.projectId)
-        .then(response => {
-          const type = response.headers['content-type']
-          const time = moment().format('MMDD hhmm')
-          const name = `傾度管數據-${this.project.name}-${time}`
-          const blob = new Blob([response.data], { type })
-          FileSaver.saveAs(blob, name)
+      const projectId = this.$route.params.projectId
+      const time = moment().format('MMDD hhmm')
+      const token = this.$store.getters.token
+      this.$message({
+        message: `正在下載'${this.project.name}'的傾度管資料`,
+        type: 'info',
+        center: true,
+        duration: 1800
+      })
+      fetch(
+        `https://geo-stage.chuen.com.tw:3333/v1/measures/so/export?projectId=${projectId}`,
+        {
+          headers: {
+            'x-access-token': token
+          }
+        }
+      )
+        .then(res => res.blob())
+        .then(myBlob => {
+          saveAs(myBlob, `傾度管${this.project.name}-${time}.xlsx`)
+        })
+        .then(() => {
           this.$message({
             message: `成功下載 ${this.project.name}`,
             type: 'success',

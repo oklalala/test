@@ -9,7 +9,6 @@ import sendAPI from '@/utils/API'
 
 Vue.use(Vuex)
 
-
 import users from './users'
 import projects from './projects'
 import projectPhases from './projectPhases'
@@ -19,7 +18,6 @@ import steels from './steels'
 import measureSO from './measureSO'
 import soItems from './soItems'
 import soModels from './soModels'
-
 
 export default new Vuex.Store({
   modules: {
