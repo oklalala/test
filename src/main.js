@@ -43,6 +43,13 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'element-ui'
+import ECharts from 'vue-echarts/components/ECharts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/legend'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/markLine'
+import 'echarts/lib/component/dataset'
 
 Vue.use(Row)
 Vue.use(Col)
@@ -75,14 +82,6 @@ Vue.use(Footer)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
-
-import ECharts from 'vue-echarts/components/ECharts'
-import 'echarts/lib/chart/line'
-import 'echarts/lib/component/legend'
-import 'echarts/lib/component/title'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/markLine'
-import 'echarts/lib/component/dataset'
 
 Vue.component('chart', ECharts)
 

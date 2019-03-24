@@ -363,7 +363,6 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
-import sendImageAPI from '../utils/ImageAPI'
 
 export default {
   name: 'ProjectEdit',
@@ -622,8 +621,7 @@ export default {
       this.VGList = VGList
     },
     getImage(file) {
-      this.$store.dispatch('uploadConfigImage', file.raw)
-      sendImageAPI(file.raw).then(() => {
+      this.$store.dispatch('uploadConfigImage', file.raw).then(() => {
         this.image = `${process.env.VUE_APP_API_URL}/${
           this.newProject.sitePlan
         }`

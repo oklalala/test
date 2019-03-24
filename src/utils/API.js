@@ -20,7 +20,7 @@ export default function(method, path, isAuth, data) {
     .create(configs)
     [method](path, data)
     .catch(e => {
-      let message = e.response.data.result
+      let message = e.message || e.response.data.result
       if (message === 'jwt expired' || message === 'invalid token') {
         store.dispatch('logout')
       }

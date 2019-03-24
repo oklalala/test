@@ -26,7 +26,7 @@
         <template slot-scope="scope">
           <el-button
             @click="toPath('ProjectMonitor', { projectId: scope.row.id })"
-            >監控資料</el-button
+            >進入檢視</el-button
           >
         </template>
       </el-table-column>
@@ -36,9 +36,7 @@
         v-if="isShow('project:soItemMeasure')"
       >
         <template slot-scope="scope">
-          <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })"
-            >傾度管資料</el-button
-          >
+          <el-button @click="to(scope.row.id)">進入測量</el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -92,6 +90,9 @@ export default {
     }
   },
   methods: {
+    to(id) {
+      window.location = `http://${window.location.host}/measures/so/${id}`
+    },
     deleteProjects() {
       if (this.deleteList.length === 0) return
       this.$store

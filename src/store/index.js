@@ -2,13 +2,13 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import localStore from 'store'
 import router from '@/router'
 
 import sendAPI from '@/utils/API'
+import VueCookies from 'vue-cookies'
 
+Vue.use(VueCookies)
 Vue.use(Vuex)
-
 
 import users from './users'
 import projects from './projects'
@@ -19,7 +19,6 @@ import steels from './steels'
 import measureSO from './measureSO'
 import soItems from './soItems'
 import soModels from './soModels'
-
 
 export default new Vuex.Store({
   modules: {
@@ -48,15 +47,19 @@ export default new Vuex.Store({
   },
   mutations: {
     setToken(state, token) {
+      VueCookies.set('token', token)
       state.token = token
     },
     setMyId(state, myId) {
+      VueCookies.set('userId', myId)
       state.myId = myId
     },
     setMyRole(state, myRole) {
+      VueCookies.set('role', myRole)
       state.myRole = myRole
     },
     setMyPermissions(state, myPermissions) {
+      VueCookies.set('permissions', myPermissions)
       state.myPermissions = myPermissions
     },
     setLastPath(state, path) {
@@ -88,16 +91,16 @@ export default new Vuex.Store({
   },
   getters: {
     token(state) {
-      return state.token
+      return state.token || VueCookies.get('token')
     },
     myId(state) {
-      return state.myId
+      return state.myId || VueCookies.get('userId')
     },
     myRole(state) {
-      return state.myRole
+      return state.myRole || VueCookies.get('role')
     },
     myPermissions(state) {
-      return state.myPermissions
+      return state.myPermissions || VueCookies.get('permissions')
     },
     lastPath(state) {
       return state.lastPath
@@ -125,17 +128,19 @@ export default new Vuex.Store({
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
         commit('setMyPermissions', res.data.permissions)
-        localStore.set('ground_monitor_token', {
-          token: res.data.token,
-          myId: res.data.userId,
-          myRole: res.data.role,
-          myPermissions: res.data.permissions
-        })
       })
     },
     logout({ commit }) {
       commit('setToken', '')
-      localStore.remove('ground_monitor_token')
+      VueCookies.set('token', '')
+      VueCookies.set('userId', '')
+      VueCookies.set('role', '')
+      VueCookies.set('permissions', '')
+
+      VueCookies.remove('token')
+      VueCookies.remove('userId')
+      VueCookies.remove('role')
+      VueCookies.remove('permissions')
       router.push('/')
     },
     getMe({ getters, commit }) {
