@@ -1,48 +1,44 @@
+<!-- @format -->
+
 <template>
   <div class="user-info">
     <el-form>
       <section>
-      <h1>傾度管設備 配置</h1>
+        <h1>傾度管設備 配置</h1>
         <h2>基本資料</h2>
-          <el-form-item label="編號" required>
-            <el-input
-              v-model="newSOItem.number"
-              placeholder="請輸入編號">
-            </el-input>
-          </el-form-item>
-          <el-form-item label="廠牌型號" required>
-            <el-select
-              v-model="newSOItem.soModelId"
-              @change="initSOModelParameters"
-              placeholder="請選擇"
-              style="width: 100%">
-              <el-option
-                v-for="model in soModels"
-                :key="model.id"
-                :label="model.name"
-                :value="model.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
+        <el-form-item label="編號" required>
+          <el-input v-model="newSOItem.number" placeholder="請輸入編號">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="廠牌型號" required>
+          <el-select
+            v-model="newSOItem.soModelId"
+            @change="initSOModelParameters"
+            placeholder="請選擇"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="model in soModels"
+              :key="model.id"
+              :label="model.name"
+              :value="model.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
       </section>
       <template v-if="!!newSOItem.soModelId">
         <h1>傾度管 參數</h1>
         <section>
-          <el-table
-            :data="soModelParameters"
-            style="width: 100%">
-            <el-table-column
-              prop="key"
-              label="參數名稱"
-              width="180">
+          <el-table :data="soModelParameters" style="width: 100%">
+            <el-table-column prop="key" label="參數名稱" width="180">
             </el-table-column>
-            <el-table-column
-              prop="value"
-              label="參數值">
+            <el-table-column prop="value" label="參數值">
               <template slot-scope="scope">
-                <el-input 
-                @blur="editSO(scope.row.key,scope.row.value)"
-                v-model.number="scope.row.value">
+                <el-input
+                  @blur="editSO(scope.row.key, scope.row.value)"
+                  v-model.number="scope.row.value"
+                >
                 </el-input>
               </template>
             </el-table-column>
@@ -53,13 +49,8 @@
             </el-button>
           </div>
         </section>
-        <el-table
-          :data="soModelMeasurable"
-          style="width: 100%">
-          <el-table-column
-            prop="name"
-            label="欄位名稱"
-            width="180">
+        <el-table :data="soModelMeasurable" style="width: 100%">
+          <el-table-column prop="name" label="欄位名稱" width="180">
           </el-table-column>
         </el-table>
         <div class="button-container">

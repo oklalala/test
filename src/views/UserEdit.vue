@@ -1,11 +1,10 @@
+<!-- @format -->
+
 <template>
   <div class="userEdit">
     <h1>帳號設定</h1>
     <h2>基本資料</h2>
-    <el-form
-      label-position="top"
-      label-width="80px"
-      :model="newUser">
+    <el-form label-position="top" label-width="80px" :model="newUser">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="姓名">
@@ -17,12 +16,14 @@
             <el-select
               v-model="selectedRole"
               placeholder="請選擇"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="item in roles"
                 :key="item.name"
                 :label="item.name"
-                :value="item.name">
+                :value="item.name"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -30,49 +31,48 @@
       </el-row>
       <el-form-item label="帳號">
         <el-input v-model="newUser.account" disabled></el-input>
-        <h4 class='password'>密碼：{{newUser.password}}</h4>
+        <h4 class="password">密碼：{{ newUser.password }}</h4>
       </el-form-item>
       <el-form-item label="公司名稱">
         <el-select
           v-model="selectedCompany"
           placeholder="請選擇"
           style="width: 100%"
-          disabled>
+          disabled
+        >
           <el-option
             v-for="item in companies"
             :key="item.id"
             :label="item.name"
-            :value="item.id">
+            :value="item.id"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
-          v-model='selectedSOItem'
+          v-model="selectedSOItem"
           placeholder="請選擇"
-          style="width: 100%">
+          style="width: 100%"
+        >
           <el-option
             v-for="item in soItems"
             :key="item.id"
             :label="item.number"
-            :value="item.id">
+            :value="item.id"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-button
-              type="primary"
-              style="width: 100%"
-              @click="edit">
+            <el-button type="primary" style="width: 100%" @click="edit">
               確定送出
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button
-              style="width: 100%"
-              @click="cancel">
+            <el-button style="width: 100%" @click="cancel">
               取消
             </el-button>
           </el-col>

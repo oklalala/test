@@ -1,9 +1,16 @@
+<!-- @format -->
+
 <template>
   <div class="soList">
     <h1>傾度管列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteSOItems" v-if="!!deleteList.length">刪除</el-button>
+        <el-button
+          type="primary"
+          @click="deleteSOItems"
+          v-if="!!deleteList.length"
+          >刪除</el-button
+        >
       </div>
       <div class="operationGroup-right">
         <el-button type="primary" @click="toPath('SOItemCreate')">
@@ -14,31 +21,22 @@
     <el-table
       :data="soItems"
       class="soItems-table"
-      @selection-change="updateDeleteList">
-      <el-table-column
-        type="selection"
-        width="40">
-      </el-table-column>
-      <el-table-column
-        label="編號"
-        width="130">
+      @selection-change="updateDeleteList"
+    >
+      <el-table-column type="selection" width="40"> </el-table-column>
+      <el-table-column label="編號" width="130">
         <template slot-scope="scope">
-          <h4 
+          <h4
             class="clickable"
-            @click="toPath('SOItemEdit', { soId: scope.row.id })">
+            @click="toPath('SOItemEdit', { soId: scope.row.id })"
+          >
             {{ scope.row.number }}
           </h4>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="soModelName"
-        label="廠牌 型號"
-        width="120">
+      <el-table-column prop="soModelName" label="廠牌 型號" width="120">
       </el-table-column>
-      <el-table-column
-        prop="OPT"
-        label="OPT">
-      </el-table-column>
+      <el-table-column prop="OPT" label="OPT"> </el-table-column>
     </el-table>
   </div>
 </template>

@@ -1,30 +1,89 @@
+<!-- @format -->
+
 <template>
   <el-container>
     <el-header>
       <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
     </el-header>
     <label for="menu" id="burger" @click="isMobile = !isMobile">
-      <font-awesome-icon icon="bars" v-show="isLogined"/>
+      <font-awesome-icon icon="bars" v-show="isLogined" />
     </label>
     <section id="nav" v-if="!isMobile" v-show="isLogined">
       <ul class="nav__items">
-        <li class="nav__item" :class="{ active: isActive('/user-info') }" @click="toPath('UserInfo')">帳號資料</li>
-        <li class="nav__item" :class="{ active: isActive('/projects') }" @click="toPath('ProjectList')">專案列表</li>
+        <li
+          class="nav__item"
+          :class="{ active: isActive('/user-info') }"
+          @click="toPath('UserInfo')"
+        >
+          帳號資料
+        </li>
+        <li
+          class="nav__item"
+          :class="{ active: isActive('/projects') }"
+          @click="toPath('ProjectList')"
+        >
+          專案列表
+        </li>
       </ul>
       <ul class="nav__items">
-        <li class="nav__item" :class="{ active: isActive('/vgs') }" @click="toPath('VGList')" v-if="isShow('vg:CRUD')">軸力計設定</li>
-        <li class="nav__item" :class="{ active: isActive('/so-items') }" @click="toPath('SOItemList')" v-if="isShow('soItem:CRUD')">傾度管設定</li>
-        <li class="nav__item" :class="{ active: isActive('/users') }" @click="toPath('UserList')" v-if="isShow('account:CRUD')">帳號設定</li>
-        <li class="nav__item" 
-          :class="{ active: isActive('/project-setting') || isActive('/project-phases') }" 
-          @click.capture="projectSubMenuShow = !projectSubMenuShow" 
-          v-if="isShow('project:CRUD')">專案設定
+        <li
+          class="nav__item"
+          :class="{ active: isActive('/vgs') }"
+          @click="toPath('VGList')"
+          v-if="isShow('vg:CRUD')"
+        >
+          軸力計設定
+        </li>
+        <li
+          class="nav__item"
+          :class="{ active: isActive('/so-items') }"
+          @click="toPath('SOItemList')"
+          v-if="isShow('soItem:CRUD')"
+        >
+          傾度管設定
+        </li>
+        <li
+          class="nav__item"
+          :class="{ active: isActive('/users') }"
+          @click="toPath('UserList')"
+          v-if="isShow('account:CRUD')"
+        >
+          帳號設定
+        </li>
+        <li
+          class="nav__item"
+          :class="{
+            active: isActive('/project-setting') || isActive('/project-phases')
+          }"
+          @click.capture="projectSubMenuShow = !projectSubMenuShow"
+          v-if="isShow('project:CRUD')"
+        >
+          專案設定
           <ul class="nav__sub" v-if="projectSubMenuShow">
-            <li class="nav__item" :class="{ active: isActive('/project-setting') }" @click="toPath('ProjectSetting')">專案資料</li>
-            <li class="nav__item" :class="{ active: isActive('/project-phases') }" @click="toPath('ProjectPhaseList')">執行階段</li>
+            <li
+              class="nav__item"
+              :class="{ active: isActive('/project-setting') }"
+              @click="toPath('ProjectSetting')"
+            >
+              專案資料
+            </li>
+            <li
+              class="nav__item"
+              :class="{ active: isActive('/project-phases') }"
+              @click="toPath('ProjectPhaseList')"
+            >
+              執行階段
+            </li>
           </ul>
         </li>
-        <li class="nav__item" :class="{ active: isActive('/permisson-setup') }" @click="toPath('PermissionSetup')" v-if="isShow('permission:CRUD')">權限設定</li>
+        <li
+          class="nav__item"
+          :class="{ active: isActive('/permisson-setup') }"
+          @click="toPath('PermissionSetup')"
+          v-if="isShow('permission:CRUD')"
+        >
+          權限設定
+        </li>
         <li class="nav__item" @click="logout">登出</li>
       </ul>
     </section>

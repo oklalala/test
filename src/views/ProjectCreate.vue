@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="createProject">
     <h1>專案設定</h1>
@@ -6,29 +8,32 @@
       label-width="80px"
       :model="newProject"
       ref="newProject"
-      :rules="rules">
-      
+      :rules="rules"
+    >
       <h2>基本資料</h2>
-      
+
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="專案案號" prop='number'>
-            <el-input v-model="newProject.number"
+          <el-form-item label="專案案號" prop="number">
+            <el-input
+              v-model="newProject.number"
               placeholder="CNT-16Q4"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="專案狀態" prop='status'>
+          <el-form-item label="專案狀態" prop="status">
             <el-select
               v-model="newProject.status"
               placeholder="請選擇"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="item in statusList"
                 :key="item.name"
                 :label="item.label"
-                :value="item.value">
+                :value="item.value"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -37,19 +42,21 @@
 
       <el-row :gutter="20">
         <el-col>
-          <el-form-item label="專案名稱" prop='name'>
-            <el-input v-model="newProject.name"
+          <el-form-item label="專案名稱" prop="name">
+            <el-input
+              v-model="newProject.name"
               placeholder="阡福町商業大樓"
             ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
-      <el-form-item label="地點" prop='address' >
+      <el-form-item label="地點" prop="address">
         <el-input
           v-model="newProject.address"
           placeholder="大武街 34 號"
-          style="width: 100%">
+          style="width: 100%"
+        >
         </el-input>
       </el-form-item>
 
@@ -58,12 +65,14 @@
           v-model="newProject.companyId"
           @change="resetMember"
           placeholder="雨宮營造"
-          style="width: 100%">
+          style="width: 100%"
+        >
           <el-option
             v-for="company in companiesList"
             :key="company.id"
             :label="company.name"
-            :value="company.id">
+            :value="company.id"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -77,12 +86,14 @@
               placeholder="請選擇 OPT"
               multiple
               @change="updateSelectedOPTs"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="opt in OPTs"
                 :key="opt.id"
                 :label="opt.name"
-                :value="opt.id">
+                :value="opt.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -95,159 +106,197 @@
               placeholder="請選擇 USER"
               multiple
               @change="updateSelectedUSERs"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="user in USERs"
                 :key="user.id"
                 :label="user.name"
-                :value="user.id">
+                :value="user.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
 
-
       <h1>配置圖</h1>
-      <el-upload 
-        class="upload-demo" 
+      <el-upload
+        class="upload-demo"
         drag
-        action="uploadURL" 
-        :on-change="getImage" 
+        action="uploadURL"
+        :on-change="getImage"
         list-type="picture"
         :before-upload="beforeImgUpload"
-        :auto-upload="true">
-        <img :src="this.image.url" alt="" v-if="imageSelected">
+        :auto-upload="true"
+      >
+        <img :src="this.image.url" alt="" v-if="imageSelected" />
         <i class="el-icon-upload" v-if="!imageSelected"></i>
-        <div class="el-upload__text" v-if="!imageSelected">將文件拖到此處，或<em>點擊上傳</em></div>
+        <div class="el-upload__text" v-if="!imageSelected">
+          將文件拖到此處，或<em>點擊上傳</em>
+        </div>
         <div slot="tip" class="el-upload__tip">上傳文件不能超過2Mb</div>
-        <el-button class="reselect" size="small" type="primary" v-if="imageSelected">另選圖片</el-button>
+        <el-button
+          class="reselect"
+          size="small"
+          type="primary"
+          v-if="imageSelected"
+          >另選圖片</el-button
+        >
       </el-upload>
 
       <h2>監控設定</h2>
       <el-tabs type="border-card" stretch>
-
-        <el-tab-pane label="軸力計 ( VG )"> 
-          <el-form-item label="使用軸力計編號" prop='vgIds'>
-            <el-select 
-              v-model="newProject.vgIds" 
+        <el-tab-pane label="軸力計 ( VG )">
+          <el-form-item label="使用軸力計編號" prop="vgIds">
+            <el-select
+              v-model="newProject.vgIds"
               placeholder="可複選"
-              multiple 
+              multiple
               @change="updateSelectedVGs"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="vg in VGs"
                 :disabled="!!vg.projectName"
                 :key="vg.id"
                 :label="vg.number"
-                :value="vg.id">
+                :value="vg.id"
+              >
               </el-option>
             </el-select>
             <h3 v-if="!isEnoughtVG">請增加軸力計</h3>
           </el-form-item>
           <el-form-item label="支撐階數：">
             <el-input
-              @keyup.native='fullVGsInfo=[]'
+              @keyup.native="fullVGsInfo = []"
               v-model.number="newProject.floor"
-              placeholder="3">
+              placeholder="3"
+            >
             </el-input>
           </el-form-item>
           <el-form-item label="每層數量：">
             <el-input
-              @keyup.native='fullVGsInfo=[]'
+              @keyup.native="fullVGsInfo = []"
               v-model.number="numOfFloor"
-              placeholder="5">
+              placeholder="5"
+            >
             </el-input>
           </el-form-item>
-          <br>
-          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG">產生軸力計編碼</el-button>
-          <br>
-          <br>
+          <br />
+          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG"
+            >產生軸力計編碼</el-button
+          >
+          <br />
+          <br />
 
           <div class="block" v-if="!!fullVGsInfo.length">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
               @current-change="currentFloor"
-              :total="getPagination">
+              :total="getPagination"
+            >
             </el-pagination>
           </div>
 
           <el-row :gutter="20" v-if="!!fullVGsInfo.length">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
-              <el-form-item 
-                label="注意值" 
-                :prop="'vgManagement['+this.floorIndex+'].notice'"
+              <el-form-item
+                label="注意值"
+                :prop="'vgManagement[' + this.floorIndex + '].notice'"
                 :rules="[
-                  { required: true, message: '請檢查注意值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
+                  {
+                    required: true,
+                    message: '請檢查注意值',
+                    trigger: ['blur', 'change']
+                  },
+                  {
+                    pattern: /^\d+(\.\d{0,1})?$/,
+                    message: '小數點下最多一位 0.1',
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
                 <el-input
-                  size='mini'
+                  size="mini"
                   v-model="newProject.vgManagement[floorIndex].notice"
-                  placeholder="68.3">
+                  placeholder="68.3"
+                >
                 </el-input>
               </el-form-item>
-              <el-form-item 
-                label="警戒值" 
-                :prop="'vgManagement['+this.floorIndex+'].warning'"
+              <el-form-item
+                label="警戒值"
+                :prop="'vgManagement[' + this.floorIndex + '].warning'"
                 :rules="[
-                  { required: true, message: '請檢查警戒值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
+                  {
+                    required: true,
+                    message: '請檢查警戒值',
+                    trigger: ['blur', 'change']
+                  },
+                  {
+                    pattern: /^\d+(\.\d{0,1})?$/,
+                    message: '小數點下最多一位 0.1',
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
                 <el-input
-                  size='mini'
+                  size="mini"
                   v-model="newProject.vgManagement[floorIndex].warning"
-                  placeholder="79.6">
+                  placeholder="79.6"
+                >
                 </el-input>
               </el-form-item>
-              <el-form-item 
-                label="行動值" 
-                :prop="'vgManagement['+this.floorIndex+'].action'"
+              <el-form-item
+                label="行動值"
+                :prop="'vgManagement[' + this.floorIndex + '].action'"
                 :rules="[
-                  { required: true, message: '請檢查行動值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
+                  {
+                    required: true,
+                    message: '請檢查行動值',
+                    trigger: ['blur', 'change']
+                  },
+                  {
+                    pattern: /^\d+(\.\d{0,1})?$/,
+                    message: '小數點下最多一位 0.1',
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
                 <el-input
-                  size='mini'
+                  size="mini"
                   v-model="newProject.vgManagement[floorIndex].action"
-                  placeholder="104.2">
+                  placeholder="104.2"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="19">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
-              <el-button
-                @click="toPath('SteelList')">
+              <el-button @click="toPath('SteelList')">
                 維護鋼材資料
               </el-button>
               <el-table class="vg-table" :data="vgTable">
-                <el-table-column
-                  prop="host.number"
-                  label="VG"
-                  width="120">
+                <el-table-column prop="host.number" label="VG" width="120">
                 </el-table-column>
-                <el-table-column
-                  prop="port"
-                  label="Port"
-                  width="80">
+                <el-table-column prop="port" label="Port" width="80">
                 </el-table-column>
-                <el-table-column
-                  prop="serial"
-                  label="編碼"
-                  width="100">
+                <el-table-column prop="serial" label="編碼" width="100">
                 </el-table-column>
-                <el-table-column
-                  prop="steelId"
-                  label="鋼材"
-                  width="100">
+                <el-table-column prop="steelId" label="鋼材" width="100">
                   <template slot-scope="scope">
                     <el-select
                       v-model="scope.row.steelId"
-                      placeholder="請選擇鋼材">
+                      placeholder="請選擇鋼材"
+                    >
                       <el-option
                         v-for="steel in Steels"
                         :key="steel.id"
                         :label="steel.name"
-                        :value="steel.id">
+                        :value="steel.id"
+                      >
                       </el-option>
                     </el-select>
                   </template>
@@ -260,44 +309,51 @@
         <el-tab-pane label="傾度管 ( SO )">
           <el-form-item label="數量：" prop="vgAction">
             <el-input
-              @keyup.native="newProject.soLocation=[]"
+              @keyup.native="newProject.soLocation = []"
               v-model.number="soQt"
-              placeholder="5">
+              placeholder="5"
+            >
             </el-input>
           </el-form-item>
           <el-form-item label="每孔深度 ( m )：" prop="vgAction">
             <el-input
-              @keyup.native="newProject.soLocation=[]"
+              @keyup.native="newProject.soLocation = []"
               v-model.number="soDepth"
-              placeholder="20.5">
+              placeholder="20.5"
+            >
             </el-input>
           </el-form-item>
-          <br>
-          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO">產生傾度管編碼</el-button>
-          <br>
+          <br />
+          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO"
+            >產生傾度管編碼</el-button
+          >
+          <br />
 
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
               <el-form-item label="注意值" prop="soManagement.notice">
                 <el-input
-                  :controls=false
+                  :controls="false"
                   v-model="newProject.soManagement.notice"
-                  placeholder="1.68">
+                  placeholder="1.68"
+                >
                 </el-input>
               </el-form-item>
               <el-form-item label="警戒值" prop="soManagement.warning">
                 <el-input
-                  :controls=false
+                  :controls="false"
                   v-model="newProject.soManagement.warning"
-                  placeholder="2.88">
+                  placeholder="2.88"
+                >
                 </el-input>
               </el-form-item>
               <el-form-item label="行動值" prop="soManagement.action">
                 <el-input
-                  :controls=false
+                  :controls="false"
                   v-model="newProject.soManagement.action"
-                  placeholder="3.77">
+                  placeholder="3.77"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -305,19 +361,11 @@
               <h2>位置編號<span>( SO - 流水號 )</span></h2>
               <h5>相同位置編碼 量測深度間隔 1 m</h5>
               <el-table class="so-table" :data="newProject.soLocation">
-                <el-table-column
-                  prop="number"
-                  label="編碼"
-                  width="200">
+                <el-table-column prop="number" label="編碼" width="200">
                 </el-table-column>
-                <el-table-column
-                  prop="depth"
-                  label="深度"
-                  width="200">
+                <el-table-column prop="depth" label="深度" width="200">
                   <template slot-scope="scope">
-                    <el-input 
-                      v-model.number="scope.row.depth">
-                    </el-input>
+                    <el-input v-model.number="scope.row.depth"> </el-input>
                   </template>
                 </el-table-column>
               </el-table>
@@ -325,28 +373,26 @@
           </el-row>
         </el-tab-pane>
       </el-tabs>
-      <br>
+      <br />
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-button
               type="primary"
               style="width: 100%"
-              @click="submit('newProject')">
+              @click="submit('newProject')"
+            >
               確定送出
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button
-              style="width: 100%"
-              @click="cancel">
+            <el-button style="width: 100%" @click="cancel">
               取消
             </el-button>
           </el-col>
         </el-row>
       </el-form-item>
     </el-form>
-    
   </div>
 </template>
 

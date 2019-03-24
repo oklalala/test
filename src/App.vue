@@ -1,12 +1,14 @@
+<!-- @format -->
+
 <template>
   <div id="app">
     <el-container>
       <el-header>
-        <navbar/>
+        <navbar />
       </el-header>
-      <el-main id='main'>
-        <el-row type='flex' justify='center'>  
-          <el-col :span='22' :sm='18' :md='14'>
+      <el-main id="main">
+        <el-row type="flex" justify="center">
+          <el-col :span="22" :sm="18" :md="14">
             <router-view></router-view>
           </el-col>
         </el-row>

@@ -1,41 +1,43 @@
+<!-- @format -->
+
 <template>
   <div class="vgList">
     <h1>軸力計</h1>
-    <el-row class="operationGroup" type='flex' justify="between">
-      <el-col class="operationGroup-left" :sm='4'>
-        <el-button type="primary" @click="deleteVGs" v-if="!!deleteList.length">刪除</el-button>
+    <el-row class="operationGroup" type="flex" justify="between">
+      <el-col class="operationGroup-left" :sm="4">
+        <el-button type="primary" @click="deleteVGs" v-if="!!deleteList.length"
+          >刪除</el-button
+        >
       </el-col>
-      <el-col class="operationGroup-right" :span='24' :sm='8'>
+      <el-col class="operationGroup-right" :span="24" :sm="8">
         <el-input v-model="newVG.number" placeholder="新增軸力計"></el-input>
-        <el-button class='addButton' type="primary" @click="createVG" v-if="!!newVG.number">
+        <el-button
+          class="addButton"
+          type="primary"
+          @click="createVG"
+          v-if="!!newVG.number"
+        >
           <i class="el-icon-plus"></i>
         </el-button>
       </el-col>
     </el-row>
     <el-table
-    :data="vgList"
-    class="vgList-table"
-    @selection-change="updateDeleteList">
-      <el-table-column
-        type="selection"
-        :selectable="checkable"
-        width="40">
+      :data="vgList"
+      class="vgList-table"
+      @selection-change="updateDeleteList"
+    >
+      <el-table-column type="selection" :selectable="checkable" width="40">
       </el-table-column>
-      <el-table-column
-        prop="number"
-        label="編號"
-        width="150">
+      <el-table-column prop="number" label="編號" width="150">
         <template slot-scope="scope">
-          <el-input 
-          @blur="editVG(scope.row.id,scope.row.number)"
-          v-model="scope.row.number">
+          <el-input
+            @blur="editVG(scope.row.id, scope.row.number)"
+            v-model="scope.row.number"
+          >
           </el-input>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="projectName"
-        label="所在專案">
-      </el-table-column>
+      <el-table-column prop="projectName" label="所在專案"> </el-table-column>
     </el-table>
   </div>
 </template>

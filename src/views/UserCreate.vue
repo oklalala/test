@@ -1,11 +1,10 @@
+<!-- @format -->
+
 <template>
   <div class="userCreate">
     <h1>帳號設定</h1>
     <h2>基本資料</h2>
-    <el-form
-      label-position="top"
-      label-width="80px"
-      :model="newUser">
+    <el-form label-position="top" label-width="80px" :model="newUser">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="姓名">
@@ -17,12 +16,14 @@
             <el-select
               v-model="selectedRole"
               placeholder="請選擇"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="item in roles"
                 :key="item.name"
                 :label="item.name"
-                :value="item.name">
+                :value="item.name"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -30,27 +31,29 @@
       </el-row>
       <el-form-item label="帳號">
         <el-input v-model="newUser.account"></el-input>
-        <h6 class='hint' type="info">預設密碼: 000</h6>
+        <h6 class="hint" type="info">預設密碼: 000</h6>
       </el-form-item>
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
-          <el-col :span="17" :sm='21' :md='21'>
+          <el-col :span="17" :sm="21" :md="21">
             <el-select
               v-model="selectedCompany"
               placeholder="請選擇"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="item in companies"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id">
+                :value="item.id"
+              >
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="7" :sm='3' :md='3'>
-            <el-button 
-              style="width: 100%"
-              @click="saveCurrentAndGo">維護</el-button>
+          <el-col :span="7" :sm="3" :md="3">
+            <el-button style="width: 100%" @click="saveCurrentAndGo"
+              >維護</el-button
+            >
           </el-col>
         </el-row>
       </el-form-item>
@@ -58,29 +61,26 @@
         <el-select
           v-model="selectedSOItem"
           placeholder="請選擇"
-          style="width: 100%">
+          style="width: 100%"
+        >
           <el-option
             v-for="item in soItems"
             :key="item.id"
             :label="item.number"
-            :value="item.id">
+            :value="item.id"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-button
-              type="primary"
-              style="width: 100%"
-              @click="submit">
+            <el-button type="primary" style="width: 100%" @click="submit">
               確定送出
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button
-              style="width: 100%"
-              @click="cancel">
+            <el-button style="width: 100%" @click="cancel">
               取消
             </el-button>
           </el-col>

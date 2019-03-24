@@ -1,24 +1,18 @@
+<!-- @format -->
+
 <template>
   <div class="permission-setup">
     <h1>權限設定</h1>
-    <el-table
-      :data="rolePermissions">
-      <el-table-column
-        prop="role"
-        label="角色"
-        width="140">
-      </el-table-column>
-      <el-table-column
-        prop="permissions"
-        label="權限">
+    <el-table :data="rolePermissions">
+      <el-table-column prop="role" label="角色" width="140"> </el-table-column>
+      <el-table-column prop="permissions" label="權限">
         <template slot-scope="scope">
-          <div 
-            v-for="(item, index) in scope.row.permissions"
-            :key="index">
+          <div v-for="(item, index) in scope.row.permissions" :key="index">
             <el-checkbox
-              v-if='item.name !=="account:updateSelf"'
-              @change="updateRolePermissions(item.value, scope.row.role ,index)"
-              :value="item.value">
+              v-if="item.name !== 'account:updateSelf'"
+              @change="updateRolePermissions(item.value, scope.row.role, index)"
+              :value="item.value"
+            >
               {{ permissions[item.name] }}
             </el-checkbox>
           </div>
@@ -75,6 +69,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-</style>

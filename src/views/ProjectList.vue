@@ -1,51 +1,58 @@
+<!-- @format -->
+
 <template>
   <div class="projectList">
     <h1>專案列表</h1>
-    <el-select class='status-filter' v-model="status" multiple placeholder="請篩選" v-if="isShow('project:filter')">
+    <el-select
+      class="status-filter"
+      v-model="status"
+      multiple
+      placeholder="請篩選"
+      v-if="isShow('project:filter')"
+    >
       <el-option
         v-for="item in options"
         :key="item.value"
         :label="item.text"
-        :value="item.value">
+        :value="item.value"
+      >
       </el-option>
     </el-select>
-    <el-table
-      :data="filteredProject"
-      height="550px"
-      class="projectList-table">
-      <el-table-column
-        fixed
-        prop="number"
-        label="案號"
-        width="120">
+    <el-table :data="filteredProject" height="550px" class="projectList-table">
+      <el-table-column fixed prop="number" label="案號" width="120">
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="名稱"
-        width="160">
-      </el-table-column>
-      <el-table-column
-        label="監控資料"
-        width="120">
+      <el-table-column prop="name" label="名稱" width="160"> </el-table-column>
+      <el-table-column label="監控資料" width="120">
         <template slot-scope="scope">
-          <el-button @click="toPath('ProjectMonitor', { projectId: scope.row.id })">監控資料</el-button>
+          <el-button
+            @click="toPath('ProjectMonitor', { projectId: scope.row.id })"
+            >監控資料</el-button
+          >
         </template>
       </el-table-column>
       <el-table-column
         label="傾度管量測"
         width="130"
-        v-if="isShow('project:soItemMeasure')">
+        v-if="isShow('project:soItemMeasure')"
+      >
         <template slot-scope="scope">
-          <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })">傾度管資料</el-button>
+          <el-button @click="toPath('MeasuresSo', { projectId: scope.row.id })"
+            >傾度管資料</el-button
+          >
         </template>
       </el-table-column>
       <el-table-column
         prop="status"
         label="專案狀態"
         width="100"
-        v-if="isShow('project:filter')">
+        v-if="isShow('project:filter')"
+      >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
+          <el-tag
+            :type="scope.row.status === 'end' ? 'success' : 'warning'"
+            disable-transitions
+            >{{ scope.row.status }}</el-tag
+          >
         </template>
       </el-table-column>
     </el-table>

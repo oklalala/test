@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="steelList">
     <h1>鋼材資料</h1>
@@ -5,37 +7,60 @@
       label-position="top"
       label-width="80px"
       :model="newSteel"
-      :rules="rules">
+      :rules="rules"
+    >
       <h3>新增鋼材</h3>
-      <el-form-item label="型號" prop='name'>
+      <el-form-item label="型號" prop="name">
         <el-input v-model="newSteel.name" :disabled="!isShow"></el-input>
       </el-form-item>
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="ES ( kg/cm^2 )" prop='es'>
-            <el-input v-model.number="newSteel.es" :disabled="!isShow"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">        
-          <el-form-item label="TCM" prop='tcm'>
-            <el-input v-model.number="newSteel.tcm" :disabled="!isShow"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="TCG" prop='tcg'>
-            <el-input v-model.number="newSteel.tcg" :disabled="!isShow"></el-input>
+          <el-form-item label="ES ( kg/cm^2 )" prop="es">
+            <el-input
+              v-model.number="newSteel.es"
+              :disabled="!isShow"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="截面積 ( cm^2 )" prop='sectionArea'>
-            <el-input v-model.number="newSteel.sectionArea" :disabled="!isShow"></el-input>
+          <el-form-item label="TCM" prop="tcm">
+            <el-input
+              v-model.number="newSteel.tcm"
+              :disabled="!isShow"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="TCG" prop="tcg">
+            <el-input
+              v-model.number="newSteel.tcg"
+              :disabled="!isShow"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="截面積 ( cm^2 )" prop="sectionArea">
+            <el-input
+              v-model.number="newSteel.sectionArea"
+              :disabled="!isShow"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-button type="primary" @click="createSteel" v-if="!isEdit" :disabled="passRequired">
+      <el-button
+        type="primary"
+        @click="createSteel"
+        v-if="!isEdit"
+        :disabled="passRequired"
+      >
         新增鋼材
       </el-button>
-      <el-button type="primary" @click="editSteel" v-if="isEdit" :disabled="passRequired">
+      <el-button
+        type="primary"
+        @click="editSteel"
+        v-if="isEdit"
+        :disabled="passRequired"
+      >
         編輯鋼材
       </el-button>
     </el-form>
@@ -46,51 +71,32 @@
         <el-button @click="addSteel">新增</el-button>
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="deleteSteels" v-show="deletable">刪除</el-button>
+        <el-button type="primary" @click="deleteSteels" v-show="deletable"
+          >刪除</el-button
+        >
       </div>
     </div>
     <el-table
       :data="steelList"
       class="steelList-table"
       :highlight-current-row="isEdit"
-      @selection-change="updateDeleteList">
-      <el-table-column
-        type="selection"
-        :selectable="checkable"
-        width="40">
+      @selection-change="updateDeleteList"
+    >
+      <el-table-column type="selection" :selectable="checkable" width="40">
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="鋼材名稱"
-        width="200">
+      <el-table-column prop="name" label="鋼材名稱" width="200">
         <template slot-scope="scope">
-          <h4 
-            class="clickable"
-            @click="loadSteel(scope.row)">
+          <h4 class="clickable" @click="loadSteel(scope.row)">
             {{ scope.row.name }}
           </h4>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="sectionArea"
-        label="截面積 (cm^2)"
-        width="120">
+      <el-table-column prop="sectionArea" label="截面積 (cm^2)" width="120">
       </el-table-column>
-      <el-table-column
-        prop="es"
-        label="ES (kg/cm^2)"
-        width="120">
+      <el-table-column prop="es" label="ES (kg/cm^2)" width="120">
       </el-table-column>
-      <el-table-column
-        prop="tcm"
-        label="TCM"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        prop="tcg"
-        label="TCG"
-        width="100">
-      </el-table-column>
+      <el-table-column prop="tcm" label="TCM" width="100"> </el-table-column>
+      <el-table-column prop="tcg" label="TCG" width="100"> </el-table-column>
     </el-table>
   </div>
 </template>

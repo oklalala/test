@@ -1,9 +1,16 @@
+<!-- @format -->
+
 <template>
   <div class="projectSetting">
     <h1>專案設定</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteProjects" v-show="!!deleteList.length">刪除</el-button>
+        <el-button
+          type="primary"
+          @click="deleteProjects"
+          v-show="!!deleteList.length"
+          >刪除</el-button
+        >
       </div>
       <div class="operationGroup-right">
         <el-button type="primary" @click="toPath('ProjectCreate')">
@@ -14,34 +21,32 @@
     <el-table
       :data="projectList"
       class="projectList-table"
-      @selection-change="updateDeleteList">
-      <el-table-column
-        type="selection"
-        width="40">
-      </el-table-column>
-      <el-table-column
-        label="案號"
-        width="130">
+      @selection-change="updateDeleteList"
+    >
+      <el-table-column type="selection" width="40"> </el-table-column>
+      <el-table-column label="案號" width="130">
         <template slot-scope="scope">
-          <h4 
+          <h4
             class="clickable"
-            @click="toPath('ProjectEdit', { projectId: scope.row.id })">
+            @click="toPath('ProjectEdit', { projectId: scope.row.id })"
+          >
             {{ scope.row.number }}
           </h4>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="名稱"
-        width="150">
-      </el-table-column>
+      <el-table-column prop="name" label="名稱" width="150"> </el-table-column>
       <el-table-column
         prop="status"
         label="專案狀態"
         :filters="statusList"
-        :filter-method="statusFilter">
+        :filter-method="statusFilter"
+      >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status === 'end' ? 'success' : 'warning'" disable-transitions>{{scope.row.status}}</el-tag>
+          <el-tag
+            :type="scope.row.status === 'end' ? 'success' : 'warning'"
+            disable-transitions
+            >{{ scope.row.status }}</el-tag
+          >
         </template>
       </el-table-column>
     </el-table>

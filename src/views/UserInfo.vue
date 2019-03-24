@@ -1,16 +1,16 @@
+<!-- @format -->
+
 <template>
-  <el-row class="user-info" type='flex' justify='center'>
-    <el-col  :xs='18' :sm='12' :md='12'>
+  <el-row class="user-info" type="flex" justify="center">
+    <el-col :xs="18" :sm="12" :md="12">
       <h1>帳號資料</h1>
-      <el-form
-        :model='me'
-        :rules='rules'>
+      <el-form :model="me" :rules="rules">
         <section>
           <h3>基本資料</h3>
           <p>姓名：{{ me.name }}</p>
-          <p>角色：{{ me.roleName}}</p>
-          <p v-if="me.company">公司：{{ me.company.name}}</p>
-          <p v-if="me.soItem">傾度管 編號：{{ me.soItem.number}}</p>
+          <p>角色：{{ me.roleName }}</p>
+          <p v-if="me.company">公司：{{ me.company.name }}</p>
+          <p v-if="me.soItem">傾度管 編號：{{ me.soItem.number }}</p>
         </section>
         <h3>聯絡方式</h3>
         <section>
@@ -19,28 +19,33 @@
               :value="me.phone"
               @change="value => this.updateMe({ phone: value })"
               :disabled="!isShow()"
-              placeholder="請輸入電話">
+              placeholder="請輸入電話"
+            >
             </el-input>
           </el-form-item>
-          <el-form-item label="email" prop='email'>
+          <el-form-item label="email" prop="email">
             <el-input
               :value="me.email"
               @change="value => this.updateMe({ email: value })"
               :disabled="!isShow()"
-              placeholder="請輸入 email">
+              placeholder="請輸入 email"
+            >
             </el-input>
           </el-form-item>
         </section>
         <section>
           <h3>密碼設定</h3>
           <el-form-item label="密碼">
-            <el-checkbox @change='showPassword()' style='float:right;'>顯示密碼</el-checkbox>
+            <el-checkbox @change="showPassword()" style="float:right;"
+              >顯示密碼</el-checkbox
+            >
             <el-input
               :value="me.password"
-              :type='password'
+              :type="password"
               @change="value => this.updateMe({ password: value })"
               :disabled="!isShow()"
-              placeholder="請輸入密碼">
+              placeholder="請輸入密碼"
+            >
             </el-input>
           </el-form-item>
         </section>

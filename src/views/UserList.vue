@@ -1,9 +1,16 @@
+<!-- @format -->
+
 <template>
   <div class="userList">
     <h1>帳號列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button type="primary" @click="deleteUsers" v-if="!!deleteList.length">刪除</el-button>
+        <el-button
+          type="primary"
+          @click="deleteUsers"
+          v-if="!!deleteList.length"
+          >刪除</el-button
+        >
       </div>
       <div class="operationGroup-right">
         <el-button type="primary" @click="toPath('UserCreate')">
@@ -14,32 +21,22 @@
     <el-table
       :data="userList"
       class="userList-table"
-      @selection-change="updateDeleteList">
-      <el-table-column
-        type="selection"
-        width="40">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="130">
+      @selection-change="updateDeleteList"
+    >
+      <el-table-column type="selection" width="40"> </el-table-column>
+      <el-table-column prop="name" label="姓名" width="130">
         <template slot-scope="scope">
-          <h4 
+          <h4
             class="clickable"
-            @click="toPath('UserEdit', { userId: scope.row.id })">
+            @click="toPath('UserEdit', { userId: scope.row.id })"
+          >
             {{ scope.row.name }}
           </h4>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="company.name"
-        label="公司"
-        width="180">
+      <el-table-column prop="company.name" label="公司" width="180">
       </el-table-column>
-      <el-table-column
-        prop="roleName"
-        label="角色">
-      </el-table-column>
+      <el-table-column prop="roleName" label="角色"> </el-table-column>
     </el-table>
   </div>
 </template>

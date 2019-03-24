@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="vgECharts">
     <chart ref="chart1" :options="options" :auto-resize="true"></chart>

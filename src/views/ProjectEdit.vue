@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="ProjectEdit">
     <h1>專案設定</h1>
@@ -5,16 +7,14 @@
       label-position="top"
       label-width="80px"
       :model="newProject"
-      :rules="rules">
+      :rules="rules"
+    >
       <h2>基本資料</h2>
-      
+
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="專案案號">
-            <el-input 
-              v-model="newProject.number"
-              disabled
-            ></el-input>
+            <el-input v-model="newProject.number" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -22,12 +22,14 @@
             <el-select
               v-model="selectedStatus"
               @change="updateSelectedStatus"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="item in statusList"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.value"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -46,7 +48,8 @@
         <el-input
           v-model="newProject.address"
           placeholder="大武街 34 號"
-          style="width: 100%">
+          style="width: 100%"
+        >
         </el-input>
       </el-form-item>
       <el-form-item label="客戶公司名稱">
@@ -54,12 +57,14 @@
           v-model="selectedCompany"
           @change="updateSelectedCompany"
           placeholder="雨宮營造"
-          style="width: 100%">
+          style="width: 100%"
+        >
           <el-option
             v-for="company in companiesList"
             :key="company.id"
             :label="company.name"
-            :value="company.id">
+            :value="company.id"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -73,12 +78,14 @@
               placeholder="請選擇 OPT"
               multiple
               @change="updateSelectedOPTs"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="opt in OPTList"
                 :key="opt.id"
                 :label="opt.name"
-                :value="opt.id">
+                :value="opt.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
@@ -90,164 +97,198 @@
               placeholder="請選擇 USER"
               multiple
               @change="updateSelectedUSERs"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="user in USERList"
                 :key="user.id"
                 :label="user.name"
-                :value="user.id">
+                :value="user.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
 
-
       <h1>配置圖</h1>
-      <el-upload 
-        class="upload-demo" 
+      <el-upload
+        class="upload-demo"
         drag
         :action="uploadURL"
         :on-change="getImage"
         list-type="picture"
         :before-upload="beforeImgUpload"
-        :auto-upload="true">
-        <img :src="image" v-if="!!newProject.sitePlan">
+        :auto-upload="true"
+      >
+        <img :src="image" v-if="!!newProject.sitePlan" />
         <i class="el-icon-upload" v-if="!newProject.sitePlan"></i>
-        <div class="el-upload__text" v-if="!newProject.sitePlan">將文件拖到此處，或<em>點擊上傳</em></div>
+        <div class="el-upload__text" v-if="!newProject.sitePlan">
+          將文件拖到此處，或<em>點擊上傳</em>
+        </div>
         <div slot="tip" class="el-upload__tip">上傳文件不能超過2Mb</div>
-        <el-button class="reselect" size="small" type="primary" v-if="!!newProject.sitePlan">另選圖片</el-button>
-      </el-upload> 
+        <el-button
+          class="reselect"
+          size="small"
+          type="primary"
+          v-if="!!newProject.sitePlan"
+          >另選圖片</el-button
+        >
+      </el-upload>
 
       <h2>監控設定</h2>
       <el-tabs type="border-card" stretch>
-        <el-tab-pane label="軸力計 ( VG )"> 
+        <el-tab-pane label="軸力計 ( VG )">
           <el-form-item label="使用軸力計編號">
-            <el-select 
-              v-model="newProject.vgIds" 
+            <el-select
+              v-model="newProject.vgIds"
               multiple
               disabled
               @change="updateSelectedVGs"
-              style="width: 100%">
+              style="width: 100%"
+            >
               <el-option
                 v-for="vg in VGs"
                 :disabled="!!vg.projectName"
                 :key="vg.id"
                 :label="vg.number"
-                :value="vg.id">
+                :value="vg.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="換軸力計">
-            <el-select 
-              v-model="removedVG" 
-              style="width: 100%">
+            <el-select v-model="removedVG" style="width: 100%">
               <el-option
                 v-for="vg in selectedVGs"
                 :key="vg.id"
                 :label="vg.number"
-                :value="vg.id">
+                :value="vg.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="換成">
-            <el-select 
-              v-model="addedVG" 
-              style="width: 100%">
+            <el-select v-model="addedVG" style="width: 100%">
               <el-option
                 v-for="vg in unSelectedVGs"
                 :key="vg.id"
                 :label="vg.number"
-                :value="vg.id">
+                :value="vg.id"
+              >
               </el-option>
             </el-select>
           </el-form-item>
-          <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable">確認轉換</el-button>
+          <el-button @click="switchVG(removedVG, addedVG)" v-show="vgVariable"
+            >確認轉換</el-button
+          >
           <div class="block" v-if="!!newProject.vgLocation.length">
             <span class="demonstration">請選擇支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
               @current-change="currentFloor"
-              :total="getPagination">
+              :total="getPagination"
+            >
             </el-pagination>
           </div>
 
           <el-row :gutter="20" v-if="!!newProject.vgLocation.length">
-            <el-col :md='6' :sm='8' :span="24">
+            <el-col :md="6" :sm="8" :span="24">
               <h2>管理值<span>單位：噸</span></h2>
-              <el-form-item 
-                label="注意值" 
-                :prop="'vgManagement['+this.floorIndex+'].notice'"
+              <el-form-item
+                label="注意值"
+                :prop="'vgManagement[' + this.floorIndex + '].notice'"
                 :rules="[
-                  { required: true, message: '請檢查注意值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
+                  {
+                    required: true,
+                    message: '請檢查注意值',
+                    trigger: ['blur', 'change']
+                  },
+                  {
+                    pattern: /^\d+(\.\d{0,1})?$/,
+                    message: '小數點下最多一位 0.1',
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
                 <el-input
                   size="mini"
                   v-model="newProject.vgManagement[floorIndex].notice"
-                  placeholder="68.3">
+                  placeholder="68.3"
+                >
                 </el-input>
               </el-form-item>
-              <el-form-item 
-                label="警戒值" 
-                :prop="'vgManagement['+this.floorIndex+'].warning'"
+              <el-form-item
+                label="警戒值"
+                :prop="'vgManagement[' + this.floorIndex + '].warning'"
                 :rules="[
-                  { required: true, message: '請檢查警戒值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
+                  {
+                    required: true,
+                    message: '請檢查警戒值',
+                    trigger: ['blur', 'change']
+                  },
+                  {
+                    pattern: /^\d+(\.\d{0,1})?$/,
+                    message: '小數點下最多一位 0.1',
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
                 <el-input
                   size="mini"
                   v-model="newProject.vgManagement[floorIndex].warning"
-                  placeholder="79.6">
+                  placeholder="79.6"
+                >
                 </el-input>
               </el-form-item>
-              <el-form-item 
-                label="行動值" 
-                :prop="'vgManagement['+this.floorIndex+'].action'"
+              <el-form-item
+                label="行動值"
+                :prop="'vgManagement[' + this.floorIndex + '].action'"
                 :rules="[
-                  { required: true, message: '請檢查行動值', trigger: ['blur', 'change'] },
-                  { pattern: /^\d+(\.\d{0,1})?$/, message: '小數點下最多一位 0.1', trigger: ['blur', 'change'] }]">
+                  {
+                    required: true,
+                    message: '請檢查行動值',
+                    trigger: ['blur', 'change']
+                  },
+                  {
+                    pattern: /^\d+(\.\d{0,1})?$/,
+                    message: '小數點下最多一位 0.1',
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
                 <el-input
                   size="mini"
                   v-model="newProject.vgManagement[floorIndex].action"
-                  placeholder="104.2">
+                  placeholder="104.2"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :md='16' :sm='16' :span="24">
+            <el-col :md="16" :sm="16" :span="24">
               <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
-              <el-button
-                class='maintainSteel'
-                @click="saveCurrentAndGo">
+              <el-button class="maintainSteel" @click="saveCurrentAndGo">
                 維護鋼材資料
               </el-button>
               <el-table class="vg-table" :data="vgTable">
-                <el-table-column
-                  prop="vgNumber"
-                  label="VG"
-                  width="120">
+                <el-table-column prop="vgNumber" label="VG" width="120">
                 </el-table-column>
-                <el-table-column
-                  prop="port"
-                  label="Port"
-                  width="100">
+                <el-table-column prop="port" label="Port" width="100">
                 </el-table-column>
-                <el-table-column
-                  prop="number"
-                  label="編碼"
-                  width="100">
+                <el-table-column prop="number" label="編碼" width="100">
                 </el-table-column>
-                <el-table-column
-                  prop="steelId"
-                  label="鋼材"
-                  width="100">
+                <el-table-column prop="steelId" label="鋼材" width="100">
                   <template slot-scope="scope">
                     <el-select
                       v-model="scope.row.steelId"
-                      placeholder="請選擇鋼材">
+                      placeholder="請選擇鋼材"
+                    >
                       <el-option
                         v-for="steel in Steels"
                         :key="steel.id"
                         :label="steel.name"
-                        :value="steel.id">
+                        :value="steel.id"
+                      >
                       </el-option>
                     </el-select>
                   </template>
@@ -261,25 +302,28 @@
           <el-row :gutter="20" v-if="!!newProject.soLocation.length">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
-              <el-form-item label="注意值" prop='soManagement.notice'>
+              <el-form-item label="注意值" prop="soManagement.notice">
                 <el-input
                   size="mini"
                   v-model="newProject.soManagement.notice"
-                  placeholder="1.68">
+                  placeholder="1.68"
+                >
                 </el-input>
               </el-form-item>
-              <el-form-item label="警戒值" prop='soManagement.warning'>
+              <el-form-item label="警戒值" prop="soManagement.warning">
                 <el-input
                   size="mini"
                   v-model="newProject.soManagement.warning"
-                  placeholder="2.88">
+                  placeholder="2.88"
+                >
                 </el-input>
               </el-form-item>
-              <el-form-item label="行動值" prop='soManagement.action'>
+              <el-form-item label="行動值" prop="soManagement.action">
                 <el-input
                   size="mini"
                   v-model="newProject.soManagement.action"
-                  placeholder="3.77">
+                  placeholder="3.77"
+                >
                 </el-input>
               </el-form-item>
             </el-col>
@@ -287,47 +331,34 @@
               <h2>位置編號<span>( SO - 流水號 )</span></h2>
               <h5>相同位置編碼 量測深度間隔 1 m</h5>
               <el-table class="so-table" :data="newProject.soLocation">
-                <el-table-column
-                  prop="number"
-                  label="編碼"
-                  width="200">
+                <el-table-column prop="number" label="編碼" width="200">
                 </el-table-column>
-                <el-table-column
-                  prop="depth"
-                  label="深度"
-                  width="200">
+                <el-table-column prop="depth" label="深度" width="200">
                 </el-table-column>
               </el-table>
             </el-col>
           </el-row>
         </el-tab-pane>
       </el-tabs>
-      <br>
+      <br />
 
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-button
-              type="primary"
-              style="width: 100%"
-              @click="edit">
+            <el-button type="primary" style="width: 100%" @click="edit">
               確定送出
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button
-              style="width: 100%"
-              @click="cancel">
+            <el-button style="width: 100%" @click="cancel">
               取消
             </el-button>
           </el-col>
         </el-row>
       </el-form-item>
     </el-form>
-    
   </div>
 </template>
-
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
