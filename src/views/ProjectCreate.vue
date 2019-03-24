@@ -130,7 +130,7 @@
         :before-upload="beforeImgUpload"
         :auto-upload="true"
       >
-        <img :src="this.image.url" alt="" v-if="imageSelected" />
+        <img :src="image" alt="" v-if="imageSelected" />
         <i class="el-icon-upload" v-if="!imageSelected"></i>
         <div class="el-upload__text" v-if="!imageSelected">
           將文件拖到此處，或<em>點擊上傳</em>
@@ -414,9 +414,9 @@ export default {
       VGList: [], // get usable VGs
       vgTable: [], // every floor VGs
       fullVGsInfo: [], // from calculateVG.js
-      image: [{ url: 'haha' }], // preview url in blob
       OPTList: [], // custom and self OPTs
       USERList: [], // custom USERs
+      image: '',
       statusList: [
         {
           value: 'end',
@@ -658,6 +658,12 @@ export default {
       this.USERList = USERList
     },
     getImage(file) {
+      this.$store.dispatch('uploadConfigImage', file.raw).then(() => {
+        this.image = `${process.env.VUE_APP_API_URL}/${
+          this.newProject.sitePlan
+        }`
+      })
+
       this.image = file
       sendImageAPI(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url

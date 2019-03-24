@@ -2,7 +2,6 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
-import localStore from 'store'
 
 import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
@@ -23,9 +22,8 @@ import SOItemList from './views/SOItemList.vue'
 import SOItemCreate from './views/SOItemCreate.vue'
 import SOItemEdit from './views/SOItemEdit.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
-
 import store from '@/store'
-
+import cookies from '@/cookies'
 Vue.use(Router)
 
 let router = new Router({
@@ -300,19 +298,12 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let storeToken = store.getters.token
-  let localToken = localStore.get('ground_monitor_token')
-  if (!storeToken && localToken) {
-    store.commit('setToken', localToken.token)
-    store.commit('setMyId', localToken.myId)
-    store.commit('setMyRole', localToken.myRole)
-    store.commit('setMyPermissions', localToken.myPermissions)
-    storeToken = localToken.token
-
-    if (to.path === '/') {
-      next({ name: 'ProjectList' })
-    }
-  } else if (!storeToken && to.meta.requireAuth) {
+  if (!store.getters.isLogined) {
+    cookies.reloadLogin()
+  }
+  if (store.getters.isLogined && to.path === '/') {
+    next({ name: 'ProjectList' })
+  } else if (!store.getters.isLogined && to.meta.requireAuth) {
     next({
       name: 'Entry'
     })

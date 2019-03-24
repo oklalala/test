@@ -2,11 +2,10 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import localStore from 'store'
 import router from '@/router'
+import cookies from '@/cookies'
 
 import sendAPI from '@/utils/API'
-
 Vue.use(Vuex)
 
 import users from './users'
@@ -35,7 +34,7 @@ export default new Vuex.Store({
     myId: '',
     token: '',
     myRole: '',
-    myPermissions: [],
+    myPermissions: '',
     me: {},
     permissions: {},
     roles: [],
@@ -85,6 +84,14 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isLogined(state) {
+      return !!(
+        state.token &&
+        state.myId &&
+        state.myRole &&
+        state.myPermissions
+      )
+    },
     token(state) {
       return state.token
     },
@@ -123,17 +130,12 @@ export default new Vuex.Store({
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
         commit('setMyPermissions', res.data.permissions)
-        localStore.set('ground_monitor_token', {
-          token: res.data.token,
-          myId: res.data.userId,
-          myRole: res.data.role,
-          myPermissions: res.data.permissions
-        })
+        cookies.saveLogin()
       })
     },
     logout({ commit }) {
       commit('setToken', '')
-      localStore.remove('ground_monitor_token')
+      cookies.clear()
       router.push('/')
     },
     getMe({ getters, commit }) {
