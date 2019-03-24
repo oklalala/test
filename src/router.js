@@ -23,6 +23,7 @@ import SOItemCreate from './views/SOItemCreate.vue'
 import SOItemEdit from './views/SOItemEdit.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
 import store from '@/store'
+import cookies from '@/cookies'
 Vue.use(Router)
 
 let router = new Router({
@@ -297,10 +298,12 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let storeToken = store.getters.token
-  if (storeToken && to.path === '/') {
+  if (!store.getters.isLogined) {
+    cookies.reloadLogin()
+  }
+  if (store.getters.isLogined && to.path === '/') {
     next({ name: 'ProjectList' })
-  } else if (!storeToken && to.meta.requireAuth) {
+  } else if (!store.getters.isLogined && to.meta.requireAuth) {
     next({
       name: 'Entry'
     })

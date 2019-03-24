@@ -3,11 +3,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '@/router'
+import cookies from '@/cookies'
 
 import sendAPI from '@/utils/API'
-import VueCookies from 'vue-cookies'
-
-Vue.use(VueCookies)
 Vue.use(Vuex)
 
 import users from './users'
@@ -36,7 +34,7 @@ export default new Vuex.Store({
     myId: '',
     token: '',
     myRole: '',
-    myPermissions: [],
+    myPermissions: '',
     me: {},
     permissions: {},
     roles: [],
@@ -47,19 +45,15 @@ export default new Vuex.Store({
   },
   mutations: {
     setToken(state, token) {
-      VueCookies.set('token', token)
       state.token = token
     },
     setMyId(state, myId) {
-      VueCookies.set('userId', myId)
       state.myId = myId
     },
     setMyRole(state, myRole) {
-      VueCookies.set('role', myRole)
       state.myRole = myRole
     },
     setMyPermissions(state, myPermissions) {
-      VueCookies.set('permissions', myPermissions)
       state.myPermissions = myPermissions
     },
     setLastPath(state, path) {
@@ -90,17 +84,25 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isLogined(state) {
+      return !!(
+        state.token &&
+        state.myId &&
+        state.myRole &&
+        state.myPermissions
+      )
+    },
     token(state) {
-      return state.token || VueCookies.get('token')
+      return state.token
     },
     myId(state) {
-      return state.myId || VueCookies.get('userId')
+      return state.myId
     },
     myRole(state) {
-      return state.myRole || VueCookies.get('role')
+      return state.myRole
     },
     myPermissions(state) {
-      return state.myPermissions || VueCookies.get('permissions')
+      return state.myPermissions
     },
     lastPath(state) {
       return state.lastPath
@@ -128,19 +130,12 @@ export default new Vuex.Store({
         commit('setMyId', res.data.userId)
         commit('setMyRole', res.data.role)
         commit('setMyPermissions', res.data.permissions)
+        cookies.saveLogin()
       })
     },
     logout({ commit }) {
       commit('setToken', '')
-      VueCookies.set('token', '')
-      VueCookies.set('userId', '')
-      VueCookies.set('role', '')
-      VueCookies.set('permissions', '')
-
-      VueCookies.remove('token')
-      VueCookies.remove('userId')
-      VueCookies.remove('role')
-      VueCookies.remove('permissions')
+      cookies.clear()
       router.push('/')
     },
     getMe({ getters, commit }) {

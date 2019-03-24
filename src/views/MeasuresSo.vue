@@ -119,13 +119,13 @@ export default {
   //   }`
   //   next()
   // },
-  beforeCreate() {
-    if (window.location.protocol === 'https:') {
-      window.location = `http://geo-stage.chuen.com.tw${
-        window.location.pathname
-      }`
-    }
-  },
+  // beforeCreate() {
+  //   if (window.location.protocol === 'https:') {
+  //     window.location = `http://geo-stage.chuen.com.tw${
+  //       window.location.pathname
+  //     }`
+  //   }
+  // },
   // beforeDestroy() {
   //   window.location = `https://geo-stage.chuen.com.tw${
   //     window.location.pathname
@@ -223,6 +223,11 @@ export default {
   },
   mounted() {
     this.getSOItem()
-  }
+  },
+  beforeDestroy() {
+    if (window.location.protocol === 'https:') {
+	    window.location.protocol='https:'
+    }
+  },
 }
 </script>

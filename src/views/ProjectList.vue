@@ -117,7 +117,10 @@ export default {
       return row.status === value
     },
     isShow(feature) {
-      return this.$store.getters.myPermissions.includes(feature)
+      return (
+        !!this.$store.getters.myPermissions &&
+        this.$store.getters.myPermissions.includes(feature)
+      )
     }
   }
 }
