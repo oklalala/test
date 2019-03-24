@@ -1,12 +1,16 @@
+<!-- @format -->
+
 <template>
   <div class="projectMonitor">
     <h1>查看監控資料</h1>
     <h3>基本資料</h3>
-    <p>案號：{{project.number}}</p>
-    <p>名稱：{{project.name}}</p>
+    <p>案號：{{ project.number }}</p>
+    <p>名稱：{{ project.name }}</p>
     <h3 class="inline">配置圖</h3>
-    <h4 class='inline show-picture clickable' @click='show = !show'>顯示/隱藏</h4>
-    <img :src="showImage" v-if="show">
+    <h4 class="inline show-picture clickable" @click="show = !show">
+      顯示/隱藏
+    </h4>
+    <img :src="showImage" v-if="show" />
     <h3>監控值</h3>
     <el-tabs type="border-card" stretch>
       <el-tab-pane label="軸力計 ( VG )">
@@ -16,9 +20,10 @@
               <el-form-item label="日期">
                 <el-date-picker
                   v-model="vgDate"
-                  format='yyyy-MM-dd'
+                  format="yyyy-MM-dd"
                   type="date"
-                  :picker-options="disabledDate">
+                  :picker-options="disabledDate"
+                >
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -29,7 +34,8 @@
                     v-for="floor in floorList"
                     :key="floor"
                     :label="floor"
-                    :value="floor">
+                    :value="floor"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -37,11 +43,14 @@
           </el-row>
         </el-form>
         <VGECharts
-          :selectedDay='vgDate'
-          :selectedFloor='selectedFloor'
+          :selectedDay="vgDate"
+          :selectedFloor="selectedFloor"
           :vgChartData="vgChartData"
-          :project='project'/>
-        <el-button v-if="isShow('project:export')" @click='exportVG'>匯出資料</el-button>
+          :project="project"
+        />
+        <el-button v-if="isShow('project:export')" @click="exportVG"
+          >匯出資料</el-button
+        >
       </el-tab-pane>
 
       <el-tab-pane label="傾度管 ( SO )">
@@ -54,37 +63,38 @@
                     v-for="soItem in project.soLocation"
                     :key="soItem.number"
                     :label="soItem.number"
-                    :value="soItem.number">
+                    :value="soItem.number"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="14" :md="14">
-              <el-form-item 
-                v-if="!!selectedSO"
-                label="日期">
-                <el-select 
-                  v-model="soDate" 
-                  placeholder="請選擇日期">
+              <el-form-item v-if="!!selectedSO" label="日期">
+                <el-select v-model="soDate" placeholder="請選擇日期">
                   <el-option
                     v-for="date in soDateList"
                     :key="date"
                     :label="date"
-                    :value="date">
+                    :value="date"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-        <SOECharts 
+        <SOECharts
           v-if="!!selectedSO && !!soDate"
           :soChartData="soChartData"
-          :project="project"/>
-        <el-button v-if="isShow('project:export')" @click='exportSO'>匯出資料</el-button>
+          :project="project"
+        />
+        <el-button v-if="isShow('project:export')" @click="exportSO"
+          >匯出資料</el-button
+        >
       </el-tab-pane>
     </el-tabs>
-    <br>
+    <br />
   </div>
 </template>
 
@@ -93,6 +103,8 @@ import ToPathMixin from '@/mixins/ToPath'
 import VGECharts from '../components/VGECharts'
 import SOECharts from '../components/SOECharts'
 import moment from 'moment'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 
 export default {
   name: 'ProjectMonitor',
@@ -240,31 +252,36 @@ export default {
     exportVG() {
       this.$store
         .dispatch('exportVG', this.$route.params.projectId)
-        .then(() => {
+        .then(response => {
+          const type = response.headers['content-type']
+          const time = moment().format('MMDD hhmm')
+          const name = `軸力計數據-${this.project.name}-${time}`
+          const blob = new Blob([response.data], { type })
+
+          FileSaver.saveAs(blob, name)
           this.$message({
             message: `成功下載 ${this.newProject.name}`,
             type: 'success',
             center: true,
             duration: 1800
           })
-        })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
     exportSO() {
       this.$store
         .dispatch('exportSO', this.$route.params.projectId)
-        .then(() => {
+        .then(response => {
+          const type = response.headers['content-type']
+          const time = moment().format('MMDD hhmm')
+          const name = `傾度管數據-${this.project.name}-${time}`
+          const blob = new Blob([response.data], { type })
+          FileSaver.saveAs(blob, name)
           this.$message({
             message: `成功下載 ${this.newProject.name}`,
             type: 'success',
             center: true,
             duration: 1800
           })
-        })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     }
   }
