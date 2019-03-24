@@ -145,7 +145,7 @@ export default {
   },
   methods: {
     measures: function() {
-      let racePromise = new Promise((resolve, reject) => {
+      let racePromise = new Promise(resolve => {
         setTimeout(() => {
           resolve('Promise A win!')
         }, 5000)

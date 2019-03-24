@@ -104,7 +104,6 @@ import VGECharts from '../components/VGECharts'
 import SOECharts from '../components/SOECharts'
 import moment from 'moment'
 import FileSaver from 'file-saver'
-import XLSX from 'xlsx'
 
 export default {
   name: 'ProjectMonitor',

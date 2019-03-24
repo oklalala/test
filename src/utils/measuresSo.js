@@ -111,14 +111,14 @@ function soAPI(method, path, data) {
 
 function delay500ms() {
   var starttime = new Date().getTime()
-  do {} while (new Date().getTime() - starttime < 500)
+  do {} while (new Date().getTime() - starttime < 500) // eslint-disable-line
 }
 
 function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
   let VoltageTemp, VoltageX, VoltageY
   let slopeX, temp, slopeY
   let degreeX, degreeY
-  let displacementX, displacementY
+  let displacementX, displacementY // eslint-disable-line
   let totalDisplacement, depth
   VoltageTemp = rowTemp / 1000000
   VoltageX = rowX / 1000000
