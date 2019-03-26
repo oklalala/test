@@ -152,7 +152,6 @@ export default {
         roleName: this.selectedRole,
         companyId: this.selectedCompany,
         account: this.newUser.account,
-        // password: this.newUser.password,
         soId: this.selectedSOItem
       }
       this.$store
