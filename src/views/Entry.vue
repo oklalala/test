@@ -45,7 +45,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Entry',
   data() {
