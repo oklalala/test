@@ -4,17 +4,17 @@ import sendImageAPI from '@/utils/ImageAPI'
 export default {
   state: {
     data: [],
-    currentOne: []
+    one: {}
   },
   mutations: {
     setProjects(state, projects) {
       state.data = projects
     },
     setProject(state, project) {
-      state.currentOne = project
+      state.one = project
     },
     updateConfigImage(state, url) {
-      state.currentOne.sitePlan = url
+      state.one.sitePlan = url
     }
   },
   getters: {
@@ -22,7 +22,7 @@ export default {
       return state.data
     },
     currentProject(state) {
-      return state.currentOne
+      return state.one
     }
   },
   actions: {
