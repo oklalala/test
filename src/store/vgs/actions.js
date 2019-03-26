@@ -21,6 +21,6 @@ export default {
     return sendAPI('put', `/vg/${vgId}`, true, payload)
   },
   exportVG(context, projectId) {
-    return sendAPI('get', `/measures/vg/export?${projectId}`, true)
+    return sendAPI('get', `/measures/vg/export?projectId=${projectId}`, true)
   }
 }
