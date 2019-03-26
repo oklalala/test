@@ -17,7 +17,7 @@
           <el-form-item label="專案案號" prop="number">
             <el-input
               v-model="newProject.number"
-              placeholder="CNT-16Q4"
+              placeholder="請輸入專案號"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -54,7 +54,7 @@
       <el-form-item label="地點" prop="address">
         <el-input
           v-model="newProject.address"
-          placeholder="大武街 34 號"
+          placeholder="請輸入地址"
           style="width: 100%"
         >
         </el-input>
@@ -64,7 +64,7 @@
         <el-select
           v-model="newProject.companyId"
           @change="resetMember"
-          placeholder="雨宮營造"
+          placeholder="請選擇公司名稱"
           style="width: 100%"
         >
           <el-option
@@ -399,11 +399,10 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
-import sendImageAPI from '../utils/ImageAPI'
+import sendImageAPI from '@/utils/ImageAPI'
 
 export default {
   name: 'ProjectCreate',
-
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
@@ -511,20 +510,10 @@ export default {
     }
   },
   computed: {
-    projectList() {
-      return this.$store.getters.projects
-    },
-    roles() {
-      return this.$store.getters.roles
-    },
     companiesList() {
       var allCompany = this.$store.getters.companies
       return allCompany.filter(company => company.id != this.myCompany.id)
     },
-    soItems() {
-      return this.$store.getters.soItems
-    },
-
     OPTs() {
       var allOPT = this.$store.getters.OPTs
       var customersOPT = allOPT.filter(
@@ -641,32 +630,22 @@ export default {
       this.newProject.OPT = []
       this.newProject.USER = []
     },
-    updateSelectedOPTs(value) {
-      var OPTList = []
-      value.forEach(id => {
-        var selectedOPT = this.OPTs.filter(opt => opt.id == id)
-        OPTList = OPTList.concat(selectedOPT)
+    updateSelectedOPTs(ops_id) {
+      this.OPTList = ops_id.map(id => {
+        return this.OPTs.filter(opt => opt.id == id)
       })
-      this.OPTList = OPTList
     },
-    updateSelectedUSERs(value) {
-      var USERList = []
-      value.forEach(id => {
-        var selectedUSER = this.USERs.filter(user => user.id == id)
-        USERList = USERList.concat(selectedUSER)
+    updateSelectedUSERs(users_id) {
+      this.USERList = users_id.map(id => {
+        return this.USERs.filter(user => user.id == id)
       })
-      this.USERList = USERList
     },
     getImage(file) {
-      this.$store.dispatch('uploadConfigImage', file.raw).then(() => {
+      sendImageAPI(file.raw).then(res => {
+        this.newProject.sitePlan = res.data.url
         this.image = `${process.env.VUE_APP_API_URL}/${
           this.newProject.sitePlan
         }`
-      })
-
-      this.image = file
-      sendImageAPI(file.raw).then(res => {
-        this.newProject.sitePlan = res.data.url
       })
     },
     beforeImgUpload(file) {
