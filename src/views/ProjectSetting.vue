@@ -79,8 +79,9 @@ export default {
       this.$store
         .dispatch('deleteProjects', this.deleteList)
         .then(() => {
+          let list = this.idToName(this.projectList, this.deleteList)
           this.$message({
-            message: `成功刪除 ${this.deleteList}`,
+            message: `成功刪除 ${list}`,
             type: 'success',
             center: true,
             duration: 1800
@@ -95,6 +96,9 @@ export default {
     },
     statusFilter(value, row) {
       return row.status === value
+    },
+    idToName(fullArray, targetArray) {
+      return fullArray.filter(item => targetArray.includes(item.id)).map(project => project.name)
     }
   }
 }
