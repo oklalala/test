@@ -136,45 +136,18 @@ export default {
       // vgDate: '2019/01/30',
       vgDate: this.lastDate,
       soDate: '',
-      soDateList: [],
       selectedFloor: 1,
       selectedSO: '',
       floorIndex: 0,
       show: true,
-      vgChartData: [
-        // {
-        //   vgLocation: 'vg-1-1',
-        //   data: [
-        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T06:42:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T09:28:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
-        //   ]
-        // },
-        // {
-        //   vgLocation: 'vg-1-2',
-        //   data: [
-        //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
-        //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
-        //   ]
-        // }
-      ],
-      soChartData: [
+      // soChartData: [
         // { depth: -5, '10:00': 0, '12:00': 0 },
         // { depth: -4, '10:00': 0.2, '12:00': 2 },
         // { depth: -3, '10:00': 0.4, '12:00': -3 },
         // { depth: -2, '10:00': 0.5, '12:00': -0.4 },
         // { depth: -1, '10:00': 0.1, '12:00': -0.2 },
         // { depth: 0, '10:00': -0.3, '12:00': -0.5 }
-      ]
+      // ]
     }
   },
   computed: {
@@ -205,6 +178,38 @@ export default {
           return time.getTime() < startDate || time.getTime() > endDate
         }
       }
+    },
+    vgChartData () {
+      return this.$store.getters.vgMeasuredData
+      // [{
+      //   vgLocation: 'vg-1-1',
+      //   data: [
+      //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T06:42:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T09:28:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+      // ]}, {
+      //   vgLocation: 'vg-1-2',
+      //   data: [
+      //     ['2019-01-30T03:00:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T10:42:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T11:21:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T12:24:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T15:00:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T18:00:00+8000', Math.floor(Math.random() * 300) - 150],
+      //     ['2019-01-30T21:32:00+8000', Math.floor(Math.random() * 300) - 150]
+      //   ]
+      // }]
+    },
+    soDateList () {
+      return this.$store.getters.dateOfSoMeasuredData
+    },
+    soChartData () {
+      const measured = this.$store.getters.soMeasuredData.filter(item => item.date === this.soDate).shift()
+      return measured && measured.soData
     }
   },
   watch: {
@@ -218,10 +223,6 @@ export default {
       this.soDate = ''
       this.getSOData(soLocationNumber)
     },
-    soDate(measuredDate) {
-      const measured = this.$store.getters.soMeasuredData.filter(item => item.date === measuredDate).shift()
-      this.soChartData = measured && measured.soData
-    }
   },
   methods: {
     isShow(feature) {
@@ -233,9 +234,7 @@ export default {
         date: moment(dateTime).format('YYYY/MM/DD'),
         floor
       }
-      return this.$store.dispatch('getMeasuredVG', payload).then(res => {
-        this.vgChartData = res.data.data
-      })
+      this.$store.dispatch('fetchVgMeasuredData', payload)
     },
     getSOData(locationNumber) {
       if (!locationNumber) return
@@ -243,9 +242,7 @@ export default {
         projectId: this.$route.params.projectId,
         locationNumber
       }
-      this.$store.dispatch('fetchSoMeasuredData', payload).then(() => {
-        this.soDateList = this.$store.getters.dateOfSoMeasuredData
-      })
+      this.$store.dispatch('fetchSoMeasuredData', payload)
     },
     exportVG() {
       const projectId = this.$route.params.projectId

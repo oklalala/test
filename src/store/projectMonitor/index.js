@@ -19,8 +19,11 @@ export default {
       return state.soMeasuredData.map(item => item.date)
     },
     soMeasuredData (state) {
-      return state.soMeasuredData || []
+      return state.soMeasuredData
     },
+    vgMeasuredData (state) {
+      return state.vgMeasuredData
+    }
   },
   actions
 }

@@ -2,7 +2,7 @@ import sendAPI from '@/utils/API'
 import sendImageAPI from '@/utils/ImageAPI'
 
 export default {
-  getMeasuredVG({ commit }, { projectId, date, floor }) {
+  fetchVgMeasuredData({ commit }, { projectId, date, floor }) {
     return sendAPI(
       'get',
       `/measures/vg?projectId=${projectId}&date=${date}&floor=${floor}`,
@@ -10,7 +10,7 @@ export default {
     )
     .then(res => res.data.data)
     .then(data => {
-      return commit ('soMeasuredData', data)
+      commit ('vgMeasuredData', data)
     })
   },
   fetchSoMeasuredData({ commit }, { projectId, locationNumber }) {
