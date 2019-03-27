@@ -110,7 +110,7 @@ export default {
   components: { VGECharts, SOECharts },
   mixins: [ToPathMixin],
   created() {
-    this.getVGData(this.vgDate, 1)
+    this.getVGData(this.lastDate, 1)
   },
   mounted() {
     this.vgDate = this.lastDate
@@ -215,11 +215,11 @@ export default {
     }
   },
   watch: {
-    selectedFloor(value) {
-      this.getVGData(this.vgDate, value)
+    selectedFloor(floor) {
+      this.getVGData(this.vgDate, floor)
     },
-    vgDate(value) {
-      this.getVGData(value, this.selectedFloor)
+    vgDate(date) {
+      this.getVGData(date, this.selectedFloor)
     },
     selectedSO(soLocationNumber) {
       this.soDate = ''

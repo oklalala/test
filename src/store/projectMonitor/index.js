@@ -15,14 +15,14 @@ export default {
     }
   },
   getters: {
+    vgMeasuredData(state) {
+      return state.vgMeasuredData
+    },
     dateOfSoMeasuredData(state) {
       return state.soMeasuredData.map(item => item.date)
     },
     soMeasuredData(state) {
       return state.soMeasuredData
-    },
-    vgMeasuredData(state) {
-      return state.vgMeasuredData
     }
   },
   actions
