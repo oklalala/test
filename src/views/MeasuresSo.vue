@@ -42,7 +42,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="傾度管連線 IP" required>
-          <el-input v-model="wiseIP" @change="clearMeasuresDatas" placeholder="192.168.58.200"> </el-input>
+          <el-input
+            v-model="wiseIP"
+            @change="clearMeasuresDatas"
+            placeholder="192.168.58.200"
+          >
+          </el-input>
         </el-form-item>
         <span>應量測深度 {{ currentDepth }} 公尺</span>
         <el-form-item
