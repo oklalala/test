@@ -679,7 +679,7 @@ img {
 
 .el-upload-dragger,
 .el-upload--picture {
-  width: 60vw;
+  width: 100%;
   height: auto;
 }
 
