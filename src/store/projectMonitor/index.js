@@ -7,21 +7,21 @@ export default {
     soMeasuredData: []
   },
   mutations: {
-    vgMeasuredData (state, data) {
+    vgMeasuredData(state, data) {
       state.vgMeasuredData = data
     },
-    soMeasuredData (state, data) {
+    soMeasuredData(state, data) {
       state.soMeasuredData = data
     }
   },
   getters: {
-    dateOfSoMeasuredData (state) {
+    dateOfSoMeasuredData(state) {
       return state.soMeasuredData.map(item => item.date)
     },
-    soMeasuredData (state) {
+    soMeasuredData(state) {
       return state.soMeasuredData
     },
-    vgMeasuredData (state) {
+    vgMeasuredData(state) {
       return state.vgMeasuredData
     }
   },

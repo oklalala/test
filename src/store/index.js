@@ -165,6 +165,6 @@ export default new Vuex.Store({
     },
     updateRolePermissions({ state }) {
       return sendAPI('put', '/role/permissions', true, state.rolePermissions)
-    },
+    }
   }
 })
