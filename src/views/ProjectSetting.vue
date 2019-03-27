@@ -98,7 +98,9 @@ export default {
       return row.status === value
     },
     idToName(fullArray, targetArray) {
-      return fullArray.filter(item => targetArray.includes(item.id)).map(project => project.name)
+      return fullArray
+        .filter(item => targetArray.includes(item.id))
+        .map(project => project.name)
     }
   }
 }
