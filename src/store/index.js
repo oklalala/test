@@ -17,6 +17,7 @@ import steels from './steels'
 import measureSO from './measureSO'
 import soItems from './soItems'
 import soModels from './soModels'
+import projectMonitor from './projectMonitor'
 
 export default new Vuex.Store({
   modules: {
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     steels,
     measureSO,
     soItems,
-    soModels
+    soModels,
+    projectMonitor
   },
   state: {
     myId: '',
@@ -164,24 +166,5 @@ export default new Vuex.Store({
     updateRolePermissions({ state }) {
       return sendAPI('put', '/role/permissions', true, state.rolePermissions)
     },
-    getMeasuredVG(context, payload) {
-      var projectId = payload.projectId
-      var date = payload.date
-      var floor = payload.floor
-      return sendAPI(
-        'get',
-        `/measures/vg?projectId=${projectId}&date=${date}&floor=${floor}`,
-        true
-      )
-    },
-    getMeasuredSO(context, payload) {
-      var projectId = payload.projectId
-      var soLocationNumber = payload.soLocationNumber
-      return sendAPI(
-        'get',
-        `/measures/so?projectId=${projectId}&soLocationNumber=${soLocationNumber}`,
-        true
-      )
-    }
   }
 })

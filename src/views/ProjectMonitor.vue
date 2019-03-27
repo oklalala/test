@@ -70,7 +70,7 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="14" :md="14">
-              <el-form-item v-if="!!selectedSO" label="日期">
+              <el-form-item label="日期">
                 <el-select v-model="soDate" placeholder="請選擇日期">
                   <el-option
                     v-for="date in soDateList"
@@ -214,13 +214,13 @@ export default {
     vgDate(value) {
       this.getVGData(value, this.selectedFloor)
     },
-    selectedSO(value) {
+    selectedSO(soLocationNumber) {
       this.soDate = ''
-      this.getSOData(value)
+      this.getSOData(soLocationNumber)
     },
-    soDate(value) {
-      this.soChartData =
-        value && this.soChartData.filter(item => item.date === value)[0].soData
+    soDate(measuredDate) {
+      const measured = this.$store.getters.soMeasuredData.filter(item => item.date === measuredDate).shift()
+      this.soChartData = measured && measured.soData
     }
   },
   methods: {
@@ -237,15 +237,14 @@ export default {
         this.vgChartData = res.data.data
       })
     },
-    getSOData(soLocationNumber) {
-      if (!soLocationNumber) return
+    getSOData(locationNumber) {
+      if (!locationNumber) return
       var payload = {
         projectId: this.$route.params.projectId,
-        soLocationNumber
+        locationNumber
       }
-      return this.$store.dispatch('getMeasuredSO', payload).then(res => {
-        this.soChartData = res.data.data
-        this.soDateList = res.data.data.map(x => x.date)
+      this.$store.dispatch('fetchSoMeasuredData', payload).then(() => {
+        this.soDateList = this.$store.getters.dateOfSoMeasuredData
       })
     },
     exportVG() {
