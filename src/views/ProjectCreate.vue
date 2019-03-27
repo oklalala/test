@@ -167,7 +167,7 @@
             </el-select>
             <h3 v-if="!isEnoughtVG">請增加軸力計</h3>
           </el-form-item>
-          <el-form-item label="支撐階數：">
+          <el-form-item label="支撐階數：" prop="floor">
             <el-input
               @keyup.native="fullVGsInfo = []"
               v-model.number="newProject.floor"
@@ -175,7 +175,7 @@
             >
             </el-input>
           </el-form-item>
-          <el-form-item label="每層數量：">
+          <el-form-item label="每層數量：" required>
             <el-input
               @keyup.native="fullVGsInfo = []"
               v-model.number="numOfFloor"
@@ -185,7 +185,7 @@
           </el-form-item>
           <br />
           <el-button @click.native="getVGItems()" :disabled="!preparedShowVG"
-            >產生軸力計編碼</el-button
+            >請產生軸力計編碼</el-button
           >
           <br />
           <br />
@@ -381,6 +381,7 @@
               type="primary"
               style="width: 100%"
               @click="submit('newProject')"
+              :disabled="this.fullVGsInfo.length === 0"
             >
               確定送出
             </el-button>
@@ -468,6 +469,11 @@ export default {
         vgIds: {
           required: true,
           message: '請選擇軸力計',
+          trigger: ['blur', 'change']
+        },
+        floor: {
+          required: true,
+          message: '請選擇層數',
           trigger: ['blur', 'change']
         },
         'soManagement.notice': [
