@@ -158,7 +158,7 @@
             >
               <el-option
                 v-for="vg in VGs"
-                :disabled="!!vg.projectName"
+                :disabled="disableVG(vg.projectName)"
                 :key="vg.id"
                 :label="vg.number"
                 :value="vg.id"
@@ -729,6 +729,9 @@ export default {
         vgLocation.push({ number: '', steelId: '' })
       }
       this.newProject.vgLocation = vgLocation
+    },
+    disableVG(project) {
+      return project && project !== '使用的專案被刪除'
     }
   }
 }

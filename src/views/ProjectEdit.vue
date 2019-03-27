@@ -149,7 +149,6 @@
             >
               <el-option
                 v-for="vg in VGs"
-                :disabled="!!vg.projectName"
                 :key="vg.id"
                 :label="vg.number"
                 :value="vg.id"
