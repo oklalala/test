@@ -91,7 +91,7 @@ export default {
         })
     },
     updateDeleteList(value) {
-      this.deleteList = value.map(project => project.id)
+      this.deleteList = value.map(project => project.name)
     },
     statusFilter(value, row) {
       return row.status === value
