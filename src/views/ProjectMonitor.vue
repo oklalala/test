@@ -103,7 +103,7 @@ import ToPathMixin from '@/mixins/ToPath'
 import VGECharts from '../components/VGECharts'
 import SOECharts from '../components/SOECharts'
 import moment from 'moment'
-import FileSaver from 'file-saver'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'ProjectMonitor',

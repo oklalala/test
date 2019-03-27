@@ -3,7 +3,7 @@
 <template lang="html">
   <div class="measuresSo">
     <h1>傾度管量測</h1>
-    <el-form label-width="100px" label-position="left">
+    <el-form label-position="top">
       <section>
         <h2>基本資料</h2>
         <p>案號： {{ projectNumber }}</p>
@@ -14,7 +14,7 @@
         <el-form-item label="專案階段" required>
           <el-select
             v-model="projectPhaseId"
-            placeholder="第一次開挖"
+            placeholder="第 1 次開挖"
             @change="clearMeasuresDatas"
           >
             <el-option
@@ -41,8 +41,13 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="WISE IP" required>
-          <el-input v-model="wiseIP" @change="clearMeasuresDatas"> </el-input>
+        <el-form-item label="傾度管連線 IP" required>
+          <el-input
+            v-model="wiseIP"
+            @change="clearMeasuresDatas"
+            placeholder="192.168.58.200"
+          >
+          </el-input>
         </el-form-item>
         <span>應量測深度 {{ currentDepth }} 公尺</span>
         <el-form-item
