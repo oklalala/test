@@ -91,7 +91,7 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="USER">
-          {{selectedUSER}}
+          {{ selectedUSER }}
           <el-form-item label="客戶公司名稱">
             <el-select
               v-model="selectedUSER"
@@ -561,27 +561,15 @@ export default {
       this.newProject.status = value
     },
     updateSelectedOPTs(value) {
-      var OPTList = []
-      value.forEach(id => {
-        var selectedOPT = this.OPTs.filter(opt => opt.id == id)
-        OPTList = OPTList.concat(selectedOPT)
-      })
-      this.newProject.OPT = OPTList
+      this.newProject.OPT = value
     },
     updateSelectedUSERs(value) {
-      var USERList = []
-      value.forEach(id => {
-        var selectedUSER = this.USERs.filter(user => user.id == id)
-        USERList = USERList.concat(selectedUSER)
-      })
-      this.newProject.USER = USERList
+      this.newProject.USER = value
     },
     updateSelectedCompany(value) {
       this.newProject.companyId = value
       this.selectedUSER = []
       this.selectedOPT = []
-      this.newProject.OPT = []
-      this.newProject.USER = []
     },
     updateSelectedVGs(value) {
       var VGList = []
