@@ -50,5 +50,18 @@ export default {
     } else {
       return response
     }
+  },
+  async DELETE (path) {
+    const response = await axios.delete(`${baseURL}${path}`, {
+        headers: {
+          ...headers,
+          'x-access-token': store.getters.token
+        }
+      })
+    if (response.status === 200) {
+      return response.data
+    } else {
+      return response
+    }
   }
 }
