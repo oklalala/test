@@ -502,8 +502,8 @@ export default {
         address: this.project.address, // 北門路二段
         companyId: this.project.companyId,
         sitePlan: this.project.sitePlan, // 上傳的圖片
-        OPT: this.selectedOPT,
-        USER: this.selectedUSER,
+        OPT: this.project.OPT,
+        USER: this.project.USER,
         floor: this.project.floor, //. vg階數
         vgManagement: this.project.vgManagement,
         soManagement: this.project.soManagement,
@@ -526,6 +526,8 @@ export default {
       })
       this.strToNumArrayObject(this.newProject.vgManagement)
       this.strToNumObject(this.newProject.soManagement)
+      this.newProject.OPT = this.selectedOPT
+      this.newProject.USER = this.selectedUSER
       this.$store
         .dispatch('updateProject', {
           projectId: this.$route.params.projectId,
@@ -557,16 +559,28 @@ export default {
     updateSelectedStatus(value) {
       this.newProject.status = value
     },
-    updateSelectedOPTs(opts_id) {
-      this.newProject.OPT = opts_id
+    updateSelectedOPTs(value) {
+      var OPTList = []
+      value.forEach(id => {
+        var selectedOPT = this.OPTs.filter(opt => opt.id == id)
+        OPTList = OPTList.concat(selectedOPT)
+      })
+      this.newProject.OPT = OPTList
     },
-    updateSelectedUSERs(users_id) {
-      this.newProject.USER = users_id
+    updateSelectedUSERs(value) {
+      var USERList = []
+      value.forEach(id => {
+        var selectedUSER = this.USERs.filter(user => user.id == id)
+        USERList = USERList.concat(selectedUSER)
+      })
+      this.newProject.USER = USERList
     },
     updateSelectedCompany(value) {
       this.newProject.companyId = value
-      this.selectedOPT = []
       this.selectedUSER = []
+      this.selectedOPT = []
+      this.newProject.OPT = []
+      this.newProject.USER = []
     },
     updateSelectedVGs(value) {
       var VGList = []
@@ -610,8 +624,8 @@ export default {
       this.toPath('SteelList')
     },
     setSelectedBox() {
-      this.selectedOPT = this.project.OPT.map(opt => opt.id)
-      this.selectedUSER = this.project.USER.map(user => user.id)
+      this.selectedOPT = this.project.OPT.map(opt => opt.name)
+      this.selectedUSER = this.project.USER.map(user => user.name)
       this.selectedCompany = this.project.companyId
       this.selectedStatus = this.project.status
     }
