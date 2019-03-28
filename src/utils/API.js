@@ -20,8 +20,9 @@ export default function(method, path, isAuth, data) {
     .create(configs)
     [method](path, data)
     .catch(e => {
-      let message = e.message || e.response.data.result
-      if (message === 'jwt expired' || message === 'invalid token') {
+      const result = e.response.data.result
+      const message = e.message
+      if (result === 'jwt expired' || result === 'invalid token' || message) {
         store.dispatch('logout')
       }
       return Promise.reject(e)
