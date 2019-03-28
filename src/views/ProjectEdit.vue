@@ -461,7 +461,7 @@ export default {
       var customersOPT = allOPT.filter(OPT => OPT.company.id == newCompanyId)
       var selfOPT = allOPT.filter(OPT => OPT.company.id == this.myCompany.id)
       this.OPTList = selfOPT.concat(customersOPT)
-      
+
       var allUSER = this.$store.getters.USERs
       var customersUSER = allUSER.filter(
         user => user.company.id == newCompanyId

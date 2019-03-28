@@ -416,7 +416,7 @@ export default {
       fullVGsInfo: [], // from calculateVG.js
       OPTList: [], // custom and self OPTs
       USERList: [], // custom USERs
-      selectedCompany: "",
+      selectedCompany: '',
       selectedOPTs: [],
       selectedUSERs: [],
       image: '',
@@ -521,16 +521,12 @@ export default {
   watch: {
     selectedCompany(company) {
       var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(
-        user => user.company.id == this.newProject.companyId
-      )
+      var customersOPT = allOPT.filter(user => user.company.id == company)
       var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
       this.OPTList = selfOPT.concat(customersOPT)
 
       var allUSER = this.$store.getters.USERs
-      var customersUSER = allUSER.filter(
-        user => user.company && user.company.id == this.newProject.companyId
-      )
+      var customersUSER = allUSER.filter(user => user.company.id == company)
       this.USERList = customersUSER
     }
   },
