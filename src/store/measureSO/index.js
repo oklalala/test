@@ -1,5 +1,6 @@
 /** @format */
-import sendAPI from '@/utils/API'
+import actions from './actions'
+
 export default {
   state: {
     tempFormulaParameter: [
@@ -27,9 +28,5 @@ export default {
       state.tempFormulaParameter = tempFormulaParameter
     }
   },
-  actions: {
-    uploadMeasuresDatas: (state, measuresData) => {
-      return sendAPI('post', `/measures/so`, true, measuresData)
-    }
-  }
+  actions
 }

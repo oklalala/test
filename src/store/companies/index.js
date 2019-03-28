@@ -1,8 +1,12 @@
 /** @format */
-import sendAPI from '@/utils/API'
+import actions from './actions'
+
 export default {
   state: {
-    data: []
+    data: [{
+      id: '',
+      name: ''
+    }]
   },
   mutations: {
     setCompanies(state, companies) {
@@ -12,27 +16,10 @@ export default {
   getters: {
     companies(state) {
       return state.data
+    },
+    notMyCompanies (state, getters) {
+      return state.data.filter(company => company.id !== getters.myCompany.id)
     }
   },
-  actions: {
-    getCompanies({ commit }) {
-      return sendAPI('get', '/companies', true).then(res => {
-        commit('setCompanies', res.data.data)
-      })
-    },
-    createCompany({ dispatch }, payload) {
-      return sendAPI('post', `/company`, true, payload).then(() => {
-        dispatch('getCompanies')
-      })
-    },
-    deleteCompanies({ dispatch }, companyIds) {
-      let companyIdsStr = companyIds.join(',')
-      return sendAPI('delete', `/companies/${companyIdsStr}`, true).then(() => {
-        dispatch('getCompanies')
-      })
-    },
-    updateCompany(context, { companyId, payload }) {
-      return sendAPI('put', `/company/${companyId}`, true, payload)
-    }
-  }
+  actions
 }

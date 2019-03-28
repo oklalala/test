@@ -1,6 +1,8 @@
 /** @format */
-import sendAPI from '@/utils/API'
+import actions from './actions'
+
 export default {
+  actions,
   state: {
     data: [],
     currentOne: {}
@@ -25,33 +27,18 @@ export default {
     },
     USERs(state) {
       return state.data.filter(user => user.roleName == 'USER')
-    }
-  },
-  actions: {
-    getUser({ commit }, userId) {
-      return sendAPI('get', `/user/${userId}`, true).then(res => {
-        commit('setUser', res.data.data)
-      })
     },
-    updateCurrentUser({ commit }, payload) {
-      commit('setUser', payload)
+    optsOfCustomerCompany (state, getters) {
+      return getters.OPTs.filter(opt => opt.company.id === getters.project.companyId)
     },
-    updateUser(context, { userId, payload }) {
-      return sendAPI('put', `/user/${userId}`, true, payload)
+    optsOfMyCompany (state, getters) {
+      return getters.OPTs.filter(opt => opt.company.id === getters.myCompany.id)
     },
-    getUsers({ commit }) {
-      return sendAPI('get', '/users', true).then(res => {
-        commit('setUsers', res.data.data)
-      })
+    usersOfCustomerCompany (state, getters) {
+      return getters.USERs.filter(user => user.company.id === getters.project.companyId)
     },
-    deleteUsers({ dispatch }, userIds) {
-      let userIdsStr = userIds.join(',')
-      return sendAPI('delete', `/users/${userIdsStr}`, true).then(() => {
-        dispatch('getUsers')
-      })
-    },
-    createUser(context, payload) {
-      return sendAPI('post', `/user`, true, payload)
+    usersOfMyCompany (state, getters) {
+      return getters.USERs.filter(user => user.company.id === getters.myCompany.id)
     }
   }
 }

@@ -1,7 +1,6 @@
 /** @format */
 
-import sendAPI from '@/utils/API'
-import API from '@/utils/API-zero'
+import API from '@/utils/API'
 
 export default {
   async getVGs({ commit }) {
@@ -20,6 +19,8 @@ export default {
     return API.PUT(`/vg/${vgId}`, payload)
   },
   exportVG(context, projectId) {
-    return API.GET(`/measures/vg/export?projectId=${projectId}`)
+    return API.GET(`/measures/vg/export`, {
+      projectId
+    })
   }
 }

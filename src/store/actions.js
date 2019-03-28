@@ -1,4 +1,4 @@
-import API from '@/utils/API-zero'
+import API from '@/utils/API'
 
 import router from '@/router'
 import cookies from '@/cookies'
