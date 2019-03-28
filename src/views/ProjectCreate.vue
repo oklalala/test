@@ -580,12 +580,14 @@ export default {
         sitePlan: '', // 上傳的圖片
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
-        floor: 3, //. vg階數
-        vgManagement: [{
-          notice: 0,
-          warning: 0,
-          action: 0
-        }],
+        floor: 0, //. vg階數
+        vgManagement: [
+          {
+            notice: 0,
+            warning: 0,
+            action: 0
+          }
+        ],
         soManagement: {
           notice: 0,
           warning: 0,
@@ -611,7 +613,8 @@ export default {
       })
     },
     createProject() {
-      this.numberManagement()
+      this.strToNumArrayObject(this.newProject.vgManagement)
+      this.strToNumObject(this.newProject.soManagement)
       this.initVGLocation()
       this.mergeVGLocation(this.newProject.vgLocation, this.fullVGsInfo)
       this.$store
@@ -660,15 +663,14 @@ export default {
       }
       return isLt2M
     },
-    numberManagement() {
-      this.newProject.vgManagement.forEach(vgManagement => {
-        for (let i in vgManagement) {
-          vgManagement[i] = +vgManagement[i]
-        }
+    strToNumArrayObject(array) {
+      array.forEach(object => {
+        this.strToNumObject(object)
       })
-      let soManagement = this.newProject.soManagement
-      for (let i in soManagement) {
-        soManagement[i] = +soManagement[i]
+    },
+    strToNumObject(object) {
+      for (let key in object) {
+        object[key] = +object[key]
       }
     },
     getVGItems() {

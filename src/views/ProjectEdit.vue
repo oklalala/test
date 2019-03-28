@@ -159,7 +159,7 @@
           <el-form-item label="換軸力計">
             <el-select v-model="removedVG" style="width: 100%">
               <el-option
-                v-for="vg in selectedVGs"
+                v-for="vg in removeVGList"
                 :key="vg.id"
                 :label="vg.number"
                 :value="vg.id"
@@ -170,7 +170,7 @@
           <el-form-item label="換成">
             <el-select v-model="addedVG" style="width: 100%">
               <el-option
-                v-for="vg in unSelectedVGs"
+                v-for="vg in addedVGList"
                 :key="vg.id"
                 :label="vg.number"
                 :value="vg.id"
@@ -433,26 +433,6 @@ export default {
           }
         ]
       }
-      // newProject: {
-      //   number: '', // CNT-16Q3
-      //   status: '', // end or in-progress
-      //   name: '', // 測試專案
-      //   address: '', // 三路
-      //   companyId: '',
-      //   sitePlan: '', // 上傳的圖片
-      //   OPT: [], // {id:..} 公司或客戶的 operator
-      //   USER: [], // {id:..} 客戶的使用者
-      //   floor: 1, //. vg階數
-      //   vgManagement: [],
-      //   soManagement: {
-      //     notice: 0,
-      //     warning: 0,
-      //     action: 0
-      //   },
-      //   vgIds: [],
-      //   vgLocation: [],
-      //   soLocation: []
-      // }
     }
   },
   watch: {
@@ -470,11 +450,8 @@ export default {
     }
   },
   computed: {
-    projectList() {
-      return this.$store.getters.projects
-    },
-    roles() {
-      return this.$store.getters.roles
+    project() {
+      return this.$store.getters.currentProject
     },
     companiesList() {
       var allCompany = this.$store.getters.companies
@@ -483,16 +460,13 @@ export default {
     myCompany() {
       return this.$store.getters.me.company
     },
-    soItems() {
-      return this.$store.getters.soItems
-    },
     uploadURL() {
       return `${process.env.VUE_APP_API_URL}/uploads`
     },
     VGs() {
       return this.$store.getters.vgs
     },
-    selectedVGs() {
+    removeVGList() {
       var list = []
       this.newProject.vgIds.forEach(id => {
         var selected = this.VGs.filter(vg => vg.id === id)
@@ -500,8 +474,8 @@ export default {
       })
       return list
     },
-    unSelectedVGs() {
-      return this.VGs.filter(vg => !this.selectedVGs.includes(vg))
+    addedVGList() {
+      return this.VGs.filter(vg => !this.removeVGList.includes(vg))
     },
     vgVariable() {
       return !!this.removedVG && !!this.addedVG
@@ -518,9 +492,6 @@ export default {
     fullVGsInfo() {
       return this.project.vgLocation
     },
-    project() {
-      return this.$store.getters.currentProject
-    },
     newProject() {
       this.getVGTable(0)
       this.setSelectedBox()
@@ -528,7 +499,7 @@ export default {
         number: this.project.number, // CNT-16Q3
         status: this.project.status, // end or in-progress
         name: this.project.name, // 測試專案
-        address: this.project.address, // 三路
+        address: this.project.address, // 北門路二段
         companyId: this.project.companyId,
         sitePlan: this.project.sitePlan, // 上傳的圖片
         OPT: this.selectedOPT,
@@ -553,7 +524,8 @@ export default {
         delete vg.vgNumber
         delete vg.steelName
       })
-      this.numberManagement()
+      this.strToNumArrayObject(this.newProject.vgManagement)
+      this.strToNumObject(this.newProject.soManagement)
       this.$store
         .dispatch('updateProject', {
           projectId: this.$route.params.projectId,
@@ -572,15 +544,14 @@ export default {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)
         })
     },
-    numberManagement() {
-      this.newProject.vgManagement.forEach(vgManagement => {
-        for (let i in vgManagement) {
-          vgManagement[i] = +vgManagement[i]
-        }
+    strToNumArrayObject(array) {
+      array.forEach(object => {
+        this.strToNumObject(object)
       })
-      let soManagement = this.newProject.soManagement
-      for (let i in soManagement) {
-        soManagement[i] = +soManagement[i]
+    },
+    strToNumObject(object) {
+      for (let key in object) {
+        object[key] = +object[key]
       }
     },
     updateSelectedStatus(value) {
