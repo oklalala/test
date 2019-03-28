@@ -62,8 +62,8 @@
 
       <el-form-item label="客戶公司名稱">
         <el-select
-          v-model="newProject.companyId"
-          @change="resetMember"
+          v-model="selectedCompany"
+          @change="updateSelectedCompany"
           placeholder="請選擇公司名稱"
           style="width: 100%"
         >
@@ -82,14 +82,14 @@
         <el-tab-pane label="OPT">
           <el-form-item>
             <el-select
-              v-model="newProject.OPT"
+              v-model="selectedOPTs"
               placeholder="請選擇 OPT"
               multiple
               @change="updateSelectedOPTs"
               style="width: 100%"
             >
               <el-option
-                v-for="opt in OPTs"
+                v-for="opt in OPTList"
                 :key="opt.id"
                 :label="opt.name"
                 :value="opt.id"
@@ -102,14 +102,14 @@
         <el-tab-pane label="USER">
           <el-form-item>
             <el-select
-              v-model="newProject.USER"
+              v-model="selectedUSERs"
               placeholder="請選擇 USER"
               multiple
               @change="updateSelectedUSERs"
               style="width: 100%"
             >
               <el-option
-                v-for="user in USERs"
+                v-for="user in USERList"
                 :key="user.id"
                 :label="user.name"
                 :value="user.id"
@@ -416,6 +416,9 @@ export default {
       fullVGsInfo: [], // from calculateVG.js
       OPTList: [], // custom and self OPTs
       USERList: [], // custom USERs
+      selectedCompany: '',
+      selectedOPTs: [],
+      selectedUSERs: [],
       image: '',
       statusList: [
         {
@@ -515,25 +518,22 @@ export default {
       }
     }
   },
+  watch: {
+    selectedCompany(company) {
+      var allOPT = this.$store.getters.OPTs
+      var customersOPT = allOPT.filter(user => user.company.id == company)
+      var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
+      this.OPTList = selfOPT.concat(customersOPT)
+
+      var allUSER = this.$store.getters.USERs
+      var customersUSER = allUSER.filter(user => user.company.id == company)
+      this.USERList = customersUSER
+    }
+  },
   computed: {
     companiesList() {
       var allCompany = this.$store.getters.companies
       return allCompany.filter(company => company.id != this.myCompany.id)
-    },
-    OPTs() {
-      var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(
-        user => user.company.id == this.newProject.companyId
-      )
-      var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
-      return selfOPT.concat(customersOPT)
-    },
-    USERs() {
-      var allUSER = this.$store.getters.USERs
-      var customersUSER = allUSER.filter(
-        user => user.company && user.company.id == this.newProject.companyId
-      )
-      return customersUSER
     },
     myCompany() {
       return this.$store.getters.myCompany
@@ -634,21 +634,16 @@ export default {
           }
         })
     },
-    resetMember() {
-      this.USERList = []
-      this.OPTList = []
-      this.newProject.OPT = []
-      this.newProject.USER = []
+    updateSelectedCompany(company_id) {
+      this.newProject.companyId = company_id
+      this.selectedOPTs = []
+      this.selectedUSERs = []
     },
-    updateSelectedOPTs(ops_id) {
-      this.OPTList = ops_id.map(id => {
-        return this.OPTs.filter(opt => opt.id == id)
-      })
+    updateSelectedOPTs(opts_id) {
+      this.newProject.OPT = opts_id
     },
     updateSelectedUSERs(users_id) {
-      this.USERList = users_id.map(id => {
-        return this.USERs.filter(user => user.id == id)
-      })
+      this.newProject.USER = users_id
     },
     getImage(file) {
       sendImageAPI(file.raw).then(res => {
