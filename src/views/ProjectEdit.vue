@@ -91,6 +91,7 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="USER">
+          {{selectedUSER}}
           <el-form-item label="客戶公司名稱">
             <el-select
               v-model="selectedUSER"
@@ -624,8 +625,8 @@ export default {
       this.toPath('SteelList')
     },
     setSelectedBox() {
-      this.selectedOPT = this.project.OPT.map(opt => opt.name)
-      this.selectedUSER = this.project.USER.map(user => user.name)
+      this.selectedOPT = this.project.OPT.map(opt => opt.id)
+      this.selectedUSER = this.project.USER.map(user => user.id)
       this.selectedCompany = this.project.companyId
       this.selectedStatus = this.project.status
     }
