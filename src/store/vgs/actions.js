@@ -1,26 +1,26 @@
 /** @format */
 
-import sendAPI from '@/utils/API'
+import API from '@/utils/API'
 
 export default {
-  getVGs({ commit }) {
-    return sendAPI('get', '/vgs', true).then(res => {
-      commit('setVGs', res.data.data)
-    })
+  async getVGs({ commit }) {
+    const res = await API.GET('/vgs')
+    return commit('setVGs', res.data)
   },
-  deleteVGs({ dispatch }, deleteVGs) {
+  async deleteVGs({ dispatch }, deleteVGs) {
     var vgIdStr = deleteVGs.join(',')
-    return sendAPI('delete', `/vgs/${vgIdStr}`, true).then(() => {
-      dispatch('getVGs')
-    })
+    await API.DELETE(`/vgs/${vgIdStr}`)
+    return dispatch('getVGs')
   },
   createVG(context, payload) {
-    return sendAPI('post', `/vg`, true, payload)
+    return API.POST(`/vg`, payload)
   },
   updateVG(context, { vgId, payload }) {
-    return sendAPI('put', `/vg/${vgId}`, true, payload)
+    return API.PUT(`/vg/${vgId}`, payload)
   },
   exportVG(context, projectId) {
-    return sendAPI('get', `/measures/vg/export?projectId=${projectId}`, true)
+    return API.GET(`/measures/vg/export`, {
+      projectId
+    })
   }
 }

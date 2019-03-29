@@ -1,6 +1,8 @@
 /** @format */
-import sendAPI from '@/utils/API'
+import actions from './actions'
+
 export default {
+  actions,
   state: {
     data: []
   },
@@ -12,13 +14,6 @@ export default {
   getters: {
     soModels(state) {
       return state.data
-    }
-  },
-  actions: {
-    getSOModels({ commit }) {
-      return sendAPI('get', 'so-models', true).then(res => {
-        commit('setSOModels', res.data.data)
-      })
     }
   }
 }

@@ -186,9 +186,9 @@ let router = new Router({
           store.dispatch('getSteels')
         ])
           .then(() => {
-            if (from.path !== '/steels') {
+            if (from.path !== '/steels')
               return store.dispatch('getProject', to.params.projectId)
-            } else return Promise.resolve()
+            else return Promise.resolve()
           })
           .then(() => {
             next()

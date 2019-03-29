@@ -2,10 +2,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import router from '@/router'
-import cookies from '@/cookies'
 
-import sendAPI from '@/utils/API'
 Vue.use(Vuex)
 
 import users from './users'
@@ -18,6 +15,8 @@ import measureSO from './measureSO'
 import soItems from './soItems'
 import soModels from './soModels'
 import projectMonitor from './projectMonitor'
+
+import actions from './actions'
 
 export default new Vuex.Store({
   modules: {
@@ -32,12 +31,17 @@ export default new Vuex.Store({
     soModels,
     projectMonitor
   },
+  actions,
   state: {
     myId: '',
     token: '',
     myRole: '',
     myPermissions: '',
-    me: {},
+    me: {
+      company: {
+        id: 0
+      }
+    },
     permissions: {},
     roles: [],
     rolePermissions: [],
@@ -123,48 +127,6 @@ export default new Vuex.Store({
     },
     rolePermissions(state) {
       return state.rolePermissions
-    }
-  },
-  actions: {
-    login({ commit }, payload) {
-      return sendAPI('post', '/login', false, payload).then(res => {
-        commit('setToken', res.data.token)
-        commit('setMyId', res.data.userId)
-        commit('setMyRole', res.data.role)
-        commit('setMyPermissions', res.data.permissions)
-        cookies.saveLogin()
-      })
-    },
-    logout({ commit }) {
-      commit('setToken', '')
-      cookies.clear()
-      router.push('/')
-    },
-    getMe({ getters, commit }) {
-      return sendAPI('get', `/user/${getters.myId}`, true).then(res => {
-        commit('setMe', res.data.data)
-      })
-    },
-    updateMe({ state }) {
-      return sendAPI('put', `/user/self`, true, state.me)
-    },
-    getRoles({ commit }) {
-      return sendAPI('get', '/roles', true).then(res => {
-        commit('setRoles', res.data.data)
-      })
-    },
-    getPermissions({ commit }) {
-      return sendAPI('get', '/permissions', true).then(res => {
-        commit('setPermissions', res.data.data)
-      })
-    },
-    getRolesPermissions({ commit }) {
-      return sendAPI('get', '/role/permissions', true).then(res => {
-        commit('setRolePermissions', res.data.data)
-      })
-    },
-    updateRolePermissions({ state }) {
-      return sendAPI('put', '/role/permissions', true, state.rolePermissions)
     }
   }
 })

@@ -180,7 +180,7 @@ export default {
   },
   computed: {
     project: function() {
-      return this.$store.getters.currentProject
+      return this.$store.getters.project
     },
     projectNumber: function() {
       return this.project.number

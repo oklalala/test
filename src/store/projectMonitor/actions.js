@@ -1,28 +1,14 @@
 /** @format */
 
-import sendAPI from '@/utils/API'
+import API from '@/utils/API'
 
 export default {
-  fetchVgMeasuredData({ commit }, { projectId, date, floor }) {
-    return sendAPI(
-      'get',
-      `/measures/vg?projectId=${projectId}&date=${date}&floor=${floor}`,
-      true
-    )
-      .then(res => res.data.data)
-      .then(data => {
-        commit('vgMeasuredData', data)
-      })
+  async fetchVgMeasuredData({ commit }, query) {
+    const res = await API.GET(`/measures/vg`, query)
+    commit('vgMeasuredData', res.data)
   },
-  fetchSoMeasuredData({ commit }, { projectId, locationNumber }) {
-    return sendAPI(
-      'get',
-      `/measures/so?projectId=${projectId}&soLocationNumber=${locationNumber}`,
-      true
-    )
-      .then(res => res.data.data)
-      .then(data => {
-        return commit('soMeasuredData', data)
-      })
+  async fetchSoMeasuredData({ commit }, query) {
+    const res = await API.GET(`/measures/so`, query)
+    commit('soMeasuredData', res.data)
   }
 }

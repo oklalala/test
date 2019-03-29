@@ -157,7 +157,7 @@ export default {
       }
     },
     project() {
-      return this.$store.getters.currentProject
+      return this.$store.getters.project
     },
     startDate() {
       return moment(this.project.dataRangeVg.start).toDate()
