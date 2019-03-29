@@ -1,3 +1,5 @@
+/** @format */
+
 import API from '@/utils/API'
 
 export default {

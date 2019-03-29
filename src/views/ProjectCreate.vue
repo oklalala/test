@@ -124,7 +124,6 @@
       <el-upload
         class="upload-demo"
         drag
-        action="uploadURL"
         :on-change="getImage"
         list-type="picture"
         :before-upload="beforeImgUpload"
@@ -400,7 +399,7 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
-import sendImageAPI from '@/utils/ImageAPI'
+import API from '@/utils/API'
 
 export default {
   name: 'ProjectCreate',
@@ -581,11 +580,13 @@ export default {
         OPT: [], // {id:..} 公司或客戶的 operator
         USER: [], // {id:..} 客戶的使用者
         floor: 3, //. vg階數
-        vgManagement: [{
-          notice: 0,
-          warning: 0,
-          action: 0
-        }],
+        vgManagement: [
+          {
+            notice: 0,
+            warning: 0,
+            action: 0
+          }
+        ],
         soManagement: {
           notice: 0,
           warning: 0,
@@ -651,7 +652,7 @@ export default {
       })
     },
     getImage(file) {
-      sendImageAPI(file.raw).then(res => {
+      API.uploadImg(file.raw).then(res => {
         this.newProject.sitePlan = res.data.url
         this.image = `${process.env.VUE_APP_API_URL}/${
           this.newProject.sitePlan

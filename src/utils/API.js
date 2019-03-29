@@ -3,15 +3,15 @@
 import axios from 'axios'
 import store from '@/store'
 
-const baseURL = process.env.VUE_APP_API_URL;
+const baseURL = process.env.VUE_APP_API_URL
 const headers = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json'
+  Accept: 'application/json'
 }
 export default {
-  async GET(path, data='') {
-    let query = new URLSearchParams(data).toString();
-    query = (query.length) ? '?' + query : query
+  async GET(path, data = '') {
+    let query = new URLSearchParams(data).toString()
+    query = query.length ? '?' + query : query
     const response = await axios.get(`${baseURL}${path}${query}`, {
       headers: {
         ...headers,
@@ -25,8 +25,7 @@ export default {
     }
   },
   async POST(path, data) {
-    const response = await axios.post(`${baseURL}${path}`,
-      data, {
+    const response = await axios.post(`${baseURL}${path}`, data, {
       headers: {
         ...headers,
         'x-access-token': store.getters.token
@@ -38,9 +37,8 @@ export default {
       return response
     }
   },
-  async PUT (path, data) {
-    const response = await axios.put(`${baseURL}${path}`,
-      data, {
+  async PUT(path, data) {
+    const response = await axios.put(`${baseURL}${path}`, data, {
       headers: {
         ...headers,
         'x-access-token': store.getters.token
@@ -52,7 +50,7 @@ export default {
       return response
     }
   },
-  async DELETE (path) {
+  async DELETE(path) {
     const response = await axios.delete(`${baseURL}${path}`, {
       headers: {
         ...headers,
@@ -65,7 +63,7 @@ export default {
       return response
     }
   },
-  async uploadImg (file) {
+  async uploadImg(file) {
     let formData = new FormData()
     formData.append('img', file)
     const response = await axios.post(`${baseURL}/uploadImg`, formData, {

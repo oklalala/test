@@ -37,7 +37,11 @@ export default new Vuex.Store({
     token: '',
     myRole: '',
     myPermissions: '',
-    me: {},
+    me: {
+      company: {
+        id: 0
+      }
+    },
     permissions: {},
     roles: [],
     rolePermissions: [],

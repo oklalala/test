@@ -3,10 +3,12 @@ import actions from './actions'
 
 export default {
   state: {
-    data: [{
-      id: '',
-      name: ''
-    }]
+    data: [
+      {
+        id: '',
+        name: ''
+      }
+    ]
   },
   mutations: {
     setCompanies(state, companies) {
@@ -17,7 +19,7 @@ export default {
     companies(state) {
       return state.data
     },
-    notMyCompanies (state, getters) {
+    notMyCompanies(state, getters) {
       return state.data.filter(company => company.id !== getters.myCompany.id)
     }
   },

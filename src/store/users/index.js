@@ -28,17 +28,23 @@ export default {
     USERs(state) {
       return state.data.filter(user => user.roleName == 'USER')
     },
-    optsOfCustomerCompany (state, getters) {
-      return getters.OPTs.filter(opt => opt.company.id === getters.project.companyId)
+    optsOfCustomerCompany(state, getters) {
+      return getters.OPTs.filter(
+        opt => opt.company.id === getters.project.companyId
+      )
     },
-    optsOfMyCompany (state, getters) {
+    optsOfMyCompany(state, getters) {
       return getters.OPTs.filter(opt => opt.company.id === getters.myCompany.id)
     },
-    usersOfCustomerCompany (state, getters) {
-      return getters.USERs.filter(user => user.company.id === getters.project.companyId)
+    usersOfCustomerCompany(state, getters) {
+      return getters.USERs.filter(
+        user => user.company.id === getters.project.companyId
+      )
     },
-    usersOfMyCompany (state, getters) {
-      return getters.USERs.filter(user => user.company.id === getters.myCompany.id)
+    usersOfMyCompany(state, getters) {
+      return getters.USERs.filter(
+        user => user.company.id === getters.myCompany.id
+      )
     }
   }
 }

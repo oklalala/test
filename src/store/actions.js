@@ -1,3 +1,5 @@
+/** @format */
+
 import API from '@/utils/API'
 
 import router from '@/router'
@@ -26,11 +28,11 @@ export default {
     return await API.PUT(`/user/self`, state.me)
   },
   async getRoles({ commit }) {
-    const res = await API.GET('/roles',)
+    const res = await API.GET('/roles')
     commit('setRoles', res.data)
   },
   async getPermissions({ commit }) {
-    const res = await API.GET('/permissions',)
+    const res = await API.GET('/permissions')
     commit('setPermissions', res.data)
   },
   async getRolesPermissions({ commit }) {
