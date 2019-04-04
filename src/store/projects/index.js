@@ -57,7 +57,12 @@ export default {
         start: ''
       }
     },
-    indexFloor: 1
+    currentVgFloor: 1,
+    createData: {
+      totalVgPreFloor: 0,
+      defaultDepth: 0,
+      totalEstimatedSoLocation: 0
+    }
   },
   mutations: {
     setProjects(state, projects) {
@@ -76,15 +81,17 @@ export default {
       const index = state.one.vgIds.indexOf(oldVg)
       state.one.vgIds.splice(index, 1, newVg)
     },
-    vgManagement(state, { label, value }) {
-      const floor = state.indexFloor
-      state.one.vgManagement[floor][label] = value
+    vgManagementValue(state, { label, value }) {
+      state.one.vgManagement[state.currentVgFloor - 1][label] = value
     },
-    soManagement(state, { label, value }) {
+    soManagementValue(state, { label, value }) {
       state.one.soManagement[label] = value
     },
-    indexFloor(state, floor) {
-      state.indexFloor = floor
+    currentFloor(state, floor) {
+      state.currentVgFloor = floor
+    },
+    totalVgPreFloor(state, floor) {
+      state.createData.totalVgPreFloor = floor
     },
     steelOfVgLocation(state, { location, selectedSteel }) {
       // eslint-disable-next-line
@@ -95,6 +102,17 @@ export default {
         steelId: selectedSteel.id,
         steelName: selectedSteel.name
       })
+    },
+    defaultDepth(state, depth) {
+      state.createData.defaultDepth = depth
+    },
+    // totalSoLocation(state, total) {
+    //   const locations = []
+    //   locations.length = total
+    //   state.one.soLocation = locations
+    // },
+    totalEstimatedSoLocation(state, total) {
+      state.createData.totalEstimatedSoLocation = total
     }
   },
   getters: {
@@ -114,17 +132,17 @@ export default {
       if (!state.one.sitePlan) return ''
       else return `${process.env.VUE_APP_API_URL}/${state.one.sitePlan}`
     },
-    vgIdsInProject(state) {
+    vgItemIdsInProject(state) {
       return state.one.vgIds
     },
-    vgsInProject(state, getters) {
+    vgItemsInProject(state, getters) {
       return getters.vgs.filter(vg => state.one.vgIds.some(id => vg.id === id))
     },
-    vgsNotInProject(state, getters) {
+    vgItemsNotInProject(state, getters) {
       return getters.vgsFree
     },
-    indexFloor(state) {
-      return state.indexFloor
+    totalFloor(state) {
+      return state.one.floor
     },
     totalVgLocation(state) {
       return state.one.vgLocation.length
@@ -133,25 +151,48 @@ export default {
       return Math.max(
         ...state.one.vgLocation.map(location =>
           Number(location.number.split('-').pop())
-        )
+        ),
+        0
       )
     },
     vgLocationCurrFloor(state) {
       return state.one.vgLocation.filter(
-        location => parseInt(location.number.split('-')[1]) === state.indexFloor
+        location =>
+          parseInt(location.number.split('-')[1]) === state.currentVgFloor
       )
     },
-    vgManagementOfCurrFloor(state) {
-      return state.one.vgManagement[state.indexFloor]
+    vgManagementValueOfCurrFloor(state) {
+      return state.one.vgManagement[state.currentVgFloor - 1]
     },
-    soManagement(state) {
+    soManagementValue(state) {
       return state.one.soManagement
     },
     totalSoLocation(state) {
       return state.one.soLocation.length
     },
+    totalEstimatedSoLocation(state) {
+      return state.createData.totalEstimatedSoLocation
+    },
     soLocation(state) {
       return state.one.soLocation
+    },
+    totalVgPreFloor(state) {
+      return state.createData.totalVgPreFloor
+    },
+    defaultDepth(state) {
+      return state.createData.defaultDepth
+    },
+    statusOptions() {
+      return [
+        {
+          value: 'end',
+          label: '結案'
+        },
+        {
+          value: 'in-progress',
+          label: '執行'
+        }
+      ]
     }
   },
   actions

@@ -6,30 +6,45 @@
     <el-form
       label-position="top"
       label-width="80px"
-      :model="newProject"
-      ref="newProject"
-      :rules="rules"
+      :model="project"
+      ref="project"
     >
       <h2>基本資料</h2>
-
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="專案案號" prop="number">
-            <el-input
-              v-model="newProject.number"
-              placeholder="請輸入專案號"
-            ></el-input>
+          <el-form-item
+            label="專案案號"
+            prop="number"
+            :rules="[
+              {
+                required: true,
+                message: '請輸入專案案號',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
+            <el-input v-model="number" placeholder="請輸入專案號"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="專案狀態" prop="status">
+          <el-form-item
+            label="專案狀態"
+            prop="status"
+            :rules="[
+              {
+                required: true,
+                message: '請輸入專案狀態',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
             <el-select
-              v-model="newProject.status"
+              v-model="status"
               placeholder="請選擇"
               style="width: 100%"
             >
               <el-option
-                v-for="item in statusList"
+                v-for="item in statusOptions"
                 :key="item.name"
                 :label="item.label"
                 :value="item.value"
@@ -42,18 +57,25 @@
 
       <el-row :gutter="20">
         <el-col>
-          <el-form-item label="專案名稱" prop="name">
-            <el-input
-              v-model="newProject.name"
-              placeholder="阡福町商業大樓"
-            ></el-input>
+          <el-form-item
+            label="專案名稱"
+            prop="name"
+            :rules="[
+              {
+                required: true,
+                message: '請輸入專案名稱',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
+            <el-input v-model="name" placeholder="請輸入專案名稱"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-form-item label="地點" prop="address">
         <el-input
-          v-model="newProject.address"
+          v-model="address"
           placeholder="請輸入地址"
           style="width: 100%"
         >
@@ -62,13 +84,12 @@
 
       <el-form-item label="客戶公司名稱">
         <el-select
-          v-model="selectedCompany"
-          @change="updateSelectedCompany"
+          v-model="companyId"
           placeholder="請選擇公司名稱"
           style="width: 100%"
         >
           <el-option
-            v-for="company in companiesList"
+            v-for="company in companiesOptions"
             :key="company.id"
             :label="company.name"
             :value="company.id"
@@ -82,17 +103,17 @@
         <el-tab-pane label="OPT">
           <el-form-item>
             <el-select
-              v-model="selectedOPTs"
+              v-model="optsInProject"
               placeholder="請選擇 OPT"
               multiple
-              @change="updateSelectedOPTs"
+              value-key="id"
               style="width: 100%"
             >
               <el-option
-                v-for="opt in OPTList"
+                v-for="opt in optsOptions"
                 :key="opt.id"
                 :label="opt.name"
-                :value="opt.id"
+                :value="opt"
               >
               </el-option>
             </el-select>
@@ -102,17 +123,17 @@
         <el-tab-pane label="USER">
           <el-form-item>
             <el-select
-              v-model="selectedUSERs"
+              v-model="usersInProject"
               placeholder="請選擇 USER"
+              value-key="id"
               multiple
-              @change="updateSelectedUSERs"
               style="width: 100%"
             >
               <el-option
-                v-for="user in USERList"
+                v-for="user in usersOptions"
                 :key="user.id"
                 :label="user.name"
-                :value="user.id"
+                :value="user"
               >
               </el-option>
             </el-select>
@@ -124,174 +145,132 @@
       <el-upload
         class="upload-demo"
         drag
-        :on-change="getImage"
         list-type="picture"
-        :before-upload="beforeImgUpload"
-        :auto-upload="true"
+        :action="uploadURL"
+        :before-upload="verificationImgSize"
+        :on-change="uploadImg"
+        :auto-upload="false"
+        :limit="1"
       >
-        <img :src="image" alt="" v-if="imageSelected" />
-        <i class="el-icon-upload" v-if="!imageSelected"></i>
-        <div class="el-upload__text" v-if="!imageSelected">
+        <img :src="sitePlan" alt="" v-if="sitePlan" />
+        <i class="el-icon-upload" v-if="!sitePlan"></i>
+        <div class="el-upload__text" v-if="!sitePlan">
           將文件拖到此處，或<em>點擊上傳</em>
         </div>
-        <div slot="tip" class="el-upload__tip">上傳文件不能超過2Mb</div>
+        <div slot="tip" class="el-upload__tip">上傳文件不能超過 2MB</div>
         <el-button
           class="reselect"
           size="small"
           type="primary"
-          v-if="imageSelected"
+          v-if="!!sitePlan"
           >另選圖片</el-button
         >
       </el-upload>
 
       <h2>監控設定</h2>
       <el-tabs type="border-card" stretch>
-        <el-tab-pane label="軸力計 ( VG )">
-          <el-form-item label="使用軸力計編號" prop="vgIds">
+        <el-tab-pane label="軸力計 (VG)">
+          <el-form-item label="使用軸力計編號(可複選)" required>
             <el-select
-              v-model="newProject.vgIds"
-              placeholder="可複選"
+              v-model="vgItemIdsInProject"
+              value-key="id"
               multiple
-              @change="updateSelectedVGs"
               style="width: 100%"
             >
               <el-option
-                v-for="vg in VGs"
-                :disabled="disableVG(vg.projectName)"
-                :key="vg.id"
-                :label="vg.number"
-                :value="vg.id"
+                v-for="vgItem in vgsOptions"
+                :key="vgItem.id"
+                :label="vgItem.number"
+                :value="vgItem.id"
               >
               </el-option>
             </el-select>
-            <h3 v-if="!isEnoughtVG">請增加軸力計</h3>
+            <div v-if="isNeedMoreVg" class="need-more-vg">請增加軸力計</div>
           </el-form-item>
-          <el-form-item label="支撐階數：" prop="floor">
-            <el-input
-              @keyup.native="fullVGsInfo = []"
-              v-model.number="newProject.floor"
-              placeholder="3"
-            >
-            </el-input>
+          <el-form-item label="支撐階數" required>
+            <el-input-number
+              v-model="totalFloor"
+              controls-position="right"
+              :step="1"
+              :precision="0"
+              :min="0">
+            </el-input-number>
           </el-form-item>
-          <el-form-item label="每層數量：" required>
-            <el-input
-              @keyup.native="fullVGsInfo = []"
-              v-model.number="numOfFloor"
-              placeholder="5"
-            >
-            </el-input>
+          <el-form-item label="每層數量" required>
+            <el-input-number
+              v-model="totalVgPreFloor"
+              controls-position="right"
+              :step="1"
+              :precision="0"
+              :min="0">
+            </el-input-number>
           </el-form-item>
-          <br />
-          <el-button @click.native="getVGItems()" :disabled="!preparedShowVG"
-            >請產生軸力計編碼</el-button
-          >
-          <br />
-          <br />
 
-          <div class="block" v-if="!!fullVGsInfo.length">
-            <span class="demonstration">請選擇支撐階數</span>
+          <el-button @click.native="configVgCode()" :disabled="isConfigVgCode"
+            >產生軸力計編碼</el-button
+          >
+          <div class="block" v-if="totalVgLocation">
+            <span class="demonstration">切換支撐階數</span>
             <el-pagination
               layout="prev, pager, next"
-              @current-change="currentFloor"
-              :total="getPagination"
+              :page-size="totalVgLocationPreFloor"
+              :total="totalVgLocation"
+              @current-change="onChangeFloor"
             >
             </el-pagination>
           </div>
 
-          <el-row :gutter="20" v-if="!!fullVGsInfo.length">
+          <el-row :gutter="20" v-if="totalVgLocation">
             <el-col :span="5">
               <h2>管理值<span>單位：噸</span></h2>
               <el-form-item
-                label="注意值"
-                :prop="'vgManagement[' + this.floorIndex + '].notice'"
+                :key="key"
+                v-for="(value, key) in vgManagementValueOfCurrFloor"
+                :label="`${managementLabel[key]}值`"
+                :prop="key"
                 :rules="[
                   {
                     required: true,
-                    message: '請檢查注意值',
-                    trigger: ['blur', 'change']
-                  },
-                  {
-                    pattern: /^\d+(\.\d{0,1})?$/,
-                    message: '小數點下最多一位 0.1',
+                    validator: validateVgManagementValue,
+                    message: `請檢查${managementLabel[key]}值`,
+                    label: key,
                     trigger: ['blur', 'change']
                   }
                 ]"
               >
-                <el-input
-                  size="mini"
-                  v-model="newProject.vgManagement[floorIndex].notice"
-                  placeholder="68.3"
+                <el-input-number
+                  size="small"
+                  controls-position="right"
+                  :step="1"
+                  :precision="1"
+                  :min="0"
+                  :value="vgManagementValueOfCurrFloor[key]"
+                  @input="updateVgManagementValue(key, $event)"
                 >
-                </el-input>
-              </el-form-item>
-              <el-form-item
-                label="警戒值"
-                :prop="'vgManagement[' + this.floorIndex + '].warning'"
-                :rules="[
-                  {
-                    required: true,
-                    message: '請檢查警戒值',
-                    trigger: ['blur', 'change']
-                  },
-                  {
-                    pattern: /^\d+(\.\d{0,1})?$/,
-                    message: '小數點下最多一位 0.1',
-                    trigger: ['blur', 'change']
-                  }
-                ]"
-              >
-                <el-input
-                  size="mini"
-                  v-model="newProject.vgManagement[floorIndex].warning"
-                  placeholder="79.6"
-                >
-                </el-input>
-              </el-form-item>
-              <el-form-item
-                label="行動值"
-                :prop="'vgManagement[' + this.floorIndex + '].action'"
-                :rules="[
-                  {
-                    required: true,
-                    message: '請檢查行動值',
-                    trigger: ['blur', 'change']
-                  },
-                  {
-                    pattern: /^\d+(\.\d{0,1})?$/,
-                    message: '小數點下最多一位 0.1',
-                    trigger: ['blur', 'change']
-                  }
-                ]"
-              >
-                <el-input
-                  size="mini"
-                  v-model="newProject.vgManagement[floorIndex].action"
-                  placeholder="104.2"
-                >
-                </el-input>
+                </el-input-number>
               </el-form-item>
             </el-col>
             <el-col :span="19">
-              <h2>位置編碼<span>( VG - 層數 - 流水號 )</span></h2>
+              <h2>位置編碼<span> (VG-層數-流水號)</span></h2>
               <el-button @click="toPath('SteelList')">
                 維護鋼材資料
               </el-button>
-              <el-table class="vg-table" :data="vgTable">
-                <el-table-column prop="host.number" label="VG" width="120">
+              <el-table class="vg-table" :data="vgLocationCurrFloor">
+                <el-table-column prop="vgNumber" label="軸力計" width="120">
                 </el-table-column>
                 <el-table-column prop="port" label="Port" width="80">
                 </el-table-column>
-                <el-table-column prop="serial" label="編碼" width="100">
+                <el-table-column prop="number" label="配置編碼" width="100">
                 </el-table-column>
-                <el-table-column prop="steelId" label="鋼材" width="100">
+                <el-table-column prop="steelName" label="使用鋼材" width="100">
                   <template slot-scope="scope">
                     <el-select
-                      v-model="scope.row.steelId"
+                      :value="scope.row.steelId"
+                      @input="onChangeSteel($event, scope.row)"
                       placeholder="請選擇鋼材"
                     >
                       <el-option
-                        v-for="steel in Steels"
+                        v-for="steel in steelsOptions"
                         :key="steel.id"
                         :label="steel.name"
                         :value="steel.id"
@@ -305,66 +284,76 @@
           </el-row>
         </el-tab-pane>
 
-        <el-tab-pane label="傾度管 ( SO )">
-          <el-form-item label="數量：" prop="vgAction">
-            <el-input
-              @keyup.native="newProject.soLocation = []"
-              v-model.number="soQt"
-              placeholder="5"
+        <el-tab-pane label="傾度管 (SO)">
+          <el-form-item label="數量" required>
+            <el-input-number
+              v-model="totalEstimatedSoLocation"
+              controls-position="right"
+              :step="1"
+              :precision="0"
+              :min="0"
             >
-            </el-input>
+            </el-input-number>
           </el-form-item>
-          <el-form-item label="每孔深度 ( m )：" prop="vgAction">
-            <el-input
-              @keyup.native="newProject.soLocation = []"
-              v-model.number="soDepth"
-              placeholder="20.5"
+          <el-form-item label="每孔深度 (m)" required>
+            <el-input-number
+              v-model="defaultDepth"
+              controls-position="right"
+              :step="1"
+              :precision="2"
+              :min="0"
             >
-            </el-input>
+            </el-input-number>
           </el-form-item>
-          <br />
-          <el-button @click.native="getSOItems()" :disabled="!preparedShowSO"
+          <el-button @click.native="configSoCode()" :disabled="isConfigSoCode"
             >產生傾度管編碼</el-button
           >
-          <br />
-
-          <el-row :gutter="20" v-if="!!newProject.soLocation.length">
+          <el-row :gutter="20" v-if="totalSoLocation">
             <el-col :span="8">
               <h2>管理值<span>單位：cm</span></h2>
-              <el-form-item label="注意值" prop="soManagement.notice">
-                <el-input
-                  :controls="false"
-                  v-model="newProject.soManagement.notice"
-                  placeholder="1.68"
+              <el-form-item
+                :key="key"
+                v-for="(value, key) in soManagementValue"
+                :label="`${managementLabel[key]}值`"
+                :prop="key"
+                :rules="[
+                  {
+                    required: true,
+                    message: `請檢查${managementLabel[key]}值`,
+                    validator: validateSoManagementValue,
+                    label: key,
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
+                <el-input-number
+                  size="small"
+                  controls-position="right"
+                  :step="1"
+                  :precision="2"
+                  :min="0"
+                  :value="soManagementValue[key]"
+                  @input="updateSoManagementValue(key, $event)"
                 >
-                </el-input>
-              </el-form-item>
-              <el-form-item label="警戒值" prop="soManagement.warning">
-                <el-input
-                  :controls="false"
-                  v-model="newProject.soManagement.warning"
-                  placeholder="2.88"
-                >
-                </el-input>
-              </el-form-item>
-              <el-form-item label="行動值" prop="soManagement.action">
-                <el-input
-                  :controls="false"
-                  v-model="newProject.soManagement.action"
-                  placeholder="3.77"
-                >
-                </el-input>
+                </el-input-number>
               </el-form-item>
             </el-col>
             <el-col :span="14">
-              <h2>位置編號<span>( SO - 流水號 )</span></h2>
+              <h2>位置編號<span>(SO-流水號)</span></h2>
               <h5>相同位置編碼 量測深度間隔 1 m</h5>
-              <el-table class="so-table" :data="newProject.soLocation">
-                <el-table-column prop="number" label="編碼" width="200">
+              <el-table class="so-table" :data="soLocation">
+                <el-table-column prop="number" label="配置編碼" width="200">
                 </el-table-column>
-                <el-table-column prop="depth" label="深度" width="200">
+                <el-table-column prop="depth" label="量測深度" width="200">
                   <template slot-scope="scope">
-                    <el-input v-model.number="scope.row.depth"> </el-input>
+                    <el-input-number
+                      v-model="scope.row.depth"
+                      controls-position="right"
+                      :step="1"
+                      :precision="2"
+                      :min="0"
+                    >
+                    </el-input-number>
                   </template>
                 </el-table-column>
               </el-table>
@@ -376,17 +365,12 @@
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-button
-              type="primary"
-              style="width: 100%"
-              @click="submit('newProject')"
-              :disabled="this.fullVGsInfo.length === 0"
-            >
+            <el-button type="primary" style="width: 100%" @click="onSubmit" :disabled="!this.totalSoLocation || !this.totalVgLocation">
               確定送出
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button style="width: 100%" @click="cancel">
+            <el-button style="width: 100%" @click="toPath('ProjectSetting')">
               取消
             </el-button>
           </el-col>
@@ -399,229 +383,329 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 import CalculateVGMixin from '@/mixins/CalculateVG'
-import API from '@/utils/API'
 
 export default {
   name: 'ProjectCreate',
   mixins: [ToPathMixin, CalculateVGMixin],
   data() {
     return {
+      MAX_PORT_FOR_VG: 14,
+      managementLabel: {
+        notice: '注意',
+        warning: '警戒',
+        action: '行動'
+      },
+      //------------------------,
       soQt: 0,
       soDepth: 0,
-      floorIndex: 0, // used in array
-      numOfFloor: 0, //
-      VGList: [], // get usable VGs
-      vgTable: [], // every floor VGs
-      fullVGsInfo: [], // from calculateVG.js
-      OPTList: [], // custom and self OPTs
-      USERList: [], // custom USERs
-      selectedCompany: '',
-      selectedOPTs: [],
-      selectedUSERs: [],
-      image: '',
-      statusList: [
-        {
-          value: 'end',
-          label: '結案'
-        },
-        {
-          value: 'in-progress',
-          label: '執行'
-        }
-      ],
       newProject: {
-        number: '', // CNT-16Q3
-        status: 'in-progress', // end or in-progress
-        name: '', // 測試專案
-        address: '', // 三路
-        companyId: '',
-        sitePlan: '', // 上傳的圖片
-        OPT: [], // {id:..} 公司或客戶的 operator
-        USER: [], // {id:..} 客戶的使用者
-        floor: 1, //. vg階數
-        vgManagement: [],
-        soManagement: {
-          notice: '',
-          warning: '',
-          action: ''
-        },
-        vgIds: [],
-        vgLocation: [],
-        soLocation: []
-      },
-      rules: {
-        number: [
-          {
-            required: true,
-            message: '請輸入編號',
-            trigger: ['blur', 'change']
-          },
-          {
-            min: 3,
-            max: 12,
-            message: '長度在 3 到 12 個字元',
-            trigger: ['blur', 'change']
-          }
-        ],
-        name: {
-          required: true,
-          message: '請輸入專案名稱',
-          trigger: ['blur', 'change']
-        },
-        vgIds: {
-          required: true,
-          message: '請選擇軸力計',
-          trigger: ['blur', 'change']
-        },
-        floor: {
-          required: true,
-          message: '請選擇層數',
-          trigger: ['blur', 'change']
-        },
-        'soManagement.notice': [
-          {
-            required: true,
-            message: '請輸入注意值',
-            trigger: ['blur', 'change']
-          },
-          {
-            pattern: /^\d(\.\d{0,2})?$/,
-            message: '數字格式為 x.xx',
-            trigger: ['blur', 'change']
-          }
-        ],
-        'soManagement.warning': [
-          {
-            required: true,
-            message: '請輸入警戒值',
-            trigger: ['blur', 'change']
-          },
-          {
-            pattern: /^\d(\.\d{0,2})?$/,
-            message: '數字格式為 x.xx',
-            trigger: ['blur', 'change']
-          }
-        ],
-        'soManagement.action': [
-          {
-            required: true,
-            message: '請輸入行動值',
-            trigger: ['blur', 'change']
-          },
-          {
-            pattern: /^\d(\.\d{0,2})?$/,
-            message: '數字格式為 x.xx',
-            trigger: ['blur', 'change']
-          }
-        ]
+        // number: '', // CNT-16Q3
+        // status: 'in-progress', // end or in-progress
+        // name: '', // 測試專案
+        // address: '', // 三路
+        // companyId: '',
+        // sitePlan: '', // 上傳的圖片
+        // OPT: [], // {id:..} 公司或客戶的 operator
+        // USER: [], // {id:..} 客戶的使用者
+        // floor: 1, //. vg階數
+        // vgManagement: [],
+        // soManagement: {
+        //   notice: '',
+        //   warning: '',
+        //   action: ''
+        // },
+        // vgIds: [],
+        // vgLocation: [],
+        // soLocation: []
       }
     }
   },
-  watch: {
-    selectedCompany(company) {
-      var allOPT = this.$store.getters.OPTs
-      var customersOPT = allOPT.filter(user => user.company.id == company)
-      var selfOPT = allOPT.filter(user => user.company.id == this.myCompany.id)
-      this.OPTList = selfOPT.concat(customersOPT)
-
-      var allUSER = this.$store.getters.USERs
-      var customersUSER = allUSER.filter(user => user.company.id == company)
-      this.USERList = customersUSER
-    }
-  },
   computed: {
-    companiesList() {
-      var allCompany = this.$store.getters.companies
-      return allCompany.filter(company => company.id != this.myCompany.id)
+    project() {
+      return this.$store.getters.project
     },
-    myCompany() {
-      return this.$store.getters.myCompany
+    number: {
+      get() {
+        return this.$store.getters.project.number
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'number',
+          value
+        })
+      }
+    },
+    statusOptions() {
+      return this.$store.getters.statusOptions
+    },
+    status: {
+      get() {
+        return this.$store.getters.project.status
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'status',
+          value
+        })
+      }
+    },
+    name: {
+      get() {
+        return this.$store.getters.project.name
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'name',
+          value
+        })
+      }
+    },
+    address: {
+      get() {
+        return this.$store.getters.project.address
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'address',
+          value
+        })
+      }
+    },
+    companiesOptions() {
+      return this.$store.getters.notMyCompanies
+    },
+    companyId: {
+      get() {
+        return this.$store.getters.project.companyId
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'companyId',
+          value
+        })
+      }
+    },
+    optsOptions() {
+      return [
+        ...this.$store.getters.optsOfCustomerCompany,
+        ...this.$store.getters.optsOfMyCompany
+      ]
+    },
+    optsInProject: {
+      get() {
+        return this.$store.getters.optsInProject
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'OPT',
+          value
+        })
+      }
+    },
+    usersOptions() {
+      return [
+        ...this.$store.getters.usersOfCustomerCompany,
+        ...this.$store.getters.usersOfMyCompany
+      ]
+    },
+    usersInProject: {
+      get() {
+        return this.$store.getters.usersInProject
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'USER',
+          value
+        })
+      }
+    },
+    sitePlan() {
+      return this.$store.getters.sitePlan
     },
     uploadURL() {
       return `${process.env.VUE_APP_API_URL}/uploads`
     },
-    VGs() {
-      return this.$store.getters.vgs
+    vgItemIdsInProject: {
+      get() {
+        return this.$store.getters.vgItemIdsInProject
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'vgIds',
+          value
+        })
+      }
     },
-    isEnoughtVG() {
-      var needed = this.newProject.floor * this.numOfFloor
-      var usable = this.VGList.length * 14 // a host have 14 port
-      return usable >= needed
+    vgsOptions() {
+      return this.$store.getters.vgsFree
     },
-    preparedShowVG() {
-      var hasFloor = !!this.newProject.floor
-      var hasNumOfFloor = !!this.numOfFloor
-      var hasSelectedVG = this.newProject.vgIds.length !== 0
-      var required = hasFloor && hasNumOfFloor && hasSelectedVG
-      return required && this.isEnoughtVG
+    totalFloor: {
+      get() {
+        return this.$store.getters.totalFloor
+      },
+      set(value) {
+        this.$store.commit('project', {
+          property: 'floor',
+          value
+        })
+      }
     },
-    getPagination() {
-      return this.newProject.floor * 10
+    isNeedMoreVg() {
+      var needed = this.totalFloor * this.totalVgPreFloor
+      var usable = this.vgItemIdsInProject.length * this.MAX_PORT_FOR_VG
+      return usable < needed
     },
-    Steels() {
+    isConfigVgCode() {
+      return (
+        this.isNeedMoreVg ||
+        !this.totalFloor ||
+        !this.totalVgPreFloor ||
+        !this.vgItemIdsInProject.length
+      )
+    },
+    steelsOptions() {
       return this.$store.getters.steels
     },
-    preparedShowSO() {
-      return !!this.soQt && !!this.soDepth
+    totalVgLocation() {
+      return this.$store.getters.totalVgLocation
     },
-    imageSelected() {
-      return this.newProject.sitePlan
+    vgManagementValueOfCurrFloor() {
+      return this.$store.getters.vgManagementValueOfCurrFloor
+    },
+    vgLocationCurrFloor() {
+      return this.$store.getters.vgLocationCurrFloor
+    },
+    totalSoLocation() {
+      return this.$store.getters.totalSoLocation
+    },
+    defaultDepth: {
+      get() {
+        return this.$store.getters.defaultDepth
+      },
+      set(value) {
+        this.$store.commit('defaultDepth', value)
+      }
+    },
+    totalVgLocationPreFloor() {
+      return this.$store.getters.totalVgLocationPreFloor
+    },
+    totalVgPreFloor: {
+      get() {
+        return this.$store.getters.totalVgPreFloor
+      },
+      set(value) {
+        this.$store.commit('totalVgPreFloor', value)
+      }
+    },
+    isConfigSoCode() {
+      return !this.totalEstimatedSoLocation || !this.defaultDepth
+    },
+    soManagementValue() {
+      return this.$store.getters.soManagementValue
+    },
+    soLocation() {
+      return this.$store.getters.soLocation
+    },
+    totalEstimatedSoLocation: {
+      get() {
+        return this.$store.getters.totalEstimatedSoLocation
+      },
+      set(value) {
+        this.$store.commit('totalEstimatedSoLocation', value)
+      }
     }
   },
   methods: {
-    reset() {
-      this.newProject = {
-        number: '', // CNT-16Q3
-        status: '', // end or in-progress
-        name: '', // 測試專案
-        address: '', // 三路
-        companyId: '',
-        sitePlan: '', // 上傳的圖片
-        OPT: [], // {id:..} 公司或客戶的 operator
-        USER: [], // {id:..} 客戶的使用者
-        floor: 0, //. vg階數
-        vgManagement: [
-          {
-            notice: 0,
-            warning: 0,
-            action: 0
-          }
-        ],
-        soManagement: {
-          notice: 0,
-          warning: 0,
-          action: 0
-        },
-        vgIds: [],
-        vgLocation: [], // [{ number: '', steelId:''}]
-        soLocation: [] // [{ number: '', depth: 0 }]
+    getSOItems() {
+      this.project.soLocation = this.initSOLocation(this.soQt, this.soDepth)
+    },
+    initSOLocation(number, depth) {
+      var arr = []
+      for (var i = 1; i <= number; i++) {
+        arr.push({
+          number: `SO-0${i}`, // todo: if i > 10
+          depth: depth
+        })
       }
+      return arr
     },
-    cancel() {
-      this.reset()
-      this.toPath('ProjectSetting')
+    uploadImg(file) {
+      this.$store.dispatch('uploadConfigImage', file.raw)
     },
-    submit(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.createProject()
+    verificationImgSize(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('上傳圖片大小不能超過 2MB!')
+      }
+      return isLt2M
+    },
+    configVgCode() {
+      const totalFloor = this.totalFloor
+      const totalVgPreFloor = this.totalVgPreFloor
+      this.$store.dispatch('configVgCode', {
+        totalFloor,
+        totalVgPreFloor
+      })
+    },
+    configSoCode() {
+      const depth = this.defaultDepth
+      const total_location = this.totalEstimatedSoLocation
+      this.$store.dispatch('configSoCode', {
+        depth,
+        total_location
+      })
+    },
+    updateVgManagementValue(label, value) {
+      this.$store.commit('vgManagementValue', {
+        value,
+        label
+      })
+    },
+    onChangeSteel(selectedSteelId, location) {
+      const selectedSteel = this.steelsOptions
+        .filter(item => item.id === selectedSteelId)
+        .shift()
+      this.$store.commit('steelOfVgLocation', {
+        location,
+        selectedSteel
+      })
+    },
+    onChangeFloor(selectedFloor) {
+      this.$store.commit('currentFloor', selectedFloor)
+    },
+    validateSoManagementValue(rule, value, next) {
+      value = this.soManagementValue[rule.label]
+      if (rule.required) !value && next(new Error(rule.message))
+      next()
+    },
+    validateVgManagementValue(rule, value, next) {
+      value = this.vgManagementValueOfCurrFloor[rule.label]
+      if (rule.required) !value && next(new Error(rule.message))
+      next()
+    },
+    updateSoManagementValue(label, value) {
+      this.$store.commit('soManagementValue', {
+        value,
+        label
+      })
+    },
+    onSubmit() {
+      console.log(this.$refs)
+      this.$refs.project.validate(isValidSuccess => {
+        if (isValidSuccess) {
+          this.submitProject()
         } else {
           this.$message.error(`請重新檢查必填欄位`)
           return false
         }
       })
     },
-    createProject() {
-      this.strToNumArrayObject(this.newProject.vgManagement)
-      this.strToNumObject(this.newProject.soManagement)
-      this.initVGLocation()
-      this.mergeVGLocation(this.newProject.vgLocation, this.fullVGsInfo)
+    submitProject() {
       this.$store
-        .dispatch('createProject', this.newProject)
+        .dispatch('createProject')
         .then(() => {
-          this.reset()
           this.$message({
-            message: `成功新增 ${this.newProject.name}`,
+            message: `成功新增 ${this.project.name}`,
             type: 'success',
             center: true,
             duration: 1800
@@ -635,103 +719,6 @@ export default {
             this.$message.error(`請重新檢查 ${e.response.data.result}`)
           }
         })
-    },
-    updateSelectedCompany(company_id) {
-      this.newProject.companyId = company_id
-      this.selectedOPTs = []
-      this.selectedUSERs = []
-    },
-    updateSelectedOPTs(opts_id) {
-      this.newProject.OPT = opts_id
-    },
-    updateSelectedUSERs(users_id) {
-      this.newProject.USER = users_id
-    },
-    getImage(file) {
-      API.uploadImg(file.raw).then(res => {
-        this.newProject.sitePlan = res.data.url
-        this.image = `${process.env.VUE_APP_API_URL}/${
-          this.newProject.sitePlan
-        }`
-      })
-    },
-    beforeImgUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('上傳圖片大小不能超過 2MB!')
-      }
-      return isLt2M
-    },
-    strToNumArrayObject(array) {
-      array.forEach(object => {
-        this.strToNumObject(object)
-      })
-    },
-    strToNumObject(object) {
-      for (let key in object) {
-        object[key] = +object[key]
-      }
-    },
-    getVGItems() {
-      var floor = this.newProject.floor
-      this.fullVGsInfo = this.importVGItems(floor, this.numOfFloor, this.VGList)
-      this.initVGManagement()
-      this.getVGTable(0)
-    },
-    currentFloor(selectedFloor) {
-      this.floorIndex = selectedFloor - 1
-      this.getVGTable(this.floorIndex)
-    },
-    updateSelectedVGs(value) {
-      this.fullVGsInfo = []
-      var VGList = []
-      value.forEach(id => {
-        var selectedVG = this.VGs.filter(vg => vg.id == id)
-        VGList = VGList.concat(selectedVG)
-      })
-      this.VGList = VGList
-    },
-    getVGTable(floorIndex) {
-      var start = floorIndex * this.numOfFloor
-      var end = (floorIndex + 1) * this.numOfFloor
-      this.vgTable = this.fullVGsInfo.slice(start, end)
-    },
-    initVGManagement() {
-      var arr = []
-      for (var i = 0; i < this.newProject.floor; i++) {
-        arr.push({ notice: 0, warning: 0, action: 0 })
-      }
-      this.newProject.vgManagement = arr
-    },
-    getSOItems() {
-      this.newProject.soLocation = this.initSOLocation(this.soQt, this.soDepth)
-    },
-    initSOLocation(number, depth) {
-      var arr = []
-      for (var i = 1; i <= number; i++) {
-        arr.push({
-          number: `SO-0${i}`, // todo: if i > 10
-          depth: depth
-        })
-      }
-      return arr
-    },
-    mergeVGLocation(vgLocation, fullVGsInfo) {
-      fullVGsInfo.forEach((vg, index) => {
-        vgLocation[index].number = vg.serial
-        vgLocation[index].steelId = vg.steelId
-      })
-    },
-    initVGLocation() {
-      var length = this.newProject.floor * this.numOfFloor
-      var vgLocation = []
-      for (var i = 0; i < length; i++) {
-        vgLocation.push({ number: '', steelId: '' })
-      }
-      this.newProject.vgLocation = vgLocation
-    },
-    disableVG(project) {
-      return project && project !== '使用的專案被刪除'
     }
   }
 }
@@ -751,8 +738,8 @@ img {
   display: none;
 }
 
-.el-upload-dragger,
-.el-upload--picture {
+.el-upload--picture,
+.el-upload-dragger {
   width: 100%;
   height: auto;
 }
@@ -763,11 +750,16 @@ img {
   right: 20px;
 }
 
-h3 {
+.need-more-vg {
   color: red;
-  font-size: 12px;
+  font-size: 0.8em;
   position: absolute;
   right: 0;
-  top: 20px;
+  top: 100%;
+  line-height: 1.5em;
+}
+
+.el-input-number {
+  width: 100%;
 }
 </style>
