@@ -35,6 +35,7 @@ export default {
       }
     }
     commit('setProject', new_project)
+    commit('resetCreateData')
   },
   async getProject({ commit }, projectId) {
     const res = await API.GET(`/project/${projectId}`)

@@ -65,6 +65,13 @@ export default {
     }
   },
   mutations: {
+    resetCreateData(state) {
+      state.createData = {
+        totalVgPreFloor: 0,
+        defaultDepth: 0,
+        totalEstimatedSoLocation: 0
+      }
+    },
     setProjects(state, projects) {
       state.data = projects
     },
