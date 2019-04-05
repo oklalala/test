@@ -20,7 +20,7 @@
         <li
           class="nav__item"
           :class="{ active: isActive('/projects') }"
-          @click="toPath('ProjectList')"
+          @click="toPath('Projects')"
         >
           專案列表
         </li>

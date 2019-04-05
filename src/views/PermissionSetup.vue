@@ -23,7 +23,7 @@
       <el-button type="primary" @click="submit">
         確認送出
       </el-button>
-      <el-button type="primary" @click="toPath('ProjectList')">
+      <el-button type="primary" @click="toPath('Projects')">
         取消修改
       </el-button>
     </div>
@@ -60,7 +60,7 @@ export default {
         .dispatch('updateRolePermissions')
         .then(() => {
           this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
-          this.toPath('ProjectList')
+          this.toPath('Projects')
         })
         .catch(e => {
           this.$message.error(e, '權限設定失敗')

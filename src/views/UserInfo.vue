@@ -103,7 +103,7 @@ export default {
         .dispatch('updateMe')
         .then(() => {
           this.$message({ message: '資料更新成功', type: 'success' })
-          this.toPath('ProjectList')
+          this.toPath('Projects')
         })
         .catch(e => {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)

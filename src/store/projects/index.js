@@ -193,9 +193,9 @@ export default {
     defaultDepth(state) {
       return state.createData.defaultDepth
     },
-    statusValue2Label(){
+    statusValue2Label() {
       return {
-        'end': '結案',
+        end: '結案',
         'in-progress': '執行'
       }
     },

@@ -21,7 +21,8 @@
     <el-table :data="projects" class="projects-table">
       <el-table-column fixed prop="number" label="案號" width="150">
       </el-table-column>
-      <el-table-column prop="name" label="名稱" min-width="200"> </el-table-column>
+      <el-table-column prop="name" label="名稱" min-width="200">
+      </el-table-column>
       <el-table-column width="180">
         <template slot-scope="scope">
           <el-button
@@ -30,10 +31,7 @@
           >
         </template>
       </el-table-column>
-      <el-table-column
-        width="130"
-        v-if="isShow('project:soItemMeasure')"
-      >
+      <el-table-column width="130" v-if="isShow('project:soItemMeasure')">
         <template slot-scope="scope">
           <el-button @click="to(scope.row.id)">傾度管操作</el-button>
         </template>
@@ -43,7 +41,8 @@
         label="專案狀態"
         width="100"
         v-if="isShow('project:filter')"
-        :filters="statusOptions" :filter-method="statusFilter"
+        :filters="statusOptions"
+        :filter-method="statusFilter"
       >
       </el-table-column>
     </el-table>
@@ -54,7 +53,7 @@
 import ToPathMixin from '@/mixins/ToPath'
 
 export default {
-  name: 'ProjectList',
+  name: 'Projects',
   mixins: [ToPathMixin],
   computed: {
     projects() {

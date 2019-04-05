@@ -70,7 +70,7 @@ export default {
             center: true,
             duration: 1800
           })
-          this.$router.push({ name: 'ProjectList' })
+          this.$router.push({ name: 'Projects' })
         })
         .catch(() => {
           this.feedback = '帳號密碼不匹配'

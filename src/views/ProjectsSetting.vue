@@ -1,30 +1,50 @@
 <!-- @format -->
 
 <template>
-<div class="projectsSetting">
-  <h1>專案資料</h1>
-  <div class="operationGroup">
-    <div class="operationGroup-left">
-      <el-button type="danger" @click="deleteProjects" v-show="!!deleteProjectsId.length">刪除</el-button>
+  <div class="projectsSetting">
+    <h1>專案資料</h1>
+    <div class="operationGroup">
+      <div class="operationGroup-left">
+        <el-button
+          type="danger"
+          @click="deleteProjects"
+          v-show="!!deleteProjectsId.length"
+          >刪除</el-button
+        >
+      </div>
+      <div class="operationGroup-right">
+        <el-button @click="toPath('ProjectCreate')">
+          <i class="el-icon-plus"></i>
+        </el-button>
+      </div>
     </div>
-    <div class="operationGroup-right">
-      <el-button @click="toPath('ProjectCreate')">
-        <i class="el-icon-plus"></i>
-      </el-button>
-    </div>
+    <el-table
+      :data="projects"
+      class="projects-table"
+      @selection-change="updateDeleteList"
+    >
+      <el-table-column type="selection" width="25"> </el-table-column>
+      <el-table-column label="案號" width="150">
+        <template slot-scope="scope">
+          <el-button
+            @click="toPath('ProjectEdit', { projectId: scope.row.id })"
+            type="text"
+            >{{ scope.row.number }}</el-button
+          >
+        </template>
+      </el-table-column>
+      <el-table-column prop="name" label="名稱" min-width="200">
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="專案狀態"
+        width="100"
+        :filters="statusOptions"
+        :filter-method="statusFilter"
+      >
+      </el-table-column>
+    </el-table>
   </div>
-  <el-table :data="projects" class="projects-table" @selection-change="updateDeleteList">
-    <el-table-column type="selection" width="25"> </el-table-column>
-    <el-table-column label="案號" width="150">
-      <template slot-scope="scope">
-        <el-button @click="toPath('ProjectEdit', { projectId: scope.row.id })" type="text">{{ scope.row.number }}</el-button>
-      </template>
-    </el-table-column>
-    <el-table-column prop="name" label="名稱" min-width="200"> </el-table-column>
-    <el-table-column prop="status" label="專案狀態" width="100" :filters="statusOptions" :filter-method="statusFilter">
-    </el-table-column>
-  </el-table>
-</div>
 </template>
 
 <script>
@@ -34,7 +54,7 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      deleteProjectsId: [],
+      deleteProjectsId: []
     }
   },
   computed: {
