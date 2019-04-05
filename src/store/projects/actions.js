@@ -142,5 +142,9 @@ export default {
       })
     }
     commit('project', { property: 'soLocation', value: locations })
+  },
+  switchVg({ state, commit }, { oldVgId, newVgId }) {
+    const index = state.one.vgIds.indexOf(oldVgId)
+    commit('switchVg', { index, newVgId })
   }
 }

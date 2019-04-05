@@ -185,7 +185,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="將軸力計">
-            <el-select v-model="oldVg" style="width: 100%">
+            <el-select v-model="oldVgId" style="width: 100%">
               <el-option
                 v-for="vg in vgItemsInProjectOptions"
                 :key="vg.id"
@@ -196,7 +196,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="換成">
-            <el-select v-model="newVG" style="width: 100%">
+            <el-select v-model="newVgId" style="width: 100%">
               <el-option
                 v-for="vg in vgItemsNotInProject"
                 :key="vg.id"
@@ -207,7 +207,7 @@
             </el-select>
           </el-form-item>
           <el-form-item v-if="canISwitchVg">
-            <el-button @click="switchVG(oldVg, newVG)">確認轉換</el-button>
+            <el-button @click="switchVG(oldVgId, newVgId)">確認轉換</el-button>
           </el-form-item>
           <el-row :gutter="20" v-if="totalVgLocation">
             <el-col :span="24">
@@ -368,8 +368,8 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      oldVg: '',
-      newVG: '',
+      oldVgId: '',
+      newVgId: '',
       managementLabel: {
         notice: '注意',
         warning: '警戒',
@@ -509,7 +509,7 @@ export default {
       return this.$store.getters.vgLocationCurrFloor
     },
     canISwitchVg() {
-      return this.oldVg && this.newVG
+      return this.oldVgId && this.newVgId
     },
     totalVgLocation() {
       return this.$store.getters.totalVgLocation
@@ -582,13 +582,13 @@ export default {
         }
       })
     },
-    switchVG(oldVg, newVG) {
-      this.$store.commit('switchVg', {
-        oldVg,
-        newVG
+    switchVG(oldVgId, newVgId) {
+      this.$store.dispatch('switchVg', {
+        oldVgId,
+        newVgId
       })
-      this.oldVg = ''
-      this.newVG = ''
+      this.oldVgId = ''
+      this.newVgId = ''
     },
     onChangeFloor(selectedFloor) {
       this.$store.commit('currentFloor', selectedFloor)

@@ -84,9 +84,9 @@ export default {
     project(state, { property, value }) {
       state.one[property] = value
     },
-    switchVg(state, { oldVg, newVg }) {
-      const index = state.one.vgIds.indexOf(oldVg)
-      state.one.vgIds.splice(index, 1, newVg)
+    switchVg(state, { index, newVgId }) {
+      state.one.vgIds.splice(index, 1, newVgId)
+      state.one.vgIds = [...state.one.vgIds]
     },
     vgManagementValue(state, { label, value }) {
       state.one.vgManagement[state.currentVgFloor - 1][label] = value
