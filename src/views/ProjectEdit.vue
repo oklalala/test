@@ -130,7 +130,7 @@
       <el-form-item>
         <h1>配置圖</h1>
         <el-upload
-          class="upload-demo"
+          class="upload-image-area"
           drag
           list-type="picture"
           :action="uploadURL"
@@ -142,7 +142,7 @@
           <img :src="sitePlan" v-if="sitePlan" />
           <i class="el-icon-upload" v-if="!sitePlan"></i>
           <div class="el-upload__text" v-if="!sitePlan">
-            將文件拖到此處，或<em>點擊上傳</em>
+            點一下<em>上傳檔案</em>
           </div>
           <div slot="tip" class="el-upload__tip">上傳文件不能超過 2MB</div>
           <el-button
@@ -154,189 +154,189 @@
           >
         </el-upload>
       </el-form-item>
-      <el-form-item>
-        <h2>監控設定</h2>
-        <el-tabs type="border-card" stretch>
-          <el-tab-pane label="軸力計 (VG)">
-            <el-form-item
-              label="使用軸力計編號(可複選)"
-              prop="vgIds"
-              :rules="[
-                {
-                  required: true,
-                  message: '請選擇軸力計',
-                  trigger: ['blur', 'change']
-                }
-              ]"
+
+      <h2>監控設定</h2>
+      <el-tabs type="border-card" stretch>
+        <el-tab-pane label="軸力計 (VG)">
+          <el-form-item
+            label="使用軸力計編號(可複選)"
+            prop="vgIds"
+            :rules="[
+              {
+                required: true,
+                message: '請選擇軸力計',
+                trigger: ['blur', 'change']
+              }
+            ]"
+          >
+            <el-select
+              v-model="vgItemIdsInProject"
+              multiple
+              disabled
+              style="width: 100%"
             >
-              <el-select
-                v-model="vgItemIdsInProject"
-                multiple
-                disabled
-                style="width: 100%"
+              <el-option
+                v-for="vgItem in vgItemsOptions"
+                :key="vgItem.id"
+                :label="vgItem.number"
+                :value="vgItem.id"
               >
-                <el-option
-                  v-for="vgItem in vgItemsOptions"
-                  :key="vgItem.id"
-                  :label="vgItem.number"
-                  :value="vgItem.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="將軸力計">
-              <el-select v-model="oldVg" style="width: 100%">
-                <el-option
-                  v-for="vg in vgItemsInProjectOptions"
-                  :key="vg.id"
-                  :label="vg.number"
-                  :value="vg.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="換成">
-              <el-select v-model="newVG" style="width: 100%">
-                <el-option
-                  v-for="vg in vgItemsNotInProject"
-                  :key="vg.id"
-                  :label="vg.number"
-                  :value="vg.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <p v-if="canISwitchVg">
-              <el-button @click="switchVG(oldVg, newVG)">確認轉換</el-button>
-            </p>
-            <el-form-item label="切換支撐階數" v-if="totalVgLocation">
-              <el-pagination
-                layout="prev, pager, next"
-                :page-size="totalVgLocationPreFloor"
-                :total="totalVgLocation"
-                @current-change="onChangeFloor"
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="將軸力計">
+            <el-select v-model="oldVg" style="width: 100%">
+              <el-option
+                v-for="vg in vgItemsInProjectOptions"
+                :key="vg.id"
+                :label="vg.number"
+                :value="vg.id"
               >
-              </el-pagination>
-            </el-form-item>
-
-            <el-row :gutter="20" v-if="totalVgLocation">
-              <el-col :xs="24" :sm="8">
-                <h3>管理值 <span>(噸)</span></h3>
-                <el-form-item
-                  :key="key"
-                  v-for="(value, key) in vgManagementValueOfCurrFloor"
-                  :label="`${managementLabel[key]}值`"
-                  :prop="key"
-                  :rules="[
-                    {
-                      required: true,
-                      validator: validateVgManagementValue,
-                      message: `請檢查${managementLabel[key]}值`,
-                      label: key,
-                      trigger: ['blur', 'change']
-                    }
-                  ]"
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="換成">
+            <el-select v-model="newVG" style="width: 100%">
+              <el-option
+                v-for="vg in vgItemsNotInProject"
+                :key="vg.id"
+                :label="vg.number"
+                :value="vg.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="canISwitchVg">
+            <el-button @click="switchVG(oldVg, newVG)">確認轉換</el-button>
+          </el-form-item>
+          <el-row :gutter="20" v-if="totalVgLocation">
+            <el-col :span="24">
+              <el-form-item label="切換支撐階數">
+                <el-pagination
+                  layout="prev, pager, next"
+                  :page-size="totalVgLocationPreFloor"
+                  :total="totalVgLocation"
+                  @current-change="onChangeFloor"
                 >
-                  <el-input-number
-                    size="small"
-                    controls-position="right"
-                    :step="1"
-                    :precision="1"
-                    :min="0"
-                    :value="vgManagementValueOfCurrFloor[key]"
-                    @input="updateVgManagementValue(key, $event)"
-                  >
-                  </el-input-number>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="16">
-                <h3>位置編碼<span> (VG-層數-流水號)</span></h3>
-                <el-button @click="toPath('SteelList')">
-                  維護鋼材資料
-                </el-button>
-                <el-table class="vg-table" :data="vgLocationCurrFloor">
-                  <el-table-column prop="vgNumber" label="軸力計">
-                  </el-table-column>
-                  <el-table-column prop="port" label="Port" width="100">
-                  </el-table-column>
-                  <el-table-column prop="number" label="配置編碼" width="100">
-                  </el-table-column>
-                  <el-table-column
-                    prop="steelName"
-                    label="使用鋼材"
-                    width="100"
-                  >
-                    <template slot-scope="scope">
-                      <el-select
-                        :value="scope.row.steelId"
-                        @input="onChangeSteel($event, scope.row)"
-                        placeholder="請選擇鋼材"
+                </el-pagination>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="6">
+              <h3>管理值<span class="small">(噸)</span></h3>
+              <el-form-item
+                :key="key"
+                v-for="(value, key) in vgManagementValueOfCurrFloor"
+                :label="`${managementLabel[key]}值`"
+                :prop="key"
+                :rules="[
+                  {
+                    required: true,
+                    validator: validateVgManagementValue,
+                    message: `請檢查${managementLabel[key]}值`,
+                    label: key,
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
+                <el-input-number
+                  controls-position="right"
+                  :step="1"
+                  :precision="1"
+                  :min="0"
+                  :value="vgManagementValueOfCurrFloor[key]"
+                  @input="updateVgManagementValue(key, $event)"
+                >
+                </el-input-number>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="18">
+              <h3>位置編碼<span class="small">(VG-層數-流水號)</span></h3>
+              <el-button @click="toPath('SteelList')">
+                維護鋼材資料
+              </el-button>
+              <el-table class="vg-table" :data="vgLocationCurrFloor">
+                <el-table-column prop="vgNumber" label="軸力計" min-width="150">
+                </el-table-column>
+                <el-table-column prop="port" label="Port" width="50">
+                </el-table-column>
+                <el-table-column prop="number" label="配置編碼" width="80">
+                </el-table-column>
+                <el-table-column
+                  prop="steelName"
+                  label="使用鋼材"
+                  min-width="150"
+                >
+                  <template slot-scope="scope">
+                    <el-select
+                      :value="scope.row.steelId"
+                      @input="onChangeSteel($event, scope.row)"
+                      placeholder="請選擇鋼材"
+                    >
+                      <el-option
+                        v-for="steel in steelsOptions"
+                        :key="steel.id"
+                        :label="steel.name"
+                        :value="steel.id"
                       >
-                        <el-option
-                          v-for="steel in steelsOptions"
-                          :key="steel.id"
-                          :label="steel.name"
-                          :value="steel.id"
-                        >
-                        </el-option>
-                      </el-select>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-col>
-            </el-row>
-          </el-tab-pane>
+                      </el-option>
+                    </el-select>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
 
-          <el-tab-pane label="傾度管 (SO)">
-            <el-row :gutter="20" v-if="totalSoLocation">
-              <el-col :xs="24" :sm="8">
-                <h3>管理值<span>(cm)</span></h3>
-                <el-form-item
-                  :key="key"
-                  v-for="(value, key) in soManagementValue"
-                  :label="`${managementLabel[key]}值`"
-                  :prop="key"
-                  :rules="[
-                    {
-                      required: true,
-                      message: `請檢查${managementLabel[key]}值`,
-                      validator: validateSoManagementValue,
-                      label: key,
-                      trigger: ['blur', 'change']
-                    }
-                  ]"
+        <el-tab-pane label="傾度管 (SO)">
+          <el-row :gutter="20" v-if="totalSoLocation">
+            <el-col :xs="24" :sm="8">
+              <h3>管理值<span class="small">(cm)</span></h3>
+              <el-form-item
+                :key="key"
+                v-for="(value, key) in soManagementValue"
+                :label="`${managementLabel[key]}值`"
+                :prop="key"
+                :rules="[
+                  {
+                    required: true,
+                    message: `請檢查${managementLabel[key]}值`,
+                    validator: validateSoManagementValue,
+                    label: key,
+                    trigger: ['blur', 'change']
+                  }
+                ]"
+              >
+                <el-input-number
+                  controls-position="right"
+                  :step="1"
+                  :precision="2"
+                  :min="0"
+                  :value="soManagementValue[key]"
+                  @input="updateSoManagementValue(key, $event)"
                 >
-                  <el-input-number
-                    size="small"
-                    controls-position="right"
-                    :step="1"
-                    :precision="2"
-                    :min="0"
-                    :value="soManagementValue[key]"
-                    @input="updateSoManagementValue(key, $event)"
-                  >
-                  </el-input-number>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="16">
-                <h2>位置編號<span class="small">(SO-流水號)</span></h2>
-                <span>相同位置編碼 量測深度間隔 1 m</span>
-                <el-table class="so-table" :data="soLocation">
-                  <el-table-column
-                    prop="number"
-                    label="配置編碼"
-                  ></el-table-column>
-                  <el-table-column
-                    prop="depth"
-                    label="量測深度"
-                    width="200"
-                  ></el-table-column>
-                </el-table>
-              </el-col>
-            </el-row>
-          </el-tab-pane>
-        </el-tabs>
-      </el-form-item>
+                </el-input-number>
+              </el-form-item>
+            </el-col>
+            <el-col :xs="24" :sm="16">
+              <h3 class="so-measure-tips">
+                位置編號<span class="small">(SO-流水號)</span>
+              </h3>
+              <el-table class="so-table" :data="soLocation">
+                <el-table-column
+                  prop="number"
+                  label="配置編碼"
+                ></el-table-column>
+                <el-table-column
+                  prop="depth"
+                  label="量測深度"
+                  width="200"
+                ></el-table-column>
+              </el-table>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
+
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -615,33 +615,58 @@ export default {
 }
 </script>
 
-<style>
-h2 .small {
-  font-size: 14px;
-  padding-left: 30px;
+<style lang="scss">
+.upload-image-area {
+  img,
+  .el-upload.el-upload--picture,
+  .el-upload-dragger {
+    width: 100%;
+    height: auto;
+  }
 }
-
-img {
-  width: 100%;
-}
-
-.el-upload-list--picture {
-  display: none;
-}
-
-.el-upload-dragger,
-.el-upload--picture {
-  width: 100%;
-  height: auto;
-}
-
+</style>
+<style lang="scss" scoped>
 .re-select-image {
   position: absolute;
   bottom: 10px;
   right: 20px;
 }
 
+.need-more-vg {
+  color: red;
+  font-size: 0.8em;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  line-height: 1.5em;
+}
+
 .el-input-number {
   width: 100%;
+}
+
+.el-tabs {
+  margin-bottom: 22px;
+}
+
+.so-measure-tips {
+  position: relative;
+}
+
+.small {
+  padding-left: 0.2em;
+}
+.small,
+.so-measure-tips::after {
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.so-measure-tips::after {
+  content: '深度量測間隔 1 m';
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
 }
 </style>
