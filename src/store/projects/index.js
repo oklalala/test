@@ -123,8 +123,12 @@ export default {
     }
   },
   getters: {
-    projects(state) {
-      return state.data
+    projects(state, getters) {
+      const value2Label = getters.statusValue2Label
+      return state.data.map(item => {
+        item.status = value2Label[item.status]
+        return item
+      })
     },
     project(state) {
       return state.one
@@ -188,6 +192,12 @@ export default {
     },
     defaultDepth(state) {
       return state.createData.defaultDepth
+    },
+    statusValue2Label(){
+      return {
+        'end': '結案',
+        'in-progress': '執行'
+      }
     },
     statusOptions() {
       return [

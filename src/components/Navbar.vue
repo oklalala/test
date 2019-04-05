@@ -53,7 +53,7 @@
         <li
           class="nav__item"
           :class="{
-            active: isActive('/project-setting') || isActive('/project-phases')
+            active: isActive('/projects-setting') || isActive('/project-phases')
           }"
           @click.capture="projectSubMenuShow = !projectSubMenuShow"
           v-if="isShow('project:CRUD')"
@@ -62,8 +62,8 @@
           <ul class="nav__sub" v-if="projectSubMenuShow">
             <li
               class="nav__item"
-              :class="{ active: isActive('/project-setting') }"
-              @click="toPath('ProjectSetting')"
+              :class="{ active: isActive('/projects-setting') }"
+              @click="toPath('ProjectsSetting')"
             >
               專案資料
             </li>
@@ -141,7 +141,7 @@ export default {
   },
   watch: {
     currentRoute: function(val) {
-      if (val !== '/project-setting' && val !== '/project-phases') {
+      if (val !== '/projects-setting' && val !== '/project-phases') {
         this.projectSubMenuShow = false
       }
     }

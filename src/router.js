@@ -10,8 +10,8 @@ import UserCreate from './views/UserCreate.vue'
 import UserEdit from './views/UserEdit.vue'
 import CompanyList from './views/CompanyList.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
-import ProjectSetting from './views/ProjectSetting.vue'
-import ProjectList from './views/ProjectList.vue'
+import ProjectsSetting from './views/ProjectsSetting.vue'
+import Projects from './views/Projects.vue'
 import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
 import ProjectMonitor from './views/ProjectMonitor.vue'
@@ -135,8 +135,8 @@ let router = new Router({
     },
     {
       path: '/projects',
-      name: 'ProjectList',
-      component: ProjectList,
+      name: 'Projects',
+      component: Projects,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getProjects').then(() => {
@@ -145,9 +145,9 @@ let router = new Router({
       }
     },
     {
-      path: '/project-setting',
-      name: 'ProjectSetting',
-      component: ProjectSetting,
+      path: '/projects-setting',
+      name: 'ProjectsSetting',
+      component: ProjectsSetting,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('getProjects').then(() => {
@@ -308,7 +308,7 @@ router.beforeEach((to, from, next) => {
     cookies.reloadLogin()
   }
   if (store.getters.isLogined && to.path === '/') {
-    next({ name: 'ProjectList' })
+    next({ name: 'Projects' })
   } else if (!store.getters.isLogined && to.meta.requireAuth) {
     next({
       name: 'Entry'

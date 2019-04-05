@@ -406,7 +406,7 @@
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button style="width: 100%" @click="toPath('ProjectSetting')">
+            <el-button style="width: 100%" @click="toPath('ProjectsSetting')">
               取消
             </el-button>
           </el-col>
@@ -722,7 +722,7 @@ export default {
             center: true,
             duration: 1800
           })
-          this.toPath('ProjectSetting')
+          this.toPath('ProjectsSetting')
         })
         .catch(e => {
           if (e.response.data.result === 'number must be unique') {
