@@ -30,6 +30,12 @@ body {
   color: #409EFF;
 }
 
+.small {
+  padding-left: 0.2em;
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
 // 自訂佈局
 .layout {
   &-navbar {
@@ -60,4 +66,10 @@ body {
       }
     }
   }
+}
+
+.el-input--suffix.el-input,
+.el-input-number,
+.el-select {
+  width: 100%;
 }

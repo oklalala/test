@@ -77,5 +77,15 @@ export default {
     } else {
       return response
     }
+  },
+  async exportXls(path, data = '') {
+    let query = new URLSearchParams(data).toString()
+    query = query.length ? '?' + query : query
+    const res = await fetch(`${baseURL}${path}${query}`, {
+      headers: {
+        'x-access-token': store.getters.token
+      }
+    })
+    return await res.blob()
   }
 }

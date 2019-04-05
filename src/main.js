@@ -85,6 +85,12 @@ Vue.use(DropdownItem)
 
 Vue.component('chart', ECharts)
 
+import 'element-ui/lib/theme-chalk/base.css'
+// collapse 展开折叠
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
+
+Vue.component(CollapseTransition.name, CollapseTransition)
+
 Vue.prototype.$message = Message
 Vue.prototype.moment = moment
 

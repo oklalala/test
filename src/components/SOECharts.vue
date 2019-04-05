@@ -64,7 +64,7 @@ export default {
       }
     },
     soLegend() {
-      var arr = Object.keys(this.soChartData[0])
+      var arr = Object.keys(this.soChartData.slice().shift())
       arr.shift()
       return arr
     },

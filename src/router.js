@@ -43,9 +43,7 @@ let router = new Router({
         requireAuth: true
       },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getMe').then(() => {
-          next()
-        })
+        store.dispatch('getMe').then(() => next())
       }
     },
     {
@@ -56,9 +54,7 @@ let router = new Router({
         requireAuth: true
       },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getCompanies').then(() => {
-          next()
-        })
+        store.dispatch('getCompanies').then(() => next())
       }
     },
     {
@@ -72,9 +68,7 @@ let router = new Router({
         Promise.all([
           store.commit('setUser', {}),
           store.dispatch('getUsers')
-        ]).then(() => {
-          next()
-        })
+        ]).then(() => next())
       }
     },
     {
@@ -90,9 +84,7 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getSOItems'),
           store.dispatch('getRolesPermissions')
-        ]).then(() => {
-          next()
-        })
+        ]).then(() => next())
       }
     },
     {
@@ -112,9 +104,7 @@ let router = new Router({
               return store.dispatch('getUser', to.params.userId)
             } else return Promise.resolve()
           })
-          .then(() => {
-            next()
-          })
+          .then(() => next())
       }
     },
     {
@@ -128,9 +118,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getPermissions'),
           store.dispatch('getRolesPermissions')
-        ]).then(() => {
-          next()
-        })
+        ]).then(() => next())
       }
     },
     {
@@ -139,9 +127,7 @@ let router = new Router({
       component: Projects,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getProjects').then(() => {
-          next()
-        })
+        store.dispatch('fetchProjects').then(() => next())
       }
     },
     {
@@ -150,9 +136,7 @@ let router = new Router({
       component: ProjectsSetting,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getProjects').then(() => {
-          next()
-        })
+        store.dispatch('fetchProjects').then(() => next())
       }
     },
     {
@@ -173,9 +157,7 @@ let router = new Router({
               return store.dispatch('newProject', to.params.projectId)
             else return Promise.resolve()
           })
-          .then(() => {
-            next()
-          })
+          .then(() => next())
       }
     },
     {
@@ -193,12 +175,10 @@ let router = new Router({
         ])
           .then(() => {
             if (from.path !== '/steels')
-              return store.dispatch('getProject', to.params.projectId)
+              return store.dispatch('fetchProject', to.params.projectId)
             else return Promise.resolve()
           })
-          .then(() => {
-            next()
-          })
+          .then(() => next())
       }
     },
     {
@@ -207,11 +187,7 @@ let router = new Router({
       component: ProjectMonitor,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getProject', to.params.projectId)]).then(
-          () => {
-            next()
-          }
-        )
+        store.dispatch('fetchProject', to.params.projectId).then(() => next())
       }
     },
     {
@@ -223,12 +199,10 @@ let router = new Router({
       },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getProject', to.params.projectId),
+          store.dispatch('fetchProject', to.params.projectId),
           store.dispatch('getMe'),
           store.dispatch('fetchProjectPhases')
-        ]).then(() => {
-          next()
-        })
+        ]).then(() => next())
       }
     },
     {
@@ -237,9 +211,7 @@ let router = new Router({
       component: ProjectPhaseList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        store.dispatch('fetchProjectPhases').then(() => {
-          next()
-        })
+        store.dispatch('fetchProjectPhases').then(() => next())
       }
     },
     {
@@ -248,9 +220,7 @@ let router = new Router({
       component: VGList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getVGs')]).then(() => {
-          next()
-        })
+        Promise.all([store.dispatch('getVGs')]).then(() => next())
       }
     },
     {
@@ -259,9 +229,7 @@ let router = new Router({
       component: SteelList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getSteels')]).then(() => {
-          next()
-        })
+        Promise.all([store.dispatch('getSteels')]).then(() => next())
       }
     },
     {
@@ -270,9 +238,7 @@ let router = new Router({
       component: SOItemList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getSOItems').then(() => {
-          next()
-        })
+        store.dispatch('getSOItems').then(() => next())
       }
     },
     {
@@ -284,9 +250,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getSOItems'),
           store.dispatch('getSOModels')
-        ]).then(() => {
-          next()
-        })
+        ]).then(() => next())
       }
     },
     {
@@ -295,9 +259,7 @@ let router = new Router({
       component: SOItemEdit,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getSOModels')]).then(() => {
-          next()
-        })
+        Promise.all([store.dispatch('getSOModels')]).then(() => next())
       }
     }
   ]

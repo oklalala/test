@@ -37,7 +37,7 @@ export default {
     commit('setProject', new_project)
     commit('resetCreateData')
   },
-  async getProject({ commit }, projectId) {
+  async fetchProject({ commit }, projectId) {
     const res = await API.GET(`/project/${projectId}`)
     commit('setProject', res.data)
   },
@@ -69,7 +69,7 @@ export default {
 
     return await API.PUT(`/project/${id}`, project)
   },
-  getProjects({ commit }) {
+  fetchProjects({ commit }) {
     return API.GET('/projects').then(res => {
       commit('setProjects', res.data)
     })
@@ -77,7 +77,7 @@ export default {
   deleteProjects({ dispatch }, projectIds) {
     let projectIdsStr = projectIds.join(',')
     return API.DELETE(`/projects/${projectIdsStr}`).then(() => {
-      dispatch('getProjects')
+      dispatch('fetchProjects')
     })
   },
   uploadConfigImage({ commit }, file) {

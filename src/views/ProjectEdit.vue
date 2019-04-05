@@ -641,10 +641,6 @@ export default {
   line-height: 1.5em;
 }
 
-.el-input-number {
-  width: 100%;
-}
-
 .el-tabs {
   margin-bottom: 22px;
 }
@@ -653,10 +649,6 @@ export default {
   position: relative;
 }
 
-.small {
-  padding-left: 0.2em;
-}
-.small,
 .so-measure-tips::after {
   font-size: 0.8em;
   font-weight: normal;

@@ -1,5 +1,6 @@
 /** @format */
 import actions from './actions'
+
 export default {
   state: {
     data: [],
@@ -192,6 +193,12 @@ export default {
     },
     defaultDepth(state) {
       return state.createData.defaultDepth
+    },
+    vgMeasuredDataRange(state) {
+      return {
+        end: new Date(state.one.dataRangeVg.end),
+        start: new Date(state.one.dataRangeVg.start)
+      }
     },
     statusValue2Label() {
       return {

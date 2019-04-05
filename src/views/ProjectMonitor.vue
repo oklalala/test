@@ -3,35 +3,44 @@
 <template>
   <div class="projectMonitor">
     <h1>查看監控資料</h1>
-    <h3>基本資料</h3>
+    <h2>基本資料</h2>
     <p>案號：{{ project.number }}</p>
     <p>名稱：{{ project.name }}</p>
-    <h3 class="inline">配置圖</h3>
-    <h4 class="inline show-picture clickable" @click="show = !show">
-      顯示/隱藏
-    </h4>
-    <img :src="showImage" v-if="show" />
+    <h2>
+      配置圖<span
+        class="small clickable"
+        @click="toggleConfigImg = !toggleConfigImg"
+      >
+        顯示/隱藏
+      </span>
+    </h2>
+    <el-collapse-transition>
+      <div v-show="toggleConfigImg">
+        <img class="configImage" :src="sitePlan" />
+      </div>
+    </el-collapse-transition>
+
     <h3>監控值</h3>
-    <el-tabs type="border-card" stretch>
-      <el-tab-pane label="軸力計 ( VG )">
-        <el-form label-position="top">
+    <el-form label-position="top">
+      <el-tabs type="border-card" stretch>
+        <el-tab-pane label="軸力計 (VG)">
           <el-row :gutter="20">
-            <el-col :xs="24" :sm="14" :md="14">
+            <el-col :xs="24" :sm="12">
               <el-form-item label="日期">
                 <el-date-picker
-                  v-model="vgDate"
+                  v-model="currentVgDate"
                   format="yyyy-MM-dd"
                   type="date"
-                  :picker-options="disabledDate"
+                  :picker-options="datePickerOptions"
                 >
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :xs="24" :sm="10" :md="10">
+            <el-col :xs="24" :sm="12">
               <el-form-item label="支撐階數">
-                <el-select v-model="selectedFloor" placeholder="請選擇">
+                <el-select v-model="currentFloor" placeholder="請選擇">
                   <el-option
-                    v-for="floor in floorList"
+                    v-for="floor in floorOptions"
                     :key="floor"
                     :label="floor"
                     :value="floor"
@@ -40,40 +49,44 @@
                 </el-select>
               </el-form-item>
             </el-col>
+            <el-col :span="24">
+              <VGECharts
+                :selectedDay="currentVgDate"
+                :selectedFloor="currentFloor"
+                :vgChartData="vgChartData"
+                :project="project"
+              />
+            </el-col>
+            <el-col :span="24">
+              <el-button
+                v-if="isShow('project:export')"
+                @click="exportMeasuredData('vg')"
+                >匯出資料</el-button
+              >
+            </el-col>
           </el-row>
-        </el-form>
-        <VGECharts
-          :selectedDay="vgDate"
-          :selectedFloor="selectedFloor"
-          :vgChartData="vgChartData"
-          :project="project"
-        />
-        <el-button v-if="isShow('project:export')" @click="exportVG"
-          >匯出資料</el-button
-        >
-      </el-tab-pane>
+        </el-tab-pane>
 
-      <el-tab-pane label="傾度管 ( SO )">
-        <el-form label-position="top">
+        <el-tab-pane label="傾度管 (SO)">
           <el-row :gutter="20">
-            <el-col :xs="24" :sm="10" :md="10">
+            <el-col :xs="24" :sm="12">
               <el-form-item label="位置">
-                <el-select v-model="selectedSO" placeholder="請選擇位置">
+                <el-select v-model="currentSoLocation" placeholder="請選擇位置">
                   <el-option
-                    v-for="soItem in project.soLocation"
-                    :key="soItem.number"
-                    :label="soItem.number"
-                    :value="soItem.number"
+                    v-for="location in soLocation"
+                    :key="location.number"
+                    :label="location.number"
+                    :value="location.number"
                   >
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :xs="24" :sm="14" :md="14">
+            <el-col :xs="24" :sm="12">
               <el-form-item label="日期">
-                <el-select v-model="soDate" placeholder="請選擇日期">
+                <el-select v-model="currentSoDate" placeholder="請選擇日期">
                   <el-option
-                    v-for="date in soDateList"
+                    v-for="date in dateOfSoMeasuredData"
                     :key="date"
                     :label="date"
                     :value="date"
@@ -82,102 +95,76 @@
                 </el-select>
               </el-form-item>
             </el-col>
+            <el-col :span="24" v-if="!!currentSoDate && !!currentSoDate">
+              <SOECharts :soChartData="soChartData" :project="project" />
+            </el-col>
+            <el-col :span="24">
+              <el-button
+                v-if="isShow('project:export')"
+                @click="exportMeasuredData('so')"
+                >匯出資料</el-button
+              >
+            </el-col>
           </el-row>
-        </el-form>
-        <SOECharts
-          v-if="!!selectedSO && !!soDate"
-          :soChartData="soChartData"
-          :project="project"
-        />
-        <el-button v-if="isShow('project:export')" @click="exportSO"
-          >匯出資料</el-button
-        >
-      </el-tab-pane>
-    </el-tabs>
-    <br />
+        </el-tab-pane>
+      </el-tabs>
+    </el-form>
   </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-import VGECharts from '../components/VGECharts'
-import SOECharts from '../components/SOECharts'
+import VGECharts from '@/components/VGECharts'
+import SOECharts from '@/components/SOECharts'
 import moment from 'moment'
-import { saveAs } from 'file-saver'
 
 export default {
   name: 'ProjectMonitor',
-  components: { VGECharts, SOECharts },
-  mixins: [ToPathMixin],
-  created() {
-    this.getVGData(this.lastDate, 1)
+  components: {
+    VGECharts,
+    SOECharts
   },
+  mixins: [ToPathMixin],
   mounted() {
-    this.vgDate = this.lastDate
+    this.currentVgDate = this.$store.getters.vgMeasuredDataRange.end
+    this.$store.dispatch('fetchVgMeasuredData', {
+      projectId: this.$route.params.projectId,
+      date: moment(this.currentVgDate).format('YYYY/MM/DD'),
+      floor: 1
+    })
+    this.$store.dispatch('fetchSoMeasuredData', {
+      projectId: this.$route.params.projectId,
+      soLocationNumber: this.currentSoLocation
+    })
   },
   data() {
     return {
-      // project: {
-      // OPT: [],
-      // USER: [],
-      // address: '',
-      // companyId: '',
-      // floor: 0,
-      // name: '',
-      // number: '',
-      // sitePlan: '',
-      // soLocation: [],
-      // soManagement: {},
-      // status: '',
-      // vgIds: [],
-      // vgLocation: [],
-      // vgManagement: [],
-      // },
-      // vgDate: '2019/01/30',
-      vgDate: this.lastDate,
-      soDate: '',
-      selectedFloor: 1,
-      selectedSO: '',
-      floorIndex: 0,
-      show: true
-      // soChartData: [
-      // { depth: -5, '10:00': 0, '12:00': 0 },
-      // { depth: -4, '10:00': 0.2, '12:00': 2 },
-      // { depth: -3, '10:00': 0.4, '12:00': -3 },
-      // { depth: -2, '10:00': 0.5, '12:00': -0.4 },
-      // { depth: -1, '10:00': 0.1, '12:00': -0.2 },
-      // { depth: 0, '10:00': -0.3, '12:00': -0.5 }
-      // ]
+      toggleConfigImg: true,
+      currentFloor: 1,
+      currentVgDate: new Date(),
+      currentSoLocation: 'SO-01',
+      currentSoDate: ''
     }
   },
   computed: {
-    showImage() {
-      if (this.project.sitePlan) {
-        return `${process.env.VUE_APP_API_URL}/${this.project.sitePlan}`
-      }
-    },
     project() {
       return this.$store.getters.project
     },
-    startDate() {
-      return moment(this.project.dataRangeVg.start).toDate()
+    sitePlan() {
+      return this.$store.getters.sitePlan
     },
-    lastDate() {
-      return moment(this.project.dataRangeVg.end).toDate()
-    },
-    floorList() {
-      return Array.from(Array(this.project.floor).keys()).map(x => (x += 1))
-    },
-    disabledDate() {
-      var startDate = moment(this.startDate)
-        .subtract(1, 'd')
-        .toDate()
-      var endDate = moment(this.lastDate).toDate()
+    datePickerOptions() {
+      const startVgDate = this.$store.getters.vgMeasuredDataRange.start
+      const endVgDate = this.$store.getters.vgMeasuredDataRange.end
       return {
         disabledDate(time) {
-          return time.getTime() < startDate || time.getTime() > endDate
+          return time.getTime() < startVgDate || time.getTime() > endVgDate
         }
       }
+    },
+    floorOptions() {
+      const length = this.$store.getters.totalFloor
+      return Array.from({ length }).map((item, index) => index + 1)
     },
     vgChartData() {
       return this.$store.getters.vgMeasuredData
@@ -204,100 +191,57 @@ export default {
       //   ]
       // }]
     },
-    soDateList() {
+    dateOfSoMeasuredData() {
       return this.$store.getters.dateOfSoMeasuredData
     },
     soChartData() {
-      const measured = this.$store.getters.soMeasuredData
-        .filter(item => item.date === this.soDate)
+      const measuredOfOneDay = this.$store.getters.soMeasuredData
+        .filter(item => item.date === this.currentSoDate)
         .shift()
-      return measured && measured.soData
+      return measuredOfOneDay && measuredOfOneDay.soData
+    },
+    soLocation() {
+      return this.$store.getters.soLocation
     }
   },
   watch: {
-    selectedFloor(floor) {
-      this.getVGData(this.vgDate, floor)
+    currentVgDate(date) {
+      this.$store.dispatch('fetchVgMeasuredData', {
+        projectId: this.$route.params.projectId,
+        date: moment(date).format('YYYY/MM/DD'),
+        floor: this.currentFloor
+      })
     },
-    vgDate(date) {
-      this.getVGData(date, this.selectedFloor)
+    currentFloor(floor) {
+      this.$store.dispatch('fetchVgMeasuredData', {
+        projectId: this.$route.params.projectId,
+        date: moment(this.currentVgDate).format('YYYY/MM/DD'),
+        floor
+      })
     },
-    selectedSO(soLocationNumber) {
-      this.soDate = ''
-      this.getSOData(soLocationNumber)
+    currentSoLocation(location) {
+      this.currentSoDate = ''
+      this.$store.dispatch('fetchSoMeasuredData', {
+        projectId: this.$route.params.projectId,
+        soLocationNumber: location
+      })
     }
   },
   methods: {
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
     },
-    getVGData(dateTime, floor) {
-      var payload = {
-        projectId: this.$route.params.projectId,
-        date: moment(dateTime).format('YYYY/MM/DD'),
-        floor
-      }
-      this.$store.dispatch('fetchVgMeasuredData', payload)
-    },
-    getSOData(locationNumber) {
-      if (!locationNumber) return
-      var payload = {
-        projectId: this.$route.params.projectId,
-        locationNumber
-      }
-      this.$store.dispatch('fetchSoMeasuredData', payload)
-    },
-    exportVG() {
-      const projectId = this.$route.params.projectId
-      const time = moment().format('MMDD hhmm')
-      const token = this.$store.getters.token
-      this.$message({
-        message: `正在下載'${this.project.name}'的軸力計資料`,
-        type: 'info',
-        center: true,
-        duration: 1800
-      })
-      fetch(
-        `https://geo-stage.chuen.com.tw:3333/v1/measures/vg/export?projectId=${projectId}`,
-        {
-          headers: {
-            'x-access-token': token
-          }
-        }
-      )
-        .then(res => res.blob())
-        .then(myBlob => {
-          saveAs(myBlob, `${this.project.name}-${time}.xlsx`)
-        })
-        .then(() => {
-          this.$message({
-            message: `成功下載 ${this.project.name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-        })
-    },
-    exportSO() {
-      const projectId = this.$route.params.projectId
-      const time = moment().format('MMDD hhmm')
-      const token = this.$store.getters.token
+    exportMeasuredData(type) {
       this.$message({
         message: `正在下載'${this.project.name}'的傾度管資料`,
         type: 'info',
         center: true,
         duration: 1800
       })
-      fetch(
-        `https://geo-stage.chuen.com.tw:3333/v1/measures/so/export?projectId=${projectId}`,
-        {
-          headers: {
-            'x-access-token': token
-          }
-        }
-      )
-        .then(res => res.blob())
-        .then(myBlob => {
-          saveAs(myBlob, `傾度管${this.project.name}-${time}.xlsx`)
+      this.$store
+        .dispatch('export', {
+          type,
+          projectId: this.$route.params.projectId
         })
         .then(() => {
           this.$message({
@@ -312,13 +256,22 @@ export default {
 }
 </script>
 <style scoped>
-.show-picture {
-  padding-left: 20px;
-  cursor: pointer;
-  width: 110px;
+.transition-box {
+  margin-bottom: 10px;
+  width: 200px;
+  height: 100px;
+  border-radius: 4px;
+  background-color: #409eff;
+  text-align: center;
+  color: #fff;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  margin-right: 20px;
 }
-.inline {
-  display: inline-block;
+
+.configImage {
+  width: 100%;
+  height: auto;
 }
 
 .vgECharts,
