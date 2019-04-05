@@ -3,24 +3,26 @@
 import API from '@/utils/API'
 
 export default {
-  getProjectPhases({ commit }) {
-    return API.GET('/project-phases').then(res => {
-      commit('setProjectPhases', res.data)
-    })
+  async fetchProjectPhases({ commit }) {
+    const res = await API.GET('/project-phases')
+    commit('setProjectPhases', res.data)
+    return Promise.resolve()
   },
-  getProjectPhase(context, projectPhaseId) {
-    return API.GET(`/project-phase/${projectPhaseId}`)
+  async getProjectPhase(context, id) {
+    return await API.GET(`/project-phase/${id}`)
   },
-  updateProjectPhase(context, { projectPhaseId, payload }) {
-    return API.PUT(`/project-phased/${projectPhaseId}`, payload)
+  async updateProjectPhase({ dispatch }, { id, payload }) {
+    const res = await API.PUT(`/project-phased/${id}`, payload)
+    await dispatch('fetchProjectPhases')
+    return res
   },
-  deleteProjectPhases({ dispatch }, projectPhaseIds) {
+  async deleteProjectPhases({ dispatch }, projectPhaseIds) {
     let projectPhaseIdsStr = projectPhaseIds.join(',')
-    return API.DELETE(`/project-phases/${projectPhaseIdsStr}`).then(() => {
-      dispatch('getProjectPhases')
-    })
+    await API.DELETE(`/project-phases/${projectPhaseIdsStr}`)
+    return await dispatch('fetchProjectPhases')
   },
-  createProjectPhase(context, payload) {
-    return API.POST('/project-phased', payload)
+  async createProjectPhase({ dispatch }, payload) {
+    await API.POST('/project-phased', payload)
+    return await dispatch('fetchProjectPhases')
   }
 }

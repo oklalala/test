@@ -225,7 +225,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getProject', to.params.projectId),
           store.dispatch('getMe'),
-          store.dispatch('getProjectPhases')
+          store.dispatch('fetchProjectPhases')
         ]).then(() => {
           next()
         })
@@ -237,7 +237,7 @@ let router = new Router({
       component: ProjectPhaseList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getProjectPhases')]).then(() => {
+        store.dispatch('fetchProjectPhases').then(() => {
           next()
         })
       }

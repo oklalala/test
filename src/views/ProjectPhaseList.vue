@@ -1,43 +1,37 @@
 <!-- @format -->
 
 <template>
-  <div class="projectPhaseList">
+  <div class="projectPhases">
     <h1>專案執行階段</h1>
     <el-row class="operationGroup" type="flex" justify="between">
       <el-col class="operationGroup-left" :sm="4">
         <el-button
-          type="primary"
+          type="danger"
           @click="deleteProjectPhases"
-          v-if="!!deleteList.length"
+          v-if="!!deletePhasesId.length"
           >刪除</el-button
         >
       </el-col>
       <el-col class="operationGroup-right" :span="24" :sm="8">
-        <el-input
-          v-model="newProjectPhase.name"
-          placeholder="新增專案階段"
-        ></el-input>
-        <el-button
-          class="addButton"
-          type="primary"
-          @click="createProjectPhase"
-          v-if="!!newProjectPhase.name"
-        >
-          <i class="el-icon-plus"></i>
-        </el-button>
+        <el-input v-model="newProjectPhase.name" placeholder="新增專案階段">
+          <el-button slot="append" @click="sendNewProjectPhase">
+            <i class="el-icon-plus"></i>
+          </el-button>
+        </el-input>
       </el-col>
     </el-row>
     <el-table
-      :data="projectPhaseList"
-      class="projectPhaseList-table"
+      :data="projectPhases"
+      class="projectPhases-table"
       @selection-change="updateDeleteList"
     >
       <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column prop="name" label="專案階段">
         <template slot-scope="scope">
           <el-input
-            @blur="editProjectPhase(scope.row.id, scope.row.name)"
             v-model="scope.row.name"
+            @focus="beforeEdit(scope.row.id, scope.row.name)"
+            @blur="afterEdit(scope.row.id, scope.row.name)"
           >
           </el-input>
         </template>
@@ -49,44 +43,38 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  name: 'projectPhaseList',
-
   mixins: [ToPathMixin],
   data() {
     return {
-      deleteList: [],
+      oldPhase: {
+        id: '',
+        name: ''
+      },
+      deletePhasesId: [],
       newProjectPhase: {
         name: ''
       }
     }
   },
   computed: {
-    projectPhaseList() {
-      return JSON.parse(JSON.stringify(this.$store.getters.projectPhases))
+    projectPhases() {
+      return this.$store.getters.projectPhases
     }
   },
   methods: {
-    createProjectPhase() {
-      this.$store
-        .dispatch('createProjectPhase', this.newProjectPhase)
-        .then(() => {
-          this.reset()
-        })
-    },
-    reset() {
-      this.$store.dispatch('getProjectPhases').then(() => {
-        this.newProjectPhase = {
-          number: ''
-        }
-      })
+    async sendNewProjectPhase() {
+      await this.$store.dispatch('createProjectPhase', this.newProjectPhase)
+      this.newProjectPhase = {
+        number: ''
+      }
     },
     deleteProjectPhases() {
-      if (this.deleteList.length === 0) return
+      if (this.deletePhasesId.length === 0) return
       this.$store
-        .dispatch('deleteProjectPhases', this.deleteList)
+        .dispatch('deleteProjectPhases', this.deletePhasesId)
         .then(() => {
           this.$message({
-            message: `成功刪除 ${this.deleteList}`,
+            message: `成功刪除`,
             type: 'success',
             center: true,
             duration: 1800
@@ -97,31 +85,33 @@ export default {
         })
     },
     updateDeleteList(value) {
-      this.deleteList = value.map(projectPhase => projectPhase.id)
+      this.deletePhasesId = value.map(projectPhase => projectPhase.id)
     },
-    editProjectPhase(id, newName) {
-      if (
-        newName ===
-        this.$store.getters.projectPhases.filter(
-          projectPhase => projectPhase.id == id
-        )[0].name
-      )
-        return
+    beforeEdit(id, name) {
+      this.oldPhase = {
+        id,
+        name
+      }
+    },
+    afterEdit(id, newName) {
+      if (newName === this.oldPhase.name) return // not change
       this.$store
         .dispatch('updateProjectPhase', {
-          projectPhaseId: id,
-          payload: { name: newName }
+          id,
+          payload: {
+            name: newName
+          }
         })
         .then(() => {
           this.$message({
-            message: `成功編輯 ${this.newProject.name}`,
+            message: `成功編輯 ${this.oldPhase.name} → ${newName}`,
             type: 'success',
             center: true,
             duration: 1800
           })
         })
         .catch(e => {
-          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+          this.$message.error(`請重新檢查 ${e.message}`)
         })
     }
   }
