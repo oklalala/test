@@ -38,9 +38,17 @@ export default new Vuex.Store({
     myRole: '',
     myPermissions: '',
     me: {
+      account: '',
       company: {
-        id: 0
-      }
+        id: '',
+        name: ''
+      },
+      email: '',
+      name: '',
+      password: '',
+      phone: '',
+      roleName: '',
+      soItem: ''
     },
     permissions: {},
     roles: [],
@@ -87,6 +95,15 @@ export default new Vuex.Store({
         }
         return item
       })
+    },
+    myPhone(state, phone) {
+      state.me.phone = phone
+    },
+    myMail(state, mail) {
+      state.me.email = mail
+    },
+    myPassword(state, password) {
+      state.me.password = password
     }
   },
   getters: {
@@ -127,6 +144,15 @@ export default new Vuex.Store({
     },
     rolePermissions(state) {
       return state.rolePermissions
+    },
+    myPhone(state) {
+      return state.me.phone
+    },
+    myMail(state) {
+      return state.me.email
+    },
+    myPassword(state) {
+      return state.me.password
     }
   }
 })
