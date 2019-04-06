@@ -4,7 +4,7 @@
   <div class="projectPhases">
     <h1>專案執行階段</h1>
     <el-row class="operationGroup" type="flex" justify="between">
-      <el-col class="operationGroup-left" :sm="4">
+      <el-col class="operationGroup-left" :span="4">
         <el-button
           type="danger"
           @click="deleteProjectPhases"
@@ -12,9 +12,13 @@
           >刪除</el-button
         >
       </el-col>
-      <el-col class="operationGroup-right" :span="24" :sm="8">
-        <el-input v-model="newProjectPhase.name" placeholder="新增專案階段">
-          <el-button slot="append" @click="sendNewProjectPhase">
+      <el-col class="operationGroup-right" :span="8">
+        <el-input v-model="newProjectPhaseName" placeholder="新增專案階段">
+          <el-button
+            slot="append"
+            @click="sendNewProjectPhase"
+            :disabled="!newProjectPhaseName"
+          >
             <i class="el-icon-plus"></i>
           </el-button>
         </el-input>
@@ -51,9 +55,7 @@ export default {
         name: ''
       },
       deletePhasesId: [],
-      newProjectPhase: {
-        name: ''
-      }
+      newProjectPhaseName: ''
     }
   },
   computed: {
@@ -63,10 +65,16 @@ export default {
   },
   methods: {
     async sendNewProjectPhase() {
-      await this.$store.dispatch('createProjectPhase', this.newProjectPhase)
-      this.newProjectPhase = {
-        number: ''
-      }
+      await this.$store.dispatch('createProjectPhase', {
+        name: this.newProjectPhaseName
+      })
+      this.$message({
+        message: `成功新增 ${this.newVGItemNumber}`,
+        type: 'success',
+        center: true,
+        duration: 1800
+      })
+      this.newProjectPhaseName = ''
     },
     deleteProjectPhases() {
       if (this.deletePhasesId.length === 0) return

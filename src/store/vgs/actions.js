@@ -3,20 +3,22 @@
 import API from '@/utils/API'
 
 export default {
-  async getVGs({ commit }) {
+  async fetchVGs({ commit }) {
     const res = await API.GET('/vgs')
     return commit('setVGs', res.data)
   },
   async deleteVGs({ dispatch }, deleteVGs) {
     var vgIdStr = deleteVGs.join(',')
     await API.DELETE(`/vgs/${vgIdStr}`)
-    return dispatch('getVGs')
+    return await dispatch('fetchVGs')
   },
-  createVG(context, payload) {
-    return API.POST(`/vg`, payload)
+  async createVG({ dispatch }, payload) {
+    await API.POST(`/vg`, payload)
+    return await dispatch('fetchVGs')
   },
-  updateVG(context, { vgId, payload }) {
-    return API.PUT(`/vg/${vgId}`, payload)
+  async updateVG({ dispatch }, { vgId, payload }) {
+    await API.PUT(`/vg/${vgId}`, payload)
+    return await dispatch('fetchVGs')
   },
   exportVG(context, projectId) {
     return API.GET(`/measures/vg/export`, {

@@ -149,7 +149,7 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getMe'),
           store.dispatch('getUsers'),
-          store.dispatch('getVGs'),
+          store.dispatch('fetchVGs'),
           store.dispatch('getSteels')
         ])
           .then(() => {
@@ -170,7 +170,7 @@ let router = new Router({
           store.dispatch('getMe'),
           store.dispatch('getCompanies'),
           store.dispatch('getUsers'),
-          store.dispatch('getVGs'),
+          store.dispatch('fetchVGs'),
           store.dispatch('getSteels')
         ])
           .then(() => {
@@ -220,7 +220,7 @@ let router = new Router({
       component: VGList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getVGs')]).then(() => next())
+        Promise.all([store.dispatch('fetchVGs')]).then(() => next())
       }
     },
     {
