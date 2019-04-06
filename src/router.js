@@ -16,7 +16,7 @@ import ProjectCreate from './views/ProjectCreate.vue'
 import ProjectEdit from './views/ProjectEdit.vue'
 import ProjectMonitor from './views/ProjectMonitor.vue'
 import ProjectPhaseList from './views/ProjectPhaseList.vue'
-import VGList from './views/VGList.vue'
+import VGItems from './views/VGItems.vue'
 import SteelList from './views/SteelList.vue'
 import SOItemList from './views/SOItemList.vue'
 import SOItemCreate from './views/SOItemCreate.vue'
@@ -149,7 +149,7 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('getMe'),
           store.dispatch('getUsers'),
-          store.dispatch('fetchVGs'),
+          store.dispatch('fetchVGItems'),
           store.dispatch('getSteels')
         ])
           .then(() => {
@@ -170,7 +170,7 @@ let router = new Router({
           store.dispatch('getMe'),
           store.dispatch('getCompanies'),
           store.dispatch('getUsers'),
-          store.dispatch('fetchVGs'),
+          store.dispatch('fetchVGItems'),
           store.dispatch('getSteels')
         ])
           .then(() => {
@@ -215,12 +215,12 @@ let router = new Router({
       }
     },
     {
-      path: '/vgs',
-      name: 'VGList',
-      component: VGList,
+      path: '/vg-items',
+      name: 'VGItems',
+      component: VGItems,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('fetchVGs')]).then(() => next())
+        store.dispatch('fetchVGItems').then(() => next())
       }
     },
     {

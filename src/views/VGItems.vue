@@ -50,8 +50,6 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  number: 'VGList',
-
   mixins: [ToPathMixin],
   data() {
     return {
@@ -70,7 +68,7 @@ export default {
   },
   methods: {
     // reset() {
-    //   this.$store.dispatch('fetchVGs').then(() => {
+    //   this.$store.dispatch('fetchVGItems').then(() => {
     //     this.newVGItemNumber = {
     //       number: ''
     //     }

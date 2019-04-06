@@ -28,8 +28,8 @@
       <ul class="nav__items">
         <li
           class="nav__item"
-          :class="{ active: isActive('/vgs') }"
-          @click="toPath('VGList')"
+          :class="{ active: isActive('/vg-items') }"
+          @click="toPath('VGItems')"
           v-if="isShow('vg:CRUD')"
         >
           軸力計設定
