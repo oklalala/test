@@ -160,11 +160,13 @@ export default {
       this.$store.dispatch('uploadMeasuresDatas', measuresData)
       this.isSend = true
     },
-    getSOItem: function() {
+    getSOItem() {
       if (this.me.soItem) {
-        this.$store.dispatch('getSOItem', this.me.soItem.id).then(response => {
-          this.soItem = response.data.data
-        })
+        this.$store
+          .dispatch('fetchSOItems', this.me.soItem.id)
+          .then(response => {
+            this.soItem = response.data.data
+          })
       }
     },
     onChangeLocation: function() {

@@ -242,24 +242,27 @@ let router = new Router({
       }
     },
     {
-      path: '/soItem-create',
+      path: '/so-item-create',
       name: 'SOItemCreate',
       component: SOItemCreate,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('fetchSOItems'),
-          store.dispatch('getSOModels')
+          store.dispatch('fetchSOModels')
         ]).then(() => next())
       }
     },
     {
-      path: '/soItem/:soId',
+      path: '/so-item/:soId',
       name: 'SOItemEdit',
       component: SOItemEdit,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getSOModels')]).then(() => next())
+        Promise.all([
+          store.dispatch('fetchSOItem', to.params.soId),
+          store.dispatch('fetchSOModels')
+        ]).then(() => next())
       }
     }
   ]
