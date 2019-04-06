@@ -18,7 +18,7 @@ import ProjectMonitor from './views/ProjectMonitor.vue'
 import ProjectPhaseList from './views/ProjectPhaseList.vue'
 import VGItems from './views/VGItems.vue'
 import SteelList from './views/SteelList.vue'
-import SOItemList from './views/SOItemList.vue'
+import SOItems from './views/SOItems.vue'
 import SOItemCreate from './views/SOItemCreate.vue'
 import SOItemEdit from './views/SOItemEdit.vue'
 import MeasuresSo from './views/MeasuresSo.vue'
@@ -234,8 +234,8 @@ let router = new Router({
     },
     {
       path: '/so-items',
-      name: 'SOItemList',
-      component: SOItemList,
+      name: 'SOItems',
+      component: SOItems,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         store.dispatch('fetchSOItems').then(() => next())

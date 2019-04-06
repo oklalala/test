@@ -148,7 +148,9 @@ export default {
       return state.one.vgIds
     },
     vgItemsInProject(state, getters) {
-      return getters.vgItems.filter(vg => state.one.vgIds.some(id => vg.id === id))
+      return getters.vgItems.filter(vg =>
+        state.one.vgIds.some(id => vg.id === id)
+      )
     },
     vgItemsNotInProject(state, getters) {
       return getters.vgItemsFree

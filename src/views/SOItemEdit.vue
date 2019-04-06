@@ -191,7 +191,7 @@ export default {
       this.newSOItem.parameters[key] = value
     },
     cancel() {
-      this.toPath('SOItemList')
+      this.toPath('SOItems')
     },
     submit() {
       this.$store
@@ -206,7 +206,7 @@ export default {
             center: true,
             duration: 1800
           })
-          this.toPath('SOItemList')
+          this.toPath('SOItems')
         })
         .catch(e => {
           this.$message.error(`請重新檢查 ${e.response.data.result}`)

@@ -6,7 +6,7 @@
     <div class="operationGroup">
       <div class="operationGroup-left">
         <el-button
-          type="primary"
+          type="danger"
           @click="deleteSOItems"
           v-if="!!deleteList.length"
           >刪除</el-button
@@ -24,17 +24,17 @@
       @selection-change="updateDeleteList"
     >
       <el-table-column type="selection" width="40"> </el-table-column>
-      <el-table-column label="編號" width="130">
+      <el-table-column label="傾度管編號" width="130">
         <template slot-scope="scope">
-          <h4
-            class="clickable"
+          <el-button
             @click="toPath('SOItemEdit', { soId: scope.row.id })"
+            type="text"
           >
             {{ scope.row.number }}
-          </h4>
+          </el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="soModelName" label="廠牌 型號" width="120">
+      <el-table-column prop="soModelName" label="廠牌型號" width="120">
       </el-table-column>
       <el-table-column prop="OPT" label="OPT"> </el-table-column>
     </el-table>
@@ -44,8 +44,6 @@
 <script>
 import ToPathMixin from '@/mixins/ToPath'
 export default {
-  name: 'soItems',
-
   mixins: [ToPathMixin],
   data() {
     return {

@@ -37,7 +37,7 @@
         <li
           class="nav__item"
           :class="{ active: isActive('/so-items') }"
-          @click="toPath('SOItemList')"
+          @click="toPath('SOItems')"
           v-if="isShow('soItem:CRUD')"
         >
           傾度管設定
