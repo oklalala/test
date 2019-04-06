@@ -148,10 +148,10 @@ export default {
       return state.one.vgIds
     },
     vgItemsInProject(state, getters) {
-      return getters.vgs.filter(vg => state.one.vgIds.some(id => vg.id === id))
+      return getters.vgItems.filter(vg => state.one.vgIds.some(id => vg.id === id))
     },
     vgItemsNotInProject(state, getters) {
-      return getters.vgsFree
+      return getters.vgItemsFree
     },
     totalFloor(state) {
       return state.one.floor

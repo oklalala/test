@@ -82,7 +82,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('getCompanies'),
-          store.dispatch('getSOItems'),
+          store.dispatch('fetchSOItems'),
           store.dispatch('getRolesPermissions')
         ]).then(() => next())
       }
@@ -96,7 +96,7 @@ let router = new Router({
         Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('getCompanies'),
-          store.dispatch('getSOItems'),
+          store.dispatch('fetchSOItems'),
           store.dispatch('getRolesPermissions')
         ])
           .then(() => {
@@ -238,7 +238,7 @@ let router = new Router({
       component: SOItemList,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getSOItems').then(() => next())
+        store.dispatch('fetchSOItems').then(() => next())
       }
     },
     {
@@ -248,7 +248,7 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getSOItems'),
+          store.dispatch('fetchSOItems'),
           store.dispatch('getSOModels')
         ]).then(() => next())
       }

@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     vgItems() {
-      return this.$store.getters.vgs
+      return this.$store.getters.vgItems
     }
   },
   methods: {
@@ -145,7 +145,7 @@ export default {
     editVG(id, newNumber) {
       if (
         newNumber ===
-        this.$store.getters.vgs.filter(vg => vg.id == id).shift().number
+        this.$store.getters.vgItems.filter(vg => vg.id == id).shift().number
       )
         return
       this.$store

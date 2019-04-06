@@ -399,7 +399,7 @@ export default {
       return this.$store.getters.notMyCompanies
     },
     vgItemsOptions() {
-      return this.$store.getters.vgs
+      return this.$store.getters.vgItems
     },
     vgItemsInProjectOptions() {
       return this.$store.getters.vgItemsInProject

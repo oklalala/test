@@ -184,7 +184,7 @@
                   style="width: 100%"
                 >
                   <el-option
-                    v-for="vgItem in vgsOptions"
+                    v-for="vgItem in vgItemsOptions"
                     :key="vgItem.id"
                     :label="vgItem.number"
                     :value="vgItem.id"
@@ -549,8 +549,8 @@ export default {
         })
       }
     },
-    vgsOptions() {
-      return this.$store.getters.vgsFree
+    vgItemsOptions() {
+      return this.$store.getters.vgItemsFree
     },
     totalFloor: {
       get() {
@@ -629,19 +629,6 @@ export default {
     }
   },
   methods: {
-    getSOItems() {
-      this.project.soLocation = this.initSOLocation(this.soQt, this.soDepth)
-    },
-    initSOLocation(number, depth) {
-      var arr = []
-      for (var i = 1; i <= number; i++) {
-        arr.push({
-          number: `SO-0${i}`, // todo: if i > 10
-          depth: depth
-        })
-      }
-      return arr
-    },
     uploadImg(file) {
       this.$store.dispatch('uploadConfigImage', file.raw)
     },

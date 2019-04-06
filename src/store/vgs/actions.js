@@ -5,7 +5,7 @@ import API from '@/utils/API'
 export default {
   async fetchVGItems({ commit }) {
     const res = await API.GET('/vgs')
-    return commit('setVGs', res.data)
+    return commit('vgItems', res.data)
   },
   async deleteVGs({ dispatch }, deleteVGs) {
     var vgIdStr = deleteVGs.join(',')

@@ -6,7 +6,7 @@ export default {
   async deleteSOItems({ dispatch }, deleteSOItems) {
     var soIdStr = deleteSOItems.join(',')
     await API.DELETE(`/so-items/${soIdStr}`)
-    return await dispatch('getSOItems')
+    return await dispatch('fetchSOItems')
   },
   getSOItem(context, soId) {
     return API.GET(`/so-item/${soId}`)
@@ -14,7 +14,7 @@ export default {
   updateSOItem(context, { soId, payload }) {
     return API.PUT(`/so-item/${soId}`, payload)
   },
-  async getSOItems({ commit }) {
+  async fetchSOItems({ commit }) {
     const res = await API.GET('/so-items')
     return commit('setSOItems', res.data)
   },

@@ -7,15 +7,15 @@ export default {
     data: []
   },
   mutations: {
-    setVGs(state, vgs) {
+    vgItems(state, vgs) {
       state.data = vgs
     }
   },
   getters: {
-    vgs(state) {
+    vgItems(state) {
       return state.data
     },
-    vgsFree(state) {
+    vgItemsFree(state) {
       return state.data.filter(
         vg =>
           vg.projectName === '使用的專案被刪除' ||
