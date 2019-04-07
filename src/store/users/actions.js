@@ -3,26 +3,55 @@
 import API from '@/utils/API'
 
 export default {
-  async getUser({ commit }, userId) {
-    const res = await API.GET(`/user/${userId}`)
-    commit('setUser', res.data)
+  async fetchUser({ commit }, userId) {
+    if (!userId) {
+      commit('currentUser', {
+        account: '',
+        name: '',
+        password: '000',
+        phone: '',
+        email: '',
+        roleName: 'USER',
+        company: null,
+        soItem: null
+      })
+    } else {
+      const res = await API.GET(`/user/${userId}`)
+      commit('currentUser', res.data)
+    }
   },
   updateCurrentUser({ commit }, payload) {
-    commit('setUser', payload)
+    commit('currentUser', payload)
   },
-  updateUser(context, { userId, payload }) {
-    return API.PUT(`/user/${userId}`, payload)
+  async createUser({ getters }) {
+    return await API.POST(`/user`, {
+      account: getters.currentUser.account,
+      name: getters.currentUser.name,
+      roleName: getters.currentUser.roleName,
+      companyId: getters.currentUser.company
+        ? getters.currentUser.company.id
+        : '',
+      soId: getters.currentUser.soItem ? getters.currentUser.soItem.id : ''
+    })
+  },
+  async updateUser({ getters }, { userId }) {
+    return await API.PUT(`/user/${userId}`, {
+      account: getters.currentUser.account,
+      name: getters.currentUser.name,
+      roleName: getters.currentUser.roleName,
+      companyId: getters.currentUser.company
+        ? getters.currentUser.company.id
+        : '',
+      soId: getters.currentUser.soItem ? getters.currentUser.soItem.id : ''
+    })
   },
   async getUsers({ commit }) {
     const res = await API.GET('/users')
-    commit('setUsers', res.data)
+    commit('everyone', res.data)
   },
   async deleteUsers({ dispatch }, userIds) {
     let userIdsStr = userIds.join(',')
     await API.DELETE(`/users/${userIdsStr}`)
     return dispatch('getUsers')
-  },
-  createUser(context, payload) {
-    return API.POST(`/user`, payload)
   }
 }

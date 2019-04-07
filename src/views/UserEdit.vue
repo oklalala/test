@@ -4,22 +4,22 @@
   <div class="userEdit">
     <h1>帳號設定</h1>
     <h2>基本資料</h2>
-    <el-form label-position="top" label-width="80px" :model="newUser">
+    <el-form label-position="top" :model="user">
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :xs="24" :sm="12">
           <el-form-item label="姓名">
-            <el-input v-model="newUser.name"></el-input>
+            <el-input v-model="name"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :xs="24" :sm="12">
           <el-form-item label="角色">
             <el-select
-              v-model="selectedRole"
+              v-model="roleName"
               placeholder="請選擇"
               style="width: 100%"
             >
               <el-option
-                v-for="item in roles"
+                v-for="item in rolesOptions"
                 :key="item.name"
                 :label="item.name"
                 :value="item.name"
@@ -28,38 +28,56 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="登入帳號">
+            <el-input v-model="account" disabled></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12">
+          <el-form-item label="密碼">
+            <div class="password">{{ password }}</div>
+            <el-checkbox v-model="isShowPassword">顯示密碼</el-checkbox>
+          </el-form-item>
+        </el-col>
       </el-row>
-      <el-form-item label="帳號">
-        <el-input v-model="newUser.account" disabled></el-input>
-        <h4 class="password">密碼：{{ newUser.password }}</h4>
-      </el-form-item>
       <el-form-item label="公司名稱">
-        <el-select
-          v-model="selectedCompany"
-          placeholder="請選擇"
-          style="width: 100%"
-          disabled
-        >
-          <el-option
-            v-for="item in companies"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="20">
+            <el-select
+              v-model="company"
+              placeholder="請選擇"
+              style="width: 100%"
+              value-kay="id"
+              disabled
+            >
+              <el-option
+                v-for="company in companiesOptions"
+                :key="company.id"
+                :label="company.name"
+                :value="company"
+              >
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :xs="24" :sm="4">
+            <el-button style="width: 100%" @click="toPath('CompanyList')"
+              >維護</el-button
+            >
+          </el-col>
+        </el-row>
       </el-form-item>
       <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
         <el-select
-          v-model="selectedSOItem"
+          v-model="soItem"
           placeholder="請選擇"
+          value-key="id"
           style="width: 100%"
         >
           <el-option
-            v-for="item in soItems"
+            v-for="item in soItemOptions"
             :key="item.id"
             :label="item.number"
-            :value="item.id"
+            :value="item"
           >
           </el-option>
         </el-select>
@@ -72,7 +90,7 @@
             </el-button>
           </el-col>
           <el-col :span="12">
-            <el-button style="width: 100%" @click="cancel">
+            <el-button style="width: 100%" @click="toPath('Users')">
               取消
             </el-button>
           </el-col>
@@ -89,116 +107,98 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      selectedRole: '',
-      selectedCompany: '',
-      selectedSOItem: ''
-      // newUser: {
-      //   "account": "zxcvzc",
-      //   "name": "OPT1-2",
-      //   "password": "000",
-      //   "phone": "00000",
-      //   "email": "enioy74@gmail.com",
-      //   "roleName": "OPT",
-      //   "company": {
-      //     "id": "83b4c898-68cd-4b7a-9da2-608c7feaf472",
-      //     "name": "湯尼水泥"
-      //     },
-      //   "soItem": {
-      //     "id": "5a6b4845-3233-44b9-89cb-290228fe7e71",
-      //     "number": "這是蝦米"
-      //     },
-      //   "projects": [
-      //     { "id": "a3f8f558-3e3b-450e-a4cf-2b02ac565da9",
-      //       "number": "VG-TEST",
-      //       "name": "測試軸力計" },
-      //     { "id": "b9f58673-07cb-4caa-8374-f1e5364d08a9",
-      //       "number": "test0003",
-      //       "name": "傾度管測試專案" },
-      //     { "id": "d6d94b1e-4127-4463-9c68-2bc1c3da899b",
-      //       "number": "qweqwe",
-      //       "name": "最完整的資料" }
-      //     ]
-      //   }
+      isShowPassword: false
     }
   },
   computed: {
-    userList() {
-      return this.$store.getters.everyone
-    },
-    roles() {
-      return this.$store.getters.roles
-    },
-    companies() {
-      return this.$store.getters.companies
-    },
-    soItems() {
-      return this.$store.getters.soItems.filter(soItem => soItem.OPT === null)
-    },
     user() {
       return this.$store.getters.currentUser
     },
-    newUser() {
-      this.setSelectBox()
-      return this.user
+    name: {
+      get() {
+        return this.$store.getters.currentUser.name
+      },
+      set(value) {
+        this.$store.commit('currentUserName', value)
+      }
+    },
+    roleName: {
+      get() {
+        return this.$store.getters.currentUser.roleName
+      },
+      set(value) {
+        this.$store.commit('currentUserRoleName', value)
+      }
+    },
+    rolesOptions() {
+      return this.$store.getters.roles
+    },
+    account: {
+      get() {
+        return this.$store.getters.currentUser.account
+      },
+      set(value) {
+        this.$store.commit('currentUserAccount', value)
+      }
+    },
+    password() {
+      const key = this.$store.getters.currentUser.password
+      // eslint-disable-next-line
+      return (this.isShowPassword) ? key : key.split('').map(() => '*').join('')
+    },
+    companiesOptions() {
+      return this.$store.getters.companies
+    },
+    company: {
+      get() {
+        return this.$store.getters.currentUser.company
+      },
+      set(value) {
+        this.$store.commit('currentUserCompany', value)
+      }
+    },
+    soItem: {
+      get() {
+        return this.$store.getters.currentUser.soItem
+      },
+      set(value) {
+        this.$store.commit('currentUserSoItem', value)
+      }
+    },
+    soItemOptions() {
+      return this.$store.getters.soItemsFree
     }
   },
   methods: {
-    cancel() {
-      this.toPath('UserList')
-    },
     edit() {
-      let user = {
-        name: this.newUser.name,
-        roleName: this.selectedRole,
-        companyId: this.selectedCompany,
-        account: this.newUser.account,
-        soId: this.selectedSOItem
-      }
       this.$store
         .dispatch('updateUser', {
-          userId: this.$route.params.userId,
-          payload: user
+          userId: this.$route.params.userId
         })
         .then(() => {
           this.$message({
-            message: `成功編輯 ${user.name}`,
+            message: `成功編輯 ${this.user.name}`,
             type: 'success',
             center: true,
             duration: 1800
           })
-          this.toPath('UserList')
+          this.toPath('Users')
         })
         .catch(e => {
-          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+          this.$message.error(`請重新檢查 ${e.message}`)
         })
     },
     isShow(feature) {
-      return this.$store.getters.rolePermissions
-        .filter(auth => auth.role === this.selectedRole)
-        .shift()
-        .permissions.filter(permission => permission.value)
+      return this.$store.getters.currentUserPermissions
+        .filter(permission => permission.value)
         .map(permission => permission.name)
         .includes(feature)
-    },
-    saveCurrentAndGo() {
-      this.newUser.roleName = this.selectedRole
-      this.newUser.company.id = this.selectedCompany
-      this.newUser.soItem = { id: this.selectedSOItem }
-      this.$store.dispatch('updateCurrentUser', this.newUser).then(() => {
-        this.toPath('CompanyList')
-      })
-    },
-    setSelectBox() {
-      this.selectedRole = this.user.roleName
-      this.selectedCompany = this.user.company.id
-      this.selectedSOItem = this.user.soItem ? this.user.soItem.id : ''
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .password {
-  color: #606266;
-  font-weight: normal;
+  font-family: monospace;
 }
 </style>

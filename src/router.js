@@ -65,10 +65,7 @@ let router = new Router({
         requireAuth: true
       },
       beforeEnter: (to, from, next) => {
-        Promise.all([
-          store.commit('setUser', {}),
-          store.dispatch('getUsers')
-        ]).then(() => next())
+        Promise.all([store.dispatch('getUsers')]).then(() => next())
       }
     },
     {
@@ -84,7 +81,13 @@ let router = new Router({
           store.dispatch('getCompanies'),
           store.dispatch('fetchSOItems'),
           store.dispatch('getRolesPermissions')
-        ]).then(() => next())
+        ])
+          .then(() => {
+            if (from.path !== '/companies') {
+              return store.dispatch('fetchUser', to.params.userId)
+            } else return Promise.resolve()
+          })
+          .then(() => next())
       }
     },
     {
@@ -101,7 +104,7 @@ let router = new Router({
         ])
           .then(() => {
             if (from.path !== '/companies') {
-              return store.dispatch('getUser', to.params.userId)
+              return store.dispatch('fetchUser', to.params.userId)
             } else return Promise.resolve()
           })
           .then(() => next())
@@ -283,6 +286,7 @@ router.beforeEach((to, from, next) => {
       name: 'Entry'
     })
   }
+  if (!store.getters.me.name) store.dispatch('getMe').then(() => next())
 
   next()
 })

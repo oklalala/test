@@ -36,6 +36,12 @@ export default {
     soItem(state) {
       return state.one
     },
+    soItemsFree(state, getters) {
+      const current_user_name = getters.currentUser.name
+      return state.data.filter(
+        soItem => soItem.OPT === null || soItem.OPT === current_user_name
+      )
+    },
     soItemParameters(state) {
       const parameters = []
       for (let name in state.one.parameters) {

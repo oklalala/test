@@ -8,11 +8,32 @@ export default {
     one: {}
   },
   mutations: {
-    setUsers(state, users) {
+    everyone(state, users) {
       state.data = users
     },
-    setUser(state, user) {
+    currentUser(state, user) {
       state.one = user
+    },
+    currentUserName(state, name) {
+      state.one.name = name
+    },
+    currentUserRoleName(state, roleName) {
+      state.one.roleName = roleName
+    },
+    currentUserAccount(state, account) {
+      state.one.account = account
+    },
+    currentUserCompany(state, company) {
+      state.one.company = {
+        id: company.id,
+        name: company.name
+      }
+    },
+    currentUserSoItem(state, soItem) {
+      state.one.soItem = {
+        id: soItem.id,
+        number: soItem.number
+      }
     }
   },
   getters: {
@@ -45,6 +66,13 @@ export default {
       return getters.USERs.filter(
         user => user.company.id === getters.myCompany.id
       )
+    },
+    currentUserPermissions(state, getters) {
+      let role = getters.rolePermissions
+        .filter(auth => auth.role === state.one.roleName)
+        .shift()
+      if (!role) role = getters.rolePermissions.slice().shift()
+      return role.permissions
     }
   }
 }

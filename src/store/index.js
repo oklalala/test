@@ -52,7 +52,17 @@ export default new Vuex.Store({
     },
     permissions: {},
     roles: [],
-    rolePermissions: [],
+    rolePermissions: [
+      {
+        permissions: [
+          {
+            name: '',
+            value: ''
+          }
+        ],
+        role: ''
+      }
+    ],
     companies: [],
     soItems: [],
     lastPath: ''
