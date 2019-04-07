@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     userList() {
-      return this.$store.getters.users
+      return this.$store.getters.everyone
     }
   },
   methods: {

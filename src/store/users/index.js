@@ -16,7 +16,7 @@ export default {
     }
   },
   getters: {
-    users(state) {
+    everyone(state) {
       return state.data
     },
     currentUser(state) {
