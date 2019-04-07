@@ -9,8 +9,22 @@ export default {
     return await dispatch('fetchSOItems')
   },
   async fetchSOItem({ commit }, soId) {
-    const res = await API.GET(`/so-item/${soId}`)
-    commit('soItem', res.data)
+    if (soId) {
+      // edit
+      const res = await API.GET(`/so-item/${soId}`)
+      commit('soItem', res.data)
+    } else {
+      // create
+      commit('soItem', {
+        id: null,
+        number: '',
+        parameters: [],
+        soModelId: null,
+        soModel: {
+          id: null
+        }
+      })
+    }
   },
   updateSOItem(context, { soId, payload }) {
     return API.PUT(`/so-item/${soId}`, payload)
@@ -19,8 +33,10 @@ export default {
     const res = await API.GET('/so-items')
     return commit('soItems', res.data)
   },
-  createSOItem(context, payload) {
-    return API.POST('/so-item', payload)
+  async createSOItem({ getters }) {
+    const so_item = Object.assign(getters.soItem)
+    so_item.soModelId = so_item.soModel.id
+    return await API.POST('/so-item', so_item)
   },
   exportSO(context, projectId) {
     return API.GET(`/measures/so/export`, {
@@ -31,5 +47,12 @@ export default {
     const so_models = getters.soModels
     const so_model = so_models.filter(item => item.id === soModelId).shift()
     commit('soItemParameters', so_model.parameters)
+  },
+
+  soModelOfItem({ commit }, model) {
+    if (model) {
+      commit('soItemParameters', model.parameters)
+      commit('soModelOfItem', model)
+    }
   }
 }

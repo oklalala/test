@@ -250,7 +250,11 @@ let router = new Router({
         Promise.all([
           store.dispatch('fetchSOItems'),
           store.dispatch('fetchSOModels')
-        ]).then(() => next())
+        ])
+          .then(() => {
+            return store.dispatch('fetchSOItem')
+          })
+          .then(() => next())
       }
     },
     {

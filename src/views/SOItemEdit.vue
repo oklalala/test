@@ -1,18 +1,18 @@
 <!-- @format -->
 
 <template>
-  <div class="user-info">
+  <div class="so-item-edit">
     <el-form>
       <section>
         <h1>傾度管設備 配置</h1>
         <h2>基本資料</h2>
         <el-form-item label="編號" required>
-          <el-input v-model="soItem.number" placeholder="請輸入編號">
-          </el-input>
+          <el-input v-model="soNumber" placeholder="請輸入編號"> </el-input>
         </el-form-item>
         <el-form-item label="廠牌型號" required>
           <el-select
-            v-model="soItem.soModel.id"
+            v-model="soModel"
+            value-key="id"
             placeholder="請選擇"
             style="width: 100%"
           >
@@ -20,43 +20,45 @@
               v-for="model in soModelsOptions"
               :key="model.id"
               :label="model.name"
-              :value="model.id"
+              :value="model"
             >
             </el-option>
           </el-select>
         </el-form-item>
       </section>
-      <template v-if="!!soItem.soModel">
-        <h2>傾度管 參數</h2>
+      <template v-if="!!soItem.soModel.id">
+        <h2>傾度管參數</h2>
+        <el-form-item>
+          <el-button type="primary" plain @click="useModelParameters">
+            恢復原廠值
+          </el-button>
+        </el-form-item>
         <section>
-          <el-table :data="soItemParameters" style="width: 100%">
-            <el-table-column prop="key" label="參數名稱" width="100">
-            </el-table-column>
-            <el-table-column prop="value" label="參數值">
-              <template slot-scope="scope">
-                <el-input-number
-                  controls-position="right"
-                  v-model="scope.row.value"
-                  @change="updateSoParameter(scope.row)"
-                >
-                </el-input-number>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="button-container">
-            <el-button type="primary" @click="useModelParameters">
-              恢復原廠值
+          <el-form-item>
+            <el-table :data="soItemParameters" style="width: 100%">
+              <el-table-column prop="key" label="參數名稱" width="100">
+              </el-table-column>
+              <el-table-column prop="value" label="參數值">
+                <template slot-scope="scope">
+                  <el-input-number
+                    controls-position="right"
+                    v-model="scope.row.value"
+                    @change="updateSoParameter(scope.row)"
+                  >
+                  </el-input-number>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="toPath('SOItems')">
+              回上一頁
             </el-button>
-          </div>
+            <el-button type="primary" @click="onSubmit">
+              確定送出
+            </el-button>
+          </el-form-item>
         </section>
-        <div class="button-container">
-          <el-button type="warning" @click="toPath('SOItems')">
-            取消
-          </el-button>
-          <el-button type="primary" @click="onSubmit">
-            確定送出
-          </el-button>
-        </div>
       </template>
     </el-form>
   </div>
@@ -66,9 +68,24 @@
 import ToPathMixin from '@/mixins/ToPath'
 
 export default {
-  name: 'SOItemEdit',
   mixins: [ToPathMixin],
   computed: {
+    soNumber: {
+      get() {
+        return this.$store.getters.soItem.number
+      },
+      set(value) {
+        this.$store.commit('soItemNumber', value)
+      }
+    },
+    soModel: {
+      get() {
+        return this.$store.getters.soItem.soModel
+      },
+      set(value) {
+        this.$store.commit('soModelOfItem', value)
+      }
+    },
     soModelsOptions() {
       return this.$store.getters.soModels
     },
@@ -84,7 +101,10 @@ export default {
       this.$store.dispatch('useModelParameters', this.soItem.soModel.id)
     },
     updateSoParameter({ key, value }) {
-      this.$store.commit('soItemParameter', { key, value })
+      this.$store.commit('soItemParameter', {
+        key,
+        value
+      })
     },
     onSubmit() {
       this.$store

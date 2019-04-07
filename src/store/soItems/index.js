@@ -18,6 +18,15 @@ export default {
     },
     soItemParameters(state, parameters) {
       state.one.parameters = parameters
+    },
+    soItemNumber(state, number) {
+      state.one.number = number
+    },
+    soModelOfItem(state, model) {
+      state.one.soModel = {
+        id: model.id,
+        name: model.name
+      }
     }
   },
   getters: {

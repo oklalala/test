@@ -24,7 +24,9 @@
       @selection-change="updateDeleteList"
     >
       <el-table-column type="selection" width="40"> </el-table-column>
-      <el-table-column label="傾度管編號" width="130">
+      <el-table-column prop="soModelName" label="廠牌型號" width="120">
+      </el-table-column>
+      <el-table-column label="傾度管編號" min-width="130">
         <template slot-scope="scope">
           <el-button
             @click="toPath('SOItemEdit', { soId: scope.row.id })"
@@ -34,9 +36,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="soModelName" label="廠牌型號" width="120">
-      </el-table-column>
-      <el-table-column prop="OPT" label="OPT"> </el-table-column>
+      <el-table-column prop="OPT" label="OPT" width="120"> </el-table-column>
     </el-table>
   </div>
 </template>
