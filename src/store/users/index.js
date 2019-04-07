@@ -5,14 +5,14 @@ export default {
   actions,
   state: {
     data: [],
-    currentOne: {}
+    one: {}
   },
   mutations: {
     setUsers(state, users) {
       state.data = users
     },
     setUser(state, user) {
-      state.currentOne = user
+      state.one = user
     }
   },
   getters: {
@@ -20,7 +20,7 @@ export default {
       return state.data
     },
     currentUser(state) {
-      return state.currentOne
+      return state.one
     },
     OPTs(state) {
       return state.data.filter(user => user.roleName == 'OPT')

@@ -18,11 +18,7 @@
         </el-button>
       </div>
     </div>
-    <el-table
-      :data="soItems"
-      class="soItems-table"
-      @selection-change="updateDeleteList"
-    >
+    <el-table :data="soItems" @selection-change="updateDeleteList">
       <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column prop="soModelName" label="廠牌型號" width="120">
       </el-table-column>

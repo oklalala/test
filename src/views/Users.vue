@@ -5,38 +5,37 @@
     <h1>帳號列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
-        <el-button
-          type="danger"
-          @click="deleteUsers"
-          v-if="!!deleteList.length"
+        <el-button type="danger" @click="deleteUsers" v-if="!!deleteList.length"
           >刪除</el-button
         >
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('UserCreate')">
+        <el-button type="info" plain @click="toPath('UserCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
     </div>
-    <el-table
-      :data="userList"
-      class="userList-table"
-      @selection-change="updateDeleteList"
-    >
+    <el-table :data="userList" @selection-change="updateDeleteList">
       <el-table-column type="selection" width="40"> </el-table-column>
-      <el-table-column prop="name" label="姓名" width="130">
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="auto"
+        show-overflow-tooltip
+      >
         <template slot-scope="scope">
-          <h4
-            class="clickable"
+          <el-button
             @click="toPath('UserEdit', { userId: scope.row.id })"
+            type="text"
           >
             {{ scope.row.name }}
-          </h4>
+          </el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="company.name" label="公司" width="180">
+      <el-table-column prop="company.name" label="公司" width="150">
       </el-table-column>
-      <el-table-column prop="roleName" label="角色"> </el-table-column>
+      <el-table-column prop="roleName" label="角色" width="70">
+      </el-table-column>
     </el-table>
   </div>
 </template>
