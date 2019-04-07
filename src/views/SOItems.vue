@@ -13,7 +13,7 @@
         >
       </div>
       <div class="operationGroup-right">
-        <el-button type="primary" @click="toPath('SOItemCreate')">
+        <el-button type="info" plain @click="toPath('SOItemCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>

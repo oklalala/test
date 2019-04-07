@@ -5,7 +5,7 @@ import Router from 'vue-router'
 
 import Entry from './views/Entry.vue'
 import UserInfo from './views/UserInfo.vue'
-import UserList from './views/UserList.vue'
+import Users from './views/Users.vue'
 import UserCreate from './views/UserCreate.vue'
 import UserEdit from './views/UserEdit.vue'
 import CompanyList from './views/CompanyList.vue'
@@ -59,8 +59,8 @@ let router = new Router({
     },
     {
       path: '/users',
-      name: 'UserList',
-      component: UserList,
+      name: 'Users',
+      component: Users,
       meta: {
         requireAuth: true
       },

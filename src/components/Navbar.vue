@@ -45,7 +45,7 @@
         <li
           class="nav__item"
           :class="{ active: isActive('/users') }"
-          @click="toPath('UserList')"
+          @click="toPath('Users')"
           v-if="isShow('account:CRUD')"
         >
           帳號設定

@@ -8,6 +8,16 @@ const headers = {
   'Content-Type': 'application/json;charset=UTF-8',
   Accept: 'application/json'
 }
+
+const responseHandler = {
+  "200": res => res.data,
+  "401": res => {
+    // token 過期
+    store.dispatch('logout')
+    Promise.reject(res)
+  }
+}
+
 export default {
   async GET(path, data = '') {
     let query = new URLSearchParams(data).toString()
@@ -17,12 +27,8 @@ export default {
         ...headers,
         'x-access-token': store.getters.token
       }
-    })
-    if (response.status === 200) {
-      return response.data
-    } else {
-      return response
-    }
+    }).catch(e => e.response)
+    return responseHandler[response.status](response)
   },
   async POST(path, data) {
     const response = await axios.post(`${baseURL}${path}`, data, {
@@ -31,11 +37,7 @@ export default {
         'x-access-token': store.getters.token
       }
     })
-    if (response.status === 200) {
-      return response.data
-    } else {
-      return response
-    }
+    return responseHandler[response.status](response)
   },
   async PUT(path, data) {
     const response = await axios.put(`${baseURL}${path}`, data, {
@@ -44,11 +46,7 @@ export default {
         'x-access-token': store.getters.token
       }
     })
-    if (response.status === 200) {
-      return response.data
-    } else {
-      return response
-    }
+    return responseHandler[response.status](response)
   },
   async DELETE(path) {
     const response = await axios.delete(`${baseURL}${path}`, {
@@ -57,11 +55,7 @@ export default {
         'x-access-token': store.getters.token
       }
     })
-    if (response.status === 200) {
-      return response.data
-    } else {
-      return response
-    }
+    return responseHandler[response.status](response)
   },
   async uploadImg(file) {
     let formData = new FormData()
@@ -72,11 +66,7 @@ export default {
         'x-access-token': store.getters.token
       }
     })
-    if (response.status === 200) {
-      return response.data
-    } else {
-      return response
-    }
+    return responseHandler[response.status](response)
   },
   async exportXls(path, data = '') {
     let query = new URLSearchParams(data).toString()

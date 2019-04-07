@@ -6,7 +6,7 @@
     <div class="operationGroup">
       <div class="operationGroup-left">
         <el-button
-          type="primary"
+          type="danger"
           @click="deleteUsers"
           v-if="!!deleteList.length"
           >刪除</el-button
@@ -45,7 +45,6 @@
 import ToPathMixin from '@/mixins/ToPath'
 export default {
   name: 'UserList',
-
   mixins: [ToPathMixin],
   data() {
     return {
