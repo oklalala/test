@@ -12,10 +12,10 @@ export default {
     if (soId) {
       // edit
       const res = await API.GET(`/so-item/${soId}`)
-      commit('soItem', res.data)
+      return await commit('soItem', res.data)
     } else {
       // create
-      commit('soItem', {
+      return await commit('soItem', {
         id: null,
         number: '',
         parameters: [],

@@ -163,6 +163,13 @@ export default new Vuex.Store({
     },
     myPassword(state) {
       return state.me.password
+    },
+    mySoItem(state, getters) {
+      if (!state.me.soItem)
+        return {
+          number: '(無傾度管)'
+        }
+      return getters.soItem
     }
   }
 })

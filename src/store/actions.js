@@ -22,7 +22,7 @@ export default {
   },
   async getMe({ getters, commit }) {
     const res = await API.GET(`/user/${getters.myId}`)
-    commit('setMe', res.data)
+    return await commit('setMe', res.data)
   },
   async updateMe({ state }) {
     return await API.PUT(`/user/self`, state.me)

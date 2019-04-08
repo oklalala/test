@@ -205,7 +205,12 @@ let router = new Router({
           store.dispatch('fetchProject', to.params.projectId),
           store.dispatch('getMe'),
           store.dispatch('fetchProjectPhases')
-        ]).then(() => next())
+        ]).then(() => {
+          if (store.getters.me.soItem) {
+            store.dispatch('fetchSOItem', store.getters.me.soItem.id)
+          }
+          next()
+        })
       }
     },
     {
@@ -286,7 +291,12 @@ router.beforeEach((to, from, next) => {
       name: 'Entry'
     })
   }
-  if (!store.getters.me.name) store.dispatch('getMe').then(() => next())
+  if (!store.getters.me.name) {
+    store
+      .dispatch('getMe')
+      .then(() => {})
+      .then(() => next())
+  }
 
   next()
 })

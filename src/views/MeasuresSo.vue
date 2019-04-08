@@ -6,8 +6,9 @@
     <el-form label-position="top">
       <section>
         <h2>基本資料</h2>
-        <p>案號： {{ projectNumber }}</p>
-        <p>名稱： {{ projectName }}</p>
+        <p>案號： {{ project.number }}</p>
+        <p>名稱： {{ project.name }}</p>
+        <p>傾度管: {{ soItem.number }}</p>
       </section>
       <section>
         <h2>量測作業</h2>
@@ -18,7 +19,7 @@
             @change="clearMeasuresDatas"
           >
             <el-option
-              v-for="projectPhase in projectPhases"
+              v-for="projectPhase in projectPhaseOptions"
               :key="projectPhase.id"
               :label="projectPhase.name"
               :value="projectPhase.id"
@@ -60,7 +61,8 @@
           :disabled="
             measuresSoDatas.length === currentDepth ||
               !projectPhaseId ||
-              isMeasuring
+              isMeasuring ||
+              !soItem
           "
         >
           <span v-if="isMeasuring">量測中</span>
@@ -116,7 +118,7 @@ export default {
       measuresSoDatas: [],
       projectPhaseId: '',
       soLocationNumber: '',
-      soItem: {},
+      // soItem: {},
       isSend: false,
       isMeasuring: false,
       currentSoLocationIndex: -1
@@ -129,6 +131,7 @@ export default {
           resolve('Promise A win!')
         }, 5000)
       })
+      console.log(this.soItem)
       let raceMeasures = startMeasures(
         this.wiseIP,
         this.measuresSoDatas,
@@ -160,15 +163,6 @@ export default {
       this.$store.dispatch('uploadMeasuresDatas', measuresData)
       this.isSend = true
     },
-    getSOItem() {
-      if (this.me.soItem) {
-        this.$store
-          .dispatch('fetchSOItems', this.me.soItem.id)
-          .then(response => {
-            this.soItem = response.data.data
-          })
-      }
-    },
     onChangeLocation: function() {
       let filterResult
       filterResult = this.project.soLocation.filter(item => {
@@ -181,29 +175,23 @@ export default {
     }
   },
   computed: {
-    project: function() {
+    project() {
       return this.$store.getters.project
     },
-    projectNumber: function() {
-      return this.project.number
-    },
-    projectName: function() {
-      return this.project.name
-    },
-    projectPhases: function() {
+    projectPhaseOptions() {
       return this.$store.getters.projectPhases
     },
-    me: function() {
+    me() {
       return this.$store.getters.me
     },
-    currentDepth: function() {
+    currentDepth() {
       return ~this.currentSoLocationIndex
         ? this.project.soLocation[this.currentSoLocationIndex].depth
         : 0
+    },
+    soItem() {
+      return this.$store.getters.mySoItem
     }
-  },
-  mounted() {
-    this.getSOItem()
   },
   beforeDestroy() {
     if (window.location.protocol === 'https:') {

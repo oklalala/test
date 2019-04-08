@@ -129,10 +129,12 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
   temp = calculatingTemperature(VoltageTemp)
   slopeX = calculatingTiltForMM(VoltageX, temp, soItem)
   slopeY = calculatingTiltForMM(VoltageY, temp, soItem)
+  console.log('temp/slope', temp, slopeX, slopeY)
   // X軸斜率(度C)： ${degreeX}
   // Y軸斜率(度C)： ${degreeY}
   degreeX = calculatingTiltForDegress(slopeX)
   degreeY = calculatingTiltForDegress(slopeY)
+  console.log('degree', degreeX, degreeY)
   // X軸水平位移量(cm)： ${displacementX}
   // X軸水平位移量(cm)： ${displacementY}
   displacementX = calculatingHorizontalDisplacement(degreeX, 100)
@@ -141,6 +143,13 @@ function getMeasurementData(rowTemp, rowX, rowY, soItem, totalDepth, formData) {
     ? formData[0].totalDisplacement + displacementX
     : displacementX
   depth = -totalDepth + formData.length
+  console.log(
+    'displacementXY, totalDisplacement, depth',
+    displacementX,
+    displacementY,
+    totalDisplacement,
+    depth
+  )
   return {
     date: getYYYYMMDD(),
     time: getHHMMSS(),
