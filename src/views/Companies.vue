@@ -1,23 +1,23 @@
 <!-- @format -->
 
 <template>
-  <div class="projectPhases">
-    <h1>專案執行階段</h1>
+  <div class="companies">
+    <h1>公司列表</h1>
     <el-row class="operationGroup" type="flex" justify="between">
       <el-col class="operationGroup-left" :span="4">
         <el-button
           type="danger"
-          @click="deleteProjectPhases"
-          v-if="!!deletePhasesId.length"
+          @click="deleteCompanies"
+          v-if="!!deleteCompaniesId.length"
           >刪除</el-button
         >
       </el-col>
       <el-col class="operationGroup-right" :span="8">
-        <el-input v-model="newProjectPhaseName" placeholder="新增專案階段">
+        <el-input v-model="newCompanyName" placeholder="新增公司名稱">
           <el-button
             slot="append"
-            @click="sendNewProjectPhase"
-            :disabled="!newProjectPhaseName"
+            @click="sendNewCompany"
+            :disabled="!newCompanyName"
           >
             <i class="el-icon-plus"></i>
           </el-button>
@@ -25,12 +25,12 @@
       </el-col>
     </el-row>
     <el-table
-      :data="projectPhases"
-      class="projectPhases-table"
+      :data="companies"
+      class="companies-table"
       @selection-change="updateDeleteList"
     >
       <el-table-column type="selection" width="40"> </el-table-column>
-      <el-table-column prop="name" label="專案階段">
+      <el-table-column prop="name" label="公司名稱">
         <template slot-scope="scope">
           <el-input
             v-model="scope.row.name"
@@ -50,36 +50,36 @@ export default {
   mixins: [ToPathMixin],
   data() {
     return {
-      oldPhase: {
+      oldCompany: {
         id: '',
         name: ''
       },
-      deletePhasesId: [],
-      newProjectPhaseName: ''
+      deleteCompaniesId: [],
+      newCompanyName: ''
     }
   },
   computed: {
-    projectPhases() {
-      return this.$store.getters.projectPhases
+    companies() {
+      return this.$store.getters.companies
     }
   },
   methods: {
-    async sendNewProjectPhase() {
-      await this.$store.dispatch('createProjectPhase', {
-        name: this.newProjectPhaseName
+    async sendNewCompany() {
+      this.$store.dispatch('createCompany', {
+        name: this.newCompanyName
       })
       this.$message({
-        message: `成功新增 ${this.newProjectPhaseName}`,
+        message: `成功新增 ${this.newCompanyName}`,
         type: 'success',
         center: true,
         duration: 1800
       })
-      this.newProjectPhaseName = ''
+      this.newCompanyName = ''
     },
-    deleteProjectPhases() {
-      if (this.deletePhasesId.length === 0) return
+    deleteCompanies() {
+      if (this.deleteCompaniesId.length === 0) return
       this.$store
-        .dispatch('deleteProjectPhases', this.deletePhasesId)
+        .dispatch('deleteCompanies', this.deleteCompaniesId)
         .then(() => {
           this.$message({
             message: `成功刪除`,
@@ -93,18 +93,18 @@ export default {
         })
     },
     updateDeleteList(value) {
-      this.deletePhasesId = value.map(projectPhase => projectPhase.id)
+      this.deleteCompaniesId = value.map(company => company.id)
     },
     beforeEdit(id, name) {
-      this.oldPhase = {
+      this.oldCompany = {
         id,
         name
       }
     },
     afterEdit(id, newName) {
-      if (newName === this.oldPhase.name) return // not change
+      if (newName === this.oldCompany.name) return // not change
       this.$store
-        .dispatch('updateProjectPhase', {
+        .dispatch('updateCompany', {
           id,
           payload: {
             name: newName
@@ -112,7 +112,7 @@ export default {
         })
         .then(() => {
           this.$message({
-            message: `成功編輯 ${this.oldPhase.name} → ${newName}`,
+            message: `成功編輯 ${this.oldCompany.name} → ${newName}`,
             type: 'success',
             center: true,
             duration: 1800

@@ -58,7 +58,7 @@
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="4">
-            <el-button style="width: 100%" @click="toPath('CompanyList')"
+            <el-button style="width: 100%" @click="toPath('Companies')"
               >維護</el-button
             >
           </el-col>

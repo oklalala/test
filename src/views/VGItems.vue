@@ -67,13 +67,6 @@ export default {
     }
   },
   methods: {
-    // reset() {
-    //   this.$store.dispatch('fetchVGItems').then(() => {
-    //     this.newVGItemNumber = {
-    //       number: ''
-    //     }
-    //   })
-    // },
     async sendNewVGItem() {
       await this.$store.dispatch('createVG', {
         number: this.newVGItemNumber

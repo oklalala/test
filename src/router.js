@@ -8,7 +8,7 @@ import UserInfo from './views/UserInfo.vue'
 import Users from './views/Users.vue'
 import UserCreate from './views/UserCreate.vue'
 import UserEdit from './views/UserEdit.vue'
-import CompanyList from './views/CompanyList.vue'
+import Companies from './views/Companies.vue'
 import PermissionSetup from './views/PermissionSetup.vue'
 import ProjectsSetting from './views/ProjectsSetting.vue'
 import Projects from './views/Projects.vue'
@@ -48,13 +48,13 @@ let router = new Router({
     },
     {
       path: '/companies',
-      name: 'CompanyList',
-      component: CompanyList,
+      name: 'Companies',
+      component: Companies,
       meta: {
         requireAuth: true
       },
       beforeEnter: (to, from, next) => {
-        store.dispatch('getCompanies').then(() => next())
+        store.dispatch('fetchCompanies').then(() => next())
       }
     },
     {
@@ -78,7 +78,7 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
-          store.dispatch('getCompanies'),
+          store.dispatch('fetchCompanies'),
           store.dispatch('fetchSOItems'),
           store.dispatch('getRolesPermissions')
         ])
@@ -98,7 +98,7 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getRoles'),
-          store.dispatch('getCompanies'),
+          store.dispatch('fetchCompanies'),
           store.dispatch('fetchSOItems'),
           store.dispatch('getRolesPermissions')
         ])
@@ -149,7 +149,7 @@ let router = new Router({
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getCompanies'),
+          store.dispatch('fetchCompanies'),
           store.dispatch('getMe'),
           store.dispatch('getUsers'),
           store.dispatch('fetchVGItems'),
@@ -171,7 +171,7 @@ let router = new Router({
       beforeEnter: (to, from, next) => {
         Promise.all([
           store.dispatch('getMe'),
-          store.dispatch('getCompanies'),
+          store.dispatch('fetchCompanies'),
           store.dispatch('getUsers'),
           store.dispatch('fetchVGItems'),
           store.dispatch('getSteels')
