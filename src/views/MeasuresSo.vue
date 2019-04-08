@@ -73,7 +73,7 @@
         <p>
           應量測 {{ currentDepth }} 筆，已量測{{ measuresSoDatas.length }}筆
         </p>
-        <el-table :data="measuresSoDatas" style="width: 100%">
+        <el-table :data="measuresSoDatas">
           <el-table-column fixed type="index" width="50"> </el-table-column>
           <el-table-column prop="date" label="日期" width="100">
           </el-table-column>

@@ -35,7 +35,7 @@
         </el-form-item>
         <section>
           <el-form-item>
-            <el-table :data="soItemParameters" style="width: 100%">
+            <el-table :data="soItemParameters">
               <el-table-column prop="key" label="參數名稱" width="100">
               </el-table-column>
               <el-table-column prop="value" label="參數值">
