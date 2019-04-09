@@ -82,7 +82,6 @@ export default {
   },
   uploadConfigImage({ commit }, file) {
     return API.uploadImg(file).then(res => {
-      console.log(res)
       commit('updateConfigImage', res.url)
     })
   },

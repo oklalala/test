@@ -128,7 +128,7 @@
         </el-tabs>
       </el-form-item>
       <el-form-item>
-        <h1>配置圖</h1>
+        <h2>配置圖</h2>
         <el-upload
           class="upload-image-area"
           drag
@@ -137,6 +137,7 @@
           :before-upload="verificationImgSize"
           :on-change="uploadImg"
           :auto-upload="false"
+          :file-list="[]"
           :limit="1"
         >
           <img :src="sitePlan" v-if="sitePlan" />
@@ -340,6 +341,11 @@
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
+            <el-button style="width: 100%" @click="toPath('ProjectsSetting')">
+              回上一頁
+            </el-button>
+          </el-col>
+          <el-col :span="12">
             <el-button
               type="primary"
               style="width: 100%"
@@ -347,11 +353,6 @@
               :disabled="!this.totalSoLocation && !this.totalVgLocation"
             >
               確定送出
-            </el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button style="width: 100%" @click="toPath('ProjectsSetting')">
-              取消
             </el-button>
           </el-col>
         </el-row>
@@ -448,6 +449,14 @@ export default {
         this.$store.commit('project', {
           property: 'companyId',
           value
+        })
+        this.$store.commit('project', {
+          property: 'OPT',
+          value: []
+        })
+        this.$store.commit('project', {
+          property: 'USER',
+          value: []
         })
       }
     },
@@ -608,7 +617,7 @@ export default {
           this.toPath('ProjectsSetting')
         })
         .catch(e => {
-          this.$message.error(`請重新檢查 ${e}`)
+          this.$message.error(`請重新檢查 ${e.message}`)
         })
     }
   }

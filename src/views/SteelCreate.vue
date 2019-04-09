@@ -165,7 +165,7 @@ export default {
           this.toPath('Steels')
         })
         .catch(e => {
-          this.$message.error(e.message)
+          this.$message.error(`請重新檢查 ${e.message}`)
         })
     }
   },

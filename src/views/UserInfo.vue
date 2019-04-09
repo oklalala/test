@@ -123,7 +123,7 @@ export default {
           this.toPath('Projects')
         })
         .catch(e => {
-          this.$message.error(`請重新檢查 ${e.response.data.result}`)
+          this.$message.error(`請重新檢查 ${e.message}`)
         })
     }
   }

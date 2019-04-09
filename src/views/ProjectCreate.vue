@@ -135,7 +135,7 @@
         </el-tabs>
       </el-form-item>
       <el-form-item>
-        <h1>配置圖</h1>
+        <h2>配置圖</h2>
         <el-upload
           class="upload-image-area"
           drag
@@ -144,6 +144,7 @@
           :before-upload="verificationImgSize"
           :on-change="uploadImg"
           :auto-upload="false"
+          :file-list="[]"
           :limit="1"
         >
           <img :src="sitePlan" alt="" v-if="sitePlan" />
@@ -220,7 +221,7 @@
                 </el-input-number>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <!-- <el-col :span="24">
               <el-form-item>
                 <el-button
                   @click.native="configVgCode()"
@@ -228,7 +229,7 @@
                   >產生軸力計編碼</el-button
                 >
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </el-row>
 
           <el-row :gutter="20" v-if="totalVgLocation">
@@ -325,7 +326,7 @@
             >
             </el-input-number>
           </el-form-item>
-          <el-form-item label="每孔深度 (m)" required>
+          <el-form-item label="預設每孔深度 (m)" required>
             <el-input-number
               v-model="defaultDepth"
               controls-position="right"
@@ -335,11 +336,11 @@
             >
             </el-input-number>
           </el-form-item>
-          <p>
+          <!-- <p>
             <el-button @click.native="configSoCode()" :disabled="isConfigSoCode"
               >產生傾度管編碼</el-button
             >
-          </p>
+          </p> -->
           <el-row :gutter="20" v-if="totalSoLocation">
             <el-col :xs="24" :sm="8">
               <h3>管理值<span class="small">(cm)</span></h3>
@@ -396,6 +397,11 @@
       <el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
+            <el-button style="width: 100%" @click="toPath('ProjectsSetting')">
+              回上一頁
+            </el-button>
+          </el-col>
+          <el-col :span="12">
             <el-button
               type="primary"
               style="width: 100%"
@@ -403,11 +409,6 @@
               :disabled="!this.totalSoLocation && !this.totalVgLocation"
             >
               確定送出
-            </el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button style="width: 100%" @click="toPath('ProjectsSetting')">
-              取消
             </el-button>
           </el-col>
         </el-row>
@@ -547,6 +548,10 @@ export default {
           property: 'vgIds',
           value
         })
+        this.$store.dispatch('configVgCode', {
+          totalFloor: this.isNeedMoreVg ? 0 : this.totalFloor,
+          totalVgPreFloor: this.isNeedMoreVg ? 0 : this.totalVgLocationPreFloor
+        })
       }
     },
     vgItemsOptions() {
@@ -560,6 +565,10 @@ export default {
         this.$store.commit('project', {
           property: 'floor',
           value
+        })
+        this.$store.dispatch('configVgCode', {
+          totalFloor: this.isNeedMoreVg ? 0 : value,
+          totalVgPreFloor: this.isNeedMoreVg ? 0 : this.totalVgPreFloor
         })
       }
     },
@@ -597,6 +606,10 @@ export default {
       },
       set(value) {
         this.$store.commit('defaultDepth', value)
+        this.$store.dispatch('configSoCode', {
+          depth: value,
+          total_location: this.totalEstimatedSoLocation
+        })
       }
     },
     totalVgLocationPreFloor() {
@@ -608,6 +621,10 @@ export default {
       },
       set(value) {
         this.$store.commit('totalVgPreFloor', value)
+        this.$store.dispatch('configVgCode', {
+          totalFloor: this.isNeedMoreVg ? 0 : this.totalFloor,
+          totalVgPreFloor: this.isNeedMoreVg ? 0 : value
+        })
       }
     },
     isConfigSoCode() {
@@ -625,6 +642,10 @@ export default {
       },
       set(value) {
         this.$store.commit('totalEstimatedSoLocation', value)
+        this.$store.dispatch('configSoCode', {
+          depth: this.defaultDepth,
+          total_location: value
+        })
       }
     }
   },
@@ -640,8 +661,8 @@ export default {
       return isLt2M
     },
     configVgCode() {
-      const totalFloor = this.totalFloor
-      const totalVgPreFloor = this.totalVgPreFloor
+      const totalFloor = this.isNeedMoreVg ? 0 : this.totalFloor
+      const totalVgPreFloor = this.isNeedMoreVg ? 0 : this.totalVgPreFloor
       this.$store.dispatch('configVgCode', {
         totalFloor,
         totalVgPreFloor
@@ -715,7 +736,7 @@ export default {
           if (e.response.data.result === 'number must be unique') {
             this.$message.error(`請重新檢查 案號重複`)
           } else {
-            this.$message.error(`請重新檢查 ${e.response.data.result}`)
+            this.$message.error(`請重新檢查 ${e.message}`)
           }
         })
     }
