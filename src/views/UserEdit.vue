@@ -13,7 +13,9 @@
         </el-col>
         <el-col :xs="24" :sm="12">
           <el-form-item label="角色">
+            <!-- 編輯停用，加入專案後，會自動轉換角色，不會退出角色 -->
             <el-select
+              disabled
               v-model="roleName"
               placeholder="請選擇"
               style="width: 100%"
@@ -43,20 +45,23 @@
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
           <el-col :xs="17" :sm="20">
-            <el-select
-              v-model="company"
-              disabled
-              placeholder="請選擇"
-              value-kay="id"
-            >
-              <el-option
-                v-for="company in companiesOptions"
-                :key="company.id"
-                :label="company.name"
-                :value="company"
+            <!-- 編輯停用，加入專案後，會變亂碼人員 -->
+            <el-form-item>
+              <el-select
+                v-model="company"
+                disabled
+                placeholder="請選擇"
+                value-key="id"
               >
-              </el-option>
-            </el-select>
+                <el-option
+                  v-for="item in companiesOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :xs="7" :sm="4">
             <el-button @click="toPath('Companies')">維護</el-button>
