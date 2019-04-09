@@ -1,14 +1,17 @@
 <!-- @format -->
 
 <template>
-  <el-container>
-    <el-header>
-      <h1 class="layout-navbar-title" style="color: #fff">大地監控</h1>
-    </el-header>
-    <label for="menu" id="burger" @click="isMobile = !isMobile">
-      <font-awesome-icon icon="bars" v-show="isLogined" />
+  <div class="nav-container">
+    <h1 class="web-title" style="color: #fff">大地監控</h1>
+    <label
+      for="menu"
+      id="burger"
+      v-if="isLogined"
+      @click="isMobileNav = !isMobileNav"
+    >
+      <font-awesome-icon icon="bars" />
     </label>
-    <section id="nav" v-if="!isMobile" v-show="isLogined">
+    <section id="nav" v-if="!isMobileNav && isLogined">
       <ul class="nav__items">
         <li
           class="nav__item"
@@ -53,10 +56,10 @@
         <li
           class="nav__item"
           :class="{
-            active: isActive('/projects-setting') || isActive('/project-phases')
+            active: isActive(['/projects-setting', '/project-phases'])
           }"
-          @click.capture="projectSubMenuShow = !projectSubMenuShow"
           v-if="isShow('project:CRUD')"
+          @click="toggleProjectSubNav"
         >
           專案設定
           <ul class="nav__sub" v-if="projectSubMenuShow">
@@ -87,21 +90,23 @@
         <li class="nav__item" @click="logout">登出</li>
       </ul>
     </section>
-  </el-container>
+  </div>
 </template>
 
 <script>
 import ToPathMixin from '@/mixins/ToPath'
-import RoleIsMixin from '@/mixins/RoleIs'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 export default {
   name: 'Navbar',
-  mixins: [ToPathMixin, RoleIsMixin],
+  mixins: [ToPathMixin],
+  components: {
+    FontAwesomeIcon
+  },
   data() {
     return {
       projectSubMenuShow: false,
-      isMobile: screen.width <= 700
+      isMobileNav: screen.width < 768
     }
   },
   mounted() {
@@ -109,9 +114,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
-  },
-  components: {
-    FontAwesomeIcon
   },
   computed: {
     isLogined() {
@@ -127,111 +129,117 @@ export default {
     },
     isShow(feature) {
       return (
-        !!this.$store.getters.myPermissions &&
-        this.$store.getters.myPermissions.includes(feature)
+        this.isLogined && this.$store.getters.myPermissions.includes(feature)
       )
     },
     isActive(route) {
-      return this.$route.path === route
+      if (Array.isArray(route)) {
+        return route.some(item => item === this.$route.path)
+      } else if (typeof route === 'string') {
+        return this.$route.path === route
+      }
     },
     handleResize(event) {
       var currentWidth = event.currentTarget.innerWidth
-      if (currentWidth >= 700) this.isMobile = false
-    }
-  },
-  watch: {
-    currentRoute: function(val) {
-      if (val !== '/projects-setting' && val !== '/project-phases') {
-        this.projectSubMenuShow = false
-      }
+      this.isMobileNav = currentWidth < 768
+    },
+    toggleProjectSubNav() {
+      this.projectSubMenuShow = !this.projectSubMenuShow
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.web-title {
+  font-size: 30px;
+  padding: 15px;
+  margin: 0;
+}
+
+.nav-container {
+  position: relative;
+}
 #nav {
   display: flex;
   justify-content: space-between;
   background: #545c64;
-  z-index: 4;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 }
+
 .nav__items {
   padding: 0;
   margin: 0;
 }
-/* navbar for mobile */
-@media screen and (max-width: 700px) {
-  #nav {
-    display: block;
-  }
-}
+
 .nav__item {
   display: inline-block;
+  line-height: 40px;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
   padding: 0 15px;
   font-size: 14px;
-  line-height: 60px;
   color: white;
   cursor: pointer;
-}
 
-@media screen and (max-width: 700px) {
-  .nav__item {
-    display: block;
-    line-height: 40px;
+  &:hover {
+    background: #434a50;
   }
 }
 
-@media screen and (min-width: 700px) {
-  .nav__sub {
-    position: absolute;
-    background: #545c64;
+.nav__sub {
+  // background: #545c64;
+  background: #434a50;
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  transform: translateX(-15px);
+  @media screen and (max-width: 768px) {
+    position: static;
     padding: 0;
-    transform: translateX(-15px);
+    transform: translateX(0);
   }
-  .nav__sub > .nav__item {
+  & > .nav__item {
     display: block;
   }
 }
 
-.nav__item:hover {
+.nav__item.active {
   background: #434a50;
 }
 
 .active {
-  outline: none;
   color: #ffd04b;
 }
 
-.layout-navbar-title {
-  font-size: 30px;
-  background: #545c64;
-  padding: 15px;
-  margin: 0;
-}
 .el-header {
   padding: 0;
 }
 
-#menu,
-#burger {
+#menu {
   color: white;
   display: none;
+  &:checked ~ #nav {
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
 }
+
 #burger {
-  font-size: 30px;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-}
-
-@media screen and (max-width: 700px) {
-  #burger {
+  display: none;
+  @media screen and (max-width: 768px) {
     display: block;
-  }
-
-  #menu:checked ~ #nav {
-    display: none;
+    color: white;
+    font-size: 30px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
   }
 }
+
+/* navbar for mobile */
 </style>

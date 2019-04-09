@@ -3,7 +3,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>
+      <el-header height="auto">
         <navbar />
       </el-header>
       <el-main id="main">
@@ -27,10 +27,16 @@ export default {
 }
 </script>
 
-<style>
-@media screen and (min-width: 700px) {
-  #main {
-    padding-top: 60px;
+<style lang="scss">
+.el-header {
+  background: #545c64;
+  padding: 0;
+
+  & + main {
+    margin-top: 0;
+    @media screen and (max-width: 768px) {
+      margin-top: 40px;
+    }
   }
 }
 </style>
