@@ -51,6 +51,14 @@
             </el-table>
           </el-form-item>
         </section>
+        <section v-if="soModelAbility.length">
+          <h2>可量測的值</h2>
+          <ol>
+            <li :key="index" v-for="(item, index) in soModelAbility">
+              {{ item }}
+            </li>
+          </ol>
+        </section>
       </template>
       <el-form-item>
         <el-button @click="toPath('SOItems')">
@@ -99,6 +107,13 @@ export default {
     },
     soItemParameters() {
       return this.$store.getters.soItemParameters
+    },
+    soModelAbility() {
+      if (this.soModel.id)
+        return this.$store.getters.soModels
+          .filter(model => model.id === this.soModel.id)
+          .shift().measurable
+      else return []
     }
   },
   methods: {
