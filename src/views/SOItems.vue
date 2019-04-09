@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <div class="soList">
+  <div class="soitems">
     <h1>傾度管列表</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
@@ -58,7 +58,7 @@ export default {
         .dispatch('deleteSOItems', this.deleteList)
         .then(() => {
           this.$message({
-            message: `傾度管 ${this.deleteList} 已刪除`,
+            message: `成功刪除`,
             type: 'success',
             showClose: true,
             center: true,

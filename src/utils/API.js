@@ -14,7 +14,11 @@ const responseHandler = {
   '401': res => {
     // token 過期
     store.dispatch('logout')
-    Promise.reject(res)
+    return Promise.reject(res.data)
+  },
+  '400': res => {
+    res.data.message = res.data.result
+    return Promise.reject(res.data)
   }
 }
 
@@ -33,41 +37,49 @@ export default {
     return responseHandler[response.status](response)
   },
   async POST(path, data) {
-    const response = await axios.post(`${baseURL}${path}`, data, {
-      headers: {
-        ...headers,
-        'x-access-token': store.getters.token
-      }
-    })
+    const response = await axios
+      .post(`${baseURL}${path}`, data, {
+        headers: {
+          ...headers,
+          'x-access-token': store.getters.token
+        }
+      })
+      .catch(e => e.response)
     return responseHandler[response.status](response)
   },
   async PUT(path, data) {
-    const response = await axios.put(`${baseURL}${path}`, data, {
-      headers: {
-        ...headers,
-        'x-access-token': store.getters.token
-      }
-    })
+    const response = await axios
+      .put(`${baseURL}${path}`, data, {
+        headers: {
+          ...headers,
+          'x-access-token': store.getters.token
+        }
+      })
+      .catch(e => e.response)
     return responseHandler[response.status](response)
   },
   async DELETE(path) {
-    const response = await axios.delete(`${baseURL}${path}`, {
-      headers: {
-        ...headers,
-        'x-access-token': store.getters.token
-      }
-    })
+    const response = await axios
+      .delete(`${baseURL}${path}`, {
+        headers: {
+          ...headers,
+          'x-access-token': store.getters.token
+        }
+      })
+      .catch(e => e.response)
     return responseHandler[response.status](response)
   },
   async uploadImg(file) {
     let formData = new FormData()
     formData.append('img', file)
-    const response = await axios.post(`${baseURL}/uploadImg`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'x-access-token': store.getters.token
-      }
-    })
+    const response = await axios
+      .post(`${baseURL}/uploadImg`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'x-access-token': store.getters.token
+        }
+      })
+      .catch(e => e.response)
     return responseHandler[response.status](response)
   },
   async exportXls(path, data = '') {
@@ -77,7 +89,7 @@ export default {
       headers: {
         'x-access-token': store.getters.token
       }
-    })
+    }).catch(e => e.response)
     return await res.blob()
   }
 }

@@ -17,7 +17,9 @@ import ProjectEdit from './views/ProjectEdit.vue'
 import ProjectMonitor from './views/ProjectMonitor.vue'
 import ProjectPhaseList from './views/ProjectPhaseList.vue'
 import VGItems from './views/VGItems.vue'
-import SteelList from './views/SteelList.vue'
+import SteelCreate from './views/SteelCreate.vue'
+import SteelEdit from './views/SteelEdit.vue'
+import Steels from './views/Steels.vue'
 import SOItems from './views/SOItems.vue'
 import SOItemCreate from './views/SOItemCreate.vue'
 import SOItemEdit from './views/SOItemEdit.vue'
@@ -153,7 +155,7 @@ let router = new Router({
           store.dispatch('getMe'),
           store.dispatch('getUsers'),
           store.dispatch('fetchVGItems'),
-          store.dispatch('getSteels')
+          store.dispatch('fetchSteels')
         ])
           .then(() => {
             if (from.path !== '/steels')
@@ -174,7 +176,7 @@ let router = new Router({
           store.dispatch('fetchCompanies'),
           store.dispatch('getUsers'),
           store.dispatch('fetchVGItems'),
-          store.dispatch('getSteels')
+          store.dispatch('fetchSteels')
         ])
           .then(() => {
             if (from.path !== '/steels')
@@ -233,11 +235,38 @@ let router = new Router({
     },
     {
       path: '/steels',
-      name: 'SteelList',
-      component: SteelList,
+      name: 'Steels',
+      component: Steels,
       meta: { requireAuth: true },
       beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getSteels')]).then(() => next())
+        store.dispatch('fetchSteels').then(() => next())
+      }
+    },
+    {
+      path: '/steel/:steelId',
+      name: 'SteelEdit',
+      component: SteelEdit,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.steels.length) {
+          store
+            .dispatch('fetchSteels')
+            .then(() => {
+              return store.dispatch('fetchSteel', to.params.steelId)
+            })
+            .then(() => next())
+        } else {
+          store.dispatch('fetchSteel', to.params.steelId).then(() => next())
+        }
+      }
+    },
+    {
+      path: '/steel',
+      name: 'SteelCreate',
+      component: SteelCreate,
+      meta: { requireAuth: true },
+      beforeEnter: (to, from, next) => {
+        store.dispatch('fetchSteel').then(() => next())
       }
     },
     {

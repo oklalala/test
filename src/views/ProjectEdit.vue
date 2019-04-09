@@ -251,7 +251,7 @@
             </el-col>
             <el-col :xs="24" :sm="18">
               <h3>位置編碼<span class="small">(VG-層數-流水號)</span></h3>
-              <el-button @click="toPath('SteelList')">
+              <el-button @click="toPath('Steels')">
                 維護鋼材資料
               </el-button>
               <el-table class="vg-table" :data="vgLocationCurrFloor">
