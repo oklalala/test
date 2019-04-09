@@ -82,7 +82,7 @@ let router = new Router({
           store.dispatch('getRoles'),
           store.dispatch('fetchCompanies'),
           store.dispatch('fetchSOItems'),
-          store.dispatch('getRolesPermissions')
+          store.dispatch('fetchRolesPermissions')
         ])
           .then(() => {
             if (from.path !== '/companies') {
@@ -102,7 +102,7 @@ let router = new Router({
           store.dispatch('getRoles'),
           store.dispatch('fetchCompanies'),
           store.dispatch('fetchSOItems'),
-          store.dispatch('getRolesPermissions')
+          store.dispatch('fetchRolesPermissions')
         ])
           .then(() => {
             if (from.path !== '/companies') {
@@ -121,8 +121,8 @@ let router = new Router({
       },
       beforeEnter: (to, from, next) => {
         Promise.all([
-          store.dispatch('getPermissions'),
-          store.dispatch('getRolesPermissions')
+          store.dispatch('fetchPermissions'),
+          store.dispatch('fetchRolesPermissions')
         ]).then(() => next())
       }
     },

@@ -34,7 +34,7 @@ export default {
         id: soItem.id,
         number: soItem.number
       }
-    }
+    },
   },
   getters: {
     everyone(state) {
@@ -73,6 +73,6 @@ export default {
         .shift()
       if (!role) role = getters.rolePermissions.slice().shift()
       return role.permissions
-    }
+    },
   }
 }

@@ -15,6 +15,7 @@ import measureSO from './measureSO'
 import soItems from './soItems'
 import soModels from './soModels'
 import projectMonitor from './projectMonitor'
+import rolesPermissions from './rolesPermissions'
 
 import actions from './actions'
 
@@ -29,7 +30,8 @@ export default new Vuex.Store({
     measureSO,
     soItems,
     soModels,
-    projectMonitor
+    projectMonitor,
+    rolesPermissions
   },
   actions,
   state: {
@@ -49,23 +51,7 @@ export default new Vuex.Store({
       phone: '',
       roleName: '',
       soItem: ''
-    },
-    permissions: {},
-    roles: [],
-    rolePermissions: [
-      {
-        permissions: [
-          {
-            name: '',
-            value: ''
-          }
-        ],
-        role: ''
-      }
-    ],
-    companies: [],
-    soItems: [],
-    lastPath: ''
+    }
   },
   mutations: {
     setToken(state, token) {
@@ -88,23 +74,6 @@ export default new Vuex.Store({
     },
     updateMe(state, payload) {
       state.me = Object.assign(state.me, payload)
-    },
-    setPermissions(state, permissions) {
-      state.permissions = permissions
-    },
-    setRoles(state, roles) {
-      state.roles = roles
-    },
-    setRolePermissions(state, rolePermissions) {
-      state.rolePermissions = rolePermissions
-    },
-    updateRolePermissions(state, { value, role, permissionIndex }) {
-      state.rolePermissions = state.rolePermissions.map(item => {
-        if (item.role === role) {
-          item.permissions[permissionIndex].value = value
-        }
-        return item
-      })
     },
     myPhone(state, phone) {
       state.me.phone = phone
@@ -145,15 +114,6 @@ export default new Vuex.Store({
     },
     myCompany(state) {
       return state.me.company
-    },
-    permissions(state) {
-      return state.permissions
-    },
-    roles(state) {
-      return state.roles
-    },
-    rolePermissions(state) {
-      return state.rolePermissions
     },
     myPhone(state) {
       return state.me.phone

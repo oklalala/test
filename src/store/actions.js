@@ -27,19 +27,4 @@ export default {
   async updateMe({ state }) {
     return await API.PUT(`/user/self`, state.me)
   },
-  async getRoles({ commit }) {
-    const res = await API.GET('/roles')
-    commit('setRoles', res.data)
-  },
-  async getPermissions({ commit }) {
-    const res = await API.GET('/permissions')
-    commit('setPermissions', res.data)
-  },
-  async getRolesPermissions({ commit }) {
-    const res = await API.GET('/role/permissions')
-    commit('setRolePermissions', res.data)
-  },
-  async updateRolePermissions({ state }) {
-    return await API.PUT('/role/permissions', state.rolePermissions)
-  }
 }
