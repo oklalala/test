@@ -6,18 +6,14 @@
     <h2>基本資料</h2>
     <el-form label-position="top" label-width="80px" :model="user">
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :xs="24" :sm="12">
           <el-form-item label="姓名">
             <el-input v-model="name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12">
           <el-form-item label="角色">
-            <el-select
-              v-model="roleName"
-              placeholder="請選擇"
-              style="width: 100%"
-            >
+            <el-select v-model="roleName" placeholder="請選擇">
               <el-option
                 v-for="item in rolesOptions"
                 :key="item.name"
@@ -41,13 +37,8 @@
       </el-row>
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
-          <el-col :xs="24" :sm="20">
-            <el-select
-              v-model="company"
-              placeholder="請選擇"
-              style="width: 100%"
-              value-kay="id"
-            >
+          <el-col :xs="17" :sm="20">
+            <el-select v-model="company" placeholder="請選擇" value-kay="id">
               <el-option
                 v-for="company in companiesOptions"
                 :key="company.id"
@@ -57,20 +48,13 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :xs="24" :sm="4">
-            <el-button style="width: 100%" @click="toPath('Companies')"
-              >維護</el-button
-            >
+          <el-col :xs="7" :sm="4">
+            <el-button @click="toPath('Companies')">維護</el-button>
           </el-col>
         </el-row>
       </el-form-item>
       <el-form-item label="傾度管" v-if="isShow('account:soItemSelf')">
-        <el-select
-          v-model="soItem"
-          placeholder="請選擇"
-          value-key="id"
-          style="width: 100%"
-        >
+        <el-select v-model="soItem" placeholder="請選擇" value-key="id">
           <el-option
             v-for="item in soItemOptions"
             :key="item.id"
@@ -81,18 +65,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-button type="primary" style="width: 100%" @click="edit">
-              確定送出
-            </el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button style="width: 100%" @click="toPath('Users')">
-              取消
-            </el-button>
-          </el-col>
-        </el-row>
+        <el-button @click="toPath('Users')">
+          回上一頁
+        </el-button>
+        <el-button type="primary" @click="onSubmit">
+          確定送出
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -168,7 +146,7 @@ export default {
     }
   },
   methods: {
-    edit() {
+    onSubmit() {
       this.$store
         .dispatch('createUser')
         .then(() => {

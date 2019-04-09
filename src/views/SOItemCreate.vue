@@ -50,16 +50,20 @@
               </el-table-column>
             </el-table>
           </el-form-item>
-          <el-form-item>
-            <el-button @click="toPath('SOItems')">
-              回上一頁
-            </el-button>
-            <el-button type="primary" @click="onSubmit">
-              確定送出
-            </el-button>
-          </el-form-item>
         </section>
       </template>
+      <el-form-item>
+        <el-button @click="toPath('SOItems')">
+          回上一頁
+        </el-button>
+        <el-button
+          type="primary"
+          @click="onSubmit"
+          :disabled="!soItemParameters.length"
+        >
+          確定送出
+        </el-button>
+      </el-form-item>
     </el-form>
   </div>
 </template>
