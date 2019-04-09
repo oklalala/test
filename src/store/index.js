@@ -15,7 +15,7 @@ import measureSO from './measureSO'
 import soItems from './soItems'
 import soModels from './soModels'
 import projectMonitor from './projectMonitor'
-import rolesPermissions from './rolesPermissions'
+import rolePermissions from './rolePermissions'
 
 import actions from './actions'
 
@@ -31,7 +31,7 @@ export default new Vuex.Store({
     soItems,
     soModels,
     projectMonitor,
-    rolesPermissions
+    rolePermissions
   },
   actions,
   state: {

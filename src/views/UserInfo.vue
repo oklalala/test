@@ -58,7 +58,7 @@
 
     <el-form-item class="button-container">
       <el-button type="primary" @click="submit">
-        確認
+        確認送出
       </el-button>
     </el-form-item>
   </el-form>

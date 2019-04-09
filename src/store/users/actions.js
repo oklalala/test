@@ -53,5 +53,5 @@ export default {
     let userIdsStr = userIds.join(',')
     await API.DELETE(`/users/${userIdsStr}`)
     return dispatch('getUsers')
-  },
+  }
 }

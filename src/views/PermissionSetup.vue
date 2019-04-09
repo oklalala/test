@@ -7,13 +7,16 @@
       <el-table-column prop="role" label="角色" width="140"> </el-table-column>
       <el-table-column prop="permissions" label="權限">
         <template slot-scope="scope">
-          <div v-for="(item, index) in scope.row.permissions" :key="index">
+          <div v-for="item in scope.row.permissions" :key="item.name">
             <el-checkbox
+              :disabled="item.name === 'account:CRUD'"
               v-if="item.name !== 'account:updateSelf'"
-              @change="updateRolePermissions(item.value, scope.row.role, index)"
+              @change="
+                changeRolePermissions(item.value, item.name, scope.row.role)
+              "
               :value="item.value"
             >
-              {{ permissions[item.name] }}
+              {{ AllPermissions[item.name] }}
             </el-checkbox>
           </div>
         </template>
@@ -22,9 +25,6 @@
     <div class="button-container">
       <el-button type="primary" @click="submit">
         確認送出
-      </el-button>
-      <el-button type="primary" @click="toPath('Projects')">
-        取消修改
       </el-button>
     </div>
   </div>
@@ -39,7 +39,7 @@ export default {
     return {}
   },
   computed: {
-    permissions() {
+    AllPermissions() {
       return this.$store.getters.permissions
     },
     rolePermissions() {
@@ -47,12 +47,12 @@ export default {
     }
   },
   methods: {
-    updateRolePermissions(value, role, permissionIndex) {
-      value = !value
-      this.$store.commit('updateRolePermissions', {
+    changeRolePermissions(permissionValue, permissionName, role) {
+      permissionValue = !permissionValue
+      this.$store.commit('toggleRolePermissionValue', {
         role,
-        permissionIndex,
-        value
+        permissionName,
+        permissionValue
       })
     },
     submit() {
@@ -60,7 +60,6 @@ export default {
         .dispatch('updateRolePermissions')
         .then(() => {
           this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
-          this.toPath('Projects')
         })
         .catch(e => {
           this.$message.error(e, '權限設定失敗')
