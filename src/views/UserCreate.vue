@@ -38,15 +38,17 @@
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
           <el-col :xs="17" :sm="20">
-            <el-select v-model="company" placeholder="請選擇" value-kay="id">
-              <el-option
-                v-for="company in companiesOptions"
-                :key="company.id"
-                :label="company.name"
-                :value="company"
-              >
-              </el-option>
-            </el-select>
+            <el-form-item>
+              <el-select v-model="company" placeholder="請選擇" value-key="id">
+                <el-option
+                  v-for="item in companiesOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :xs="7" :sm="4">
             <el-button @click="toPath('Companies')">維護</el-button>

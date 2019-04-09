@@ -43,7 +43,12 @@
       <el-form-item label="公司名稱">
         <el-row :gutter="20">
           <el-col :xs="17" :sm="20">
-            <el-select v-model="company" disabled placeholder="請選擇" value-kay="id">
+            <el-select
+              v-model="company"
+              disabled
+              placeholder="請選擇"
+              value-kay="id"
+            >
               <el-option
                 v-for="company in companiesOptions"
                 :key="company.id"
