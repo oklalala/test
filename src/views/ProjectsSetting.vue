@@ -13,7 +13,7 @@
         >
       </div>
       <div class="operationGroup-right">
-        <el-button @click="toPath('ProjectCreate')">
+        <el-button type="info" plain @click="toPath('ProjectCreate')">
           <i class="el-icon-plus"></i>
         </el-button>
       </div>
