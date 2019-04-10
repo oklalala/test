@@ -2,11 +2,11 @@
 
 <template>
   <div class="nav-container">
-    <div class="debug">
+    <!-- <div class="debug">
       <div>isHidenNav: {{isHidenNav}}</div>
       <div>isLogined: {{isLogined}}</div>
       <div>screenWidth: {{screenWidth}}</div>
-    </div>
+    </div> -->
     <h1 class="web-title" style="color: #fff">大地監控</h1>
     <label for="menu" id="burger" v-if="isLogined" @click="toggleHidenNav">
       <font-awesome-icon icon="bars" />
