@@ -3,15 +3,10 @@
 <template>
   <div class="nav-container">
     <h1 class="web-title" style="color: #fff">大地監控</h1>
-    <label
-      for="menu"
-      id="burger"
-      v-if="isLogined"
-      @click="isMobileNav = !isMobileNav"
-    >
+    <label for="menu" id="burger" v-if="isLogined" @click="toggleHidenNav">
       <font-awesome-icon icon="bars" />
     </label>
-    <section id="nav" v-if="!isMobileNav && isLogined">
+    <section id="nav" v-if="!isHidenNav && isLogined">
       <ul class="nav__items">
         <li
           class="nav__item"
@@ -106,7 +101,7 @@ export default {
   data() {
     return {
       projectSubMenuShow: false,
-      isMobileNav: screen.width < 768
+      isHidenNav: screen.width <= 768
     }
   },
   mounted() {
@@ -136,12 +131,16 @@ export default {
         return this.$route.path === route
       }
     },
-    handleResize(event) {
-      var currentWidth = event.currentTarget.innerWidth
-      this.isMobileNav = currentWidth < 768
+    handleResize() {
+      this.isHidenNav = screen.width <= 768
     },
-    toggleProjectSubNav() {
-      this.projectSubMenuShow = !this.projectSubMenuShow
+    toggleProjectSubNav(e) {
+      if (e.target.innerText === '專案設定') {
+        this.projectSubMenuShow = !this.projectSubMenuShow
+      }
+    },
+    toggleHidenNav() {
+      this.isHidenNav = !this.isHidenNav
     }
   }
 }
@@ -188,8 +187,6 @@ export default {
 }
 
 .nav__sub {
-  // background: #545c64;
-  background: #434a50;
   position: absolute;
   z-index: 1;
   padding: 0;
