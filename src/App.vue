@@ -7,18 +7,16 @@
         <navbar />
       </el-header>
       <el-main id="main">
-        <el-row type="flex" justify="center">
-          <el-col :span="22" :sm="18" :md="14">
-            <router-view></router-view>
-          </el-col>
-        </el-row>
+        <div class="main-container">
+          <router-view></router-view>
+        </div>
       </el-main>
     </el-container>
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/Navbar'
+import Navbar from '@/views/Navbar'
 export default {
   name: 'app',
   components: {
@@ -38,5 +36,10 @@ export default {
       margin-top: 40px;
     }
   }
+}
+
+.main-container {
+  max-width: 768px;
+  margin: auto;
 }
 </style>

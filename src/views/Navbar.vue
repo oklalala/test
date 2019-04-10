@@ -118,9 +118,6 @@ export default {
   computed: {
     isLogined() {
       return !!this.$store.getters.token
-    },
-    currentRoute() {
-      return this.$route.path
     }
   },
   methods: {

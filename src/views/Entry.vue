@@ -1,47 +1,39 @@
 <!-- @format -->
 
 <template>
-  <el-row class="entry" type="flex" justify="center">
-    <el-col :md="8" :sm="10" :span="12">
-      <el-form>
-        <el-form-item label="帳號">
-          <el-input
-            type="text"
-            name="account"
-            v-model="account"
-            placeholder="請輸入帳號"
-            @input="removeError"
+  <div class="entry-container">
+    <el-form class="entry">
+      <el-form-item label="帳號">
+        <el-input
+          type="text"
+          name="account"
+          v-model="account"
+          placeholder="請輸入帳號"
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item label="密碼">
+        <el-input
+          type="password"
+          name="password"
+          v-model="password"
+          placeholder="請輸入密碼"
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item>
+        <div class="button-container">
+          <el-button
+            type="primary"
+            native-type="submit"
+            @click.prevent="submit"
           >
-          </el-input>
-        </el-form-item>
-        <el-form-item label="密碼">
-          <el-input
-            type="password"
-            name="password"
-            v-model="password"
-            placeholder="請輸入密碼"
-            @input="removeError"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <p class="feedback">
-            {{ feedback }}
-          </p>
-          <div class="button-container">
-            <el-button
-              type="primary"
-              native-type="submit"
-              style="float:right;"
-              @click.prevent="submit"
-            >
-              登入
-            </el-button>
-          </div>
-        </el-form-item>
-      </el-form>
-    </el-col>
-  </el-row>
+            登入
+          </el-button>
+        </div>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -50,14 +42,20 @@ export default {
   data() {
     return {
       account: null,
-      password: null,
-      feedback: ''
+      password: null
     }
   },
   methods: {
     submit() {
-      if (!this.account) return (this.feedback = '請輸入帳號')
-      if (!this.password) return (this.feedback = '請輸入密碼')
+      if (!this.account) {
+        this.$message.error(`請輸入帳號`)
+        return
+      }
+      if (!this.password) {
+        this.$message.error(`請輸入密碼`)
+        return
+      }
+
       this.$store
         .dispatch('login', {
           account: this.account,
@@ -70,21 +68,31 @@ export default {
             center: true,
             duration: 1800
           })
-          this.$router.push({ name: 'Projects' })
+          this.$router.push({
+            name: 'Projects'
+          })
         })
-        .catch(() => {
-          this.feedback = '帳號密碼不匹配'
+        .catch(e => {
+          this.$message.error(e.message)
         })
-    },
-    removeError() {
-      this.feedback = ''
     }
   }
 }
 </script>
 
 <style>
-.feedback {
+.entry-container {
+  height: 75vh;
+  position: relative;
+}
+
+.entry {
+  max-width: 240px;
+  height: 284px;
   position: absolute;
+  top: 10vh;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 </style>
