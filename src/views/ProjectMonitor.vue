@@ -95,8 +95,8 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="24" v-if="!!currentSoDate && !!currentSoDate">
-              <SOECharts :soChartData="soChartData" :project="project" />
+            <el-col :span="24" style="min-height: 400px;">
+              <SOECharts v-if="!!currentSoDate && !!currentSoDate" :soChartData="soChartData" :project="project" />
             </el-col>
             <el-col :span="24">
               <el-button
@@ -277,5 +277,10 @@ export default {
 .vgECharts,
 .soECharts {
   overflow-y: auto;
+}
+</style>
+<style>
+.echarts {
+  margin: auto;
 }
 </style>
