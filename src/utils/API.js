@@ -22,9 +22,8 @@ const responseHandler = {
   },
   '400': res => {
     if (res.data.result in errorMessageMap)
-      res.data.message = errorMessageMap(res.data.result)
-    else
-      res.data.message = res.data.result
+      res.data.message = errorMessageMap[res.data.result]
+    else res.data.message = res.data.result
     return Promise.reject(res.data)
   }
 }
