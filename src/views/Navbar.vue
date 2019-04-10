@@ -2,6 +2,11 @@
 
 <template>
   <div class="nav-container">
+    <div class="debug">
+      <div>isHidenNav: {{isHidenNav}}</div>
+      <div>isLogined: {{isLogined}}</div>
+      <div>screenWidth: {{screenWidth}}</div>
+    </div>
     <h1 class="web-title" style="color: #fff">大地監控</h1>
     <label for="menu" id="burger" v-if="isLogined" @click="toggleHidenNav">
       <font-awesome-icon icon="bars" />
@@ -101,14 +106,19 @@ export default {
   data() {
     return {
       projectSubMenuShow: false,
-      isHidenNav: screen.width <= 768
+      isHidenNav: false
     }
+  },
+  created() {
+    this.isHidenNav = document.documentElement.clientWidth <= 768
   },
   mounted() {
     window.addEventListener('resize', this.handleResize)
+    window.addEventListener("orientationchange", this.resetScreenWidth)
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener("orientationchange", this.resetScreenWidth)
   },
   computed: {
     isLogined() {
@@ -131,8 +141,12 @@ export default {
         return this.$route.path === route
       }
     },
-    handleResize() {
-      this.isHidenNav = screen.width <= 768
+    handleResize(e) {
+      // this.isHidenNav = event.currentTarget.innerWidth
+    },
+    resetScreenWidth(e) {
+      console.log(document.documentElement.clientWidth);
+      this.isHidenNav = document.documentElement.clientWidth <= 768
     },
     toggleProjectSubNav(e) {
       if (e.target.innerText === '專案設定') {
@@ -147,6 +161,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.debug {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: white;
+}
 .web-title {
   font-size: 30px;
   padding: 15px;
