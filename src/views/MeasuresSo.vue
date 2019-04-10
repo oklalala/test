@@ -59,7 +59,7 @@
         <el-button
           @click="measures"
           :disabled="
-            measuresSoDatas.length === currentDepth ||
+            measuresSoDatas.length >= currentDepth ||
               !projectPhaseId ||
               isMeasuring ||
               !soItem
@@ -131,21 +131,23 @@ export default {
           resolve('Promise A win!')
         }, 5000)
       })
-      console.log(this.soItem)
+
       let raceMeasures = startMeasures(
         this.wiseIP,
         this.measuresSoDatas,
         this.soItem,
         this.currentDepth
       )
-      Promise.race([racePromise, raceMeasures])
-        .then(() => {
-          this.isMeasuring = false
-        })
-        .catch(() => {
-          this.isMeasuring = false
-        })
-      this.isMeasuring = true
+      if (!this.isMeasuring) {
+        Promise.race([racePromise, raceMeasures])
+          .then(() => {
+            this.isMeasuring = false
+          })
+          .catch(() => {
+            this.isMeasuring = false
+          })
+        this.isMeasuring = true
+      }
     },
     clearMeasuresDatas: function() {
       this.measuresSoDatas = []
