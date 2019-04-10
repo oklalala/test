@@ -221,7 +221,7 @@
                 </el-input-number>
               </el-form-item>
             </el-col>
-            <!-- <el-col :span="24">
+            <el-col :span="24">
               <el-form-item>
                 <el-button
                   @click.native="configVgCode()"
@@ -229,7 +229,7 @@
                   >產生軸力計編碼</el-button
                 >
               </el-form-item>
-            </el-col> -->
+            </el-col>
           </el-row>
 
           <el-row :gutter="20" v-if="totalVgLocation">
@@ -336,11 +336,11 @@
             >
             </el-input-number>
           </el-form-item>
-          <!-- <p>
+          <el-form-item>
             <el-button @click.native="configSoCode()" :disabled="isConfigSoCode"
               >產生傾度管編碼</el-button
             >
-          </p> -->
+          </el-form-item>
           <el-row :gutter="20" v-if="totalSoLocation">
             <el-col :xs="24" :sm="8">
               <h3>管理值<span class="small">(cm)</span></h3>
@@ -733,11 +733,7 @@ export default {
           this.toPath('ProjectsSetting')
         })
         .catch(e => {
-          if (e.response.data.result === 'number must be unique') {
-            this.$message.error(`請重新檢查 案號重複`)
-          } else {
-            this.$message.error(`請重新檢查 ${e.message}`)
-          }
+          this.$message.error(`請重新檢查 ${e.message}`)
         })
     }
   }

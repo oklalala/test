@@ -96,7 +96,11 @@
               </el-form-item>
             </el-col>
             <el-col :span="24" style="min-height: 400px;">
-              <SOECharts v-if="!!currentSoDate && !!currentSoDate" :soChartData="soChartData" :project="project" />
+              <SOECharts
+                v-if="!!currentSoDate && !!currentSoDate"
+                :soChartData="soChartData"
+                :project="project"
+              />
             </el-col>
             <el-col :span="24">
               <el-button

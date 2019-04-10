@@ -9,6 +9,10 @@ const headers = {
   Accept: 'application/json'
 }
 
+const errorMessageMap = {
+  'number must be unique': '請重新檢查 案號重複'
+}
+
 const responseHandler = {
   '200': res => res.data,
   '401': res => {
@@ -17,7 +21,10 @@ const responseHandler = {
     return Promise.reject(res.data)
   },
   '400': res => {
-    res.data.message = res.data.result
+    if (res.data.result in errorMessageMap)
+      res.data.message = errorMessageMap(res.data.result)
+    else
+      res.data.message = res.data.result
     return Promise.reject(res.data)
   }
 }
