@@ -12,7 +12,7 @@
           >刪除</el-button
         >
       </el-col>
-      <el-col class="operationGroup-right" :span="8">
+      <el-col class="operationGroup-right" :xs="18" :sm="8">
         <el-input v-model="newVGItemNumber" placeholder="新增軸力計">
           <el-button
             :disabled="!newVGItemNumber"

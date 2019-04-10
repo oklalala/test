@@ -12,7 +12,7 @@
           >刪除</el-button
         >
       </el-col>
-      <el-col class="operationGroup-right" :span="8">
+      <el-col class="operationGroup-right" :xs="18" :sm="8">
         <el-input v-model="newCompanyName" placeholder="新增公司名稱">
           <el-button
             slot="append"
