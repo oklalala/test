@@ -81,24 +81,37 @@ export default {
     },
     deleteVGItems() {
       if (this.deleteVGItemsId.length === 0) return
-      this.$store
-        .dispatch('deleteVGs', this.deleteVGItemsId)
+      this.$confirm('確定要刪除？', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
         .then(() => {
-          this.$message({
-            message: `軸力計 ${this.deleteVGItemsId} 已刪除`,
-            type: 'success',
-            showClose: true,
-            center: true,
-            duration: 1200
-          })
+          this.$store
+            .dispatch('deleteVGs', this.deleteVGItemsId)
+            .then(() => {
+              this.$message({
+                message: `軸力計 ${this.deleteVGItemsId} 已刪除`,
+                type: 'success',
+                showClose: true,
+                center: true,
+                duration: 1200
+              })
+            })
+            .catch(() => {
+              this.$message({
+                message: `已被專案使用`,
+                type: 'error',
+                showClose: true,
+                center: true,
+                duration: 1200
+              })
+            })
         })
         .catch(() => {
           this.$message({
-            message: `已被專案使用`,
-            type: 'error',
-            showClose: true,
-            center: true,
-            duration: 1200
+            type: 'info',
+            message: '已取消刪除'
           })
         })
     },

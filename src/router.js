@@ -305,6 +305,10 @@ let router = new Router({
           store.dispatch('fetchSOModels')
         ]).then(() => next())
       }
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })

@@ -78,18 +78,31 @@ export default {
     },
     deleteCompanies() {
       if (this.deleteCompaniesId.length === 0) return
-      this.$store
-        .dispatch('deleteCompanies', this.deleteCompaniesId)
+      this.$confirm('確定要刪除？', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
         .then(() => {
-          this.$message({
-            message: `成功刪除`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
+          this.$store
+            .dispatch('deleteCompanies', this.deleteCompaniesId)
+            .then(() => {
+              this.$message({
+                message: `成功刪除`,
+                type: 'success',
+                center: true,
+                duration: 1800
+              })
+            })
+            .catch(e => {
+              this.$message.error(`請重新檢查 ${e.message}`)
+            })
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
         })
     },
     updateDeleteList(value) {

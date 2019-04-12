@@ -26,6 +26,7 @@ import {
   Checkbox,
   Dialog,
   Message,
+  MessageBox,
   tabPane,
   tabs,
   Pagination,
@@ -92,6 +93,11 @@ import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.prototype.$message = Message
+// Vue.prototype.$msgbox = MessageBox;
+// Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm
+// Vue.prototype.$prompt = MessageBox.prompt;
+
 Vue.prototype.moment = moment
 
 library.add(faBars)

@@ -58,19 +58,32 @@ export default {
   methods: {
     deleteUsers() {
       if (this.deleteList.length === 0) return
-      this.$store
-        .dispatch('deleteUsers', this.deleteList)
+      this.$confirm('確定要刪除？', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
         .then(() => {
-          this.$message({
-            message: `使用者 ${this.deleteList} 已刪除`,
-            type: 'success',
-            showClose: true,
-            center: true,
-            duration: 1200
-          })
+          this.$store
+            .dispatch('deleteUsers', this.deleteList)
+            .then(() => {
+              this.$message({
+                message: `使用者 ${this.deleteList} 已刪除`,
+                type: 'success',
+                showClose: true,
+                center: true,
+                duration: 1200
+              })
+            })
+            .catch(e => {
+              this.$message.error(`請重新檢查 ${e.message}`)
+            })
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消刪除'
+          })
         })
     },
     updateDeleteList(value) {
