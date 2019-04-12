@@ -159,6 +159,7 @@ export default {
     },
     datePickerOptions() {
       const startVgDate = this.$store.getters.vgMeasuredDataRange.start
+      startVgDate.setDate(startVgDate.getDate() - 1)
       const endVgDate = this.$store.getters.vgMeasuredDataRange.end
       return {
         disabledDate(time) {
