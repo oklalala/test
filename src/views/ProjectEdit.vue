@@ -186,7 +186,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="將軸力計">
-            <el-select v-model="oldVgId" style="width: 100%">
+            <el-select v-model="oldVgId" style="width: 100%" clearable>
               <el-option
                 v-for="vg in vgItemsInProjectOptions"
                 :key="vg.id"
@@ -197,7 +197,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="換成">
-            <el-select v-model="newVgId" style="width: 100%">
+            <el-select v-model="newVgId" style="width: 100%" :disabled="!oldVgId">
               <el-option
                 v-for="vg in vgItemsNotInProject"
                 :key="vg.id"
