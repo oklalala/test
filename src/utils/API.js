@@ -10,7 +10,8 @@ const headers = {
 }
 
 const errorMessageMap = {
-  'number must be unique': '請重新檢查 案號重複'
+  'number must be unique': '案號重複',
+  'name must be unique': '名稱重複'
 }
 
 const responseHandler = {

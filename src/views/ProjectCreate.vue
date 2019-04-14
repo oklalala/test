@@ -168,17 +168,7 @@
         <el-tab-pane label="軸力計 (VG)">
           <el-row :gutter="20">
             <el-col :span="24">
-              <el-form-item
-                label="使用軸力計編號(可複選)"
-                prop="vgIds"
-                :rules="[
-                  {
-                    required: true,
-                    message: '請選擇軸力計',
-                    trigger: ['blur', 'change']
-                  }
-                ]"
-              >
+              <el-form-item label="使用軸力計編號(可複選)">
                 <el-select
                   v-model="vgItemIdsInProject"
                   multiple
@@ -198,7 +188,7 @@
               </el-form-item>
             </el-col>
             <el-col :sm="12" :xs="24">
-              <el-form-item label="支撐階數" required>
+              <el-form-item label="支撐階數">
                 <el-input-number
                   v-model="totalFloor"
                   controls-position="right"
@@ -210,7 +200,7 @@
               </el-form-item>
             </el-col>
             <el-col :sm="12" :xs="24">
-              <el-form-item label="每層數量" required>
+              <el-form-item label="每層數量">
                 <el-input-number
                   v-model="totalVgPreFloor"
                   controls-position="right"
@@ -253,7 +243,6 @@
                 :prop="key"
                 :rules="[
                   {
-                    required: true,
                     validator: validateVgManagementValue,
                     message: `請檢查${managementLabel[key]}值`,
                     label: key,
@@ -316,7 +305,7 @@
         </el-tab-pane>
 
         <el-tab-pane label="傾度管 (SO)">
-          <el-form-item label="數量" required>
+          <el-form-item label="數量">
             <el-input-number
               v-model="totalEstimatedSoLocation"
               controls-position="right"
@@ -326,7 +315,7 @@
             >
             </el-input-number>
           </el-form-item>
-          <el-form-item label="預設每孔深度 (m)" required>
+          <el-form-item label="預設每孔深度 (m)">
             <el-input-number
               v-model="defaultDepth"
               controls-position="right"
@@ -351,7 +340,6 @@
                 :prop="key"
                 :rules="[
                   {
-                    required: true,
                     message: `請檢查${managementLabel[key]}值`,
                     validator: validateSoManagementValue,
                     label: key,

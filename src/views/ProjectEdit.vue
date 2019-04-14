@@ -162,18 +162,8 @@
 
       <h2>監控設定</h2>
       <el-tabs type="border-card" stretch>
-        <el-tab-pane label="軸力計 (VG)">
-          <el-form-item
-            label="使用軸力計編號(可複選)"
-            prop="vgIds"
-            :rules="[
-              {
-                required: true,
-                message: '請選擇軸力計',
-                trigger: ['blur', 'change']
-              }
-            ]"
-          >
+        <el-tab-pane label="軸力計 (VG)" v-if="vgLocationCurrFloor.length">
+          <el-form-item label="使用軸力計編號(可複選)">
             <el-select
               v-model="vgItemIdsInProject"
               multiple
@@ -239,7 +229,6 @@
                 :prop="key"
                 :rules="[
                   {
-                    required: true,
                     validator: validateVgManagementValue,
                     message: `請檢查${managementLabel[key]}值`,
                     label: key,
@@ -296,8 +285,8 @@
           </el-row>
         </el-tab-pane>
 
-        <el-tab-pane label="傾度管 (SO)">
-          <el-row :gutter="20" v-if="totalSoLocation">
+        <el-tab-pane label="傾度管 (SO)" v-if="soLocation.length">
+          <el-row :gutter="20">
             <el-col :xs="24" :sm="8">
               <h3>管理值<span class="small">(cm)</span></h3>
               <el-form-item
@@ -307,7 +296,6 @@
                 :prop="key"
                 :rules="[
                   {
-                    required: true,
                     message: `請檢查${managementLabel[key]}值`,
                     validator: validateSoManagementValue,
                     label: key,
