@@ -320,6 +320,7 @@ let router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  if (!store) next()
   if (!store.getters.isLogined) {
     cookies.reloadLogin()
   }
@@ -330,7 +331,7 @@ router.beforeEach(async (to, from, next) => {
       name: 'Entry'
     })
   }
-  if (!store.getters.me.name) {
+  if (!store.getters.me.name && store.getters.myId) {
     await store.dispatch('getMe')
     next()
   }
