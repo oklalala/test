@@ -704,6 +704,58 @@ export default {
       if (rule.required) !value && next(new Error(rule.message))
       next()
     },
+    validateConfigLv1() {
+      // 可選擇是否要量測
+      let message = ''
+      if (!this.project.vgLocation.length) {
+        message = '軸力計'
+      }
+
+      if (!this.project.soLocation.length) {
+        message += message.length ? '或傾度管' : '傾度管'
+      }
+
+      if (!message.length) {
+        return Promise.resolve()
+      } else {
+        return this.$confirm(`不需量測${message}嗎？`, '提示', {
+          confirmButtonText: '確定不量',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+      }
+    },
+    validateConfigLv2() {
+      // 選擇之後，一定要設定的
+      if (this.project.vgLocation.length) {
+        let error_floor = 0
+        if (
+          this.project.vgManagement.some((item, index) => {
+            if (!item.warning || !item.notice || !item.action) {
+              error_floor = index
+              return true
+            }
+            return false
+          })
+        ) {
+          return Promise.reject(
+            Error(`未設定第${error_floor + 1}階的軸力計管理值`)
+          )
+        }
+      }
+
+      if (
+        this.project.soLocation.length &&
+        (!this.project.soManagement.warning ||
+          !this.project.soManagement.notice ||
+          !this.project.soManagement.action)
+      ) {
+        return Promise.reject(Error(`未設定傾度的管理值`))
+      }
+
+      // pass
+      return Promise.resolve()
+    },
     updateSoManagementValue(label, value) {
       this.$store.commit('soManagementValue', {
         value,
@@ -711,30 +763,35 @@ export default {
       })
     },
     onSubmit() {
-      this.$refs.project.validate(isValidSuccess => {
-        if (isValidSuccess) {
-          this.submitProject()
-        } else {
-          this.$message.error(`請重新檢查必填欄位`)
-          return false
-        }
-      })
-    },
-    submitProject() {
-      this.$store
-        .dispatch('createProject')
+      console.clear()
+      this.validateConfigLv1()
         .then(() => {
-          this.$message({
-            message: `成功新增 ${this.project.name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
+          return this.validateConfigLv2()
+        })
+        .then(() => {
+          this.$refs.project.validate(isValidSuccess => {
+            if (isValidSuccess) {
+              this.submitProject()
+            } else {
+              this.$message.error(`請重新檢查必填欄位`)
+              return false
+            }
           })
-          this.toPath('ProjectsSetting')
         })
         .catch(e => {
           this.$message.error(`請重新檢查 ${e.message}`)
         })
+    },
+    submitProject() {
+      this.$store.dispatch('createProject').then(() => {
+        this.$message({
+          message: `成功新增 ${this.project.name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+        this.toPath('ProjectsSetting')
+      })
     }
   }
 }

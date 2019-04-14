@@ -26,5 +26,8 @@ export default {
   },
   async updateMe({ state }) {
     return await API.PUT(`/user/self`, state.me)
+  },
+  async dev() {
+    return await Promise.resolve('chris')
   }
 }
