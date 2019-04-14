@@ -112,7 +112,7 @@ export default {
         })
       } catch (e) {
         this.$message({
-          message: `已被專案使用`,
+          message: `軸力計已被專案使用過`,
           type: 'error',
           showClose: true,
           center: true,
