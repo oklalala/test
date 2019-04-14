@@ -44,8 +44,9 @@ let router = new Router({
       meta: {
         requireAuth: true
       },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('getMe').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('getMe')
+        next()
       }
     },
     {
@@ -55,8 +56,9 @@ let router = new Router({
       meta: {
         requireAuth: true
       },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchCompanies').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchCompanies')
+        next()
       }
     },
     {
@@ -66,8 +68,9 @@ let router = new Router({
       meta: {
         requireAuth: true
       },
-      beforeEnter: (to, from, next) => {
-        Promise.all([store.dispatch('getUsers')]).then(() => next())
+      async beforeEnter(to, from, next) {
+        await Promise.all([store.dispatch('getUsers')])
+        next()
       }
     },
     {
@@ -77,19 +80,19 @@ let router = new Router({
       meta: {
         requireAuth: true
       },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('fetchCompanies'),
           store.dispatch('fetchSOItems'),
           store.dispatch('fetchrolePermissions')
         ])
-          .then(() => {
-            if (from.path !== '/companies') {
-              return store.dispatch('fetchUser', to.params.userId)
-            } else return Promise.resolve()
-          })
-          .then(() => next())
+        if (from.path !== '/companies') {
+          await store.dispatch('fetchUser', to.params.userId)
+        } else {
+          await Promise.resolve()
+        }
+        next()
       }
     },
     {
@@ -97,19 +100,19 @@ let router = new Router({
       name: 'UserEdit',
       component: UserEdit,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('getRoles'),
           store.dispatch('fetchCompanies'),
           store.dispatch('fetchSOItems'),
           store.dispatch('fetchrolePermissions')
         ])
-          .then(() => {
-            if (from.path !== '/companies') {
-              return store.dispatch('fetchUser', to.params.userId)
-            } else return Promise.resolve()
-          })
-          .then(() => next())
+        if (from.path !== '/companies') {
+          await store.dispatch('fetchUser', to.params.userId)
+        } else {
+          await Promise.resolve()
+        }
+        next()
       }
     },
     {
@@ -119,11 +122,12 @@ let router = new Router({
       meta: {
         requireAuth: true
       },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('fetchPermissions'),
           store.dispatch('fetchrolePermissions')
-        ]).then(() => next())
+        ])
+        next()
       }
     },
     {
@@ -131,8 +135,9 @@ let router = new Router({
       name: 'Projects',
       component: Projects,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchProjects').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchProjects')
+        next()
       }
     },
     {
@@ -140,8 +145,9 @@ let router = new Router({
       name: 'ProjectsSetting',
       component: ProjectsSetting,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchProjects').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchProjects')
+        next()
       }
     },
     {
@@ -149,20 +155,19 @@ let router = new Router({
       name: 'ProjectCreate',
       component: ProjectCreate,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('fetchCompanies'),
           store.dispatch('getMe'),
           store.dispatch('getUsers'),
           store.dispatch('fetchVGItems'),
           store.dispatch('fetchSteels')
         ])
-          .then(() => {
-            if (from.path !== '/steels')
-              return store.dispatch('newProject', to.params.projectId)
-            else return Promise.resolve()
-          })
-          .then(() => next())
+        if (from.path !== '/steels')
+          await store.dispatch('newProject', to.params.projectId)
+        else await Promise.resolve()
+
+        next()
       }
     },
     {
@@ -170,20 +175,19 @@ let router = new Router({
       name: 'ProjectEdit',
       component: ProjectEdit,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('getMe'),
           store.dispatch('fetchCompanies'),
           store.dispatch('getUsers'),
           store.dispatch('fetchVGItems'),
           store.dispatch('fetchSteels')
         ])
-          .then(() => {
-            if (from.path !== '/steels')
-              return store.dispatch('fetchProject', to.params.projectId)
-            else return Promise.resolve()
-          })
-          .then(() => next())
+        if (from.path !== '/steels')
+          await store.dispatch('fetchProject', to.params.projectId)
+        else await Promise.resolve()
+
+        next()
       }
     },
     {
@@ -191,8 +195,9 @@ let router = new Router({
       name: 'ProjectMonitor',
       component: ProjectMonitor,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchProject', to.params.projectId).then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchProject', to.params.projectId)
+        next()
       }
     },
     {
@@ -202,17 +207,16 @@ let router = new Router({
       meta: {
         requireAuth: true
       },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('fetchProject', to.params.projectId),
           store.dispatch('getMe'),
           store.dispatch('fetchProjectPhases')
-        ]).then(() => {
-          if (store.getters.me.soItem) {
-            store.dispatch('fetchSOItem', store.getters.me.soItem.id)
-          }
-          next()
-        })
+        ])
+        if (store.getters.me.soItem) {
+          store.dispatch('fetchSOItem', store.getters.me.soItem.id)
+        }
+        next()
       }
     },
     {
@@ -220,8 +224,9 @@ let router = new Router({
       name: 'ProjectPhaseList',
       component: ProjectPhaseList,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchProjectPhases').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchProjectPhases')
+        next()
       }
     },
     {
@@ -229,8 +234,9 @@ let router = new Router({
       name: 'VGItems',
       component: VGItems,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchVGItems').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchVGItems')
+        next()
       }
     },
     {
@@ -238,8 +244,9 @@ let router = new Router({
       name: 'Steels',
       component: Steels,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchSteels').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchSteels')
+        next()
       }
     },
     {
@@ -247,16 +254,14 @@ let router = new Router({
       name: 'SteelEdit',
       component: SteelEdit,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
+      async beforeEnter(to, from, next) {
         if (!store.getters.steels.length) {
-          store
-            .dispatch('fetchSteels')
-            .then(() => {
-              return store.dispatch('fetchSteel', to.params.steelId)
-            })
-            .then(() => next())
+          await store.dispatch('fetchSteels')
+          await store.dispatch('fetchSteel', to.params.steelId)
+          next()
         } else {
-          store.dispatch('fetchSteel', to.params.steelId).then(() => next())
+          await store.dispatch('fetchSteel', to.params.steelId)
+          next()
         }
       }
     },
@@ -265,8 +270,9 @@ let router = new Router({
       name: 'SteelCreate',
       component: SteelCreate,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchSteel').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchSteel')
+        next()
       }
     },
     {
@@ -274,8 +280,9 @@ let router = new Router({
       name: 'SOItems',
       component: SOItems,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        store.dispatch('fetchSOItems').then(() => next())
+      async beforeEnter(to, from, next) {
+        await store.dispatch('fetchSOItems')
+        next()
       }
     },
     {
@@ -283,15 +290,13 @@ let router = new Router({
       name: 'SOItemCreate',
       component: SOItemCreate,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('fetchSOItems'),
           store.dispatch('fetchSOModels')
         ])
-          .then(() => {
-            return store.dispatch('fetchSOItem')
-          })
-          .then(() => next())
+        await store.dispatch('fetchSOItem')
+        next()
       }
     },
     {
@@ -299,11 +304,12 @@ let router = new Router({
       name: 'SOItemEdit',
       component: SOItemEdit,
       meta: { requireAuth: true },
-      beforeEnter: (to, from, next) => {
-        Promise.all([
+      async beforeEnter(to, from, next) {
+        await Promise.all([
           store.dispatch('fetchSOItem', to.params.soId),
           store.dispatch('fetchSOModels')
-        ]).then(() => next())
+        ])
+        next()
       }
     },
     {
@@ -313,7 +319,7 @@ let router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (!store.getters.isLogined) {
     cookies.reloadLogin()
   }
@@ -325,10 +331,8 @@ router.beforeEach((to, from, next) => {
     })
   }
   if (!store.getters.me.name) {
-    store
-      .dispatch('getMe')
-      .then(() => {})
-      .then(() => next())
+    await store.dispatch('getMe')
+    next()
   }
 
   next()
