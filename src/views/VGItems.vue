@@ -67,17 +67,22 @@ export default {
     }
   },
   methods: {
-    async sendNewVGItem() {
-      await this.$store.dispatch('createVG', {
+    sendNewVGItem() {
+      this.$store.dispatch('createVG', {
         number: this.newVGItemNumber
       })
-      this.$message({
-        message: `成功新增 ${this.newVGItemNumber}`,
-        type: 'success',
-        center: true,
-        duration: 1800
+      .then(() => {
+        this.$message({
+          message: `成功新增 ${this.newVGItemNumber}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+        this.newVGItemNumber = ''
       })
-      this.newVGItemNumber = ''
+      .catch(e => {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      })
     },
     deleteVGItems() {
       if (this.deleteVGItemsId.length === 0) return
