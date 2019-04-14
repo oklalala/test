@@ -38,7 +38,11 @@
               }
             ]"
           >
-            <el-select v-model="status" style="width: 100%">
+            <el-select
+              v-model="status"
+              style="width: 100%"
+              :disabled="statusDisable"
+            >
               <el-option
                 v-for="item in statusOptions"
                 :key="item.value"
@@ -197,7 +201,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="換成">
-            <el-select v-model="newVgId" style="width: 100%" :disabled="!oldVgId">
+            <el-select
+              v-model="newVgId"
+              style="width: 100%"
+              :disabled="!oldVgId"
+            >
               <el-option
                 v-for="vg in vgItemsNotInProject"
                 :key="vg.id"
@@ -371,12 +379,19 @@ export default {
     return {
       oldVgId: '',
       newVgId: '',
+      statusDisable: false,
       managementLabel: {
         notice: '注意',
         warning: '警戒',
         action: '行動'
       }
     }
+  },
+  mounted() {
+    // 軸力計在案子結案之後，是可以替換給別人使用的。
+    // 如果，案子結案之後，再回到啟動，也許會讓軸力計重複設定給專案
+    // 所以，必須要讓結案的案子無法再修改，而且不要即時改變這件事
+    this.statusDisable = this.status === 'end'
   },
   computed: {
     project() {
@@ -535,6 +550,11 @@ export default {
     totalSoLocation() {
       return this.$store.getters.totalSoLocation
     },
+    isChangeProjectStatus() {
+      return (
+        this.statusDisable === false && this.status === 'end' //原本是 執行
+      ) // 改成結案
+    },
     soLocation() {
       return this.$store.getters.soLocation
     }
@@ -602,23 +622,36 @@ export default {
     onChangeFloor(selectedFloor) {
       this.$store.commit('currentFloor', selectedFloor)
     },
+    validateStatuChange() {
+      if (this.isChangeProjectStatus) {
+        return this.$confirm(`結案之後，無法恢復執行中`, '確定要結案？', {
+          confirmButtonText: '確定要結案',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+      } else {
+        return Promise.resolve() // pass
+      }
+    },
     submitProject() {
-      this.$store
-        .dispatch('updateProject', {
-          id: this.$route.params.projectId
-        })
-        .then(() => {
-          this.$message({
-            message: `成功編輯 ${this.project.name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
+      this.validateStatuChange().then(() => {
+        this.$store
+          .dispatch('updateProject', {
+            id: this.$route.params.projectId
           })
-          this.toPath('ProjectsSetting')
-        })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+          .then(() => {
+            this.$message({
+              message: `成功編輯 ${this.project.name}`,
+              type: 'success',
+              center: true,
+              duration: 1800
+            })
+            this.toPath('ProjectsSetting')
+          })
+          .catch(e => {
+            this.$message.error(`請重新檢查 ${e.message}`)
+          })
+      })
     }
   }
 }

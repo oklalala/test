@@ -18,6 +18,7 @@ export default {
     vgItemsFree(state) {
       return state.data.filter(
         vg =>
+          vg.projectName === null ||
           vg.projectName === '使用的專案被刪除' ||
           vg.projectName === '專案均結案'
       )
