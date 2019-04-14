@@ -782,8 +782,10 @@ export default {
           this.$message.error(`請重新檢查 ${e.message}`)
         })
     },
-    submitProject() {
-      this.$store.dispatch('createProject').then(() => {
+    async submitProject() {
+      try {
+        await this.$store.dispatch('createProject')
+
         this.$message({
           message: `成功新增 ${this.project.name}`,
           type: 'success',
@@ -791,7 +793,9 @@ export default {
           duration: 1800
         })
         this.toPath('ProjectsSetting')
-      })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
   }
 }

@@ -65,16 +65,20 @@ export default {
   },
   methods: {
     async sendNewProjectPhase() {
-      await this.$store.dispatch('createProjectPhase', {
-        name: this.newProjectPhaseName
-      })
-      this.$message({
-        message: `成功新增 ${this.newProjectPhaseName}`,
-        type: 'success',
-        center: true,
-        duration: 1800
-      })
-      this.newProjectPhaseName = ''
+      try {
+        await this.$store.dispatch('createProjectPhase', {
+          name: this.newProjectPhaseName
+        })
+        this.$message({
+          message: `成功新增 ${this.newProjectPhaseName}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+        this.newProjectPhaseName = ''
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     },
     deleteProjectPhases() {
       if (this.deletePhasesId.length === 0) return

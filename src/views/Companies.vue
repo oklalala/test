@@ -65,16 +65,20 @@ export default {
   },
   methods: {
     async sendNewCompany() {
-      this.$store.dispatch('createCompany', {
-        name: this.newCompanyName
-      })
-      this.$message({
-        message: `成功新增 ${this.newCompanyName}`,
-        type: 'success',
-        center: true,
-        duration: 1800
-      })
-      this.newCompanyName = ''
+      try {
+        await this.$store.dispatch('createCompany', {
+          name: this.newCompanyName
+        })
+        this.$message({
+          message: `成功新增 ${this.newCompanyName}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+        this.newCompanyName = ''
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     },
     deleteCompanies() {
       if (this.deleteCompaniesId.length === 0) return
