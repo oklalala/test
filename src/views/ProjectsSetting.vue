@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <div class="projectsSetting">
+  <div class="projects-setting">
     <h1>專案資料</h1>
     <div class="operationGroup">
       <div class="operationGroup-left">
@@ -108,3 +108,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.projects-setting .el-table__header .el-table-column--selection .el-checkbox {
+  visibility: hidden;
+}
+</style>
