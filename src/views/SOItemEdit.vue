@@ -121,24 +121,23 @@ export default {
         value
       })
     },
-    onSubmit() {
-      this.$store
-        .dispatch('updateSOItem', {
+    async onSubmit() {
+      try {
+        await this.$store.dispatch('updateSOItem', {
           soId: this.$route.params.soId,
           payload: this.soItem
         })
-        .then(() => {
-          this.$message({
-            message: `成功編輯 ${this.soItem.number}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-          this.toPath('SOItems')
+
+        this.$message({
+          message: `成功編輯 ${this.soItem.number}`,
+          type: 'success',
+          center: true,
+          duration: 1800
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+        this.toPath('SOItems')
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
   }
 }

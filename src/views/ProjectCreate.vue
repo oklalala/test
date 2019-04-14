@@ -750,25 +750,21 @@ export default {
         label
       })
     },
-    onSubmit() {
-      console.clear()
-      this.validateConfigLv1()
-        .then(() => {
-          return this.validateConfigLv2()
+    async onSubmit() {
+      try {
+        await this.validateConfigLv1()
+        await this.validateConfigLv2()
+        this.$refs.project.validate(isValidSuccess => {
+          if (isValidSuccess) {
+            this.submitProject()
+          } else {
+            this.$message.error(`請重新檢查必填欄位`)
+            return false
+          }
         })
-        .then(() => {
-          this.$refs.project.validate(isValidSuccess => {
-            if (isValidSuccess) {
-              this.submitProject()
-            } else {
-              this.$message.error(`請重新檢查必填欄位`)
-              return false
-            }
-          })
-        })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     },
     async submitProject() {
       try {

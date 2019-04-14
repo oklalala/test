@@ -84,41 +84,41 @@ export default {
         this.$message.error(`請重新檢查 ${e.message}`)
       }
     },
-    deleteVGItems() {
+    async deleteVGItems() {
       if (this.deleteVGItemsId.length === 0) return
-      this.$confirm('確定要刪除？', {
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$store
-            .dispatch('deleteVGs', this.deleteVGItemsId)
-            .then(() => {
-              this.$message({
-                message: `軸力計 ${this.deleteVGItemsId} 已刪除`,
-                type: 'success',
-                showClose: true,
-                center: true,
-                duration: 1200
-              })
-            })
-            .catch(() => {
-              this.$message({
-                message: `已被專案使用`,
-                type: 'error',
-                showClose: true,
-                center: true,
-                duration: 1200
-              })
-            })
+
+      try {
+        await this.$confirm('確定要刪除？', {
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
+      } catch (e) {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
         })
+        return
+      }
+
+      try {
+        await this.$store.dispatch('deleteVGs', this.deleteVGItemsId)
+        this.$message({
+          message: `軸力計 ${this.deleteVGItemsId} 已刪除`,
+          type: 'success',
+          showClose: true,
+          center: true,
+          duration: 1200
+        })
+      } catch (e) {
+        this.$message({
+          message: `已被專案使用`,
+          type: 'error',
+          showClose: true,
+          center: true,
+          duration: 1200
+        })
+      }
     },
     updateDeleteList(value) {
       this.deleteVGItemsId = value.map(vg => vg.id)
@@ -132,50 +132,25 @@ export default {
         number
       }
     },
-    afterEdit(id, newNumber) {
+    async afterEdit(id, newNumber) {
       if (newNumber === this.oldVG.number) return // not change
-      this.$store
-        .dispatch('updateVG', {
+
+      try {
+        await this.$store.dispatch('updateVG', {
           vgId: id,
           payload: {
             number: newNumber
           }
         })
-        .then(() => {
-          this.$message({
-            message: `成功編輯 ${this.oldVG.number} → ${newNumber}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
+        this.$message({
+          message: `成功編輯 ${this.oldVG.number} → ${newNumber}`,
+          type: 'success',
+          center: true,
+          duration: 1800
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
-    },
-    editVG(id, newNumber) {
-      if (
-        newNumber ===
-        this.$store.getters.vgItems.filter(vg => vg.id == id).shift().number
-      )
-        return
-      this.$store
-        .dispatch('updateVG', {
-          vgId: id,
-          payload: { number: newNumber }
-        })
-        .then(() => {
-          this.reset()
-          this.$message({
-            message: `成功編輯 ${newNumber}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-        })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
   }
 }

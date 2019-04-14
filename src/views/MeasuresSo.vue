@@ -125,7 +125,7 @@ export default {
     }
   },
   methods: {
-    measures: function() {
+    async measures() {
       let racePromise = new Promise(resolve => {
         setTimeout(() => {
           resolve('Promise A win!')
@@ -139,14 +139,13 @@ export default {
         this.currentDepth
       )
       if (!this.isMeasuring) {
-        Promise.race([racePromise, raceMeasures])
-          .then(() => {
-            this.isMeasuring = false
-          })
-          .catch(() => {
-            this.isMeasuring = false
-          })
         this.isMeasuring = true
+        try {
+          await Promise.race([racePromise, raceMeasures])
+          this.isMeasuring = false
+        } catch (e) {
+          this.isMeasuring = false
+        }
       }
     },
     clearMeasuresDatas: function() {

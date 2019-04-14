@@ -236,26 +236,25 @@ export default {
     isShow(feature) {
       return this.$store.getters.myPermissions.includes(feature)
     },
-    exportMeasuredData(type) {
+    async exportMeasuredData(type) {
       this.$message({
         message: `正在下載'${this.project.name}'的傾度管資料`,
         type: 'info',
         center: true,
         duration: 1800
       })
-      this.$store
-        .dispatch('export', {
-          type,
-          projectId: this.$route.params.projectId
-        })
-        .then(() => {
-          this.$message({
-            message: `成功下載 ${this.project.name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-        })
+
+      await this.$store.dispatch('export', {
+        type,
+        projectId: this.$route.params.projectId
+      })
+
+      this.$message({
+        message: `成功下載 ${this.project.name}`,
+        type: 'success',
+        center: true,
+        duration: 1800
+      })
     }
   }
 }

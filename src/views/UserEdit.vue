@@ -161,23 +161,20 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      this.$store
-        .dispatch('updateUser', {
+    async onSubmit() {
+      try {
+        await this.$store.dispatch('updateUser', {
           userId: this.$route.params.userId
         })
-        .then(() => {
-          this.$message({
-            message: `成功編輯 ${this.user.name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-          this.toPath('Users')
+        this.$message({
+          message: `成功編輯 ${this.user.name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     },
     isShow(feature) {
       return this.$store.getters.currentUserPermissions

@@ -152,29 +152,20 @@ export default {
       this.isEdit = true
       this.deleteList = value.map(steel => steel.id)
     },
-    onSubmit() {
-      this.$store
-        .dispatch('createSteel')
-        .then(() => {
-          this.$message({
-            message: `成功新增 ${this.steel.name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-          this.toPath('Steels')
+    async onSubmit() {
+      try {
+        await this.$store.dispatch('createSteel')
+        this.$message({
+          message: `成功新增 ${this.steel.name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+        this.toPath('Steels')
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
-  },
-  resetTable() {
-    this.$store.dispatch('fetchSteels').then(() => {
-      this.isEdit = false
-      this.resetInput()
-      this.isShow = false
-    })
   }
 }
 </script>

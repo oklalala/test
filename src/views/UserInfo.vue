@@ -112,19 +112,16 @@ export default {
     updateMe(payload) {
       this.$store.commit('updateMe', payload)
     },
-    submit() {
-      this.$store
-        .dispatch('updateMe')
-        .then(() => {
-          this.$message({
-            message: '資料更新成功',
-            type: 'success'
-          })
-          this.toPath('Projects')
+    async submit() {
+      try {
+        await this.$store.dispatch('updateMe')
+        this.$message({
+          message: '資料更新成功',
+          type: 'success'
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
   }
 }

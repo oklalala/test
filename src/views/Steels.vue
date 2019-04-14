@@ -55,35 +55,34 @@ export default {
     }
   },
   methods: {
-    deleteSteels() {
+    async deleteSteels() {
       if (this.deleteList.length === 0) return
-      this.$confirm('確定要刪除？', {
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$store
-            .dispatch('deleteSteels', this.deleteList)
-            .then(res => {
-              console.log(res)
-              this.$message({
-                message: `成功刪除`,
-                type: 'success',
-                center: true,
-                duration: 1800
-              })
-            })
-            .catch(e => {
-              this.$message.error(`請重新檢查 ${e.message}`)
-            })
+
+      try {
+        await this.$confirm('確定要刪除？', {
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
+      } catch (e) {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
         })
+        return
+      }
+
+      try {
+        await this.$store.dispatch('deleteSteels', this.deleteList)
+        this.$message({
+          message: `成功刪除`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     },
     updateDeleteList(value) {
       this.deleteList = value.map(steel => steel.id)

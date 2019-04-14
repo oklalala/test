@@ -46,7 +46,7 @@ export default {
     }
   },
   methods: {
-    submit() {
+    async submit() {
       if (!this.account) {
         this.$message.error(`請輸入帳號`)
         return
@@ -56,25 +56,23 @@ export default {
         return
       }
 
-      this.$store
-        .dispatch('login', {
+      try {
+        await this.$store.dispatch('login', {
           account: this.account,
           password: this.password
         })
-        .then(() => {
-          this.$message({
-            message: `${this.account} 歡迎您`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
-          this.$router.push({
-            name: 'Projects'
-          })
+        this.$message({
+          message: `${this.account} 歡迎您`,
+          type: 'success',
+          center: true,
+          duration: 1800
         })
-        .catch(e => {
-          this.$message.error(e.message)
+        this.$router.push({
+          name: 'Projects'
         })
+      } catch (e) {
+        this.$message.error(e.message)
+      }
     }
   }
 }

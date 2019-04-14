@@ -80,34 +80,34 @@ export default {
         this.$message.error(`請重新檢查 ${e.message}`)
       }
     },
-    deleteCompanies() {
+    async deleteCompanies() {
       if (this.deleteCompaniesId.length === 0) return
-      this.$confirm('確定要刪除？', {
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$store
-            .dispatch('deleteCompanies', this.deleteCompaniesId)
-            .then(() => {
-              this.$message({
-                message: `成功刪除`,
-                type: 'success',
-                center: true,
-                duration: 1800
-              })
-            })
-            .catch(e => {
-              this.$message.error(`請重新檢查 ${e.message}`)
-            })
+
+      try {
+        await this.$confirm('確定要刪除？', {
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消刪除'
-          })
+      } catch (e) {
+        this.$message({
+          type: 'info',
+          message: '已取消刪除'
         })
+        return
+      }
+
+      try {
+        await this.$store.dispatch('deleteCompanies', this.deleteCompaniesId)
+        this.$message({
+          message: `成功刪除`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     },
     updateDeleteList(value) {
       this.deleteCompaniesId = value.map(company => company.id)
@@ -118,24 +118,22 @@ export default {
         name
       }
     },
-    afterEdit(id, name) {
-      if (name === this.oldCompany.name) return // not change
-      this.$store
-        .dispatch('updateCompany', {
+    async afterEdit(id, name) {
+      try {
+        if (name === this.oldCompany.name) return // not change
+        await this.$store.dispatch('updateCompany', {
           id,
           payload: { name }
         })
-        .then(() => {
-          this.$message({
-            message: `成功編輯 ${this.oldCompany.name} → ${name}`,
-            type: 'success',
-            center: true,
-            duration: 1800
-          })
+        this.$message({
+          message: `成功編輯 ${this.oldCompany.name} → ${name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
         })
-        .catch(e => {
-          this.$message.error(`請重新檢查 ${e.message}`)
-        })
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
   }
 }

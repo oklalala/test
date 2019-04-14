@@ -55,15 +55,13 @@ export default {
         permissionValue
       })
     },
-    submit() {
-      this.$store
-        .dispatch('updateRolePermissions')
-        .then(() => {
-          this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
-        })
-        .catch(e => {
-          this.$message.error(e, '權限設定失敗')
-        })
+    async submit() {
+      try {
+        await this.$store.dispatch('updateRolePermissions')
+        this.$message({ message: '權限設定成功 請重新登入', type: 'success' })
+      } catch (e) {
+        this.$message.error(e, '權限設定失敗')
+      }
     }
   }
 }

@@ -621,25 +621,22 @@ export default {
         return Promise.resolve() // pass
       }
     },
-    submitProject() {
-      this.validateStatuChange().then(() => {
-        this.$store
-          .dispatch('updateProject', {
-            id: this.$route.params.projectId
-          })
-          .then(() => {
-            this.$message({
-              message: `成功編輯 ${this.project.name}`,
-              type: 'success',
-              center: true,
-              duration: 1800
-            })
-            this.toPath('ProjectsSetting')
-          })
-          .catch(e => {
-            this.$message.error(`請重新檢查 ${e.message}`)
-          })
-      })
+    async submitProject() {
+      try {
+        await this.validateStatuChange()
+        await this.$store.dispatch('updateProject', {
+          id: this.$route.params.projectId
+        })
+        this.$message({
+          message: `成功編輯 ${this.project.name}`,
+          type: 'success',
+          center: true,
+          duration: 1800
+        })
+        this.toPath('ProjectsSetting')
+      } catch (e) {
+        this.$message.error(`請重新檢查 ${e.message}`)
+      }
     }
   }
 }
