@@ -19,7 +19,7 @@ export default {
       dispatch('fetchCompanies')
     })
   },
-  updateCompany(context, { companyId, payload }) {
-    return API.PUT(`/company/${companyId}`, payload)
+  updateCompany(context, { id, payload }) {
+    return API.PUT(`/company/${id}`, payload)
   }
 }

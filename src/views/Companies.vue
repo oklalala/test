@@ -114,18 +114,16 @@ export default {
         name
       }
     },
-    afterEdit(id, newName) {
-      if (newName === this.oldCompany.name) return // not change
+    afterEdit(id, name) {
+      if (name === this.oldCompany.name) return // not change
       this.$store
         .dispatch('updateCompany', {
           id,
-          payload: {
-            name: newName
-          }
+          payload: { name }
         })
         .then(() => {
           this.$message({
-            message: `成功編輯 ${this.oldCompany.name} → ${newName}`,
+            message: `成功編輯 ${this.oldCompany.name} → ${name}`,
             type: 'success',
             center: true,
             duration: 1800
