@@ -3,21 +3,19 @@
 import API from '@/utils/API'
 
 export default {
-  fetchCompanies({ commit }) {
-    return API.GET('/companies').then(res => {
-      commit('setCompanies', res.data)
-    })
+  async fetchCompanies({ commit }) {
+    const res = await API.GET('/companies')
+    commit('setCompanies', res.data)
+    return Promise.resolve()
   },
-  createCompany({ dispatch }, payload) {
-    return API.POST(`/company`, payload).then(() => {
-      dispatch('fetchCompanies')
-    })
+  async createCompany({ dispatch }, payload) {
+    await API.POST(`/company`, payload)
+    return dispatch('fetchCompanies')
   },
-  deleteCompanies({ dispatch }, companyIds) {
+  async deleteCompanies({ dispatch }, companyIds) {
     let companyIdsStr = companyIds.join(',')
-    return API.DELETE(`/companies/${companyIdsStr}`).then(() => {
-      dispatch('fetchCompanies')
-    })
+    await API.DELETE(`/companies/${companyIdsStr}`)
+    return dispatch('fetchCompanies')
   },
   updateCompany(context, { id, payload }) {
     return API.PUT(`/company/${id}`, payload)

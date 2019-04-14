@@ -6,14 +6,14 @@ import router from '@/router'
 import cookies from '@/cookies'
 
 export default {
-  login({ commit }, payload) {
-    return API.POST('/login', payload).then(res => {
-      commit('setToken', res.token)
-      commit('setMyId', res.userId)
-      commit('setMyRole', res.role)
-      commit('setMyPermissions', res.permissions)
-      cookies.saveLogin()
-    })
+  async login({ commit }, payload) {
+    const res = await API.POST('/login', payload)
+    commit('setToken', res.token)
+    commit('setMyId', res.userId)
+    commit('setMyRole', res.role)
+    commit('setMyPermissions', res.permissions)
+    cookies.saveLogin()
+    return Promise.resolve()
   },
   logout({ commit }) {
     commit('setToken', '')

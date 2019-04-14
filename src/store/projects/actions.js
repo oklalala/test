@@ -69,21 +69,19 @@ export default {
 
     return await API.PUT(`/project/${id}`, project)
   },
-  fetchProjects({ commit }) {
-    return API.GET('/projects').then(res => {
-      commit('setProjects', res.data)
-    })
+  async fetchProjects({ commit }) {
+    const res = await API.GET('/projects')
+    commit('setProjects', res.data)
+    return Promise.resolve()
   },
-  deleteProjects({ dispatch }, projectIds) {
+  async deleteProjects({ dispatch }, projectIds) {
     let projectIdsStr = projectIds.join(',')
-    return API.DELETE(`/projects/${projectIdsStr}`).then(() => {
-      dispatch('fetchProjects')
-    })
+    await API.DELETE(`/projects/${projectIdsStr}`)
+    return dispatch('fetchProjects')
   },
-  uploadConfigImage({ commit }, file) {
-    return API.uploadImg(file).then(res => {
-      commit('updateConfigImage', res.url)
-    })
+  async uploadConfigImage({ commit }, file) {
+    const res = await API.uploadImg(file)
+    commit('updateConfigImage', res.url)
   },
   configVgCode({ commit, getters }, { totalFloor, totalVgPreFloor }) {
     function vgEnCode(floor, serial) {
