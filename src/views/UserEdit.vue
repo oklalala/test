@@ -172,6 +172,7 @@ export default {
           center: true,
           duration: 1800
         })
+        this.toPath('Users')
       } catch (e) {
         this.$message.error(`請重新檢查 ${e.message}`)
       }
